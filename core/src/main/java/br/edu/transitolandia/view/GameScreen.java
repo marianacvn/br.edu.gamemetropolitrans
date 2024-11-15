@@ -3,16 +3,23 @@ package br.edu.transitolandia.view;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.ScreenUtils;
 
 import br.edu.transitolandia.Transitolandia;
+import br.edu.transitolandia.view.actors.Personagem;
 
-public class Menu implements Screen {
-
+public class GameScreen implements Screen {
     final Transitolandia jogo;
+    Texture fundoTela;
+    Personagem personagem;
 
-    public Menu(final Transitolandia game) {
-        this.jogo = game;
+    public GameScreen(final Transitolandia jogo) {
+        this.jogo = jogo;
+
+        // Carrega as imagens
+        fundoTela = new Texture(jogo.DIRETORIO_BASE_ARQUIVOS + "backgroundExemplo.png");
+        personagem = new Personagem(20, 20, jogo.mainStage);
     }
 
     @Override
@@ -21,6 +28,13 @@ public class Menu implements Screen {
 
     @Override
     public void render(float delta) {
+        desenhar();
+    }
+
+    private void desenhar() {
+        float dt = Gdx.graphics.getDeltaTime();
+        jogo.mainStage.act(dt);
+
         // Limpa a tela com uma cor preta
         ScreenUtils.clear(Color.BLACK);
 
@@ -30,19 +44,18 @@ public class Menu implements Screen {
 
         // Inicia o batch de desenho
         jogo.batch.begin();
-        // x e y são as coordenadas da tela onde o texto será desenhado,
-        // estes valores estão em metros
-        jogo.fonte.draw(jogo.batch, "Bem vindo a Transitolândia!!! ", 1, 1.5f);
-        jogo.fonte.draw(jogo.batch, "Clique em qualquer lugar da tela para iniciar", 1, 1);
 
+        // Define a altura e largura com base no tamanho da tela do jogo
+        float largura = jogo.areaVisualizacao.getWorldWidth();
+        float altura = jogo.areaVisualizacao.getWorldHeight();
+
+        // Desenha o fundo da tela
+        jogo.mainStage.draw();
+        jogo.batch.draw(fundoTela, 0, 0, largura, altura);
+        
+    
         // Finaliza o batch de desenho
-        jogo.batch.end();
-
-        // Verifica se o jogador clicou na tela
-        if (Gdx.input.isTouched()) {
-            jogo.setScreen(new GameScreen(jogo));
-            dispose();
-        }
+		jogo.batch.end();
     }
 
     @Override
