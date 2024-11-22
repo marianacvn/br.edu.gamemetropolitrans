@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 
 public abstract class GameBeta extends Game {
-    protected Stage mainStage;
+    public Stage mainStage;
 
     public void create() {
         mainStage = new Stage();
