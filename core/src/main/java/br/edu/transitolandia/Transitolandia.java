@@ -7,14 +7,14 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 
-import br.edu.transitolandia.view.screens.Menu;
+import br.edu.transitolandia.view.screens.MenuScreen;
 
 public class Transitolandia extends Game {
     public String DIRETORIO_BASE_ARQUIVOS = "files/";
     public Stage estagioPrincipal;
     public SpriteBatch batch;
     public BitmapFont fonte;
-    // public FitViewport areaVisualizacao;
+
 
     @Override
     public void create() {
@@ -22,24 +22,15 @@ public class Transitolandia extends Game {
         batch = new SpriteBatch();
 
          // Carrega a fonte personalizada
-         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("files/fontes/monogram.ttf"));
+         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("files/fonts/Silver.ttf"));
          FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
-         parameter.size = 20; // Define o tamanho da fonte
+         parameter.size = 30; // Define o tamanho da fonte
          fonte = generator.generateFont(parameter);
+         // Libera os recursos do gerador de fontes
          generator.dispose();
-         // Libera os recursos do gerador
+         
 
-        //Fonte padrão do libgdx
-        // fonte = new BitmapFont();
-        // areaVisualizacao = new FitViewport(8, 5);
-
-        // Por padrão a fonte tem 15pt, mas nós precisamos realizar uma escala
-        // para o nosso viewport pela razão da altura do viewport para a altura da tela
-        // fonte.setUseIntegerPositions(false);
-        // fonte.getData().setScale(areaVisualizacao.getWorldHeight() /
-        // Gdx.graphics.getHeight());
-
-        this.setScreen(new Menu(this));
+        this.setScreen(new MenuScreen(this));
     }
 
     @Override

@@ -1,4 +1,5 @@
 package br.edu.transitolandia.view.screens;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
@@ -18,7 +19,7 @@ import br.edu.transitolandia.musics.GameMusics;
 public class GameScreen implements Screen {
 
     // Musica do jogo
-    public Music MusicaPrincipal;;
+    public Music MusicaPrincipal;
 
     // Largura e altura da tela do jogo
     public static final int TELA_LARGURA = 1200;
@@ -82,9 +83,11 @@ public class GameScreen implements Screen {
 
         // Carrega as imagens
         personagem = new Personagem(300, 200, jogo.estagioPrincipal);
-    	
+        personagem.setCamera(CAMERA);
+        personagem.setLimitacaoMundo(Mapas.MAPA_LARGURA, Mapas.MAPA_ALTURA);
+
         // configura a musica do jogo
-        MusicaPrincipal =  GameMusics.GAMEMUSIC.music;
+        MusicaPrincipal = GameMusics.GAMEMUSIC.music;
         if (MusicaPrincipal == null) {
             System.out.println("Erro: Música não carregada corretamente.");
         } else {
@@ -105,26 +108,12 @@ public class GameScreen implements Screen {
     @Override
     public void render(float delta) {
         desenhar();
-        
-        // movimenta o personagem de acordo com as teclas pressionadas
-        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
-            personagem.setX(Gdx.input.getX());
-        }
-        else if (Gdx.input.isKeyPressed(Input.Keys.LEFT)){
-            personagem.setX(Gdx.input.getX());
-            
-        }
-        else if (Gdx.input.isKeyPressed(Input.Keys.UP)){
-            personagem.setY(Gdx.input.getY());
-            
-        }
-        else if (Gdx.input.isKeyPressed(Input.Keys.DOWN)){
-            personagem.setY(Gdx.input.getY());
-            
-        }
-
+        controle(delta);
     }
 
+    /**
+     * Desenha a tela do jogo
+     */
     private void desenhar() {
 
         // Atualiza o temporizador
@@ -140,8 +129,8 @@ public class GameScreen implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         // Atualiza a câmera do jogo
-        //jogo.areaVisualizacao.apply();
-        //jogo.batch.setProjectionMatrix(jogo.areaVisualizacao.getCamera().combined);
+        // jogo.areaVisualizacao.apply();
+        // jogo.batch.setProjectionMatrix(jogo.areaVisualizacao.getCamera().combined);
         CAMERA.position.x = personagem.getX();
         CAMERA.position.y = personagem.getY();
         CAMERA.update();
@@ -163,9 +152,28 @@ public class GameScreen implements Screen {
         jogo.batch.end();
     }
 
+    /**
+     * Controle do personagem, movimenta de acordo com as teclas pressionadas
+     */
+    public void controle(float delta) {
+        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
+            //personagem.setX(personagem.getX() + Personagem.VELOCIDADE * delta);
+            personagem.acelerarEmAngulo(0);
+        } else if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
+            //personagem.setX(personagem.getX() - Personagem.VELOCIDADE * delta);
+            personagem.acelerarEmAngulo(180);
+        } else if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
+            //personagem.setY(personagem.getY() + Personagem.VELOCIDADE * delta);
+            personagem.acelerarEmAngulo(90);
+        } else if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
+            //personagem.setY(personagem.getY() + Personagem.VELOCIDADE * delta);
+            personagem.acelerarEmAngulo(270);
+        }
+    }
+
     @Override
     public void resize(int width, int height) {
-        //jogo.areaVisualizacao.update(width, height, true);
+        // jogo.areaVisualizacao.update(width, height, true);
     }
 
     @Override
