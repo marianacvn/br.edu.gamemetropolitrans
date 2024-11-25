@@ -3,7 +3,6 @@ package br.edu.transitolandia.view.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -11,15 +10,11 @@ import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import br.edu.transitolandia.Transitolandia;
 import br.edu.transitolandia.model.actors.Personagem;
 import br.edu.transitolandia.model.actors.maps.Mapas;
-import br.edu.transitolandia.musics.GameMusics;
 
 /**
  * Tela principal do jogo
  */
 public class GameScreen implements Screen {
-
-    // Musica do jogo
-    public Music MusicaPrincipal;
 
     // Largura e altura da tela do jogo
     public static final int TELA_LARGURA = 1200;
@@ -82,27 +77,17 @@ public class GameScreen implements Screen {
         CAMERA.update();
 
         // Carrega as imagens
-        personagem = new Personagem(300, 200, jogo.estagioPrincipal);
+        personagem = new Personagem(300, 5000, jogo.estagioPrincipal);
         personagem.setCamera(CAMERA);
         personagem.setLimitacaoMundo(Mapas.MAPA_LARGURA, Mapas.MAPA_ALTURA);
 
-        // configura a musica do jogo
-        MusicaPrincipal = GameMusics.GAMEMUSIC.music;
-        if (MusicaPrincipal == null) {
-            System.out.println("Erro: Música não carregada corretamente.");
-        } else {
-            MusicaPrincipal.setLooping(true);
-            MusicaPrincipal.setVolume(1.0f); // Define o volume para 100%
-        }
     }
 
     @Override
     public void show() {
-        // Inicia a música do jogo
-        MusicaPrincipal.play();
-        if (!MusicaPrincipal.isPlaying()) {
-            System.out.println("Erro: Música não está sendo reproduzida.");
-        }
+        // Para a música do menu e inicia a música do jogo
+        jogo.MusicaMenu.stop();
+        jogo.MusicaPrincipal.play();
     }
 
     @Override
@@ -157,16 +142,16 @@ public class GameScreen implements Screen {
      */
     public void controle(float delta) {
         if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
-            //personagem.setX(personagem.getX() + Personagem.VELOCIDADE * delta);
+            // personagem.setX(personagem.getX() + Personagem.VELOCIDADE * delta);
             personagem.acelerarEmAngulo(0);
         } else if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
-            //personagem.setX(personagem.getX() - Personagem.VELOCIDADE * delta);
+            // personagem.setX(personagem.getX() - Personagem.VELOCIDADE * delta);
             personagem.acelerarEmAngulo(180);
         } else if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
-            //personagem.setY(personagem.getY() + Personagem.VELOCIDADE * delta);
+            // personagem.setY(personagem.getY() + Personagem.VELOCIDADE * delta);
             personagem.acelerarEmAngulo(90);
         } else if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
-            //personagem.setY(personagem.getY() + Personagem.VELOCIDADE * delta);
+            // personagem.setY(personagem.getY() + Personagem.VELOCIDADE * delta);
             personagem.acelerarEmAngulo(270);
         }
     }
@@ -190,7 +175,6 @@ public class GameScreen implements Screen {
 
     @Override
     public void dispose() {
-        MusicaPrincipal.dispose();
         mapaRenderizador.dispose();
         salaRenderizador.dispose();
     }

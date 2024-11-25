@@ -37,7 +37,7 @@ public class Personagem extends BaseActor {
         super(x, y, s);
 
         // Carraga a animação do personagem
-        String nomeArquivo = "files/characters/mainCharacter/character-female-32.png";
+        String nomeArquivo = "files/characters/mainCharacter/character-female-64.png";
         int linhas = 4;
         int colunas = 3;
 
@@ -119,7 +119,7 @@ public class Personagem extends BaseActor {
             }
         }
 
-        alinhamentoCamera(camera);
+        alinhamentoCamera();
         limitaMundo();
         aplicarFisica(delta);
     }

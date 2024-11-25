@@ -18,16 +18,8 @@ public class Lwjgl3Launcher {
 
     private static Lwjgl3ApplicationConfiguration getDefaultConfiguration() {
         Lwjgl3ApplicationConfiguration configuration = new Lwjgl3ApplicationConfiguration();
-        configuration.setTitle("Transitolândia");
-        //// Vsync limita os quadros por segundo ao que seu hardware pode exibir e ajuda
-        //// a eliminar
-        //// o rasgo de tela. Esta configuração nem sempre funciona no Linux, então a
-        //// linha seguinte é uma salvaguarda.
-        configuration.useVsync(true);
-        //// Limita o FPS à taxa de atualização do monitor atualmente ativo, mais 1 para
-        //// tentar corresponder a taxas de atualização fracionárias.
-        //// A configuração de Vsync acima deve limitar o FPS real para corresponder ao
-        //// monitor.
+        configuration.setTitle("");
+        configuration.useVsync(false);
         configuration.setForegroundFPS(Lwjgl3ApplicationConfiguration.getDisplayMode().refreshRate + 1);
         //// Se você remover a linha acima e definir Vsync como falso, você pode obter
         //// FPS ilimitado, o que pode ser
@@ -38,7 +30,7 @@ public class Lwjgl3Launcher {
         configuration.setWindowedMode(800, 500);
         //// Você pode alterar esses arquivos; eles estão em lwjgl3/src/main/resources/
         //// .
-        configuration.setWindowIcon("libgdx128.png", "libgdx64.png", "libgdx32.png", "libgdx16.png");
+        configuration.setWindowIcon("files/icons/icon-house.png");
         return configuration;
     }
 }
