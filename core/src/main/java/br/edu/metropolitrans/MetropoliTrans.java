@@ -1,4 +1,4 @@
-package br.edu.transitolandia;
+package br.edu.metropolitrans;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
@@ -7,9 +7,9 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import br.edu.transitolandia.view.screens.MenuScreen;
+import br.edu.metropolitrans.view.screens.MenuScreen;
 
-public class Transitolandia extends Game {
+public class MetropoliTrans extends Game {
     public String DIRETORIO_BASE_ARQUIVOS = "files/";
     public Stage estagioPrincipal;
     public SpriteBatch batch;
@@ -42,7 +42,7 @@ public class Transitolandia extends Game {
         MusicaMenu.setLooping(true);
         MusicaMenu.setVolume(0.5f);
 
-        //Inicia a reprodução da música do menu
+        // Inicia a reprodução da música do menu
         MusicaMenu.play();
 
         this.setScreen(new MenuScreen(this));

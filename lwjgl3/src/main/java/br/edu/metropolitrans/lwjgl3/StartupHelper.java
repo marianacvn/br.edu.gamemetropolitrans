@@ -14,7 +14,7 @@
  */
 //Note, the above license and copyright applies to this file only.
 
-package br.edu.transitolandia.lwjgl3;
+package br.edu.metropolitrans.lwjgl3;
 
 import org.lwjgl.system.macosx.LibC;
 

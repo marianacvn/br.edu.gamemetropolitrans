@@ -1,4 +1,4 @@
-package br.edu.transitolandia.model.actors;
+package br.edu.metropolitrans.model.actors;
 
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.Gdx;

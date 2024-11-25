@@ -1,4 +1,4 @@
-package br.edu.transitolandia.view.screens;
+package br.edu.metropolitrans.view.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -21,18 +21,18 @@ import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.ScreenUtils;
 
-import br.edu.transitolandia.Transitolandia;
+import br.edu.metropolitrans.MetropoliTrans;
 
 public class ConfigScreen implements Screen {
 
-    public final Transitolandia jogo;
+    public final MetropoliTrans jogo;
     public Stage stage;
     public Skin skin;
     public Label titulo;
     public Texture background;
     public Slider sliderVolume;
 
-    public ConfigScreen(final Transitolandia jogo) {
+    public ConfigScreen(final MetropoliTrans jogo) {
         this.jogo = jogo;
 
         // Carrega a textura de fundo

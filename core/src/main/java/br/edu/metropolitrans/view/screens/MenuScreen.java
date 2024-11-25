@@ -1,4 +1,4 @@
-package br.edu.transitolandia.view.screens;
+package br.edu.metropolitrans.view.screens;
 
 import javax.swing.text.View;
 
@@ -23,11 +23,11 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
-import br.edu.transitolandia.Transitolandia;
+import br.edu.metropolitrans.MetropoliTrans;
 
 public class MenuScreen implements Screen {
 
-    public final Transitolandia jogo;
+    public final MetropoliTrans jogo;
     public Texture background;
     /** Gerencia o botão */
     public Stage stage;
@@ -39,7 +39,7 @@ public class MenuScreen implements Screen {
     public boolean isMuted = false;
     public Viewport viewport;
 
-    public MenuScreen(final Transitolandia jogo) {
+    public MenuScreen(final MetropoliTrans jogo) {
         this.jogo = jogo;
         // Carrega a textura de fundo
         background = new Texture(Gdx.files.internal("files/backgrounds/background-light.png"));

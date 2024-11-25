@@ -1,4 +1,4 @@
-package br.edu.transitolandia.view.screens;
+package br.edu.metropolitrans.view.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -7,9 +7,9 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
-import br.edu.transitolandia.Transitolandia;
-import br.edu.transitolandia.model.actors.Personagem;
-import br.edu.transitolandia.model.actors.maps.Mapas;
+import br.edu.metropolitrans.MetropoliTrans;
+import br.edu.metropolitrans.model.actors.Personagem;
+import br.edu.metropolitrans.model.actors.maps.Mapas;
 
 /**
  * Tela principal do jogo
@@ -23,7 +23,7 @@ public class GameScreen implements Screen {
     /**
      * Referência para o jogo principal
      */
-    final Transitolandia jogo;
+    final MetropoliTrans jogo;
 
     /**
      * Câmera do jogo
@@ -60,7 +60,7 @@ public class GameScreen implements Screen {
      */
     float temporizador = 0f;
 
-    public GameScreen(final Transitolandia jogo) {
+    public GameScreen(final MetropoliTrans jogo) {
         this.jogo = jogo;
 
         // Carrega o mapa

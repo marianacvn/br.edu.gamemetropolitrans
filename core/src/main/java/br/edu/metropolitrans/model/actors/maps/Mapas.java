@@ -1,4 +1,4 @@
-package br.edu.transitolandia.model.actors.maps;
+package br.edu.metropolitrans.model.actors.maps;
 
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;

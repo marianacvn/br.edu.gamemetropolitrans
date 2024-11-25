@@ -1,8 +1,8 @@
-package br.edu.transitolandia.lwjgl3;
+package br.edu.metropolitrans.lwjgl3;
 
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
-import br.edu.transitolandia.Transitolandia;
+import br.edu.metropolitrans.MetropoliTrans;
 
 /** Lança a aplicação desktop (LWJGL3). */
 public class Lwjgl3Launcher {
@@ -13,7 +13,7 @@ public class Lwjgl3Launcher {
     }
 
     private static Lwjgl3Application createApplication() {
-        return new Lwjgl3Application(new Transitolandia(), getDefaultConfiguration());
+        return new Lwjgl3Application(new MetropoliTrans(), getDefaultConfiguration());
     }
 
     private static Lwjgl3ApplicationConfiguration getDefaultConfiguration() {
