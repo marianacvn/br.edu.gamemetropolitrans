@@ -112,21 +112,8 @@ public class GameScreen implements Screen {
         Gdx.gl.glClearColor(0, 0, 0, 0.1f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        // Atualiza a câmera do jogo
-        CAMERA.position.set(personagem.getX() + personagem.getOriginX(), personagem.getY() + personagem.getOriginY(), 0);
-    
-        // Calcular os limites da câmera
-        float minimoX = CAMERA.viewportWidth / 2;
-        float maximoX = Personagem.getLimitacaoMundo().width - minimoX;
-        float minimoY = CAMERA.viewportHeight / 2;
-        float maximoY = Personagem.getLimitacaoMundo().height - minimoY;
-    
-        // Clampar a posição da câmera para garantir que ela não ultrapasse os limites do mundo
-        CAMERA.position.x = MathUtils.clamp(CAMERA.position.x, minimoX, maximoX);
-        CAMERA.position.y = MathUtils.clamp(CAMERA.position.y, minimoY, maximoY);
-    
-        // Atualiza a câmera
-        CAMERA.update();
+        // Alinhamento da câmera do jogo
+        alinhamentoCamera();
 
         // Renderiza o mapa
         mapaRenderizador.setView(CAMERA);
@@ -164,6 +151,29 @@ public class GameScreen implements Screen {
             // personagem.setY(personagem.getY() + Personagem.VELOCIDADE * delta);
             personagem.acelerarEmAngulo(270);
         }
+    }
+
+    /**
+     * Alinha a câmera do jogo
+     */
+    public void alinhamentoCamera() {
+        // Atualiza a câmera do jogo
+        CAMERA.position.set(personagem.getX() + personagem.getOriginX(), personagem.getY() + personagem.getOriginY(),
+                0);
+
+        // Calcular os limites da câmera
+        float minimoX = CAMERA.viewportWidth / 2;
+        float maximoX = Personagem.getLimitacaoMundo().width - minimoX;
+        float minimoY = CAMERA.viewportHeight / 2;
+        float maximoY = Personagem.getLimitacaoMundo().height - minimoY;
+
+        // Clampar a posição da câmera para garantir que ela não ultrapasse os limites
+        // do mundo
+        CAMERA.position.x = MathUtils.clamp(CAMERA.position.x, minimoX, maximoX);
+        CAMERA.position.y = MathUtils.clamp(CAMERA.position.y, minimoY, maximoY);
+
+        // Atualiza a câmera
+        CAMERA.update();
     }
 
     @Override
