@@ -1,4 +1,4 @@
-package br.edu.transitolandia.view.screens;
+package br.edu.metropolitrans.view.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -7,9 +7,12 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
-import br.edu.transitolandia.Transitolandia;
-import br.edu.transitolandia.model.actors.Personagem;
-import br.edu.transitolandia.model.actors.maps.Mapas;
+import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Vector2;
+
+import br.edu.metropolitrans.MetropoliTrans;
+import br.edu.metropolitrans.model.actors.Personagem;
+import br.edu.metropolitrans.model.actors.maps.Mapas;
 
 /**
  * Tela principal do jogo
@@ -17,13 +20,13 @@ import br.edu.transitolandia.model.actors.maps.Mapas;
 public class GameScreen implements Screen {
 
     // Largura e altura da tela do jogo
-    public static final int TELA_LARGURA = 1200;
-    public static final int TELA_ALTURA = 800;
+    public static final int TELA_LARGURA = 800;
+    public static final int TELA_ALTURA = 500;
 
     /**
      * Referência para o jogo principal
      */
-    final Transitolandia jogo;
+    final MetropoliTrans jogo;
 
     /**
      * Câmera do jogo
@@ -60,7 +63,7 @@ public class GameScreen implements Screen {
      */
     float temporizador = 0f;
 
-    public GameScreen(final Transitolandia jogo) {
+    public GameScreen(final MetropoliTrans jogo) {
         this.jogo = jogo;
 
         // Carrega o mapa
@@ -77,9 +80,8 @@ public class GameScreen implements Screen {
         CAMERA.update();
 
         // Carrega as imagens
-        personagem = new Personagem(300, 5000, jogo.estagioPrincipal);
-        personagem.setCamera(CAMERA);
-        personagem.setLimitacaoMundo(Mapas.MAPA_LARGURA, Mapas.MAPA_ALTURA);
+        personagem = new Personagem(610, 4600, jogo.estagioPrincipal);
+        Personagem.setLimitacaoMundo(Mapas.MAPA_LARGURA, Mapas.MAPA_ALTURA);
 
     }
 
@@ -105,20 +107,13 @@ public class GameScreen implements Screen {
         float dt = Gdx.graphics.getDeltaTime();
         temporizador += dt;
 
-        // Realiza açoes do estagio principal
-        jogo.estagioPrincipal.act(dt);
-
         // Limpa a tela com uma cor preta
         // ScreenUtils.clear(Color.BLACK);
         Gdx.gl.glClearColor(0, 0, 0, 0.1f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        // Atualiza a câmera do jogo
-        // jogo.areaVisualizacao.apply();
-        // jogo.batch.setProjectionMatrix(jogo.areaVisualizacao.getCamera().combined);
-        CAMERA.position.x = personagem.getX();
-        CAMERA.position.y = personagem.getY();
-        CAMERA.update();
+        // Alinhamento da câmera do jogo
+        alinhamentoCamera();
 
         // Renderiza o mapa
         mapaRenderizador.setView(CAMERA);
@@ -130,7 +125,9 @@ public class GameScreen implements Screen {
         // Inicia o batch de desenho
         jogo.batch.begin();
 
+        // Realiza açoes do estagio principal
         // Desenha o fundo da tela
+        jogo.estagioPrincipal.act(dt);
         jogo.estagioPrincipal.draw();
 
         // Finaliza o batch de desenho
@@ -154,6 +151,29 @@ public class GameScreen implements Screen {
             // personagem.setY(personagem.getY() + Personagem.VELOCIDADE * delta);
             personagem.acelerarEmAngulo(270);
         }
+    }
+
+    /**
+     * Alinha a câmera do jogo
+     */
+    public void alinhamentoCamera() {
+        // Atualiza a câmera do jogo
+        CAMERA.position.set(personagem.getX() + personagem.getOriginX(), personagem.getY() + personagem.getOriginY(),
+                0);
+
+        // Calcular os limites da câmera
+        float minimoX = CAMERA.viewportWidth / 2;
+        float maximoX = Personagem.getLimitacaoMundo().width - minimoX;
+        float minimoY = CAMERA.viewportHeight / 2;
+        float maximoY = Personagem.getLimitacaoMundo().height - minimoY;
+
+        // Clampar a posição da câmera para garantir que ela não ultrapasse os limites
+        // do mundo
+        CAMERA.position.x = MathUtils.clamp(CAMERA.position.x, minimoX, maximoX);
+        CAMERA.position.y = MathUtils.clamp(CAMERA.position.y, minimoY, maximoY);
+
+        // Atualiza a câmera
+        CAMERA.update();
     }
 
     @Override

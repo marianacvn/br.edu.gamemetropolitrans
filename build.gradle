@@ -60,7 +60,7 @@ configure(subprojects - project(':android')) {
 
 subprojects {
   version = '$projectVersion'
-  ext.appName = 'Transitolandia'
+  ext.appName = 'MetropoliTrans'
   repositories {
     mavenCentral()
     maven { url 'https://s01.oss.sonatype.org' }
@@ -72,4 +72,4 @@ subprojects {
   }
 }
 
-eclipse.project.name = 'Transitolandia' + '-parent'
+eclipse.project.name = 'MetropoliTrans' + '-parent'

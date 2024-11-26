@@ -1,4 +1,4 @@
-package br.edu.transitolandia.model.actors;
+package br.edu.metropolitrans.model.actors;
 
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.Gdx;
@@ -27,11 +27,6 @@ public class Personagem extends BaseActor {
      * Ângulo de rotação do personagem
      */
     private float angulo;
-
-    /**
-     * Câmera do jogo
-     */
-    private Camera camera;
 
     public Personagem(float x, float y, Stage s) {
         super(x, y, s);
@@ -119,16 +114,16 @@ public class Personagem extends BaseActor {
             }
         }
 
-        alinhamentoCamera();
-        limitaMundo();
+        // Atualiza a posição do personagem
         aplicarFisica(delta);
+        limitaMundo();
+
+        // Alinha a câmera após atualizar a posição do personagem
+        alinhamentoCamera();
     }
 
     public float getAngulo() {
         return angulo;
     }
 
-    public void setCamera(Camera c) {
-        camera = c;
-    }
 }
