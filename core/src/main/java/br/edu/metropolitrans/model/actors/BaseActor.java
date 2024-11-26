@@ -165,7 +165,7 @@ public class BaseActor extends Actor {
             setOrigin(l / 2, a / 2);
 
             if (limitePoligono == null) {
-                // setLimiteRetangulo();
+                setLimiteRetangulo();
             }
         }
     }
@@ -345,6 +345,14 @@ public class BaseActor extends Actor {
     }
 
     /**
+     * Retorna o vetor de velocidade deste objeto.
+     * @return vetor de velocidade
+     */
+    public Vector2 getVelocidadeVetor() {
+        return velocidadeVetor;
+    }
+
+    /**
      * Determina se este objeto está se movendo (se a velocidade é maior que zero).
      *
      * @return false quando a velocidade é zero, true caso contrário
@@ -512,6 +520,10 @@ public class BaseActor extends Actor {
             return false;
 
         return Intersector.overlapConvexPolygons(poligono1, poligono2);
+    }
+
+    public boolean sobrepoe(Rectangle retangulo) {
+        return getLimitePoligono().getBoundingRectangle().overlaps(retangulo);
     }
 
     /**

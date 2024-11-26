@@ -6,9 +6,14 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.maps.MapObject;
+import com.badlogic.gdx.maps.MapObjects;
+import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.Array;
 
 import br.edu.metropolitrans.MetropoliTrans;
 import br.edu.metropolitrans.model.actors.Personagem;
@@ -63,6 +68,9 @@ public class GameScreen implements Screen {
      */
     float temporizador = 0f;
 
+    private MapObjects objetosColisao;
+    private Array<Rectangle> retangulosColisao;
+
     public GameScreen(final MetropoliTrans jogo) {
         this.jogo = jogo;
 
@@ -70,6 +78,17 @@ public class GameScreen implements Screen {
         mapas = new Mapas();
         mapaRenderizador = new OrthogonalTiledMapRenderer(mapas.mapa, unitScale);
         salaRenderizador = new OrthogonalTiledMapRenderer(mapas.sala, unitScale);
+
+        // Carrega os objetos de colisão
+        objetosColisao = mapas.mapa.getLayers().get("colisao").getObjects();
+        Array<Rectangle> retangulosColisao = new Array<Rectangle>();
+
+        for (MapObject objeto : objetosColisao) {
+            if (objeto instanceof RectangleMapObject) {
+                Rectangle retangulo = ((RectangleMapObject) objeto).getRectangle();
+                retangulosColisao.add(retangulo);
+            }
+        }
 
         // Inicializa o renderizador de formas
         renderizadorForma = new ShapeRenderer();
@@ -80,7 +99,8 @@ public class GameScreen implements Screen {
         CAMERA.update();
 
         // Carrega as imagens
-        personagem = new Personagem(610, 4600, jogo.estagioPrincipal);
+        personagem = new Personagem(640, 4600, jogo.estagioPrincipal);
+        personagem.setRetangulosColisao(retangulosColisao);
         Personagem.setLimitacaoMundo(Mapas.MAPA_LARGURA, Mapas.MAPA_ALTURA);
 
     }
@@ -115,10 +135,14 @@ public class GameScreen implements Screen {
         // Alinhamento da câmera do jogo
         alinhamentoCamera();
 
-        // Renderiza o mapa
+        // Renderiza o mapa, camadas de sobpiso, piso e colisão
         mapaRenderizador.setView(CAMERA);
-        mapaRenderizador.render();
-
+        mapaRenderizador.render(new int[] { 0 }); // Sobpiso
+        mapaRenderizador.render(new int[] { 1 }); // Piso
+        mapaRenderizador.render(new int[] { 2 }); // Colisao
+        mapaRenderizador.render(new int[] { 3 }); // Colisao
+        
+        // Rendereiza as formas
         renderizadorForma.setProjectionMatrix(CAMERA.combined);
         jogo.batch.setProjectionMatrix(CAMERA.combined);
 
@@ -132,6 +156,9 @@ public class GameScreen implements Screen {
 
         // Finaliza o batch de desenho
         jogo.batch.end();
+
+        // Renderiza a camada de Topo
+        mapaRenderizador.render(new int[] { 4 }); // Topo
     }
 
     /**
@@ -139,16 +166,12 @@ public class GameScreen implements Screen {
      */
     public void controle(float delta) {
         if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
-            // personagem.setX(personagem.getX() + Personagem.VELOCIDADE * delta);
             personagem.acelerarEmAngulo(0);
         } else if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
-            // personagem.setX(personagem.getX() - Personagem.VELOCIDADE * delta);
             personagem.acelerarEmAngulo(180);
         } else if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
-            // personagem.setY(personagem.getY() + Personagem.VELOCIDADE * delta);
             personagem.acelerarEmAngulo(90);
         } else if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
-            // personagem.setY(personagem.getY() + Personagem.VELOCIDADE * delta);
             personagem.acelerarEmAngulo(270);
         }
     }

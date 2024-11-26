@@ -5,6 +5,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.utils.Array;
 
@@ -27,6 +28,8 @@ public class Personagem extends BaseActor {
      * Ângulo de rotação do personagem
      */
     private float angulo;
+
+    private Array<Rectangle> retangulosColisao;
 
     public Personagem(float x, float y, Stage s) {
         super(x, y, s);
@@ -116,6 +119,18 @@ public class Personagem extends BaseActor {
 
         // Atualiza a posição do personagem
         aplicarFisica(delta);
+
+        // Verifica colisões
+        for (Rectangle retangulo : retangulosColisao) {
+            if (sobrepoe(retangulo)) {
+                // Ajusta a posição do personagem para evitar a colisão
+                // Isso pode ser feito de várias maneiras, dependendo da lógica do seu jogo
+                // Por exemplo, você pode mover o personagem de volta para a posição anterior
+                setPosition(getX() - getVelocidadeVetor().x * delta, getY() - getVelocidadeVetor().y * delta);
+                break;
+            }
+        }
+
         limitaMundo();
 
         // Alinha a câmera após atualizar a posição do personagem
@@ -124,6 +139,10 @@ public class Personagem extends BaseActor {
 
     public float getAngulo() {
         return angulo;
+    }
+
+    public void setRetangulosColisao(Array<Rectangle> retangulosColisao) {
+        this.retangulosColisao = retangulosColisao;
     }
 
 }
