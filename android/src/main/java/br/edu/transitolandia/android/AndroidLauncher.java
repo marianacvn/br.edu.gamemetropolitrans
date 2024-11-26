@@ -1,10 +1,10 @@
-package br.edu.transitolandia.android;
+package br.edu.metropolitrans.android;
 
 import android.os.Bundle;
 
 import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
-import br.edu.transitolandia.Main;
+import br.edu.metropolitrans.Main;
 
 /** Launches the Android application. */
 public class AndroidLauncher extends AndroidApplication {

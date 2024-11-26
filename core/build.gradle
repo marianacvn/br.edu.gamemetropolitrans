@@ -4,6 +4,9 @@ eclipse.project.name = appName + '-core'
 dependencies {
   api "com.badlogicgames.gdx:gdx:$gdxVersion"
   api "org.apache.groovy:groovy-all:$groovyVersion"
+  implementation "com.badlogicgames.gdx:gdx-freetype:1.13.0"
+  implementation "com.badlogicgames.gdx:gdx-box2d:1.13.0"
+  implementation "com.badlogicgames.gdx:gdx-freetype-platform:1.13.0:natives-desktop"
 
   if(enableGraalNative == 'true') {
     implementation "io.github.berstanio:gdx-svmhelper-annotations:$graalHelperVersion"
