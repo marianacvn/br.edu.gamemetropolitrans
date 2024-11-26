@@ -593,7 +593,7 @@ public class BaseActor extends Actor {
     /**
      * Retorna o retângulo que representa os limites do mundo.
      */
-    public static Rectangle getWorldBounds() {
+    public static Rectangle getLimitacaoMundo() {
         return limitacaoMundo;
     }
 
@@ -626,45 +626,20 @@ public class BaseActor extends Actor {
      */
     public void alinhamentoCamera() {
         Camera camera = this.getStage().getCamera();
-        alinhamentoCamera(camera);
-    }
 
-    /**
-     * Centraliza a câmera neste objeto, mantendo a área de visualização da câmera
-     * (determinada pelo tamanho da tela) completamente dentro dos limites do mundo.
-     * 
-     * @param camera Câmera a ser alinhada
-     */
-    public void alinhamentoCamera(Camera camera) {
-
-        Gdx.app.log("Inicio", "-> Inicio do alinhamento da camera");
-        Gdx.app.log("Camera", "Viewport Width: " + camera.viewportWidth);
-        Gdx.app.log("Camera", "Viewport Height: " + camera.viewportHeight);
-        Gdx.app.log("World", "World Width: " + limitacaoMundo.width);
-        Gdx.app.log("World", "World Height: " + limitacaoMundo.height);
-        Gdx.app.log("Actor", "Actor X: " + this.getX() + ", Actor Y: " + this.getY());
-        Gdx.app.log("Camera", "Camera X: " + camera.position.x + ", Camera Y: " + camera.position.y);
-        
-        // Centraliza a câmera na posição do ator
+        //Centraliza a câmera na posição do ator
         camera.position.set(this.getX() + this.getOriginX(), this.getY() + this.getOriginY(), 0);
 
         // limita a câmera à área de visualização
-        float metadeAreaVisualizacaoLargura = camera.viewportWidth / 2;
-        float metadeAreaVisualizacaoAltura = camera.viewportHeight / 2;
+        float minimoX = camera.viewportWidth / 2;
+        float maximoX = limitacaoMundo.width - minimoX;
+        float minimoY = camera.viewportHeight / 2;
+        float maximoY = limitacaoMundo.height - minimoY;
 
-        camera.position.x = MathUtils.clamp(camera.position.x,
-                metadeAreaVisualizacaoLargura, limitacaoMundo.width - metadeAreaVisualizacaoLargura);
-        camera.position.y = MathUtils.clamp(camera.position.y,
-                metadeAreaVisualizacaoAltura, limitacaoMundo.height - metadeAreaVisualizacaoAltura);
+        camera.position.x = MathUtils.clamp(camera.position.x, minimoX, maximoX);
+        camera.position.y = MathUtils.clamp(camera.position.y, minimoY, maximoY);
+
         camera.update();
-
-        Gdx.app.log("Fim", "-> Fim do alinhamento da camera");
-        Gdx.app.log("Camera", "Viewport Width: " + camera.viewportWidth);
-        Gdx.app.log("Camera", "Viewport Height: " + camera.viewportHeight);
-        Gdx.app.log("World", "World Width: " + limitacaoMundo.width);
-        Gdx.app.log("World", "World Height: " + limitacaoMundo.height);
-        Gdx.app.log("Actor", "Actor X: " + this.getX() + ", Actor Y: " + this.getY());
-        Gdx.app.log("Camera", "Camera X: " + camera.position.x + ", Camera Y: " + camera.position.y);
     }
 
     // endregion

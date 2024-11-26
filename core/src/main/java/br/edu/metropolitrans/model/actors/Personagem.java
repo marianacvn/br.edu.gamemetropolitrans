@@ -28,11 +28,6 @@ public class Personagem extends BaseActor {
      */
     private float angulo;
 
-    /**
-     * Câmera do jogo
-     */
-    private Camera camera;
-
     public Personagem(float x, float y, Stage s) {
         super(x, y, s);
 
@@ -119,16 +114,16 @@ public class Personagem extends BaseActor {
             }
         }
 
-        alinhamentoCamera();
-        limitaMundo();
+        // Atualiza a posição do personagem
         aplicarFisica(delta);
+        limitaMundo();
+
+        // Alinha a câmera após atualizar a posição do personagem
+        alinhamentoCamera();
     }
 
     public float getAngulo() {
         return angulo;
     }
 
-    public void setCamera(Camera c) {
-        camera = c;
-    }
 }
