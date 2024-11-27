@@ -2,7 +2,6 @@ package br.edu.metropolitrans.model.actors;
 
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
@@ -35,9 +34,9 @@ public class Personagem extends BaseActor {
         super(x, y, s);
 
         // Carraga a animação do personagem
-        String nomeArquivo = "files/characters/mainCharacter/character-female-64.png";
+        String nomeArquivo = "files/characters/mainCharacter/character-male_spritesheet.png";
         int linhas = 4;
-        int colunas = 3;
+        int colunas = 11;
 
         // Carrega a textura
         Texture textura = new Texture(Gdx.files.internal(nomeArquivo), true);
@@ -55,10 +54,10 @@ public class Personagem extends BaseActor {
         // animação de cada direção
         // A animação é criada com a lista de texturas, a duração de cada quadro e o
         // modo de repetição
-        // SUL
+        // NORTE
         for (int c = 0; c < colunas; c++)
             listaTexturas.add(quadros[0][c]);
-        sul = new Animation<TextureRegion>(duracaoQuadro, listaTexturas, Animation.PlayMode.LOOP_PINGPONG);
+        norte = new Animation<TextureRegion>(duracaoQuadro, listaTexturas, Animation.PlayMode.LOOP_PINGPONG);
 
         // OESTE
         listaTexturas.clear();
@@ -66,17 +65,17 @@ public class Personagem extends BaseActor {
             listaTexturas.add(quadros[1][c]);
         oeste = new Animation<TextureRegion>(duracaoQuadro, listaTexturas, Animation.PlayMode.LOOP_PINGPONG);
 
-        // LESTE
+        // SUL
         listaTexturas.clear();
         for (int c = 0; c < colunas; c++)
             listaTexturas.add(quadros[2][c]);
-        leste = new Animation<TextureRegion>(duracaoQuadro, listaTexturas, Animation.PlayMode.LOOP_PINGPONG);
+        sul = new Animation<TextureRegion>(duracaoQuadro, listaTexturas, Animation.PlayMode.LOOP_PINGPONG);
 
-        // NORTE
+        // LESTE
         listaTexturas.clear();
         for (int c = 0; c < colunas; c++)
             listaTexturas.add(quadros[3][c]);
-        norte = new Animation<TextureRegion>(duracaoQuadro, listaTexturas, Animation.PlayMode.LOOP_PINGPONG);
+        leste = new Animation<TextureRegion>(duracaoQuadro, listaTexturas, Animation.PlayMode.LOOP_PINGPONG);
 
         // Inicia a animação com a direção SUL
         setAnimacao(sul);

@@ -1,7 +1,5 @@
 package br.edu.metropolitrans.view.screens;
 
-import javax.swing.text.View;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
@@ -19,7 +17,6 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.ScreenUtils;
-import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
@@ -128,8 +125,9 @@ public class MenuScreen implements Screen {
         botaoConfig.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-
-                jogo.setScreen(new ConfigScreen(jogo));
+                if(jogo.telas.get("config") == null) 
+                    jogo.telas.put("config", new ConfigScreen(jogo));
+                jogo.setScreen(jogo.telas.get("config"));
             }
         });
 
@@ -137,8 +135,9 @@ public class MenuScreen implements Screen {
         botaoNovoJogo.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-
-                jogo.setScreen(new GameScreen(jogo));
+                if (jogo.telas.get("game") == null)
+                    jogo.telas.put("game", new GameScreen(jogo));
+                jogo.setScreen(jogo.telas.get("game"));
             }
         });
 
@@ -154,7 +153,9 @@ public class MenuScreen implements Screen {
         botaoJogar.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                jogo.setScreen(new GameScreen(jogo));
+                if(jogo.telas.get("game") == null)
+                    jogo.telas.put("game", new GameScreen(jogo));
+                jogo.setScreen(jogo.telas.get("game"));
             }
         });
 
