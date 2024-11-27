@@ -12,10 +12,10 @@ import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 
 import br.edu.metropolitrans.MetropoliTrans;
+import br.edu.metropolitrans.model.actors.Npc;
 import br.edu.metropolitrans.model.actors.Personagem;
 import br.edu.metropolitrans.model.actors.maps.Mapas;
 
@@ -103,6 +103,9 @@ public class GameScreen implements Screen {
         personagem.setRetangulosColisao(retangulosColisao);
         Personagem.setLimitacaoMundo(Mapas.MAPA_LARGURA, Mapas.MAPA_ALTURA);
 
+        // Carrega os  Npcs
+       Npc npc1 = new Npc("maria", 700, 4600, "npcFemale/maria/sprite.png", jogo.estagioPrincipal);
+
     }
 
     @Override
@@ -116,6 +119,8 @@ public class GameScreen implements Screen {
     public void render(float delta) {
         desenhar();
         controle(delta);
+        controle2(delta);
+        controleConfig(delta);
     }
 
     /**
@@ -141,7 +146,7 @@ public class GameScreen implements Screen {
         mapaRenderizador.render(new int[] { 1 }); // Piso
         mapaRenderizador.render(new int[] { 2 }); // Colisao
         mapaRenderizador.render(new int[] { 3 }); // Colisao
-        
+
         // Rendereiza as formas
         renderizadorForma.setProjectionMatrix(CAMERA.combined);
         jogo.batch.setProjectionMatrix(CAMERA.combined);
@@ -162,7 +167,7 @@ public class GameScreen implements Screen {
     }
 
     /**
-     * Controle do personagem, movimenta de acordo com as teclas pressionadas
+     * Controle do personagem, movimenta de acordo com as teclas pressionadas (Setas)
      */
     public void controle(float delta) {
         if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
@@ -173,6 +178,31 @@ public class GameScreen implements Screen {
             personagem.acelerarEmAngulo(90);
         } else if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
             personagem.acelerarEmAngulo(270);
+        }
+    }
+
+    /**
+     * Controle do personagem, movimenta de acordo com as teclas pressionadas (WSAD)
+     * @param delta
+     */
+    public void controle2(float delta){
+        if (Gdx.input.isKeyPressed(Input.Keys.D)) {
+            personagem.acelerarEmAngulo(0);
+        } else if (Gdx.input.isKeyPressed(Input.Keys.A)) {
+            personagem.acelerarEmAngulo(180);
+        } else if (Gdx.input.isKeyPressed(Input.Keys.W)) {
+            personagem.acelerarEmAngulo(90);
+        } else if (Gdx.input.isKeyPressed(Input.Keys.S)) {
+            personagem.acelerarEmAngulo(270);
+        }
+    }
+
+    public void controleConfig(float delta){
+        if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
+            if (jogo.telas.get("config") == null) {
+                jogo.telas.put("config", new ConfigScreen(jogo));
+            }
+            jogo.setScreen(jogo.telas.get("config"));
         }
     }
 

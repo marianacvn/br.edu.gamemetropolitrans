@@ -1,12 +1,18 @@
 package br.edu.metropolitrans;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+
 import br.edu.metropolitrans.view.screens.MenuScreen;
 
 public class MetropoliTrans extends Game {
@@ -18,6 +24,7 @@ public class MetropoliTrans extends Game {
     public Music MusicaPrincipal;
     // Musica do menu
     public Music MusicaMenu;
+    public HashMap<String, Screen> telas = new HashMap<>();
 
     @Override
     public void create() {
@@ -45,8 +52,10 @@ public class MetropoliTrans extends Game {
         // Inicia a reprodução da música do menu
         MusicaMenu.play();
 
-        this.setScreen(new MenuScreen(this));
+        telas.put("menu", new MenuScreen(this));
+        this.setScreen(telas.get("menu"));
     }
+
 
     @Override
     public void render() {

@@ -6,20 +6,6 @@
   "configurations": [
     {
       "type": "java",
-      "name": "Lwjgl3Launcher",
-      "request": "launch",
-      "mainClass": "br.edu.metropolitrans.lwjgl3.Lwjgl3Launcher",
-      "projectName": "Transitolandia-lwjgl3"
-    },
-    {
-      "type": "java",
-      "name": "Lwjgl3Launcher",
-      "request": "launch",
-      "mainClass": "br.edu.metropolitrans.lwjgl3.Lwjgl3Launcher",
-      "projectName": "MetropoliTrans-lwjgl3"
-    },
-    {
-      "type": "java",
       "name": "Current File",
       "request": "launch",
       "mainClass": "${file}"
