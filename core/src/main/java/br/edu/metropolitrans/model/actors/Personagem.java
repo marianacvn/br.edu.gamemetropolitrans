@@ -34,7 +34,7 @@ public class Personagem extends BaseActor {
         super(x, y, s);
 
         // Carraga a animação do personagem
-        String nomeArquivo = "files/characters/mainCharacter/character-male_spritesheet.png";
+        String nomeArquivo = "files/characters/mainCharacter/character-female-spritesheet-128.png";
         int linhas = 4;
         int colunas = 11;
 
@@ -44,7 +44,7 @@ public class Personagem extends BaseActor {
         // Divide a textura em quadros
         int larguraQuadro = textura.getWidth() / colunas;
         int alturaQuadro = textura.getHeight() / linhas;
-        float duracaoQuadro = 0.2f;
+        float duracaoQuadro = 0.05f;
 
         // Cria uma matriz de texturas e uma lista de texturas
         TextureRegion[][] quadros = TextureRegion.split(textura, larguraQuadro, alturaQuadro);
@@ -82,10 +82,10 @@ public class Personagem extends BaseActor {
         angulo = 270;
 
         // Configuracao do personagem
-        setLimitePoligono(8);
-        setAceleracao(400);
-        setVelocidadeMaxima(100);
-        setDesaceleracao(400);
+        setLimitePoligono(4);
+        setAceleracao(800);
+        setVelocidadeMaxima(200);
+        setDesaceleracao(800);
     }
 
     @Override

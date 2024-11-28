@@ -1,8 +1,8 @@
 package br.edu.metropolitrans;
 
-import java.util.ArrayList;
+
 import java.util.HashMap;
-import java.util.List;
+
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
@@ -20,8 +20,6 @@ public class MetropoliTrans extends Game {
     public Stage estagioPrincipal;
     public SpriteBatch batch;
     public BitmapFont fonte;
-    // Musica do jogo
-    public Music MusicaPrincipal;
     // Musica do menu
     public Music MusicaMenu;
     public HashMap<String, Screen> telas = new HashMap<>();
@@ -39,10 +37,6 @@ public class MetropoliTrans extends Game {
         // Libera os recursos do gerador de fontes
         generator.dispose();
 
-        // Carrega a música
-        MusicaPrincipal = Gdx.audio.newMusic(Gdx.files.internal("files/songs/lofiSong.mp3"));
-        MusicaPrincipal.setLooping(true);
-        MusicaPrincipal.setVolume(0.5f);
 
         // Carrega a música do menu
         MusicaMenu = Gdx.audio.newMusic(Gdx.files.internal("files/songs/lofi-ambient.mp3"));
@@ -54,6 +48,7 @@ public class MetropoliTrans extends Game {
 
         telas.put("menu", new MenuScreen(this));
         this.setScreen(telas.get("menu"));
+
     }
 
 
@@ -66,7 +61,7 @@ public class MetropoliTrans extends Game {
     public void dispose() {
         batch.dispose();
         fonte.dispose();
-        MusicaPrincipal.dispose();
         MusicaMenu.dispose();
+        estagioPrincipal.dispose();
     }
 }

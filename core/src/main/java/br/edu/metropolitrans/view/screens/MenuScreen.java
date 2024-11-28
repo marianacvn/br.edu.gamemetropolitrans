@@ -43,7 +43,7 @@ public class MenuScreen implements Screen {
 
         // Cria o Viewport e o Stage
         viewport = new ScreenViewport(); // Usa ScreenViewport para ajustar automaticamente ao tamanho da janela
-        stage = new Stage(viewport);
+        stage = new Stage(viewport, jogo.batch);
         Gdx.input.setInputProcessor(stage);
 
         skin = new Skin();
@@ -153,9 +153,7 @@ public class MenuScreen implements Screen {
         botaoJogar.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                if(jogo.telas.get("game") == null)
-                    jogo.telas.put("game", new GameScreen(jogo));
-                jogo.setScreen(jogo.telas.get("game"));
+                jogo.setScreen(new LoadScreen(jogo));
             }
         });
 
@@ -176,25 +174,19 @@ public class MenuScreen implements Screen {
     @Override
     public void render(float delta) {
         // Limpa a tela com uma cor preta
-        ScreenUtils.clear(Color.BLACK);
+        ScreenUtils.clear(0, 0, 0, 1);
 
         // Atualiza o viewport
         viewport.apply();
 
-        // Inicia o batch de desenho
-        jogo.batch.begin();
-
-        // Desenha a textura de fundo redimensionada
-        jogo.batch.draw(background, 0, 0, viewport.getWorldWidth(), viewport.getWorldHeight());
-        // x e y são as coordenadas da tela onde o texto será desenhado,
-        // estes valores estão em metros
-
-        // Finaliza o batch de desenho
-        jogo.batch.end();
-
-        // Desenha o Stage (e os atores, incluindo o botão)
-        stage.act(delta);
-        stage.draw();
+         // Desenha o fundo
+         jogo.batch.begin();
+         jogo.batch.draw(background, 0, 0, viewport.getWorldWidth(), viewport.getWorldHeight());
+         jogo.batch.end();
+ 
+         // Atualiza e desenha o Stage
+         stage.act(delta);
+         stage.draw();
 
     }
 
@@ -227,9 +219,9 @@ public class MenuScreen implements Screen {
 
     @Override
     public void dispose() {
-        background.dispose();
         stage.dispose();
         skin.dispose();
+        background.dispose();
     }
 
 }

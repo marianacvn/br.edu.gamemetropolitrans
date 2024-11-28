@@ -9,13 +9,13 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.MapObjects;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
+import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
 
 import br.edu.metropolitrans.MetropoliTrans;
-import br.edu.metropolitrans.model.actors.Npc;
 import br.edu.metropolitrans.model.actors.Personagem;
 import br.edu.metropolitrans.model.actors.maps.Mapas;
 
@@ -25,8 +25,8 @@ import br.edu.metropolitrans.model.actors.maps.Mapas;
 public class GameScreen implements Screen {
 
     // Largura e altura da tela do jogo
-    public static final int TELA_LARGURA = 800;
-    public static final int TELA_ALTURA = 500;
+    public static final int TELA_LARGURA = 1280;
+    public static final int TELA_ALTURA = 720;
 
     /**
      * Referência para o jogo principal
@@ -76,8 +76,8 @@ public class GameScreen implements Screen {
 
         // Carrega o mapa
         mapas = new Mapas();
-        mapaRenderizador = new OrthogonalTiledMapRenderer(mapas.mapa, unitScale);
-        salaRenderizador = new OrthogonalTiledMapRenderer(mapas.sala, unitScale);
+        mapaRenderizador = new OrthogonalTiledMapRenderer(mapas.mapa, jogo.batch);
+        salaRenderizador = new OrthogonalTiledMapRenderer(mapas.sala, jogo.batch);
 
         // Carrega os objetos de colisão
         objetosColisao = mapas.mapa.getLayers().get("colisao").getObjects();
@@ -99,12 +99,13 @@ public class GameScreen implements Screen {
         CAMERA.update();
 
         // Carrega as imagens
-        personagem = new Personagem(640, 4600, jogo.estagioPrincipal);
+        personagem = new Personagem(640, 250, jogo.estagioPrincipal);
         personagem.setRetangulosColisao(retangulosColisao);
         Personagem.setLimitacaoMundo(Mapas.MAPA_LARGURA, Mapas.MAPA_ALTURA);
 
-        // Carrega os  Npcs
-       Npc npc1 = new Npc("maria", 700, 4600, "npcFemale/maria/sprite.png", jogo.estagioPrincipal);
+        // Carrega os Npcs
+        // Npc npc1 = new Npc("maria", 700, 4600, "npcFemale/maria/sprite.png",
+        // jogo.estagioPrincipal);
 
     }
 
@@ -112,12 +113,19 @@ public class GameScreen implements Screen {
     public void show() {
         // Para a música do menu e inicia a música do jogo
         jogo.MusicaMenu.stop();
-        jogo.MusicaPrincipal.play();
     }
 
     @Override
     public void render(float delta) {
         desenhar();
+        // // Verifica se a tecla ENTER foi pressionada
+        // if (Gdx.input.isKeyJustPressed(Input.Keys.ENTER)) {
+        // // Verifica se o personagem está na área de entrada da prefeitura
+        // if (entradaPrefeitura.contains(personagem.getX(), personagem.getY())) {
+        // // Muda o mapa para room.tmx
+        // mapaRenderizador.dispose();
+        // salaRenderizador = new OrthogonalTiledMapRenderer(mapas.sala, jogo.batch);
+        // }
         controle(delta);
         controle2(delta);
         controleConfig(delta);
@@ -147,12 +155,12 @@ public class GameScreen implements Screen {
         mapaRenderizador.render(new int[] { 2 }); // Colisao
         mapaRenderizador.render(new int[] { 3 }); // Colisao
 
+        // Inicia o batch de desenho
+        jogo.batch.begin();
+
         // Rendereiza as formas
         renderizadorForma.setProjectionMatrix(CAMERA.combined);
         jogo.batch.setProjectionMatrix(CAMERA.combined);
-
-        // Inicia o batch de desenho
-        jogo.batch.begin();
 
         // Realiza açoes do estagio principal
         // Desenha o fundo da tela
@@ -167,7 +175,8 @@ public class GameScreen implements Screen {
     }
 
     /**
-     * Controle do personagem, movimenta de acordo com as teclas pressionadas (Setas)
+     * Controle do personagem, movimenta de acordo com as teclas pressionadas
+     * (Setas)
      */
     public void controle(float delta) {
         if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
@@ -183,9 +192,10 @@ public class GameScreen implements Screen {
 
     /**
      * Controle do personagem, movimenta de acordo com as teclas pressionadas (WSAD)
+     * 
      * @param delta
      */
-    public void controle2(float delta){
+    public void controle2(float delta) {
         if (Gdx.input.isKeyPressed(Input.Keys.D)) {
             personagem.acelerarEmAngulo(0);
         } else if (Gdx.input.isKeyPressed(Input.Keys.A)) {
@@ -197,7 +207,7 @@ public class GameScreen implements Screen {
         }
     }
 
-    public void controleConfig(float delta){
+    public void controleConfig(float delta) {
         if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
             if (jogo.telas.get("config") == null) {
                 jogo.telas.put("config", new ConfigScreen(jogo));
@@ -232,6 +242,9 @@ public class GameScreen implements Screen {
     @Override
     public void resize(int width, int height) {
         // jogo.areaVisualizacao.update(width, height, true);
+        CAMERA.viewportWidth = width;
+        CAMERA.viewportHeight = height;
+        CAMERA.update();
     }
 
     @Override

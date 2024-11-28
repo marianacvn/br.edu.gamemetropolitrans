@@ -27,7 +27,7 @@ public class Lwjgl3Launcher {
         //// alguns hardwares.
         //// Você também pode precisar configurar os drivers da GPU para desativar
         //// completamente o Vsync; isso pode causar rasgo de tela.
-        configuration.setWindowedMode(800, 500);
+        configuration.setWindowedMode(1280, 720);
         //// Você pode alterar esses arquivos; eles estão em lwjgl3/src/main/resources/
         //// .
         configuration.setWindowIcon("files/icons/icon-house.png");

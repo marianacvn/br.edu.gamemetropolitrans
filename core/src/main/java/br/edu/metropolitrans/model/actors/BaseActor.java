@@ -524,6 +524,28 @@ public class BaseActor extends Actor {
 
     public boolean sobrepoe(Rectangle retangulo) {
         return getLimitePoligono().getBoundingRectangle().overlaps(retangulo);
+
+        /*
+        // Ajusta o poligono, no caso o tamanho considerado é o tamanho da imagem da sprite
+        // 128x128, porém onde deve colidir é apenas no centro da imagem, então o tamanho
+        // do poligono é reduzido para 64x110, reduzindo a sprite para o centro da imagem
+
+        Polygon poligono1 = this.getLimitePoligono();
+        Polygon poligono2 = new Polygon(new float[] { retangulo.x, retangulo.y, retangulo.x + retangulo.width,
+                retangulo.y, retangulo.x + retangulo.width, retangulo.y + retangulo.height, retangulo.x,
+                retangulo.y + retangulo.height });
+
+        // Subtraindo 32 da largura e 18 da altura, o poligono é reduzido para o centro da imagem
+        float[] vertices = { 32, 18, 96, 18, 96, 110, 32, 110 };
+        poligono1 = new Polygon(vertices);
+
+        // Teste inicial para melhorar o desempenho
+        if (!poligono1.getBoundingRectangle().overlaps(retangulo))
+            return false;
+
+        // Retorna se houve colisão
+        return Intersector.overlapConvexPolygons(poligono1, poligono2);
+        */
     }
 
     /**
