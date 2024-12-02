@@ -1,9 +1,5 @@
 package br.edu.metropolitrans;
-
-
 import java.util.HashMap;
-
-
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;

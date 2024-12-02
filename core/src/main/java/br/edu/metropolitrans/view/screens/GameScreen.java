@@ -1,5 +1,7 @@
 package br.edu.metropolitrans.view.screens;
 
+import java.util.ArrayList;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
@@ -16,6 +18,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
 
 import br.edu.metropolitrans.MetropoliTrans;
+import br.edu.metropolitrans.model.actors.Npc;
 import br.edu.metropolitrans.model.actors.Personagem;
 import br.edu.metropolitrans.model.actors.maps.Mapas;
 
@@ -70,6 +73,7 @@ public class GameScreen implements Screen {
 
     private MapObjects objetosColisao;
     private Array<Rectangle> retangulosColisao;
+    public ArrayList<Npc> npcs;
 
     public GameScreen(final MetropoliTrans jogo) {
         this.jogo = jogo;
@@ -103,10 +107,22 @@ public class GameScreen implements Screen {
         personagem.setRetangulosColisao(retangulosColisao);
         Personagem.setLimitacaoMundo(Mapas.MAPA_LARGURA, Mapas.MAPA_ALTURA);
 
-        // Carrega os Npcs
-        // Npc npc1 = new Npc("maria", 700, 4600, "npcFemale/maria/sprite.png",
-        // jogo.estagioPrincipal);
+        // Adiciona os npcs em um array
+        npcs = new ArrayList<Npc>();
 
+        // Carrega os Npcs
+        npcs.add(new Npc("maria", 280, 1050, "npcFemale/maria/sprite.png", jogo.estagioPrincipal));
+        npcs.add(new Npc("betania", 150, 400, "npcFemale/betania/sprite.png", jogo.estagioPrincipal));
+        npcs.add(new Npc("bruna", 1190, 200, "npcFemale/bruna/sprite.png", jogo.estagioPrincipal));
+        npcs.add(new Npc("antonio", 1500, 1000, "npcMale/antonio/sprite.png", jogo.estagioPrincipal));
+        npcs.add(new Npc("heberto", 150, 200, "npcMale/heberto/sprite.png", jogo.estagioPrincipal));
+        npcs.add(new Npc("jose", 90, 1450, "npcMale/jose/sprite.png", jogo.estagioPrincipal));
+        npcs.add(new Npc("josinaldo", 2090, 150, "npcMale/josinaldo/sprite.png", jogo.estagioPrincipal));
+        npcs.add(new Npc("paulo", 1500, 100, "npcMale/paulo/sprite.png", jogo.estagioPrincipal));
+        npcs.add(new Npc("juliana", 1200, 1250, "npcFemale/juliana/sprite.png", jogo.estagioPrincipal));
+
+        // Adiciona os npcs no array de colisão
+        personagem.npcs = npcs;
     }
 
     @Override
@@ -118,14 +134,6 @@ public class GameScreen implements Screen {
     @Override
     public void render(float delta) {
         desenhar();
-        // // Verifica se a tecla ENTER foi pressionada
-        // if (Gdx.input.isKeyJustPressed(Input.Keys.ENTER)) {
-        // // Verifica se o personagem está na área de entrada da prefeitura
-        // if (entradaPrefeitura.contains(personagem.getX(), personagem.getY())) {
-        // // Muda o mapa para room.tmx
-        // mapaRenderizador.dispose();
-        // salaRenderizador = new OrthogonalTiledMapRenderer(mapas.sala, jogo.batch);
-        // }
         controle(delta);
         controle2(delta);
         controleConfig(delta);
@@ -171,7 +179,7 @@ public class GameScreen implements Screen {
         jogo.batch.end();
 
         // Renderiza a camada de Topo
-        mapaRenderizador.render(new int[] { 4 }); // Topo
+        mapaRenderizador.render(new int[] { 3 }); // Topo
     }
 
     /**

@@ -1,6 +1,9 @@
 package br.edu.metropolitrans.model.actors;
 
 import com.badlogic.gdx.scenes.scene2d.Stage;
+
+import java.util.ArrayList;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -30,11 +33,13 @@ public class Personagem extends BaseActor {
 
     private Array<Rectangle> retangulosColisao;
 
+    public ArrayList<Npc> npcs;
+
     public Personagem(float x, float y, Stage s) {
         super(x, y, s);
 
         // Carraga a animação do personagem
-        String nomeArquivo = "files/characters/mainCharacter/character-female-spritesheet-128.png";
+        String nomeArquivo = "files/characters/mainCharacter/character-male_spritesheet.png";
         int linhas = 4;
         int colunas = 11;
 
@@ -81,6 +86,8 @@ public class Personagem extends BaseActor {
         setAnimacao(sul);
         angulo = 270;
 
+
+
         // Configuracao do personagem
         setLimitePoligono(4);
         setAceleracao(800);
@@ -122,6 +129,17 @@ public class Personagem extends BaseActor {
         // Verifica colisões
         for (Rectangle retangulo : retangulosColisao) {
             if (sobrepoe(retangulo)) {
+                // Ajusta a posição do personagem para evitar a colisão
+                // Isso pode ser feito de várias maneiras, dependendo da lógica do seu jogo
+                // Por exemplo, você pode mover o personagem de volta para a posição anterior
+                setPosition(getX() - getVelocidadeVetor().x * delta, getY() - getVelocidadeVetor().y * delta);
+                break;
+            }
+
+        }
+
+        for (Npc npc : npcs) {
+            if (sobrepoe(npc)) {
                 // Ajusta a posição do personagem para evitar a colisão
                 // Isso pode ser feito de várias maneiras, dependendo da lógica do seu jogo
                 // Por exemplo, você pode mover o personagem de volta para a posição anterior
