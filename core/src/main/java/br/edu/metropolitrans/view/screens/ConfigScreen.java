@@ -33,10 +33,12 @@ public class ConfigScreen implements Screen {
             botaoLeftLabel, botaoRightLabel, botaoSpaceLabel, botaoEscLabel;
     public Texture background;
     public Slider sliderVolume;
+    public Screen telaAnterior;
     public ImageButton botaoA, botaoD, botaoW, botaoS, botaoUp, botaoDown, botaoLeft, botaoRight, botaoSpace, botaoEsc;
 
-    public ConfigScreen(final MetropoliTrans jogo) {
+    public ConfigScreen(final MetropoliTrans jogo, Screen telaAnterior) {
         this.jogo = jogo;
+        this.telaAnterior = telaAnterior;
 
         // Carrega a textura de fundo
         background = new Texture(Gdx.files.internal("files/backgrounds/background-light.png"));
@@ -114,10 +116,11 @@ public class ConfigScreen implements Screen {
         botaoVoltar.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                if (jogo.telas.get("menu") == null) {
-                    jogo.telas.put("menu", new MenuScreen(jogo));
-                }
-                jogo.setScreen(jogo.telas.get("menu"));
+                // if (jogo.telas.get("menu") == null) {
+                //     jogo.telas.put("menu", new MenuScreen(jogo));
+                // }
+                // jogo.setScreen(jogo.telas.get("menu"));
+                jogo.setScreen(telaAnterior);
             }
         });
 
@@ -266,6 +269,7 @@ public class ConfigScreen implements Screen {
 
     @Override
     public void show() {
+        Gdx.input.setInputProcessor(stage);
     }
 
     @Override
@@ -304,8 +308,8 @@ public class ConfigScreen implements Screen {
 
     @Override
     public void dispose() {
-        background.dispose();
         stage.dispose();
         skin.dispose();
+        background.dispose();
     }
 }

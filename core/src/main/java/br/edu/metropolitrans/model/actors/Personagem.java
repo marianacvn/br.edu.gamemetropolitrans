@@ -43,6 +43,11 @@ public class Personagem extends BaseActor {
         int linhas = 4;
         int colunas = 11;
 
+        // Ajusta as margens para centralizar o personagem na colisão
+        margemAltura = -10;
+        margemLargura = -15;
+        margemX = 15;
+
         // Carrega a textura
         Texture textura = new Texture(Gdx.files.internal(nomeArquivo), true);
 
@@ -86,13 +91,15 @@ public class Personagem extends BaseActor {
         setAnimacao(sul);
         angulo = 270;
 
-
-
         // Configuracao do personagem
-        setLimitePoligono(4);
         setAceleracao(800);
         setVelocidadeMaxima(200);
         setDesaceleracao(800);
+
+    }
+
+    public boolean interagiu(ObjetoInterativo objetoInterativo) {
+        return this.sobrepoe(objetoInterativo);
     }
 
     @Override
@@ -100,6 +107,23 @@ public class Personagem extends BaseActor {
         super.act(delta);
 
         // Movimenta o personagem
+        animacao();
+
+        // Atualiza a posição do personagem
+        aplicarFisica(delta);
+
+        // Verifica colisões
+        colisao(delta);
+
+        // Limita o personagem ao mundo
+        limitaMundo();
+
+        // Alinha a câmera após atualizar a posição do personagem
+        alinhamentoCamera();
+
+    }
+
+    private void animacao() {
         // Pausa a animação quando o personagem não está se movendo
         if (getVelocidade() == 0) {
             setAnimacaoPausada(true);
@@ -122,10 +146,9 @@ public class Personagem extends BaseActor {
                 setAnimacao(leste);
             }
         }
+    }
 
-        // Atualiza a posição do personagem
-        aplicarFisica(delta);
-
+    private void colisao(float delta) {
         // Verifica colisões
         for (Rectangle retangulo : retangulosColisao) {
             if (sobrepoe(retangulo)) {
@@ -135,7 +158,6 @@ public class Personagem extends BaseActor {
                 setPosition(getX() - getVelocidadeVetor().x * delta, getY() - getVelocidadeVetor().y * delta);
                 break;
             }
-
         }
 
         for (Npc npc : npcs) {
@@ -147,11 +169,6 @@ public class Personagem extends BaseActor {
                 break;
             }
         }
-
-        limitaMundo();
-
-        // Alinha a câmera após atualizar a posição do personagem
-        alinhamentoCamera();
     }
 
     public float getAngulo() {

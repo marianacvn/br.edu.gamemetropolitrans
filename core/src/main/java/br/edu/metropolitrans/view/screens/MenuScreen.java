@@ -126,7 +126,7 @@ public class MenuScreen implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 if(jogo.telas.get("config") == null) 
-                    jogo.telas.put("config", new ConfigScreen(jogo));
+                    jogo.telas.put("config", new ConfigScreen(jogo, MenuScreen.this));
                 jogo.setScreen(jogo.telas.get("config"));
             }
         });
@@ -138,6 +138,12 @@ public class MenuScreen implements Screen {
                 if (jogo.telas.get("game") == null)
                     jogo.telas.put("game", new GameScreen(jogo));
                 jogo.setScreen(jogo.telas.get("game"));
+
+                // Define a tela anterior ao iniciar um novo jogo
+                if (jogo.telas.get("config") == null) {
+                    jogo.telas.put("config", new ConfigScreen(jogo, MenuScreen.this));
+                }
+                ((ConfigScreen) jogo.telas.get("config")).telaAnterior = jogo.telas.get("game");
             }
         });
 
@@ -154,6 +160,12 @@ public class MenuScreen implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 jogo.setScreen(new LoadScreen(jogo));
+
+                // Define a tela anterior ao iniciar um novo jogo
+                if (jogo.telas.get("config") == null) {
+                    jogo.telas.put("config", new ConfigScreen(jogo, MenuScreen.this));
+                }
+                ((ConfigScreen) jogo.telas.get("config")).telaAnterior = jogo.telas.get("game");
             }
         });
 
@@ -169,6 +181,7 @@ public class MenuScreen implements Screen {
 
     @Override
     public void show() {
+        Gdx.input.setInputProcessor(stage);
     }
 
     @Override

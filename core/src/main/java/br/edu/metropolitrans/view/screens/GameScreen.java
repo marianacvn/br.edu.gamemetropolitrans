@@ -11,16 +11,19 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.MapObjects;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
+import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
 
 import br.edu.metropolitrans.MetropoliTrans;
 import br.edu.metropolitrans.model.actors.Npc;
+import br.edu.metropolitrans.model.actors.ObjetoInterativo;
 import br.edu.metropolitrans.model.actors.Personagem;
-import br.edu.metropolitrans.model.actors.maps.Mapas;
+import br.edu.metropolitrans.model.maps.Mapas;
 
 /**
  * Tela principal do jogo
@@ -49,7 +52,7 @@ public class GameScreen implements Screen {
     /**
      * Usado para renderizar o mapa
      */
-    private final OrthogonalTiledMapRenderer mapaRenderizador, salaRenderizador;
+    private OrthogonalTiledMapRenderer mapaRenderizador, salaRenderizador;
 
     /**
      * Mapas do jogo
@@ -74,6 +77,7 @@ public class GameScreen implements Screen {
     private MapObjects objetosColisao;
     private Array<Rectangle> retangulosColisao;
     public ArrayList<Npc> npcs;
+    public ObjetoInterativo objeto;
 
     public GameScreen(final MetropoliTrans jogo) {
         this.jogo = jogo;
@@ -123,6 +127,10 @@ public class GameScreen implements Screen {
 
         // Adiciona os npcs no array de colisão
         personagem.npcs = npcs;
+
+        objeto = new ObjetoInterativo("entradaPrefeitura", 100, 220, "background-light.png",
+                jogo.estagioPrincipal);
+
     }
 
     @Override
@@ -178,8 +186,38 @@ public class GameScreen implements Screen {
         // Finaliza o batch de desenho
         jogo.batch.end();
 
-        // Renderiza a camada de Topo
-        mapaRenderizador.render(new int[] { 3 }); // Topo
+        // Verifica se a camada de topo existe antes de renderizá-la
+        if (mapas.mapa.getLayers().getCount() > 3) {
+            // Renderiza a camada de Topo
+            mapaRenderizador.render(new int[] { 3 }); // Topo
+        }
+
+        // Desenha quadrados da colisão para debug
+        renderizadorForma.begin(ShapeRenderer.ShapeType.Line);
+        renderizadorForma.setColor(1, 0, 0, 1);
+        
+        // Desenha retângulos de colisão do mapa
+        if (retangulosColisao != null) {
+            for (Rectangle retangulo : retangulosColisao) {
+                renderizadorForma.rect(retangulo.x, retangulo.y, retangulo.width, retangulo.height);
+            }
+        }
+
+        // Desenha polígono de colisão do personagem
+        if (personagem != null) {
+            Polygon personagemPoligono = personagem.getLimitePoligono();
+            renderizadorForma.polygon(personagemPoligono.getTransformedVertices());
+        }
+
+        // Desenha polígonos de colisão dos NPCs
+        if (npcs != null) {
+            for (Npc npc : npcs) {
+                Polygon npcPoligono = npc.getLimitePoligono();
+                renderizadorForma.polygon(npcPoligono.getTransformedVertices());
+            }
+        }
+
+        renderizadorForma.end();
     }
 
     /**
@@ -195,6 +233,18 @@ public class GameScreen implements Screen {
             personagem.acelerarEmAngulo(90);
         } else if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
             personagem.acelerarEmAngulo(270);
+        }
+        if (personagem.interagiu(objeto) && Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
+            // Gdx.app.log("interagiu", "interagiu");
+            // Muda o mapa para room.tmx
+            mapaRenderizador.dispose();
+            mapaRenderizador = salaRenderizador;
+            // faz os npcs sumirem
+            for (Npc npc : npcs) {
+                npc.remove();
+            }
+            
+
         }
     }
 
@@ -218,9 +268,12 @@ public class GameScreen implements Screen {
     public void controleConfig(float delta) {
         if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
             if (jogo.telas.get("config") == null) {
-                jogo.telas.put("config", new ConfigScreen(jogo));
+                jogo.telas.put("config", new ConfigScreen(jogo, GameScreen.this));
             }
             jogo.setScreen(jogo.telas.get("config"));
+
+            // Define a tela anterior ao iniciar um novo jogo
+            ((ConfigScreen) jogo.telas.get("config")).telaAnterior = GameScreen.this;
         }
     }
 
