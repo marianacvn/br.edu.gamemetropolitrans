@@ -144,6 +144,7 @@ public class GameScreen implements Screen {
         desenhar();
         controle(delta);
         controle2(delta);
+        interagir();
         controleConfig(delta);
     }
 
@@ -192,32 +193,8 @@ public class GameScreen implements Screen {
             mapaRenderizador.render(new int[] { 3 }); // Topo
         }
 
-        // Desenha quadrados da colisão para debug
-        renderizadorForma.begin(ShapeRenderer.ShapeType.Line);
-        renderizadorForma.setColor(1, 0, 0, 1);
-        
-        // Desenha retângulos de colisão do mapa
-        if (retangulosColisao != null) {
-            for (Rectangle retangulo : retangulosColisao) {
-                renderizadorForma.rect(retangulo.x, retangulo.y, retangulo.width, retangulo.height);
-            }
-        }
-
-        // Desenha polígono de colisão do personagem
-        if (personagem != null) {
-            Polygon personagemPoligono = personagem.getLimitePoligono();
-            renderizadorForma.polygon(personagemPoligono.getTransformedVertices());
-        }
-
-        // Desenha polígonos de colisão dos NPCs
-        if (npcs != null) {
-            for (Npc npc : npcs) {
-                Polygon npcPoligono = npc.getLimitePoligono();
-                renderizadorForma.polygon(npcPoligono.getTransformedVertices());
-            }
-        }
-
-        renderizadorForma.end();
+        // Usado apenas para debug, comentar quando não for mais necessário
+        debug();
     }
 
     /**
@@ -233,18 +210,6 @@ public class GameScreen implements Screen {
             personagem.acelerarEmAngulo(90);
         } else if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
             personagem.acelerarEmAngulo(270);
-        }
-        if (personagem.interagiu(objeto) && Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
-            // Gdx.app.log("interagiu", "interagiu");
-            // Muda o mapa para room.tmx
-            mapaRenderizador.dispose();
-            mapaRenderizador = salaRenderizador;
-            // faz os npcs sumirem
-            for (Npc npc : npcs) {
-                npc.remove();
-            }
-            
-
         }
     }
 
@@ -262,6 +227,22 @@ public class GameScreen implements Screen {
             personagem.acelerarEmAngulo(90);
         } else if (Gdx.input.isKeyPressed(Input.Keys.S)) {
             personagem.acelerarEmAngulo(270);
+        }
+    }
+
+    private void interagir() {
+        if (personagem.interagiu(objeto) && Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
+            // Gdx.app.log("interagiu", "interagiu");
+            // Muda o mapa para room.tmx
+            mapaRenderizador.dispose();
+            mapaRenderizador = salaRenderizador;
+
+            // TODO: remover as colisoes anteriores, remover os npcs do array de colisao, adicionar novas colisoes do novo mapa.
+
+            // faz os npcs sumirem
+            for (Npc npc : npcs) {
+                npc.remove();
+            }
         }
     }
 
@@ -298,6 +279,38 @@ public class GameScreen implements Screen {
 
         // Atualiza a câmera
         CAMERA.update();
+    }
+
+    /**
+     * Desenha formas para debug
+     */
+    public void debug() {
+        // Desenha quadrados da colisão para debug
+        renderizadorForma.begin(ShapeRenderer.ShapeType.Line);
+        renderizadorForma.setColor(1, 0, 0, 1);
+        
+        // Desenha retângulos de colisão do mapa
+        if (retangulosColisao != null) {
+            for (Rectangle retangulo : retangulosColisao) {
+                renderizadorForma.rect(retangulo.x, retangulo.y, retangulo.width, retangulo.height);
+            }
+        }
+
+        // Desenha polígono de colisão do personagem
+        if (personagem != null) {
+            Polygon personagemPoligono = personagem.getLimitePoligono();
+            renderizadorForma.polygon(personagemPoligono.getTransformedVertices());
+        }
+
+        // Desenha polígonos de colisão dos NPCs
+        if (npcs != null) {
+            for (Npc npc : npcs) {
+                Polygon npcPoligono = npc.getLimitePoligono();
+                renderizadorForma.polygon(npcPoligono.getTransformedVertices());
+            }
+        }
+
+        renderizadorForma.end();
     }
 
     @Override
