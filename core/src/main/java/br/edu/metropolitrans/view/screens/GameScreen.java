@@ -237,11 +237,29 @@ public class GameScreen implements Screen {
             mapaRenderizador.dispose();
             mapaRenderizador = salaRenderizador;
 
-            // TODO: remover as colisoes anteriores, remover os npcs do array de colisao, adicionar novas colisoes do novo mapa.
+            // setar posição do personagem para a entrada
+            personagem.setPosition(280, 10);
+
+            // TODO: remover as colisoes anteriores, remover os npcs do array de colisao,
+
+            // adiciona novas colisoes do novo mapa.
+            objetosColisao = mapas.sala.getLayers().get("colisao").getObjects();
+            retangulosColisao = new Array<Rectangle>();
+
+            for (MapObject objeto : objetosColisao) {
+                if (objeto instanceof RectangleMapObject) {
+                    Rectangle retangulo = ((RectangleMapObject) objeto).getRectangle();
+                    retangulosColisao.add(retangulo);
+                }
+            }
+
+            personagem.setRetangulosColisao(retangulosColisao);
+            personagem.npcs = new ArrayList<Npc>();
 
             // faz os npcs sumirem
             for (Npc npc : npcs) {
                 npc.remove();
+
             }
         }
     }
@@ -288,7 +306,7 @@ public class GameScreen implements Screen {
         // Desenha quadrados da colisão para debug
         renderizadorForma.begin(ShapeRenderer.ShapeType.Line);
         renderizadorForma.setColor(1, 0, 0, 1);
-        
+
         // Desenha retângulos de colisão do mapa
         if (retangulosColisao != null) {
             for (Rectangle retangulo : retangulosColisao) {
