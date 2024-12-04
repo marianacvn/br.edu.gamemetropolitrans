@@ -45,7 +45,7 @@ public class LoadScreen implements Screen {
         labelStyle.font = fonteTitulo;
         labelStyle.fontColor = Color.valueOf("4c4869");
         titulo = new Label("Carregando...", labelStyle);
-        
+
         // Centraliza o título na tela
         float tituloWidth = titulo.getWidth();
         float tituloHeight = titulo.getHeight();
@@ -74,7 +74,9 @@ public class LoadScreen implements Screen {
                 Gdx.app.postRunnable(new Runnable() {
                     @Override
                     public void run() {
-                        jogo.setScreen(new GameScreen(jogo));
+                        if (jogo.telas.get("game") == null)
+                            jogo.telas.put("game", new GameScreen(jogo));
+                        jogo.setScreen(jogo.telas.get("game"));
                     }
                 });
             }
@@ -91,7 +93,7 @@ public class LoadScreen implements Screen {
         jogo.batch.draw(background, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         jogo.batch.end();
 
-        // Atualiza  e desenha o Stage
+        // Atualiza e desenha o Stage
         stage.act(delta);
         stage.draw();
     }

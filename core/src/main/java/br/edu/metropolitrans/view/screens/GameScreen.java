@@ -131,6 +131,8 @@ public class GameScreen implements Screen {
         objeto = new ObjetoInterativo("entradaPrefeitura", 100, 220, "background-light.png",
                 jogo.estagioPrincipal);
 
+        // Define a tela anterior ao iniciar um novo jogo
+        jogo.telas.put("config", new ConfigScreen(jogo, GameScreen.this));
     }
 
     @Override
@@ -266,13 +268,9 @@ public class GameScreen implements Screen {
 
     public void controleConfig(float delta) {
         if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
-            if (jogo.telas.get("config") == null) {
+            if (jogo.telas.get("config") == null)
                 jogo.telas.put("config", new ConfigScreen(jogo, GameScreen.this));
-            }
             jogo.setScreen(jogo.telas.get("config"));
-
-            // Define a tela anterior ao iniciar um novo jogo
-            ((ConfigScreen) jogo.telas.get("config")).telaAnterior = GameScreen.this;
         }
     }
 

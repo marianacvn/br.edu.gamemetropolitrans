@@ -31,7 +31,6 @@ public class ConfigScreen implements Screen {
     public Skin skin;
     public Label titulo, volumeLabel, botaoAlabel, botaoDlabel, botaoWlabel, botaoSlabel, botaoUpLabel, botaoDownLabel,
             botaoLeftLabel, botaoRightLabel, botaoSpaceLabel, botaoEscLabel;
-    public Texture background;
     public Slider sliderVolume;
     public Screen telaAnterior;
     public ImageButton botaoA, botaoD, botaoW, botaoS, botaoUp, botaoDown, botaoLeft, botaoRight, botaoSpace, botaoEsc;
@@ -40,17 +39,8 @@ public class ConfigScreen implements Screen {
         this.jogo = jogo;
         this.telaAnterior = telaAnterior;
 
-        // Carrega a textura de fundo
-        background = new Texture(Gdx.files.internal("files/backgrounds/background-light.png"));
-
-        // Cria o Stage e o Skin
-        stage = new Stage();
-        Gdx.input.setInputProcessor(stage);
-
-        skin = new Skin();
-        skin.add("default", jogo.fonte);
-
-        // Carrega as imagens para os botões de controle
+        // Carrega a textura de fundo e outras
+        Texture background = new Texture(Gdx.files.internal("files/backgrounds/background-light.png"));
         Texture ATexture = new Texture(Gdx.files.internal("files/buttons/botao-a.png"));
         Texture DTexture = new Texture(Gdx.files.internal("files/buttons/botao-d.png"));
         Texture STexture = new Texture(Gdx.files.internal("files/buttons/botao-s.png"));
@@ -61,6 +51,16 @@ public class ConfigScreen implements Screen {
         Texture rightTexture = new Texture(Gdx.files.internal("files/buttons/botao-right.png"));
         Texture spaceTexture = new Texture(Gdx.files.internal("files/buttons/botao-space.png"));
         Texture escTexture = new Texture(Gdx.files.internal("files/buttons/botao-esc.png"));
+
+        // Cria o Stage e o Skin
+        stage = new Stage();
+        Gdx.input.setInputProcessor(stage);
+
+        skin = new Skin();
+        skin.add("default", jogo.fonte);
+
+        // Carrega as imagens para os botões de controle
+        Drawable backgroundDrawable = new TextureRegionDrawable(new TextureRegion(background));
         Drawable ADrawable = new TextureRegionDrawable(new TextureRegion(ATexture));
         Drawable DDrawable = new TextureRegionDrawable(new TextureRegion(DTexture));
         Drawable SDrawable = new TextureRegionDrawable(new TextureRegion(STexture));
@@ -116,10 +116,6 @@ public class ConfigScreen implements Screen {
         botaoVoltar.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                // if (jogo.telas.get("menu") == null) {
-                //     jogo.telas.put("menu", new MenuScreen(jogo));
-                // }
-                // jogo.setScreen(jogo.telas.get("menu"));
                 jogo.setScreen(telaAnterior);
             }
         });
@@ -167,6 +163,13 @@ public class ConfigScreen implements Screen {
         botaoSpaceLabel.setPosition(sliderVolume.getX() + 70, botaoRightLabel.getY() - 30);
         botaoEscLabel = new Label("Configurações", labelStyle2);
         botaoEscLabel.setPosition(sliderVolume.getX() + 70, botaoSpaceLabel.getY() - 28);
+
+        // Cria o background e seta a posição
+        ImageButton.ImageButtonStyle backgroundStyle = new ImageButton.ImageButtonStyle();
+        backgroundStyle.imageUp = backgroundDrawable;
+        ImageButton backgroundButton = new ImageButton(backgroundStyle);
+        backgroundButton.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        backgroundButton.setPosition(0, 0);
 
         // Cria os botões de controle
         // botão A
@@ -240,6 +243,7 @@ public class ConfigScreen implements Screen {
                                                                                                     // superior direito
 
         // Adiciona o título ao Stage
+        stage.addActor(backgroundButton);
         stage.addActor(titulo);
         stage.addActor(volumeLabel);
         stage.addActor(sliderVolume);
@@ -277,9 +281,9 @@ public class ConfigScreen implements Screen {
         // Limpa a tela com uma cor preta
         ScreenUtils.clear(Color.BLACK);
 
-        jogo.batch.begin();
-        jogo.batch.draw(background, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        jogo.batch.end();
+        //jogo.batch.begin();
+        //jogo.batch.draw(background, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        //jogo.batch.end();
 
         stage.act(delta);
         stage.draw();
@@ -310,6 +314,6 @@ public class ConfigScreen implements Screen {
     public void dispose() {
         stage.dispose();
         skin.dispose();
-        background.dispose();
+        //background.dispose();
     }
 }
