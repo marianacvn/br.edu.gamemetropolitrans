@@ -10,8 +10,6 @@ public class Mapas {
     public TiledMap sala;
     public static int MAPA_LARGURA = 2560;
     public static int MAPA_ALTURA = 2560;
-    public static int SALA_LARGURA = 640;
-    public static int SALA_ALTURA = 640;
 
     public Mapas() {
         this.mapa = new TmxMapLoader().load(ARQUIVOS + "map.tmx");

@@ -12,7 +12,6 @@ import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.MapObjects;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
-import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Polygon;
@@ -52,7 +51,7 @@ public class GameScreen implements Screen {
     /**
      * Usado para renderizar o mapa
      */
-    private OrthogonalTiledMapRenderer mapaRenderizador, salaRenderizador;
+    private OrthogonalTiledMapRenderer mapaRenderizador;
 
     /**
      * Mapas do jogo
@@ -74,10 +73,15 @@ public class GameScreen implements Screen {
      */
     float temporizador = 0f;
 
+    /**
+     * Última posicao do personagem
+     */
+    float ultimaPosicaoX, ultimaPosicaoY = 0;
+
     private MapObjects objetosColisao;
     private Array<Rectangle> retangulosColisao;
     public ArrayList<Npc> npcs;
-    public ObjetoInterativo objeto;
+    public ObjetoInterativo objeto, objetoSairSala;
 
     public GameScreen(final MetropoliTrans jogo) {
         this.jogo = jogo;
@@ -85,18 +89,6 @@ public class GameScreen implements Screen {
         // Carrega o mapa
         mapas = new Mapas();
         mapaRenderizador = new OrthogonalTiledMapRenderer(mapas.mapa, jogo.batch);
-        salaRenderizador = new OrthogonalTiledMapRenderer(mapas.sala, jogo.batch);
-
-        // Carrega os objetos de colisão
-        objetosColisao = mapas.mapa.getLayers().get("colisao").getObjects();
-        Array<Rectangle> retangulosColisao = new Array<Rectangle>();
-
-        for (MapObject objeto : objetosColisao) {
-            if (objeto instanceof RectangleMapObject) {
-                Rectangle retangulo = ((RectangleMapObject) objeto).getRectangle();
-                retangulosColisao.add(retangulo);
-            }
-        }
 
         // Inicializa o renderizador de formas
         renderizadorForma = new ShapeRenderer();
@@ -108,8 +100,10 @@ public class GameScreen implements Screen {
 
         // Carrega as imagens
         personagem = new Personagem(640, 250, jogo.estagioPrincipal);
-        personagem.setRetangulosColisao(retangulosColisao);
         Personagem.setLimitacaoMundo(Mapas.MAPA_LARGURA, Mapas.MAPA_ALTURA);
+
+        // Carrega os objetos de colisão
+        montarColisao(mapas.mapa);
 
         // Adiciona os npcs em um array
         npcs = new ArrayList<Npc>();
@@ -128,7 +122,9 @@ public class GameScreen implements Screen {
         // Adiciona os npcs no array de colisão
         personagem.npcs = npcs;
 
-        objeto = new ObjetoInterativo("entradaPrefeitura", 100, 220, "background-light.png",
+        objeto = new ObjetoInterativo("entradaPrefeitura", 32, 220, "background-transparent.png",
+                jogo.estagioPrincipal);
+        objetoSairSala = new ObjetoInterativo("sairSala", 1216, 964, "background-transparent.png",
                 jogo.estagioPrincipal);
 
         // Define a tela anterior ao iniciar um novo jogo
@@ -232,37 +228,77 @@ public class GameScreen implements Screen {
         }
     }
 
-    private void interagir() {
-        if (personagem.interagiu(objeto) && Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
-            // Gdx.app.log("interagiu", "interagiu");
-            // Muda o mapa para room.tmx
-            mapaRenderizador.dispose();
-            mapaRenderizador = salaRenderizador;
+    /**
+     * Monta os retângulos de colisão do mapa
+     * 
+     * @param mapa TiledMap
+     */
+    public void montarColisao(TiledMap mapa) {
+        // Carrega os objetos de colisão
+        objetosColisao = mapa.getLayers().get("colisao").getObjects();
+        retangulosColisao = new Array<Rectangle>();
 
-            // setar posição do personagem para a entrada
-            personagem.setPosition(280, 10);
-
-            // TODO: remover as colisoes anteriores, remover os npcs do array de colisao,
-
-            // adiciona novas colisoes do novo mapa.
-            objetosColisao = mapas.sala.getLayers().get("colisao").getObjects();
-            retangulosColisao = new Array<Rectangle>();
-
-            for (MapObject objeto : objetosColisao) {
-                if (objeto instanceof RectangleMapObject) {
-                    Rectangle retangulo = ((RectangleMapObject) objeto).getRectangle();
-                    retangulosColisao.add(retangulo);
-                }
+        // Adiciona os retângulos de colisão do mapa ao array
+        for (MapObject objeto : objetosColisao) {
+            if (objeto instanceof RectangleMapObject) {
+                Rectangle retangulo = ((RectangleMapObject) objeto).getRectangle();
+                retangulosColisao.add(retangulo);
             }
+        }
 
-            personagem.setRetangulosColisao(retangulosColisao);
-            personagem.npcs = new ArrayList<Npc>();
+        // Adiciona os retângulos de colisão do mapa ao personagem
+        personagem.setRetangulosColisao(retangulosColisao);
+    }
 
-            // faz os npcs sumirem
+    private void interagir() {
+        if (objeto != null && personagem.interagiu(objeto) && Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
+
+            // Remove os NPCs do mapa
             for (Npc npc : npcs) {
                 npc.remove();
-
             }
+
+            // Muda o mapa para room.tmx
+            mapaRenderizador.dispose();
+            mapaRenderizador = new OrthogonalTiledMapRenderer(mapas.sala, jogo.batch);
+            ;
+
+            // Salva a última posicao e setar posição do personagem para a entrada
+            ultimaPosicaoX = personagem.getX();
+            ultimaPosicaoY = personagem.getY();
+            personagem.setPosition(1248, 1000);
+            objetoSairSala = new ObjetoInterativo("sairSala", 1216, 964, "background-transparent.png",
+                    jogo.estagioPrincipal);
+            objeto = null;
+
+            // Carrega os objetos de colisão
+            montarColisao(mapas.sala);
+
+            // Renova os retângulos de colisão
+            personagem.npcs = new ArrayList<Npc>();
+            personagem.setRetangulosColisao(retangulosColisao);
+        } else if (objetoSairSala != null && personagem.interagiu(objetoSairSala) && Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
+            // Muda o mapa para map.tmx
+            mapaRenderizador.dispose();
+            mapaRenderizador = new OrthogonalTiledMapRenderer(mapas.mapa, jogo.batch);
+
+            // setar posição do personagem para a entrada
+            personagem.setPosition(ultimaPosicaoX, ultimaPosicaoY); // TODO: Mudar para a porta da
+                                                                                      // prefeitura, ou salvar a posicao
+                                                                                      // anterior antes de entrar na
+                                                                                      // sala e passar aqui
+            ultimaPosicaoX = 0;
+            ultimaPosicaoY = 0;
+            objeto = new ObjetoInterativo("entradaPrefeitura", 32, 220, "background-transparent.png",
+                    jogo.estagioPrincipal);
+            objetoSairSala = null;
+
+            // Carrega os objetos de colisão
+            montarColisao(mapas.mapa);
+
+            // Renova os retângulos de colisão e os npcs
+            personagem.npcs = npcs;
+            personagem.setRetangulosColisao(retangulosColisao);
         }
     }
 
@@ -319,11 +355,23 @@ public class GameScreen implements Screen {
         }
 
         // Desenha polígonos de colisão dos NPCs
-        if (npcs != null) {
-            for (Npc npc : npcs) {
+        if (personagem.npcs != null) {
+            for (Npc npc : personagem.npcs) {
                 Polygon npcPoligono = npc.getLimitePoligono();
                 renderizadorForma.polygon(npcPoligono.getTransformedVertices());
             }
+        }
+
+        // Desenha o polígono de colisão do objeto interativo
+        if (objeto != null) {
+            Polygon objetoPoligono = objeto.getLimitePoligono();
+            renderizadorForma.polygon(objetoPoligono.getTransformedVertices());
+        }
+
+        // Desenha o polígono de colisão do objeto interativo
+        if (objetoSairSala != null) {
+            Polygon objetoPoligono = objetoSairSala.getLimitePoligono();
+            renderizadorForma.polygon(objetoPoligono.getTransformedVertices());
         }
 
         renderizadorForma.end();
@@ -352,7 +400,6 @@ public class GameScreen implements Screen {
     @Override
     public void dispose() {
         mapaRenderizador.dispose();
-        salaRenderizador.dispose();
     }
 
 }
