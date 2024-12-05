@@ -24,7 +24,6 @@ import br.edu.metropolitrans.model.actors.ObjetoInterativo;
 import br.edu.metropolitrans.model.actors.Personagem;
 import br.edu.metropolitrans.model.maps.Mapas;
 
-
 /**
  * Tela principal do jogo
  */
@@ -74,16 +73,10 @@ public class GameScreen implements Screen {
      */
     float temporizador = 0f;
 
-    /**
-     * Última posicao do personagem
-     */
-    float ultimaPosicaoX, ultimaPosicaoY = 0;
-
     private MapObjects objetosColisao;
     private Array<Rectangle> retangulosColisao;
     public ArrayList<Npc> npcs;
     public ObjetoInterativo objeto, objetoSairSala;
-    
 
     public GameScreen(final MetropoliTrans jogo) {
         this.jogo = jogo;
@@ -125,8 +118,6 @@ public class GameScreen implements Screen {
         personagem.npcs = npcs;
 
         objeto = new ObjetoInterativo("entradaPrefeitura", 32, 220, "background-transparent.png",
-                jogo.estagioPrincipal);
-        objetoSairSala = new ObjetoInterativo("sairSala", 1216, 964, "background-transparent.png",
                 jogo.estagioPrincipal);
 
         // Define a tela anterior ao iniciar um novo jogo
@@ -266,8 +257,6 @@ public class GameScreen implements Screen {
             ;
 
             // Salva a última posicao e setar posição do personagem para a entrada
-            ultimaPosicaoX = personagem.getX();
-            ultimaPosicaoY = personagem.getY();
             personagem.setPosition(1248, 1000);
             objetoSairSala = new ObjetoInterativo("sairSala", 1216, 964, "background-transparent.png",
                     jogo.estagioPrincipal);
@@ -281,17 +270,22 @@ public class GameScreen implements Screen {
             personagem.setRetangulosColisao(retangulosColisao);
         } else if (objetoSairSala != null && personagem.interagiu(objetoSairSala)
                 && Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
+
+            // Adiciona os NPCs no array
+            personagem.npcs = npcs;
+            for (Npc npc : npcs) {
+                npc.adicionarNoEstagio(jogo.estagioPrincipal);
+            }
+
             // Muda o mapa para map.tmx
             mapaRenderizador.dispose();
             mapaRenderizador = new OrthogonalTiledMapRenderer(mapas.mapa, jogo.batch);
 
+            // Ajusta para o personagem sair da sala mas longe do objeto de entrada da
+            // prefeitura
+
             // setar posição do personagem para a entrada
-            personagem.setPosition(ultimaPosicaoX, ultimaPosicaoY); // TODO: Mudar para a porta da
-                                                                    // prefeitura, ou salvar a posicao
-                                                                    // anterior antes de entrar na
-                                                                    // sala e passar aqui
-            ultimaPosicaoX = 0;
-            ultimaPosicaoY = 0;
+            personagem.setPosition(77, 150);
             objeto = new ObjetoInterativo("entradaPrefeitura", 32, 220, "background-transparent.png",
                     jogo.estagioPrincipal);
             objetoSairSala = null;

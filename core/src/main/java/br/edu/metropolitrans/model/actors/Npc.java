@@ -21,7 +21,4 @@ public class Npc extends BaseActor {
 
         carregaTexturaEstatica("files/characters/" + nomeArquivo);
     }
-
-
-    
 }

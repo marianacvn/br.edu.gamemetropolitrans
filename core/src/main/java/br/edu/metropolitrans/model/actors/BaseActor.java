@@ -36,7 +36,7 @@ public class BaseActor extends Actor {
 
     /**
      * Margem para ajuste de retangulo de colisao
-     */	
+     */
     public int margemAltura, margemLargura, margemX, margemY = 0;
 
     /**
@@ -112,6 +112,15 @@ public class BaseActor extends Actor {
         desaceleracao = 0;
 
         limitePoligono = null;
+    }
+
+    /**
+     * Adiciona um ator ao palco
+     * 
+     * @param stage palco
+     */
+    public void adicionarNoEstagio(Stage stage) {
+        stage.addActor(this);
     }
 
     /**
@@ -463,7 +472,7 @@ public class BaseActor extends Actor {
      * @see #setAnimacao
      */
     public void setLimiteRetangulo() {
-        float l = getWidth()+ margemLargura;
+        float l = getWidth() + margemLargura;
         float a = getHeight() + margemAltura;
 
         // float[] vertices = { 0, 0, l, 0, l, a, 0, a };
