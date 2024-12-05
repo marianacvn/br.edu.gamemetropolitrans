@@ -9,7 +9,6 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
@@ -21,6 +20,8 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 import br.edu.metropolitrans.MetropoliTrans;
+import br.edu.metropolitrans.view.components.buttons.ImageButtonBase;
+import br.edu.metropolitrans.view.components.buttons.TextButtonBase;
 
 public class MenuScreen implements Screen {
 
@@ -31,8 +32,8 @@ public class MenuScreen implements Screen {
     /** Define o estilo do botão */
     public Skin skin;
     public Label titulo;
-    public TextButton botaoJogar, botaoNovoJogo, botaoConfig, botaoSair;
-    public ImageButton botaoMute;
+    public TextButtonBase botaoJogar, botaoNovoJogo, botaoConfig, botaoSair;
+    public ImageButtonBase botaoMute;
     public boolean isMuted = false;
     public Viewport viewport;
 
@@ -61,17 +62,8 @@ public class MenuScreen implements Screen {
         // Adiciona o estilo ao skin
         skin.add("default", textButtonStyle);
 
-        // Carrega as imagens para o botão de mute
-        Texture somTexture = new Texture(Gdx.files.internal("files/buttons/som.png"));
-        Texture muteTexture = new Texture(Gdx.files.internal("files/buttons/mute.png"));
-        Drawable somDrawable = new TextureRegionDrawable(new TextureRegion(somTexture));
-        Drawable muteDrawable = new TextureRegionDrawable(new TextureRegion(muteTexture));
-
         // Cria o botão de mute
-        ImageButton.ImageButtonStyle muteButtonStyle = new ImageButton.ImageButtonStyle();
-        muteButtonStyle.imageUp = somDrawable;
-        muteButtonStyle.imageChecked = muteDrawable;
-        botaoMute = new ImageButton(muteButtonStyle);
+        botaoMute = new ImageButtonBase("files/buttons/som.png", "files/buttons/mute.png");
         botaoMute.setPosition(Gdx.graphics.getWidth() - botaoMute.getWidth() - 10,
                 Gdx.graphics.getHeight() - botaoMute.getHeight() - 10); // Posição no canto superior direito
 
@@ -82,10 +74,8 @@ public class MenuScreen implements Screen {
                 isMuted = !isMuted;
                 if (isMuted) {
                     jogo.MusicaMenu.pause();
-                    botaoMute.getStyle().imageUp = muteDrawable;
                 } else {
                     jogo.MusicaMenu.play();
-                    botaoMute.getStyle().imageUp = somDrawable;
                 }
             }
         });
@@ -104,20 +94,20 @@ public class MenuScreen implements Screen {
         titulo.setPosition(Gdx.graphics.getWidth() / 2 - titulo.getWidth() / 2, Gdx.graphics.getHeight() - 190);
 
         // Cria o botão
-        botaoJogar = new TextButton("Jogar", skin, "default");
+        botaoJogar = new TextButtonBase("Jogar", "files/buttons/botao-dark2.png", skin);
         botaoJogar.setSize(160, 60);
         botaoJogar.setPosition(Gdx.graphics.getWidth() / 2 - botaoJogar.getWidth() / 2,
                 Gdx.graphics.getHeight() / 2 - botaoJogar.getHeight() / 2);
 
-        botaoNovoJogo = new TextButton("Novo Jogo", skin, "default");
+        botaoNovoJogo = new TextButtonBase("Novo Jogo", "files/buttons/botao-dark2.png", skin);
         botaoNovoJogo.setSize(160, 60);
         botaoNovoJogo.setPosition(botaoJogar.getX(), botaoJogar.getY() - botaoJogar.getHeight());
 
-        botaoConfig = new TextButton("Configurações", skin, "default");
+        botaoConfig = new TextButtonBase("Configurações", "files/buttons/botao-dark2.png", skin);
         botaoConfig.setSize(160, 60);
         botaoConfig.setPosition(botaoJogar.getX(), botaoNovoJogo.getY() - botaoNovoJogo.getHeight());
 
-        botaoSair = new TextButton("Sair", skin, "default");
+        botaoSair = new TextButtonBase("Sair", "files/buttons/botao-dark2.png", skin);
         botaoSair.setSize(160, 60);
         botaoSair.setPosition(botaoJogar.getX(), botaoConfig.getY() - botaoConfig.getHeight());
 
@@ -125,7 +115,7 @@ public class MenuScreen implements Screen {
         botaoConfig.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                if(jogo.telas.get("config") == null)
+                if (jogo.telas.get("config") == null)
                     jogo.telas.put("config", new ConfigScreen(jogo, MenuScreen.this));
                 jogo.setScreen(jogo.telas.get("config"));
             }
@@ -182,14 +172,14 @@ public class MenuScreen implements Screen {
         // Atualiza o viewport
         viewport.apply();
 
-         // Desenha o fundo
-         jogo.batch.begin();
-         jogo.batch.draw(background, 0, 0, viewport.getWorldWidth(), viewport.getWorldHeight());
-         jogo.batch.end();
- 
-         // Atualiza e desenha o Stage
-         stage.act(delta);
-         stage.draw();
+        // Desenha o fundo
+        jogo.batch.begin();
+        jogo.batch.draw(background, 0, 0, viewport.getWorldWidth(), viewport.getWorldHeight());
+        jogo.batch.end();
+
+        // Atualiza e desenha o Stage
+        stage.act(delta);
+        stage.draw();
 
     }
 

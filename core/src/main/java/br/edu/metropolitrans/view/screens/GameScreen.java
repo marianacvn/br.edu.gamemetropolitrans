@@ -24,6 +24,7 @@ import br.edu.metropolitrans.model.actors.ObjetoInterativo;
 import br.edu.metropolitrans.model.actors.Personagem;
 import br.edu.metropolitrans.model.maps.Mapas;
 
+
 /**
  * Tela principal do jogo
  */
@@ -82,6 +83,7 @@ public class GameScreen implements Screen {
     private Array<Rectangle> retangulosColisao;
     public ArrayList<Npc> npcs;
     public ObjetoInterativo objeto, objetoSairSala;
+    
 
     public GameScreen(final MetropoliTrans jogo) {
         this.jogo = jogo;
@@ -277,16 +279,17 @@ public class GameScreen implements Screen {
             // Renova os retângulos de colisão
             personagem.npcs = new ArrayList<Npc>();
             personagem.setRetangulosColisao(retangulosColisao);
-        } else if (objetoSairSala != null && personagem.interagiu(objetoSairSala) && Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
+        } else if (objetoSairSala != null && personagem.interagiu(objetoSairSala)
+                && Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
             // Muda o mapa para map.tmx
             mapaRenderizador.dispose();
             mapaRenderizador = new OrthogonalTiledMapRenderer(mapas.mapa, jogo.batch);
 
             // setar posição do personagem para a entrada
             personagem.setPosition(ultimaPosicaoX, ultimaPosicaoY); // TODO: Mudar para a porta da
-                                                                                      // prefeitura, ou salvar a posicao
-                                                                                      // anterior antes de entrar na
-                                                                                      // sala e passar aqui
+                                                                    // prefeitura, ou salvar a posicao
+                                                                    // anterior antes de entrar na
+                                                                    // sala e passar aqui
             ultimaPosicaoX = 0;
             ultimaPosicaoY = 0;
             objeto = new ObjetoInterativo("entradaPrefeitura", 32, 220, "background-transparent.png",
@@ -373,7 +376,6 @@ public class GameScreen implements Screen {
             Polygon objetoPoligono = objetoSairSala.getLimitePoligono();
             renderizadorForma.polygon(objetoPoligono.getTransformedVertices());
         }
-
         renderizadorForma.end();
     }
 
