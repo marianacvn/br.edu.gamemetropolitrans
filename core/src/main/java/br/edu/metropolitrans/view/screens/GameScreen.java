@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -26,6 +27,7 @@ import br.edu.metropolitrans.model.actors.ObjetoInterativo;
 import br.edu.metropolitrans.model.actors.Personagem;
 import br.edu.metropolitrans.model.dao.DialogDAO;
 import br.edu.metropolitrans.model.maps.Mapas;
+import br.edu.metropolitrans.view.components.config.ConfigManager;
 
 /**
  * Tela principal do jogo
@@ -80,9 +82,11 @@ public class GameScreen implements Screen {
     private Array<Rectangle> retangulosColisao;
     public ArrayList<Npc> npcs;
     public ObjetoInterativo objeto, objetoSairSala;
+  
 
     public GameScreen(final MetropoliTrans jogo) {
         this.jogo = jogo;
+
 
         // Carrega o mapa
         mapas = new Mapas();
@@ -141,6 +145,8 @@ public class GameScreen implements Screen {
         interagir();
         controleConfig(delta);
     }
+
+    
 
     /**
      * Desenha a tela do jogo
@@ -252,7 +258,7 @@ public class GameScreen implements Screen {
     private void interagir() {
         if (objeto != null && Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
             for (Npc npc : npcs) {
-                if (personagem.estaDentroDaDistancia(15,npc)) {
+                if (personagem.estaDentroDaDistancia(15, npc)) {
                     System.out.println("Interagindo com o NPC: " + npc.nome);
                     // Chama o método testeDialogos com o nome do NPC
                     testeDialogos(npc.nome);
@@ -336,7 +342,7 @@ public class GameScreen implements Screen {
         }
 
         // Salvar diálogos (se necessário)
-        //dialogDAO.salvarDialogos("antonio", dialog);
+        // dialogDAO.salvarDialogos("antonio", dialog);
     }
 
     public void controleConfig(float delta) {

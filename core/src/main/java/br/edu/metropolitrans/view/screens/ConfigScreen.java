@@ -25,11 +25,13 @@ import br.edu.metropolitrans.MetropoliTrans;
 import br.edu.metropolitrans.view.components.buttons.ButtonBase;
 import br.edu.metropolitrans.view.components.buttons.TextButtonBase;
 
+
 public class ConfigScreen implements Screen {
 
     public final MetropoliTrans jogo;
     public Stage stage;
     public Skin skin;
+
     public Label titulo, volumeLabel, botaoAlabel, botaoDlabel, botaoWlabel, botaoSlabel, botaoUpLabel, botaoDownLabel,
             botaoLeftLabel, botaoRightLabel, botaoSpaceLabel, botaoEscLabel;
     public Slider sliderVolume;
@@ -96,7 +98,8 @@ public class ConfigScreen implements Screen {
         // Cria um botão para voltar ao menu
         TextButtonBase botaoVoltar = new TextButtonBase("Voltar", "files/buttons/botao-dark2.png", skin);
         botaoVoltar.setSize(100, 50); // Define o tamanho do botão
-        botaoVoltar.setPosition(10, Gdx.graphics.getHeight() - botaoVoltar.getHeight() - 10); // Posição no canto                                                                                      // superior esquerdo
+        botaoVoltar.setPosition(10, Gdx.graphics.getHeight() - botaoVoltar.getHeight() - 10); // Posição no canto //
+                                                                                              // superior esquerdo
         botaoVoltar.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
