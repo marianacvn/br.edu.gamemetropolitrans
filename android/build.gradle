@@ -24,15 +24,32 @@ android {
   }
   packagingOptions {
 		resources {
-			excludes += ['META-INF/robovm/ios/robovm.xml', 'META-INF/DEPENDENCIES.txt', 'META-INF/DEPENDENCIES',
-                   'META-INF/dependencies.txt', '**/*.gwt.xml']
-			pickFirsts += ['META-INF/LICENSE.txt', 'META-INF/LICENSE', 'META-INF/license.txt', 'META-INF/LGPL2.1',
-                     'META-INF/NOTICE.txt', 'META-INF/NOTICE', 'META-INF/notice.txt']
+			excludes += [
+        'META-INF/robovm/ios/robovm.xml', 
+        'META-INF/DEPENDENCIES.txt', 
+        'META-INF/DEPENDENCIES',
+        'META-INF/dependencies.txt', 
+        '**/*.gwt.xml',
+        'META-INF/INDEX.LIST',
+        'META-INF/groovy-release-info.properties',
+        'META-INF/LICENSE.md',
+        'META-INF/groovy/org.codehaus.groovy.runtime.ExtensionModule',
+        'META-INF/LICENSE-notice.md'
+      ]
+			pickFirsts += [
+        'META-INF/LICENSE.txt', 
+        'META-INF/LICENSE', 
+        'META-INF/license.txt', 
+        'META-INF/LGPL2.1',
+        'META-INF/NOTICE.txt', 
+        'META-INF/NOTICE', 
+        'META-INF/notice.txt'
+      ]
 		}
   }
   defaultConfig {
     applicationId 'br.edu.metropolitrans'
-    minSdkVersion 19
+    minSdkVersion 26
     targetSdkVersion 34
     versionCode 1
     versionName "1.0"

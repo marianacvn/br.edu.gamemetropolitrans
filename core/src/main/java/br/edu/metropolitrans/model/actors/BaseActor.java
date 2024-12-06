@@ -35,6 +35,11 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 public class BaseActor extends Actor {
 
     /**
+     * Margem para ajuste de retangulo de colisao
+     */
+    public int margemAltura, margemLargura, margemX, margemY = 0;
+
+    /**
      * Animacao do ator
      */
     private Animation<TextureRegion> animacao;
@@ -107,6 +112,15 @@ public class BaseActor extends Actor {
         desaceleracao = 0;
 
         limitePoligono = null;
+    }
+
+    /**
+     * Adiciona um ator ao palco
+     * 
+     * @param stage palco
+     */
+    public void adicionarNoEstagio(Stage stage) {
+        stage.addActor(this);
     }
 
     /**
@@ -346,6 +360,7 @@ public class BaseActor extends Actor {
 
     /**
      * Retorna o vetor de velocidade deste objeto.
+     * 
      * @return vetor de velocidade
      */
     public Vector2 getVelocidadeVetor() {
@@ -457,10 +472,12 @@ public class BaseActor extends Actor {
      * @see #setAnimacao
      */
     public void setLimiteRetangulo() {
-        float l = getWidth();
-        float a = getHeight();
+        float l = getWidth() + margemLargura;
+        float a = getHeight() + margemAltura;
 
-        float[] vertices = { 0, 0, l, 0, l, a, 0, a };
+        // float[] vertices = { 0, 0, l, 0, l, a, 0, a };
+        // Soma com as margens de x e y
+        float[] vertices = { 0 + margemX, 0 + margemY, l, 0 + margemY, l, a, 0 + margemX, a };
         limitePoligono = new Polygon(vertices);
     }
 
@@ -523,7 +540,23 @@ public class BaseActor extends Actor {
     }
 
     public boolean sobrepoe(Rectangle retangulo) {
-        return getLimitePoligono().getBoundingRectangle().overlaps(retangulo);
+
+        Polygon poligono1 = this.getLimitePoligono();
+
+        // Cria um polígono a partir do retângulo
+        Polygon poligono2 = new Polygon(new float[] {
+                retangulo.x, retangulo.y,
+                retangulo.x + retangulo.width, retangulo.y,
+                retangulo.x + retangulo.width, retangulo.y + retangulo.height,
+                retangulo.x, retangulo.y + retangulo.height
+        });
+
+        // Teste inicial para melhorar o desempenho
+        if (!poligono1.getBoundingRectangle().overlaps(retangulo))
+            return false;
+
+        // Retorna se houve colisão
+        return Intersector.overlapConvexPolygons(poligono1, poligono2);
     }
 
     /**
@@ -531,7 +564,7 @@ public class BaseActor extends Actor {
      * quando houver sobreposição, mova este BaseActor para longe do outro BaseActor
      * ao longo do vetor de translação mínima até que não haja sobreposição.
      *
-     * @param other BaseActor para verificar a sobreposição
+     * @param outro BaseActor para verificar a sobreposição
      * @return direção do vetor pelo qual o ator foi traduzido, nulo se não houver
      *         sobreposição
      */
@@ -541,6 +574,40 @@ public class BaseActor extends Actor {
 
         // Teste inicial para melhorar o desempenho
         if (!poligono1.getBoundingRectangle().overlaps(poligono2.getBoundingRectangle()))
+            return null;
+
+        MinimumTranslationVector mtv = new MinimumTranslationVector();
+        boolean sobreposicaoPoligono = Intersector.overlapConvexPolygons(poligono1, poligono2, mtv);
+
+        if (!sobreposicaoPoligono)
+            return null;
+
+        this.moveBy(mtv.normal.x * mtv.depth, mtv.normal.y * mtv.depth);
+        return mtv.normal;
+    }
+
+    /**
+     * Implementa um comportamento "sólido":
+     * quando houver sobreposição, mova este BaseActor para longe do outro BaseActor
+     * ao longo do vetor de translação mínima até que não haja sobreposição.
+     *
+     * @param retangulo retângulo para verificar a sobreposição
+     * @return direção do vetor pelo qual o ator foi traduzido, nulo se não houver
+     *         sobreposição
+     */
+    public Vector2 evitaSobreposicao(Rectangle retangulo) {
+        Polygon poligono1 = this.getLimitePoligono();
+
+        // Cria um polígono a partir do retângulo
+        Polygon poligono2 = new Polygon(new float[] {
+                retangulo.x, retangulo.y,
+                retangulo.x + retangulo.width, retangulo.y,
+                retangulo.x + retangulo.width, retangulo.y + retangulo.height,
+                retangulo.x, retangulo.y + retangulo.height
+        });
+
+        // Teste inicial para melhorar o desempenho
+        if (!poligono1.getBoundingRectangle().overlaps(retangulo))
             return null;
 
         MinimumTranslationVector mtv = new MinimumTranslationVector();
@@ -565,7 +632,7 @@ public class BaseActor extends Actor {
      * @see #setLimiteRetangulo
      * @see #setLimitePoligono
      */
-    public boolean isWithinDistance(float distancia, BaseActor outro) {
+    public boolean estaDentroDaDistancia(float distancia, BaseActor outro) {
         Polygon poligono1 = this.getLimitePoligono();
         float escalaX = (this.getWidth() + 2 * distancia) / this.getWidth();
         float escalaY = (this.getHeight() + 2 * distancia) / this.getHeight();
@@ -639,7 +706,7 @@ public class BaseActor extends Actor {
     public void alinhamentoCamera() {
         Camera camera = this.getStage().getCamera();
 
-        //Centraliza a câmera na posição do ator
+        // Centraliza a câmera na posição do ator
         camera.position.set(this.getX() + this.getOriginX(), this.getY() + this.getOriginY(), 0);
 
         // limita a câmera à área de visualização

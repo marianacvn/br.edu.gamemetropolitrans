@@ -1,6 +1,9 @@
 package br.edu.metropolitrans.model.actors;
 
 import com.badlogic.gdx.scenes.scene2d.Stage;
+
+import java.util.ArrayList;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -30,6 +33,8 @@ public class Personagem extends BaseActor {
 
     private Array<Rectangle> retangulosColisao;
 
+    public ArrayList<Npc> npcs;
+
     public Personagem(float x, float y, Stage s) {
         super(x, y, s);
 
@@ -38,13 +43,18 @@ public class Personagem extends BaseActor {
         int linhas = 4;
         int colunas = 11;
 
+        // Ajusta as margens para centralizar o personagem na colisão
+        margemAltura = -10;
+        margemLargura = -15;
+        margemX = 15;
+
         // Carrega a textura
         Texture textura = new Texture(Gdx.files.internal(nomeArquivo), true);
 
         // Divide a textura em quadros
         int larguraQuadro = textura.getWidth() / colunas;
         int alturaQuadro = textura.getHeight() / linhas;
-        float duracaoQuadro = 0.2f;
+        float duracaoQuadro = 0.05f;
 
         // Cria uma matriz de texturas e uma lista de texturas
         TextureRegion[][] quadros = TextureRegion.split(textura, larguraQuadro, alturaQuadro);
@@ -82,10 +92,14 @@ public class Personagem extends BaseActor {
         angulo = 270;
 
         // Configuracao do personagem
-        setLimitePoligono(8);
-        setAceleracao(400);
-        setVelocidadeMaxima(100);
-        setDesaceleracao(400);
+        setAceleracao(800);
+        setVelocidadeMaxima(200);
+        setDesaceleracao(800);
+
+    }
+
+    public boolean interagiu(ObjetoInterativo objetoInterativo) {
+        return this.sobrepoe(objetoInterativo);
     }
 
     @Override
@@ -93,6 +107,23 @@ public class Personagem extends BaseActor {
         super.act(delta);
 
         // Movimenta o personagem
+        animacao();
+
+        // Atualiza a posição do personagem
+        aplicarFisica(delta);
+
+        // Verifica colisões
+        colisao(delta);
+
+        // Limita o personagem ao mundo
+        limitaMundo();
+
+        // Alinha a câmera após atualizar a posição do personagem
+        alinhamentoCamera();
+
+    }
+
+    private void animacao() {
         // Pausa a animação quando o personagem não está se movendo
         if (getVelocidade() == 0) {
             setAnimacaoPausada(true);
@@ -115,10 +146,9 @@ public class Personagem extends BaseActor {
                 setAnimacao(leste);
             }
         }
+    }
 
-        // Atualiza a posição do personagem
-        aplicarFisica(delta);
-
+    private void colisao(float delta) {
         // Verifica colisões
         for (Rectangle retangulo : retangulosColisao) {
             if (sobrepoe(retangulo)) {
@@ -130,10 +160,15 @@ public class Personagem extends BaseActor {
             }
         }
 
-        limitaMundo();
-
-        // Alinha a câmera após atualizar a posição do personagem
-        alinhamentoCamera();
+        for (Npc npc : npcs) {
+            if (sobrepoe(npc)) {
+                // Ajusta a posição do personagem para evitar a colisão
+                // Isso pode ser feito de várias maneiras, dependendo da lógica do seu jogo
+                // Por exemplo, você pode mover o personagem de volta para a posição anterior
+                setPosition(getX() - getVelocidadeVetor().x * delta, getY() - getVelocidadeVetor().y * delta);
+                break;
+            }
+        }
     }
 
     public float getAngulo() {

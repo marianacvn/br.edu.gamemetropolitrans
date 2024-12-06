@@ -1,7 +1,5 @@
 package br.edu.metropolitrans.view.screens;
 
-import org.apache.tools.ant.taskdefs.Input;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
@@ -16,9 +14,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Slider;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Slider.SliderStyle;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
@@ -26,6 +22,8 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.ScreenUtils;
 
 import br.edu.metropolitrans.MetropoliTrans;
+import br.edu.metropolitrans.view.components.buttons.ButtonBase;
+import br.edu.metropolitrans.view.components.buttons.TextButtonBase;
 
 public class ConfigScreen implements Screen {
 
@@ -34,15 +32,27 @@ public class ConfigScreen implements Screen {
     public Skin skin;
     public Label titulo, volumeLabel, botaoAlabel, botaoDlabel, botaoWlabel, botaoSlabel, botaoUpLabel, botaoDownLabel,
             botaoLeftLabel, botaoRightLabel, botaoSpaceLabel, botaoEscLabel;
-    public Texture background;
     public Slider sliderVolume;
-    public ImageButton botaoA, botaoD, botaoW, botaoS, botaoUp, botaoDown, botaoLeft, botaoRight, botaoSpace, botaoEsc;
+    public Screen telaAnterior;
+    public ButtonBase botaoA, botaoD, botaoW, botaoS, botaoUp, botaoDown, botaoLeft, botaoRight, botaoSpace, botaoEsc;
 
-    public ConfigScreen(final MetropoliTrans jogo) {
+    public ConfigScreen(final MetropoliTrans jogo, Screen telaAnterior) {
         this.jogo = jogo;
+        this.telaAnterior = telaAnterior;
 
-        // Carrega a textura de fundo
-        background = new Texture(Gdx.files.internal("files/backgrounds/background-light.png"));
+        botaoA = new ButtonBase("files/buttons/botao-a.png", botaoAlabel);
+        botaoD = new ButtonBase("files/buttons/botao-d.png", botaoDlabel);
+        botaoS = new ButtonBase("files/buttons/botao-s.png", botaoSlabel);
+        botaoW = new ButtonBase("files/buttons/botao-w.png", botaoWlabel);
+        botaoUp = new ButtonBase("files/buttons/botao-up.png", botaoUpLabel);
+        botaoDown = new ButtonBase("files/buttons/botao-down.png", botaoDownLabel);
+        botaoLeft = new ButtonBase("files/buttons/botao-left.png", botaoLeftLabel);
+        botaoRight = new ButtonBase("files/buttons/botao-right.png", botaoRightLabel);
+        botaoSpace = new ButtonBase("files/buttons/botao-space.png", botaoSpaceLabel);
+        botaoEsc = new ButtonBase("files/buttons/botao-esc.png", botaoEscLabel);
+
+        // Carrega a textura de fundo e outras
+        Texture background = new Texture(Gdx.files.internal("files/backgrounds/background-light.png"));
 
         // Cria o Stage e o Skin
         stage = new Stage();
@@ -51,27 +61,8 @@ public class ConfigScreen implements Screen {
         skin = new Skin();
         skin.add("default", jogo.fonte);
 
-        // Carrega as imagens para os botões de controle
-        Texture ATexture = new Texture(Gdx.files.internal("files/buttons/botao-a.png"));
-        Texture DTexture = new Texture(Gdx.files.internal("files/buttons/botao-d.png"));
-        Texture STexture = new Texture(Gdx.files.internal("files/buttons/botao-s.png"));
-        Texture WTexture = new Texture(Gdx.files.internal("files/buttons/botao-w.png"));
-        Texture upTexture = new Texture(Gdx.files.internal("files/buttons/botao-up.png"));
-        Texture downTexture = new Texture(Gdx.files.internal("files/buttons/botao-down.png"));
-        Texture leftTexture = new Texture(Gdx.files.internal("files/buttons/botao-left.png"));
-        Texture rightTexture = new Texture(Gdx.files.internal("files/buttons/botao-right.png"));
-        Texture spaceTexture = new Texture(Gdx.files.internal("files/buttons/botao-space.png"));
-        Texture escTexture = new Texture(Gdx.files.internal("files/buttons/botao-esc.png"));
-        Drawable ADrawable = new TextureRegionDrawable(new TextureRegion(ATexture));
-        Drawable DDrawable = new TextureRegionDrawable(new TextureRegion(DTexture));
-        Drawable SDrawable = new TextureRegionDrawable(new TextureRegion(STexture));
-        Drawable WDrawable = new TextureRegionDrawable(new TextureRegion(WTexture));
-        Drawable upDrawable = new TextureRegionDrawable(new TextureRegion(upTexture));
-        Drawable downDrawable = new TextureRegionDrawable(new TextureRegion(downTexture));
-        Drawable leftDrawable = new TextureRegionDrawable(new TextureRegion(leftTexture));
-        Drawable rightDrawable = new TextureRegionDrawable(new TextureRegion(rightTexture));
-        Drawable spaceDrawable = new TextureRegionDrawable(new TextureRegion(spaceTexture));
-        Drawable escDrawable = new TextureRegionDrawable(new TextureRegion(escTexture));
+        // Carrega a imagem do background
+        Drawable backgroundDrawable = new TextureRegionDrawable(new TextureRegion(background));
 
         // fonte título
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("files/fonts/Silver.ttf"));
@@ -102,25 +93,14 @@ public class ConfigScreen implements Screen {
         skin.add("sliderBackground", sliderBackgroundDrawable);
         skin.add("sliderKnob", sliderKnobDrawable);
 
-        Texture botaoTextura = new Texture(Gdx.files.internal("files/buttons/botao-dark2.png"));
-        Drawable botaoDrawable = new TextureRegionDrawable(new TextureRegion(botaoTextura));
-
         // Cria um botão para voltar ao menu
-        TextButton.TextButtonStyle textButtonStyle = new TextButton.TextButtonStyle();
-        textButtonStyle.font = skin.getFont("default");
-        textButtonStyle.fontColor = Color.WHITE;
-        TextButton botaoVoltar = new TextButton("Voltar", textButtonStyle);
-        textButtonStyle.up = botaoDrawable;
-        botaoVoltar.setPosition(10, Gdx.graphics.getHeight() - botaoVoltar.getHeight() - 10); // Posição no canto
-        // superior esquerdo
+        TextButtonBase botaoVoltar = new TextButtonBase("Voltar", "files/buttons/botao-dark2.png", skin);
         botaoVoltar.setSize(100, 50); // Define o tamanho do botão
+        botaoVoltar.setPosition(10, Gdx.graphics.getHeight() - botaoVoltar.getHeight() - 10); // Posição no canto                                                                                      // superior esquerdo
         botaoVoltar.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                if (jogo.telas.get("menu") == null) {
-                    jogo.telas.put("menu", new MenuScreen(jogo));
-                }
-                jogo.setScreen(jogo.telas.get("menu"));
+                jogo.setScreen(telaAnterior);
             }
         });
 
@@ -146,6 +126,18 @@ public class ConfigScreen implements Screen {
             }
         });
 
+        // Posiciona os botões de controle
+        botaoA.setPosition(sliderVolume.getX(), sliderVolume.getY() - 50);
+        botaoD.setPosition(sliderVolume.getX(), botaoA.getY() - botaoA.getHeight() - 10);
+        botaoW.setPosition(sliderVolume.getX(), botaoD.getY() - botaoD.getHeight() - 10);
+        botaoS.setPosition(sliderVolume.getX(), botaoW.getY() - botaoW.getHeight() - 10);
+        botaoUp.setPosition(sliderVolume.getX(), botaoS.getY() - botaoS.getHeight() - 10);
+        botaoDown.setPosition(sliderVolume.getX(), botaoUp.getY() - botaoUp.getHeight() - 10);
+        botaoLeft.setPosition(sliderVolume.getX(), botaoDown.getY() - botaoDown.getHeight() - 10);
+        botaoRight.setPosition(sliderVolume.getX(), botaoLeft.getY() - botaoLeft.getHeight() - 10);
+        botaoSpace.setPosition(sliderVolume.getX(), botaoRight.getY() - botaoRight.getHeight() - 10);
+        botaoEsc.setPosition(sliderVolume.getX(), botaoSpace.getY() - botaoSpace.getHeight() - 10);
+
         // Cria os labels para os botões de controle
         botaoAlabel = new Label("Andar para a esquerda", labelStyle2);
         botaoAlabel.setPosition(sliderVolume.getX() + 70, sliderVolume.getY() - 60);
@@ -168,82 +160,19 @@ public class ConfigScreen implements Screen {
         botaoEscLabel = new Label("Configurações", labelStyle2);
         botaoEscLabel.setPosition(sliderVolume.getX() + 70, botaoSpaceLabel.getY() - 28);
 
-        // Cria os botões de controle
-        // botão A
-        ImageButton.ImageButtonStyle AButtonStyle = new ImageButton.ImageButtonStyle();
-        AButtonStyle.imageUp = ADrawable;
-        botaoA = new ImageButton(AButtonStyle);
-        botaoA.setPosition(sliderVolume.getX(), sliderVolume.getY() - 50); // Posição no canto superior direito
-
-        // botão D
-        ImageButton.ImageButtonStyle DButtonStyle = new ImageButton.ImageButtonStyle();
-        DButtonStyle.imageUp = DDrawable;
-        botaoD = new ImageButton(DButtonStyle);
-        botaoD.setPosition(sliderVolume.getX(), botaoA.getY() - botaoA.getHeight() - 10); // Posição no canto superior
-                                                                                          // direito
-
-        // botão W
-        ImageButton.ImageButtonStyle WButtonStyle = new ImageButton.ImageButtonStyle();
-        WButtonStyle.imageUp = WDrawable;
-        botaoW = new ImageButton(WButtonStyle);
-        botaoW.setPosition(sliderVolume.getX(), botaoD.getY() - botaoD.getHeight() - 10); // Posição no canto superior
-                                                                                          // direito
-
-        // botão S
-        ImageButton.ImageButtonStyle SButtonStyle = new ImageButton.ImageButtonStyle();
-        SButtonStyle.imageUp = SDrawable;
-        botaoS = new ImageButton(SButtonStyle);
-        botaoS.setPosition(sliderVolume.getX(), botaoW.getY() - botaoW.getHeight() - 10); // Posição no canto superior
-                                                                                          // direito
-
-        // botão Up
-        ImageButton.ImageButtonStyle upButtonStyle = new ImageButton.ImageButtonStyle();
-        upButtonStyle.imageUp = upDrawable;
-        botaoUp = new ImageButton(upButtonStyle);
-        botaoUp.setPosition(sliderVolume.getX(), botaoS.getY() - botaoS.getHeight() - 10); // Posição no canto superior
-                                                                                           // direito
-
-        // botão Down
-        ImageButton.ImageButtonStyle downButtonStyle = new ImageButton.ImageButtonStyle();
-        downButtonStyle.imageUp = downDrawable;
-        botaoDown = new ImageButton(downButtonStyle);
-        botaoDown.setPosition(sliderVolume.getX(), botaoUp.getY() - botaoUp.getHeight() - 10); // Posição no canto
-                                                                                               // superior direito
-
-        // botão Left
-        ImageButton.ImageButtonStyle leftButtonStyle = new ImageButton.ImageButtonStyle();
-        leftButtonStyle.imageUp = leftDrawable;
-        botaoLeft = new ImageButton(leftButtonStyle);
-        botaoLeft.setPosition(sliderVolume.getX(), botaoDown.getY() - botaoDown.getHeight() - 10); // Posição no canto
-                                                                                                   // superior direito
-
-        // botão Right
-        ImageButton.ImageButtonStyle rightButtonStyle = new ImageButton.ImageButtonStyle();
-        rightButtonStyle.imageUp = rightDrawable;
-        botaoRight = new ImageButton(rightButtonStyle);
-        botaoRight.setPosition(sliderVolume.getX(), botaoLeft.getY() - botaoLeft.getHeight() - 10); // Posição no canto
-                                                                                                    // superior direito
-
-        // botão Space
-        ImageButton.ImageButtonStyle spaceButtonStyle = new ImageButton.ImageButtonStyle();
-        spaceButtonStyle.imageUp = spaceDrawable;
-        botaoSpace = new ImageButton(spaceButtonStyle);
-        botaoSpace.setPosition(sliderVolume.getX(), botaoRight.getY() - botaoRight.getHeight() - 10); // Posição no
-                                                                                                      // canto superior
-                                                                                                      // direito
-
-        // botão Esc
-        ImageButton.ImageButtonStyle escButtonStyle = new ImageButton.ImageButtonStyle();
-        escButtonStyle.imageUp = escDrawable;
-        botaoEsc = new ImageButton(escButtonStyle);
-        botaoEsc.setPosition(sliderVolume.getX(), botaoSpace.getY() - botaoSpace.getHeight() - 10); // Posição no canto
-                                                                                                    // superior direito
+        // Cria o background e seta a posição
+        ImageButton.ImageButtonStyle backgroundStyle = new ImageButton.ImageButtonStyle();
+        backgroundStyle.imageUp = backgroundDrawable;
+        ImageButton backgroundButton = new ImageButton(backgroundStyle);
+        backgroundButton.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        backgroundButton.setPosition(0, 0);
 
         // Adiciona o título ao Stage
+        stage.addActor(backgroundButton);
+        stage.addActor(botaoVoltar);
         stage.addActor(titulo);
         stage.addActor(volumeLabel);
         stage.addActor(sliderVolume);
-        stage.addActor(botaoVoltar);
         stage.addActor(botaoA);
         stage.addActor(botaoD);
         stage.addActor(botaoW);
@@ -269,16 +198,13 @@ public class ConfigScreen implements Screen {
 
     @Override
     public void show() {
+        Gdx.input.setInputProcessor(stage);
     }
 
     @Override
     public void render(float delta) {
         // Limpa a tela com uma cor preta
         ScreenUtils.clear(Color.BLACK);
-
-        jogo.batch.begin();
-        jogo.batch.draw(background, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        jogo.batch.end();
 
         stage.act(delta);
         stage.draw();
@@ -307,7 +233,6 @@ public class ConfigScreen implements Screen {
 
     @Override
     public void dispose() {
-        background.dispose();
         stage.dispose();
         skin.dispose();
     }
