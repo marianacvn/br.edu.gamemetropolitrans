@@ -5,7 +5,7 @@
 		"Muito obrigado! Agora podemos comunicar para este pessoal que o problema foi solucionado, eles podem transitar pela ciclofaixa tranquilamente sem se preocupar com os veículos que aqui transitam.",
 		"Finalmente você chegou, todos estão te esperando dentro da escola no auditório, vamos mostrar para todos o qual importante a educação e respeitar as leis de trânsito.",
 		"Incrível, parabéns! Tenho que reconhecer, se eu não tivesse te escolhido com certeza não teriamos melhorado em relação aos problemas de trânsito.",
-		"Finalmente todos os módulos do curso foram concluídos, agora você está apto a solucionar diversos tipos de problemas relacionados a trânsito!",
+		"Finalmente todos os módulos do curso foram concluídos, agora você está apto a solucionar diversos tipos de problemas relacionados a trânsito!"
 	],
 	"dialogosMissao": [
 		{
@@ -15,6 +15,6 @@
 		{
 			"missao": 7,
 			"mensagem": "Mas é claro que podemos atender esta demanda, hoje mesmo vou solicitar a divulgação desta palestra! E claro, quem seria melhor para apresentar esta palestra, se não o meu querido(a) secretário(a)? Aguardo você na escola municipal!"
-		},
+		}
 	]
 }

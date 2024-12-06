@@ -250,14 +250,16 @@ public class GameScreen implements Screen {
      * Verifica a interação do personagem com os objetos do mapa
      */
     private void interagir() {
-        // TODO: remover esta linha
-        // if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
-        //     testeDialogos("antonio");
-        // }
-        // TODO: colocar aqui o if para validaçcão da interação com um NPC, lembrando que dentro de personagem tem uma lista de NPCs
         if (objeto != null && Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
-            // TODO : percorre a lista e verifica se interagiu, se intragiu chama o método testeDialogos(nomePersonagem);
-            // Lembrando que nomePersonagem vem do NPC que ta interagindo
+            for (Npc npc : npcs) {
+                if (personagem.estaDentroDaDistancia(15,npc)) {
+                    System.out.println("Interagindo com o NPC: " + npc.nome);
+                    // Chama o método testeDialogos com o nome do NPC
+                    testeDialogos(npc.nome);
+                    return;
+                }
+            }
+
         }
 
         if (objeto != null && personagem.interagiu(objeto) && Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
