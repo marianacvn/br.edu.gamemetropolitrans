@@ -19,9 +19,12 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
 
 import br.edu.metropolitrans.MetropoliTrans;
+import br.edu.metropolitrans.model.Dialog;
+import br.edu.metropolitrans.model.DialogMission;
 import br.edu.metropolitrans.model.actors.Npc;
 import br.edu.metropolitrans.model.actors.ObjetoInterativo;
 import br.edu.metropolitrans.model.actors.Personagem;
+import br.edu.metropolitrans.model.dao.DialogDAO;
 import br.edu.metropolitrans.model.maps.Mapas;
 
 /**
@@ -243,7 +246,20 @@ public class GameScreen implements Screen {
         personagem.setRetangulosColisao(retangulosColisao);
     }
 
+    /**
+     * Verifica a interação do personagem com os objetos do mapa
+     */
     private void interagir() {
+        // TODO: remover esta linha
+        // if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
+        //     testeDialogos("antonio");
+        // }
+        // TODO: colocar aqui o if para validaçcão da interação com um NPC, lembrando que dentro de personagem tem uma lista de NPCs
+        if (objeto != null && Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
+            // TODO : percorre a lista e verifica se interagiu, se intragiu chama o método testeDialogos(nomePersonagem);
+            // Lembrando que nomePersonagem vem do NPC que ta interagindo
+        }
+
         if (objeto != null && personagem.interagiu(objeto) && Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
 
             // Remove os NPCs do mapa
@@ -297,6 +313,28 @@ public class GameScreen implements Screen {
             personagem.npcs = npcs;
             personagem.setRetangulosColisao(retangulosColisao);
         }
+    }
+
+    public void testeDialogos(String nomePersonagem) {
+        DialogDAO dialogDAO = new DialogDAO();
+
+        // Carregar diálogos
+        Dialog dialog = dialogDAO.carregarDialogos(nomePersonagem);
+        if (dialog != null) {
+            System.out.println("Diálogos Genéricos:");
+            for (String dialogo : dialog.getDialogosGenericos()) {
+                System.out.println(dialogo);
+            }
+
+            System.out.println("Diálogos de Missão:");
+            for (DialogMission missao : dialog.getDialogosMissao()) {
+                System.out.println("Missão: " + missao.getMissao());
+                System.out.println("Mensagem: " + missao.getMensagem());
+            }
+        }
+
+        // Salvar diálogos (se necessário)
+        //dialogDAO.salvarDialogos("antonio", dialog);
     }
 
     public void controleConfig(float delta) {
