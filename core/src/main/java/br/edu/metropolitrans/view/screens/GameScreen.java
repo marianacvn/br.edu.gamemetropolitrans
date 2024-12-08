@@ -19,7 +19,6 @@ import com.badlogic.gdx.utils.Array;
 
 import br.edu.metropolitrans.MetropoliTrans;
 import br.edu.metropolitrans.model.Dialog;
-import br.edu.metropolitrans.model.DialogMission;
 import br.edu.metropolitrans.model.actors.Npc;
 import br.edu.metropolitrans.model.actors.ObjetoInterativo;
 import br.edu.metropolitrans.model.actors.Personagem;
@@ -173,11 +172,14 @@ public class GameScreen implements Screen {
         // Desenha os elementos do jogo
         desenhar();
 
-        // Atualiza a interação do personagem com os objetos do mapa
-        interagir();
+        // Controle da interação do personagem com os objetos do mapa
+        controleInteracao();
 
         // Controle da tela de configurações
         controleConfig();
+
+        // Controle de diálogos
+        controleDialogos();
         
         // Verifica se a caixa de diálogo deve ser exibida
         // Se sim, exibe a caixa de diálogo, caso contrário permite 
@@ -185,8 +187,9 @@ public class GameScreen implements Screen {
         if (mostrarDialogo) {
             caixaDialogo.render();
         } else {
-            controle(delta);
-            controle2(delta);
+            // Controle do personagem Setas ou WASD
+            controlePersonagem(delta);
+            controlePersonagem2(delta);
         }
     }
 
@@ -233,7 +236,7 @@ public class GameScreen implements Screen {
 
         // Atualiza a posição da caixa de diálogo para acompanhar a câmera
         caixaDialogo.setPosition(CAMERA.position.x - CAMERA.viewportWidth / 2, CAMERA.position.y - CAMERA.viewportHeight / 2);
-        
+
         // Usado apenas para debug, comentar quando não for mais necessário
         debug();
     }
@@ -242,7 +245,7 @@ public class GameScreen implements Screen {
      * Controle do personagem, movimenta de acordo com as teclas pressionadas
      * (Setas)
      */
-    public void controle(float delta) {
+    public void controlePersonagem(float delta) {
         if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
             personagem.acelerarEmAngulo(0);
         } else if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
@@ -259,7 +262,7 @@ public class GameScreen implements Screen {
      * 
      * @param delta
      */
-    public void controle2(float delta) {
+    public void controlePersonagem2(float delta) {
         if (Gdx.input.isKeyPressed(Input.Keys.D)) {
             personagem.acelerarEmAngulo(0);
         } else if (Gdx.input.isKeyPressed(Input.Keys.A)) {
@@ -272,47 +275,18 @@ public class GameScreen implements Screen {
     }
 
     /**
-     * Monta os retângulos de colisão do mapa
-     * 
-     * @param mapa TiledMap
+     * Controle de diálogos
      */
-    public void montarColisao(TiledMap mapa) {
-        // Carrega os objetos de colisão
-        objetosColisao = mapa.getLayers().get("colisao").getObjects();
-        retangulosColisao = new Array<Rectangle>();
-
-        // Adiciona os retângulos de colisão do mapa ao array
-        for (MapObject objeto : objetosColisao) {
-            if (objeto instanceof RectangleMapObject) {
-                Rectangle retangulo = ((RectangleMapObject) objeto).getRectangle();
-                retangulosColisao.add(retangulo);
-            }
-        }
-
-        // Adiciona os retângulos de colisão do mapa ao personagem
-        personagem.setRetangulosColisao(retangulosColisao);
-    }
-
-    /**
-     * Verifica a interação do personagem com os NPCs
-     * 
-     * @param npc Npc
-     */
-    public void interacaoComNpc(Npc npc) {
-        if (personagem.estaDentroDaDistancia(15, npc)) {
-            System.out.println("Interagindo com o NPC: " + npc.nome);
-            // Carrega os diálogos do NPC
-            caixaDialogo.setTextoDialogo(carregaDialogos(npc));
-            caixaDialogo.setNpcTexture(npc.nome);
-            mostrarDialogo = true;
-            return;
+    public void controleDialogos() {
+        if (Gdx.input.isKeyJustPressed(Input.Keys.ENTER)) {
+            mostrarDialogo = false;
         }
     }
 
     /**
      * Verifica a interação do personagem com os objetos do mapa
      */
-    private void interagir() {
+    private void controleInteracao() {
         if (objeto != null && Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
             for (Npc npc : npcs) {
                 interacaoComNpc(npc);
@@ -375,6 +349,39 @@ public class GameScreen implements Screen {
     }
 
     /**
+     * Controle da tela de configurações
+     */
+    public void controleConfig() {
+        if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
+            if (jogo.telas.get("config") == null)
+                jogo.telas.put("config", new ConfigScreen(jogo, GameScreen.this));
+            jogo.setScreen(jogo.telas.get("config"));
+        }
+    }
+
+    /**
+     * Monta os retângulos de colisão do mapa
+     * 
+     * @param mapa TiledMap
+     */
+    public void montarColisao(TiledMap mapa) {
+        // Carrega os objetos de colisão
+        objetosColisao = mapa.getLayers().get("colisao").getObjects();
+        retangulosColisao = new Array<Rectangle>();
+
+        // Adiciona os retângulos de colisão do mapa ao array
+        for (MapObject objeto : objetosColisao) {
+            if (objeto instanceof RectangleMapObject) {
+                Rectangle retangulo = ((RectangleMapObject) objeto).getRectangle();
+                retangulosColisao.add(retangulo);
+            }
+        }
+
+        // Adiciona os retângulos de colisão do mapa ao personagem
+        personagem.setRetangulosColisao(retangulosColisao);
+    }
+
+    /**
      * Carrega os diálogos do personagem
      * @param nomePersonagem
      */
@@ -388,11 +395,18 @@ public class GameScreen implements Screen {
         return "Olá, eu sou o " + npc.nome + "!";
     }
 
-    public void controleConfig() {
-        if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
-            if (jogo.telas.get("config") == null)
-                jogo.telas.put("config", new ConfigScreen(jogo, GameScreen.this));
-            jogo.setScreen(jogo.telas.get("config"));
+    /**
+     * Verifica a interação do personagem com os NPCs
+     * 
+     * @param npc Npc
+     */
+    public void interacaoComNpc(Npc npc) {
+        if (personagem.estaDentroDaDistancia(15, npc)) {
+            // Carrega os diálogos do NPC
+            caixaDialogo.setTextoDialogo(carregaDialogos(npc));
+            caixaDialogo.setNpcTexture(npc.nome);
+            mostrarDialogo = true;
+            return;
         }
     }
 

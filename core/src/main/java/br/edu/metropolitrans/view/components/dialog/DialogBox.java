@@ -10,7 +10,6 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.Align;
 
 import br.edu.metropolitrans.MetropoliTrans;
-import br.edu.metropolitrans.view.screens.GameScreen;
 
 public class DialogBox {
 
