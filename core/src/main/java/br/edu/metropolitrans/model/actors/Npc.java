@@ -5,17 +5,17 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 public class Npc extends BaseActor {
 
     public String nome;
-    public float x, y;
     public String nomeArquivo;
-    public Stage stage;
+
+    /**
+     * Diálogo atual
+     */
+    public int DIALOGO_ATUAL = 0;
 
     public Npc(String nome, float x, float y, String nomeArquivo, Stage stage) {
         super(x, y, stage);
         this.nome = nome;
-        this.x = x;
-        this.y = y;
         this.nomeArquivo = nomeArquivo;
-        this.stage = stage;
 
         margemAltura = -15;
 

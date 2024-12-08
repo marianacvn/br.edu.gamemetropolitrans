@@ -1,11 +1,15 @@
 {
 	"dialogosGenericos": [
-		"Muito obrigado! Agora acredito que os casos de acidentes serão reduzidos!"
+		"Olá, tudo bem?"
 	],
 	"dialogosMissao": [
 		{
 			"missao": 9,
 			"mensagem": "Eu ouvi falar de você, obrigado por resolver um problema antigo que tinha aqui neste meu restaurante, sempre tinham acidentes por conta da irresponsabilidade dos condutores. Se não for muito incomodo, eu tenho mais uma solicitação para fazer. Além dos acidentes já reportados, existem outros que ocorrem neste cruzamento, toda semana tenho que chamar os orgão responsávies para ajudar alguém, eu acho que é de grande importância a resolução deste problema."
+		},
+		{
+			"missao": 9,
+			"mensagem": "Muito obrigado! Agora acredito que os casos de acidentes serão reduzidos!"
 		}
 	]
 }

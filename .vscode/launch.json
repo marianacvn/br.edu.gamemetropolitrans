@@ -6,6 +6,13 @@
   "configurations": [
     {
       "type": "java",
+      "name": "TexturePackerConfig",
+      "request": "launch",
+      "mainClass": "br.edu.metropolitrans.view.components.texture.TexturePackerConfig",
+      "projectName": "MetropoliTrans-core"
+    },
+    {
+      "type": "java",
       "name": "Current File",
       "request": "launch",
       "mainClass": "${file}"

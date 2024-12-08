@@ -1,20 +1,39 @@
 {
 	"dialogosGenericos": [
-		"Olá, me chamo Heberto, sou o prefeito da cidade de Transitolândia. Hoje começa seu novo trabalho de secretário de trânsito. Mas primeiro, será necessário que você vá até a escola de trânsito da cidade e aprenda o primeiro módulo, para que possa iniciar os serviços. Boa sorte, esta cidade precisa de muitas melhorias haha!",
-		"Haha olha só quem apareceu, vim aqui lhe desejar os parabéns, só estou recebendo elogios de você. Foi a melhor pessoa que escolhi para o cargo, sem mim essa cidade não iria para frente haha!  A Betânia deve ter novidades para você.",
-		"Muito obrigado! Agora podemos comunicar para este pessoal que o problema foi solucionado, eles podem transitar pela ciclofaixa tranquilamente sem se preocupar com os veículos que aqui transitam.",
-		"Finalmente você chegou, todos estão te esperando dentro da escola no auditório, vamos mostrar para todos o qual importante a educação e respeitar as leis de trânsito.",
-		"Incrível, parabéns! Tenho que reconhecer, se eu não tivesse te escolhido com certeza não teriamos melhorado em relação aos problemas de trânsito.",
-		"Finalmente todos os módulos do curso foram concluídos, agora você está apto a solucionar diversos tipos de problemas relacionados a trânsito!"
+		"Que lindo dia!"
 	],
 	"dialogosMissao": [
+		{
+			"missao": 0,
+			"mensagem": "Olá, me chamo Heberto, sou o prefeito da cidade de Metropolitrans. Hoje começa seu novo trabalho de secretário de trânsito. Mas primeiro, será necessário que você vá até a escola de trânsito da cidade e aprenda o primeiro módulo, para que possa iniciar os serviços. Boa sorte, esta cidade precisa de muitas melhorias haha!"
+		},
+		{
+			"missao": 2,
+			"mensagem": "Haha olha só quem apareceu, vim aqui lhe desejar os parabéns, só estou recebendo elogios de você. Foi a melhor pessoa que escolhi para o cargo, sem mim essa cidade não iria para frente haha!  A Betânia deve ter novidades para você."
+		},
 		{
 			"missao": 4,
 			"mensagem": "Olá, não temos muito tempo, estamos com um problema urgente para resolver, esperamos que este caso não repercurta mais do que o necessário, você já sabe o que fazer."
 		},
 		{
+			"missao": 4,
+			"mensagem": "Muito obrigado! Agora podemos comunicar para este pessoal que o problema foi solucionado, eles podem transitar pela ciclofaixa tranquilamente sem se preocupar com os veículos que aqui transitam."
+		},
+		{
 			"missao": 7,
 			"mensagem": "Mas é claro que podemos atender esta demanda, hoje mesmo vou solicitar a divulgação desta palestra! E claro, quem seria melhor para apresentar esta palestra, se não o meu querido(a) secretário(a)? Aguardo você na escola municipal!"
+		},
+		{
+			"missao": 7,
+			"mensagem": "Finalmente você chegou, todos estão te esperando dentro da escola no auditório, vamos mostrar para todos o qual importante a educação e respeitar as leis de trânsito."
+		},
+		{
+			"missao": 7,
+			"mensagem": "Incrível, parabéns! Tenho que reconhecer, se eu não tivesse te escolhido com certeza não teriamos melhorado em relação aos problemas de trânsito."
+		},
+		{
+			"missao": 9,
+			"mensagem": "Finalmente todos os módulos do curso foram concluídos, agora você está apto a solucionar diversos tipos de problemas relacionados a trânsito!"
 		}
 	]
 }
