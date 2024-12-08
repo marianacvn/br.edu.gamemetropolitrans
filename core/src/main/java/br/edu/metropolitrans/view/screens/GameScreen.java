@@ -421,10 +421,7 @@ public class GameScreen implements Screen {
 
     @Override
     public void resize(int width, int height) {
-        // jogo.areaVisualizacao.update(width, height, true);
-        CAMERA.viewportWidth = width;
-        CAMERA.viewportHeight = height;
-        CAMERA.update();
+        jogo.estagioPrincipal.getViewport().update(width, height, true);
     }
 
     @Override

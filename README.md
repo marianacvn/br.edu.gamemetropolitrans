@@ -12,6 +12,22 @@ This project was generated with a template including simple application launcher
 - `lwjgl3`: Primary desktop platform using LWJGL3; was called 'desktop' in older docs.
 - `android`: Android mobile platform. Needs Android SDK.
 
+## Run Game
+
+- `core`: Execute the MetropoliTrans-lwjgl3 class main on IDE or terminal.
+
+- `android`: Install the app withe follow command on terminal:
+
+```bash
+./gradlew android:installDebug
+```
+
+Then run the app with the follow command on terminal:
+
+```bash
+./gradlew android:run
+```
+
 ## Gradle
 
 This project uses [Gradle](https://gradle.org/) to manage dependencies.
