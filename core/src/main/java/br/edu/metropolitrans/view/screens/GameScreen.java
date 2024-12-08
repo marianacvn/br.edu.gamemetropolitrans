@@ -5,8 +5,6 @@ import java.util.ArrayList;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.audio.Music;
-import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.MapObject;
@@ -27,7 +25,7 @@ import br.edu.metropolitrans.model.actors.ObjetoInterativo;
 import br.edu.metropolitrans.model.actors.Personagem;
 import br.edu.metropolitrans.model.dao.DialogDAO;
 import br.edu.metropolitrans.model.maps.Mapas;
-import br.edu.metropolitrans.view.components.config.ConfigManager;
+import br.edu.metropolitrans.view.components.dialog.DialogBox;
 
 /**
  * Tela principal do jogo
@@ -77,20 +75,48 @@ public class GameScreen implements Screen {
      * Temporizador para acompanhar o tempo de jogo
      */
     float temporizador = 0f;
-    
+
+    /**
+     * Objetos de colisão do mapa
+     */
     private MapObjects objetosColisao;
+
+    /**
+     * Retângulos de colisão
+     */
     private Array<Rectangle> retangulosColisao;
+
+    /**
+     * Lista de NPCs do jogo
+     */
     public ArrayList<Npc> npcs;
+
+    /**
+     * Objetos interativos
+     */
     public ObjetoInterativo objeto, objetoSairSala;
 
+    /**
+     * Caixa de diálogo
+     */
+    private DialogBox caixaDialogo;
+
+    /**
+     * Flag para mostrar a caixa de diálogo
+     */
+    private boolean mostrarDialogo;
+
+    /**
+     * Missão atual
+     */
+    public int MISSAO = 0;
 
     public GameScreen(final MetropoliTrans jogo) {
         this.jogo = jogo;
 
-
         // Carrega o mapa
         mapas = new Mapas();
-        mapaRenderizador = new OrthogonalTiledMapRenderer(mapas.mapa, jogo.batch);
+        mapaRenderizador = new OrthogonalTiledMapRenderer(mapas.mapa, 1, jogo.batch);
 
         // Inicializa o renderizador de formas
         renderizadorForma = new ShapeRenderer();
@@ -111,15 +137,15 @@ public class GameScreen implements Screen {
         npcs = new ArrayList<Npc>();
 
         // Carrega os Npcs
-        npcs.add(new Npc("maria", 280, 1050, "npcFemale/maria/sprite.png", jogo.estagioPrincipal));
-        npcs.add(new Npc("betania", 150, 400, "npcFemale/betania/sprite.png", jogo.estagioPrincipal));
-        npcs.add(new Npc("bruna", 1190, 200, "npcFemale/bruna/sprite.png", jogo.estagioPrincipal));
-        npcs.add(new Npc("antonio", 1500, 1000, "npcMale/antonio/sprite.png", jogo.estagioPrincipal));
-        npcs.add(new Npc("heberto", 150, 200, "npcMale/heberto/sprite.png", jogo.estagioPrincipal));
-        npcs.add(new Npc("jose", 90, 1450, "npcMale/jose/sprite.png", jogo.estagioPrincipal));
-        npcs.add(new Npc("josinaldo", 2090, 150, "npcMale/josinaldo/sprite.png", jogo.estagioPrincipal));
-        npcs.add(new Npc("paulo", 1500, 100, "npcMale/paulo/sprite.png", jogo.estagioPrincipal));
-        npcs.add(new Npc("juliana", 1200, 1250, "npcFemale/juliana/sprite.png", jogo.estagioPrincipal));
+        npcs.add(new Npc("maria", 280, 1050, "maria/sprite.png", jogo.estagioPrincipal));
+        npcs.add(new Npc("betania", 150, 400, "betania/sprite.png", jogo.estagioPrincipal));
+        npcs.add(new Npc("bruna", 1190, 200, "bruna/sprite.png", jogo.estagioPrincipal));
+        npcs.add(new Npc("antonio", 1500, 1000, "antonio/sprite.png", jogo.estagioPrincipal));
+        npcs.add(new Npc("heberto", 150, 200, "heberto/sprite.png", jogo.estagioPrincipal));
+        npcs.add(new Npc("jose", 90, 1450, "jose/sprite.png", jogo.estagioPrincipal));
+        npcs.add(new Npc("josinaldo", 2090, 150, "josinaldo/sprite.png", jogo.estagioPrincipal));
+        npcs.add(new Npc("paulo", 1500, 100, "paulo/sprite.png", jogo.estagioPrincipal));
+        npcs.add(new Npc("juliana", 1200, 1250, "juliana/sprite.png", jogo.estagioPrincipal));
 
         // Adiciona os npcs no array de colisão
         personagem.npcs = npcs;
@@ -129,6 +155,10 @@ public class GameScreen implements Screen {
 
         // Define a tela anterior ao iniciar um novo jogo
         jogo.telas.put("config", new ConfigScreen(jogo, GameScreen.this));
+
+        // Inicializa a caixa de diálogo
+        caixaDialogo = new DialogBox(0, 64, 1280, 150, jogo);
+        mostrarDialogo = false;
     }
 
     @Override
@@ -139,11 +169,25 @@ public class GameScreen implements Screen {
 
     @Override
     public void render(float delta) {
+
+        // Desenha os elementos do jogo
         desenhar();
-        controle(delta);
-        controle2(delta);
+
+        // Atualiza a interação do personagem com os objetos do mapa
         interagir();
-        controleConfig(delta);
+
+        // Controle da tela de configurações
+        controleConfig();
+        
+        // Verifica se a caixa de diálogo deve ser exibida
+        // Se sim, exibe a caixa de diálogo, caso contrário permite 
+        // o controle do personagem continuando o jogo
+        if (mostrarDialogo) {
+            caixaDialogo.render();
+        } else {
+            controle(delta);
+            controle2(delta);
+        }
     }
 
     /**
@@ -156,9 +200,8 @@ public class GameScreen implements Screen {
         temporizador += dt;
 
         // Limpa a tela com uma cor preta
-        // ScreenUtils.clear(Color.BLACK);
-        Gdx.gl.glClearColor(0, 0, 0, 0.1f);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        Gdx.gl.glClearColor(0, 0, 0, 1);
+        // Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         // Alinhamento da câmera do jogo
         alinhamentoCamera();
@@ -188,6 +231,9 @@ public class GameScreen implements Screen {
             mapaRenderizador.render(new int[] { 3 }); // Topo
         }
 
+        // Atualiza a posição da caixa de diálogo para acompanhar a câmera
+        caixaDialogo.setPosition(CAMERA.position.x - CAMERA.viewportWidth / 2, CAMERA.position.y - CAMERA.viewportHeight / 2);
+        
         // Usado apenas para debug, comentar quando não for mais necessário
         debug();
     }
@@ -248,19 +294,29 @@ public class GameScreen implements Screen {
     }
 
     /**
+     * Verifica a interação do personagem com os NPCs
+     * 
+     * @param npc Npc
+     */
+    public void interacaoComNpc(Npc npc) {
+        if (personagem.estaDentroDaDistancia(15, npc)) {
+            System.out.println("Interagindo com o NPC: " + npc.nome);
+            // Carrega os diálogos do NPC
+            caixaDialogo.setTextoDialogo(carregaDialogos(npc));
+            caixaDialogo.setNpcTexture(npc.nome);
+            mostrarDialogo = true;
+            return;
+        }
+    }
+
+    /**
      * Verifica a interação do personagem com os objetos do mapa
      */
     private void interagir() {
         if (objeto != null && Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
             for (Npc npc : npcs) {
-                if (personagem.estaDentroDaDistancia(15, npc)) {
-                    System.out.println("Interagindo com o NPC: " + npc.nome);
-                    // Chama o método testeDialogos com o nome do NPC
-                    testeDialogos(npc.nome);
-                    return;
-                }
+                interacaoComNpc(npc);
             }
-
         }
 
         if (objeto != null && personagem.interagiu(objeto) && Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
@@ -272,7 +328,7 @@ public class GameScreen implements Screen {
 
             // Muda o mapa para room.tmx
             mapaRenderizador.dispose();
-            mapaRenderizador = new OrthogonalTiledMapRenderer(mapas.sala, jogo.batch);
+            mapaRenderizador = new OrthogonalTiledMapRenderer(mapas.sala, 1, jogo.batch);
             ;
 
             // Salva a última posicao e setar posição do personagem para a entrada
@@ -298,7 +354,7 @@ public class GameScreen implements Screen {
 
             // Muda o mapa para map.tmx
             mapaRenderizador.dispose();
-            mapaRenderizador = new OrthogonalTiledMapRenderer(mapas.mapa, jogo.batch);
+            mapaRenderizador = new OrthogonalTiledMapRenderer(mapas.mapa, 1, jogo.batch);
 
             // Ajusta para o personagem sair da sala mas longe do objeto de entrada da
             // prefeitura
@@ -318,29 +374,21 @@ public class GameScreen implements Screen {
         }
     }
 
-    public void testeDialogos(String nomePersonagem) {
-        DialogDAO dialogDAO = new DialogDAO();
-
+    /**
+     * Carrega os diálogos do personagem
+     * @param nomePersonagem
+     */
+    public String carregaDialogos(Npc npc) {
         // Carregar diálogos
-        Dialog dialog = dialogDAO.carregarDialogos(nomePersonagem);
-        if (dialog != null) {
-            System.out.println("Diálogos Genéricos:");
-            for (String dialogo : dialog.getDialogosGenericos()) {
-                System.out.println(dialogo);
-            }
-
-            System.out.println("Diálogos de Missão:");
-            for (DialogMission missao : dialog.getDialogosMissao()) {
-                System.out.println("Missão: " + missao.getMissao());
-                System.out.println("Mensagem: " + missao.getMensagem());
-            }
+        Dialog dialogo = DialogDAO.carregarDialogos(npc.nome);
+        if (dialogo != null) {
+            // Verifica se tem uma missão
+            return dialogo.buscarProximoDialogoMissao(MISSAO, npc.DIALOGO_ATUAL).getMensagem();
         }
-
-        // Salvar diálogos (se necessário)
-        // dialogDAO.salvarDialogos("antonio", dialog);
+        return "Olá, eu sou o " + npc.nome + "!";
     }
 
-    public void controleConfig(float delta) {
+    public void controleConfig() {
         if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
             if (jogo.telas.get("config") == null)
                 jogo.telas.put("config", new ConfigScreen(jogo, GameScreen.this));

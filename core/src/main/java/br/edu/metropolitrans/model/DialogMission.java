@@ -1,22 +1,22 @@
 package br.edu.metropolitrans.model;
 
 public class DialogMission {
-    private String missao;
+    private int missao;
     private String mensagem;
 
     public DialogMission() {
     }
 
-    public DialogMission(String missao, String mensagem) {
+    public DialogMission(int missao, String mensagem) {
         this.missao = missao;
         this.mensagem = mensagem;
     }
 
-    public String getMissao() {
+    public int getMissao() {
         return missao;
     }
 
-    public void setMissao(String missao) {
+    public void setMissao(int missao) {
         this.missao = missao;
     }
 
