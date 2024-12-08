@@ -77,12 +77,12 @@ public class GameScreen implements Screen {
      * Temporizador para acompanhar o tempo de jogo
      */
     float temporizador = 0f;
-
+    
     private MapObjects objetosColisao;
     private Array<Rectangle> retangulosColisao;
     public ArrayList<Npc> npcs;
     public ObjetoInterativo objeto, objetoSairSala;
-  
+
 
     public GameScreen(final MetropoliTrans jogo) {
         this.jogo = jogo;
@@ -146,8 +146,6 @@ public class GameScreen implements Screen {
         controleConfig(delta);
     }
 
-    
-
     /**
      * Desenha a tela do jogo
      */
@@ -167,10 +165,7 @@ public class GameScreen implements Screen {
 
         // Renderiza o mapa, camadas de sobpiso, piso e colisão
         mapaRenderizador.setView(CAMERA);
-        mapaRenderizador.render(new int[] { 0 }); // Sobpiso
-        mapaRenderizador.render(new int[] { 1 }); // Piso
-        mapaRenderizador.render(new int[] { 2 }); // Colisao
-        mapaRenderizador.render(new int[] { 3 }); // Colisao
+        mapaRenderizador.render(new int[] { 0, 1, 2 }); // Sobpiso
 
         // Inicia o batch de desenho
         jogo.batch.begin();
@@ -422,6 +417,7 @@ public class GameScreen implements Screen {
     @Override
     public void resize(int width, int height) {
         jogo.estagioPrincipal.getViewport().update(width, height, true);
+
     }
 
     @Override
