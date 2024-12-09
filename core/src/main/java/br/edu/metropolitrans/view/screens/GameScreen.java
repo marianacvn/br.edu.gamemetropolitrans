@@ -13,6 +13,7 @@ import br.edu.metropolitrans.MetropoliTrans;
 import br.edu.metropolitrans.model.actors.Npc;
 import br.edu.metropolitrans.model.actors.Personagem;
 import br.edu.metropolitrans.view.components.dialog.DialogBox;
+import br.edu.metropolitrans.view.components.missionalert.MissionAlert;
 
 /**
  * Tela principal do jogo
@@ -63,6 +64,8 @@ public class GameScreen implements Screen {
      */
     public int MISSAO = 0;
 
+    public MissionAlert missionAlert;
+
     public GameScreen(final MetropoliTrans jogo) {
         this.jogo = jogo;
 
@@ -74,12 +77,12 @@ public class GameScreen implements Screen {
         CAMERA.setToOrtho(false, TELA_LARGURA, TELA_ALTURA);
         CAMERA.update();
 
-        // Define a tela anterior ao iniciar um novo jogo
-        jogo.telas.put("config", new ConfigScreen(jogo, GameScreen.this));
-
         // Inicializa a caixa de diálogo
         caixaDialogo = new DialogBox(0, 64, 1280, 150, jogo);
         mostrarDialogo = false;
+
+        missionAlert = new MissionAlert(jogo.batch);
+
     }
 
     @Override
@@ -102,9 +105,9 @@ public class GameScreen implements Screen {
 
         // Controle de diálogos
         jogo.controller.controleDialogos();
-        
+
         // Verifica se a caixa de diálogo deve ser exibida
-        // Se sim, exibe a caixa de diálogo, caso contrário permite 
+        // Se sim, exibe a caixa de diálogo, caso contrário permite
         // o controle do personagem continuando o jogo
         if (mostrarDialogo) {
             caixaDialogo.render();
@@ -157,10 +160,21 @@ public class GameScreen implements Screen {
         }
 
         // Atualiza a posição da caixa de diálogo para acompanhar a câmera
-        caixaDialogo.setPosition(CAMERA.position.x - CAMERA.viewportWidth / 2, CAMERA.position.y - CAMERA.viewportHeight / 2);
+        caixaDialogo.setPosition(CAMERA.position.x - CAMERA.viewportWidth / 2,
+                CAMERA.position.y - CAMERA.viewportHeight / 2);
+
+        // Desenha o alerta de missão acima da posição do NPC
+        if (jogo.personagem.npcs != null) {
+            for (Npc npc : jogo.personagem.npcs) {
+                missionAlert.x = npc.getX();
+                missionAlert.y = npc.getY();
+                missionAlert.status = npc.statusAlertaMissao;
+                missionAlert.render();
+            }
+        }
 
         // Usado apenas para debug, comentar quando não for mais necessário
-        debug();
+        // debug();
     }
 
     /**
@@ -168,8 +182,7 @@ public class GameScreen implements Screen {
      */
     public void controleConfig() {
         if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
-            if (jogo.telas.get("config") == null)
-                jogo.telas.put("config", new ConfigScreen(jogo, GameScreen.this));
+            jogo.telas.put("config", new ConfigScreen(jogo, GameScreen.this));
             jogo.setScreen(jogo.telas.get("config"));
         }
     }
@@ -179,7 +192,8 @@ public class GameScreen implements Screen {
      */
     public void alinhamentoCamera() {
         // Atualiza a câmera do jogo
-        CAMERA.position.set(jogo.personagem.getX() + jogo.personagem.getOriginX(), jogo.personagem.getY() + jogo.personagem.getOriginY(),
+        CAMERA.position.set(jogo.personagem.getX() + jogo.personagem.getOriginX(),
+                jogo.personagem.getY() + jogo.personagem.getOriginY(),
                 0);
 
         // Calcular os limites da câmera
