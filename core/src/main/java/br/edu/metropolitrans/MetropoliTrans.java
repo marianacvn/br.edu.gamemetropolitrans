@@ -20,6 +20,7 @@ import br.edu.metropolitrans.model.actors.Npc;
 import br.edu.metropolitrans.model.actors.ObjetoInterativo;
 import br.edu.metropolitrans.model.actors.Personagem;
 import br.edu.metropolitrans.model.maps.Mapas;
+import br.edu.metropolitrans.view.screens.LoadingScreen;
 import br.edu.metropolitrans.view.screens.MenuScreen;
 
 public class MetropoliTrans extends Game {
@@ -96,6 +97,11 @@ public class MetropoliTrans extends Game {
 
     @Override
     public void create() {
+        // Inicia a tela de loading do game
+        this.setScreen(new LoadingScreen(this));
+    }
+
+    public void inicializarJogo() {
         estagioPrincipal = new Stage();
         batch = new SpriteBatch();
 
@@ -126,7 +132,7 @@ public class MetropoliTrans extends Game {
 
         // Carrega os Npcs
         npcs.add(new Npc("maria", 280, 1050, "maria/sprite.png", estagioPrincipal ));
-        npcs.add(new Npc("betania", 150, 400, "betania/sprite.png", estagioPrincipal, 1));
+        npcs.add(new Npc("betania", 150, 400, "betania/sprite.png", estagioPrincipal));
         npcs.add(new Npc("bruna", 1190, 200, "bruna/sprite.png", estagioPrincipal));
         npcs.add(new Npc("antonio", 1500, 1000, "antonio/sprite.png", estagioPrincipal));
         npcs.add(new Npc("heberto", 150, 200, "heberto/sprite.png", estagioPrincipal, 1));
@@ -146,10 +152,6 @@ public class MetropoliTrans extends Game {
 
         // Cria o controle do jogo
         controller = new Controller(this);
-
-        telas.put("menu", new MenuScreen(this));
-        this.setScreen(telas.get("menu"));
-
     }
 
     @Override

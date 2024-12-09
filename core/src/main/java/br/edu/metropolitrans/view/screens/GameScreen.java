@@ -77,9 +77,6 @@ public class GameScreen implements Screen {
         CAMERA.setToOrtho(false, TELA_LARGURA, TELA_ALTURA);
         CAMERA.update();
 
-        // Define a tela anterior ao iniciar um novo jogo
-        jogo.telas.put("config", new ConfigScreen(jogo, GameScreen.this));
-
         // Inicializa a caixa de diálogo
         caixaDialogo = new DialogBox(0, 64, 1280, 150, jogo);
         mostrarDialogo = false;
@@ -177,7 +174,7 @@ public class GameScreen implements Screen {
         }
 
         // Usado apenas para debug, comentar quando não for mais necessário
-        debug();
+        // debug();
     }
 
     /**
@@ -185,8 +182,7 @@ public class GameScreen implements Screen {
      */
     public void controleConfig() {
         if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
-            if (jogo.telas.get("config") == null)
-                jogo.telas.put("config", new ConfigScreen(jogo, GameScreen.this));
+            jogo.telas.put("config", new ConfigScreen(jogo, GameScreen.this));
             jogo.setScreen(jogo.telas.get("config"));
         }
     }
