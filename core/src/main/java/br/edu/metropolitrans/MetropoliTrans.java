@@ -125,11 +125,11 @@ public class MetropoliTrans extends Game {
         npcs = new ArrayList<Npc>();
 
         // Carrega os Npcs
-        npcs.add(new Npc("maria", 280, 1050, "maria/sprite.png", estagioPrincipal));
-        npcs.add(new Npc("betania", 150, 400, "betania/sprite.png", estagioPrincipal));
+        npcs.add(new Npc("maria", 280, 1050, "maria/sprite.png", estagioPrincipal ));
+        npcs.add(new Npc("betania", 150, 400, "betania/sprite.png", estagioPrincipal, 1));
         npcs.add(new Npc("bruna", 1190, 200, "bruna/sprite.png", estagioPrincipal));
         npcs.add(new Npc("antonio", 1500, 1000, "antonio/sprite.png", estagioPrincipal));
-        npcs.add(new Npc("heberto", 150, 200, "heberto/sprite.png", estagioPrincipal));
+        npcs.add(new Npc("heberto", 150, 200, "heberto/sprite.png", estagioPrincipal, 1));
         npcs.add(new Npc("jose", 90, 1450, "jose/sprite.png", estagioPrincipal));
         npcs.add(new Npc("josinaldo", 2090, 150, "josinaldo/sprite.png", estagioPrincipal));
         npcs.add(new Npc("paulo", 1500, 100, "paulo/sprite.png", estagioPrincipal));
