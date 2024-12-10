@@ -35,6 +35,8 @@ public class Personagem extends BaseActor {
 
     public ArrayList<Npc> npcs;
 
+    public Texture minimapaPonto;
+
     public Personagem(float x, float y, Stage s) {
         super(x, y, s);
 
@@ -50,6 +52,7 @@ public class Personagem extends BaseActor {
 
         // Carrega a textura
         Texture textura = new Texture(Gdx.files.internal(nomeArquivo), true);
+        minimapaPonto = new Texture(Gdx.files.internal("files/characters/mainCharacter/minimap-male.png"));
 
         // Divide a textura em quadros
         int larguraQuadro = textura.getWidth() / colunas;

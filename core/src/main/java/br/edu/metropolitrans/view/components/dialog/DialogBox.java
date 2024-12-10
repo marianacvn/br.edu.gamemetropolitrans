@@ -5,11 +5,11 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.Align;
 
 import br.edu.metropolitrans.MetropoliTrans;
+import br.edu.metropolitrans.view.font.FontBase;
 
 public class DialogBox {
 
@@ -37,13 +37,8 @@ public class DialogBox {
         this.renderizadorForma = new ShapeRenderer();
         this.texto = "";
 
-        // Define a fonte a ser utilizada
-        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("files/fonts/Silver.ttf"));
-        FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
-        parameter.size = 25; // Define o tamanho da fonte
-        fonte = generator.generateFont(parameter);
-        // Libera os recursos do gerador de fontes
-        generator.dispose();
+        // Carrega a fonte a ser utilizada
+        fonte = FontBase.getInstancia().getFonte(25, FontBase.Fontes.PADRAO);
 
         backgroundTexture = new Texture(Gdx.files.internal("files/backgrounds/dialog-background.png"));
     }
