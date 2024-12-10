@@ -1,0 +1,51 @@
+{
+	"dialogosGenericos": [
+	"Que belo dia para tomar um café."
+	],
+	"dialogosMissao": [
+		{
+			"missao": 1,
+			"mensagem": "Olá, sou betânia, você deve ser o novo(a) secretário(a)! Tenho que lhe desejar muita sorte haha! Bem, estou aqui para te receber na nossa escola municipal. Desculpe a confusão que o prefeito Heberto causou, não temos uma escola específica para trânsito haha, quem dera. Mas temos aqui na nossa escola municipal, uma sala de informática, ele solicitou a instalação de um curso que explica diversos assuntos sobre trânsito, é lá que você irá aprender o que precisar."
+		},
+		{
+			"missao": 1,
+			"mensagem": "Olha só, fiquei sabendo que você já anda resolvendo problemas por ai, todo mundo já está sabendo haha! Muito bem, Heberto passou aqui mais cedo perguntando se você veio aqui, disse a ele que você já ta melhorando a cidade no seu primeiro dia haha! Bem, agora você pode ver mais um módulo do curso."
+		},
+		{
+			"missao": 2,
+			"mensagem": "Meus parabéns, o Heberto deve tá por ai falando de você para todo mundo, com certeza ele deve reconhecer o seu trabalho haha. Mas enfim, um novo módulo foi liberado, fique a vontade."
+		},
+		{
+			"missao": 4,
+			"mensagem": "Nossa, você viu que a Bruna conseguiu um monte de assinaturas de cicilstas pedindo uma ciclofaixa? Já falei para o Heberto, mas antes disto, você precisa ver o novo módulo que está liberado."
+		},
+		{
+			"missao": 4,
+			"mensagem": "Olá, você não imagina a felicidade que a Bruna saiu daqui, esta é uma grande conquista para os ciclistas da cidade de MetropoliTrans! Bem, um novo módulo está liberado, fique a vontade."
+		},
+		{
+			"missao": 5,
+			"mensagem": "Você viu que aqui também precisa resolver uma situação? Bem, mas antes você precisa ver mais um módulo do curso."
+		},
+		{
+			"missao": 6,
+			"mensagem": "Aqui por ser uma escola, deveria ser respeitado e deveriam cumprir as leis, acredito que precise de mais alguma coisa para reduzir este problemas, consegue nos ajudar com esta situação?"
+		},
+		{
+			"missao": 6,
+			"mensagem": "Agora sim podemos ficar mais tranquilos, já foi liberado mais um módulo para você, fique a vontade."
+		},
+		{
+			"missao": 7,
+			"mensagem": "O Heberto está super empolgado com a sua palestra, acredito que este seja um grande marco na história de MetropoliTrans!"
+		},
+		{
+			"missao": 7,
+			"mensagem": "Parabéns! Você já possui um novo módulo liberado, acredito que vamos ser uma das cidades com menos acidentes de trânsito, graças a você e o prefeito Heberto!"
+		},
+		{
+			"missao": 8,
+			"mensagem": "A Juliana me contou da sua ação no centro da cidade, parabéns, é de pessoas assim que precisamos nesta cidade! Bem agora falta apenas mais um módulo, para finalizar o curso de educação no trânsito, estou orgulhoso do seu trabalho. Com certeza outras pessoas desta cidade estão também!"
+		}
+	]
+}

@@ -1,0 +1,16 @@
+{
+	"dialogosGenericos": [
+		"Vejo cada coisa aqui no hospital, é cada coisa que acontece que vocês não imaginam."
+	
+	],
+	"dialogosMissao": [
+		{
+			"missao": 2,
+			"mensagem": "Olá, sou o Paulo, trabalho como segurança aqui do hospital a 10 anos, já não aguento mais esta situação, sempre saio brigando com os motoristas que param para pegar os pacientes e ficam buzinando, mas não tem jeito! Eu preciso de férias."
+		},
+		{
+			"missao": 2,
+			"mensagem": "Agora sim! Finalmente, acho que agora irá dimunuir este problema, espero que a partir de hoje respeitem a placa de proibido acionar buzina."
+		}
+	]
+}
