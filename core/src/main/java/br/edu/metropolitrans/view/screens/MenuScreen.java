@@ -40,7 +40,7 @@ public class MenuScreen implements Screen {
     public MenuScreen(final MetropoliTrans jogo) {
         this.jogo = jogo;
         // Carrega a textura de fundo
-        background = new Texture(Gdx.files.internal("files/backgrounds/background-light.png"));
+        background = new Texture(Gdx.files.internal("files/backgrounds/background-cloud.png"));
 
         // Cria o Viewport e o Stage
         viewport = new ScreenViewport(); // Usa ScreenViewport para ajustar automaticamente ao tamanho da janela

@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Polygon;
@@ -14,6 +15,7 @@ import br.edu.metropolitrans.MetropoliTrans;
 import br.edu.metropolitrans.model.actors.Npc;
 import br.edu.metropolitrans.model.actors.Personagem;
 import br.edu.metropolitrans.view.components.dialog.DialogBox;
+import br.edu.metropolitrans.view.components.hud.Hud;
 import br.edu.metropolitrans.view.components.minimap.Minimap;
 import br.edu.metropolitrans.view.components.missionalert.MissionAlert;
 
@@ -72,17 +74,26 @@ public class GameScreen implements Screen {
      */
     public Minimap minimapa;
 
+    public SpriteBatch batch;
+    // Xp e Moedas
+    public Hud hud;
+
     public GameScreen(final MetropoliTrans jogo) {
         this.jogo = jogo;
 
         // Inicializa o renderizador de formas
         renderizadorForma = new ShapeRenderer();
 
+        batch = new SpriteBatch();
+
         // Define a camera do jogo
         CAMERA = new OrthographicCamera(TELA_LARGURA, TELA_ALTURA);
         viewport = new ExtendViewport(TELA_LARGURA, TELA_ALTURA, CAMERA);
         viewport.apply();
         CAMERA.update();
+
+        // Inicializar a HUD
+        hud = new Hud(); 
 
         // Inicializa a caixa de diálogo
         caixaDialogo = new DialogBox(0, 64, 1280, 150, jogo);
@@ -169,6 +180,9 @@ public class GameScreen implements Screen {
             // Renderiza a camada de Topo
             jogo.mapaRenderizador.render(new int[] { 3 }); // Topo
         }
+
+        // Renderizar a HUD
+        hud.render(batch);
 
         // Usado apenas para debug, comentar quando não for mais necessário
         // debug();
@@ -297,6 +311,7 @@ public class GameScreen implements Screen {
     @Override
     public void dispose() {
         jogo.mapaRenderizador.dispose();
+        batch.dispose();
     }
 
 }

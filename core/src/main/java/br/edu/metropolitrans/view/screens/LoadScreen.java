@@ -24,7 +24,7 @@ public class LoadScreen implements Screen {
         this.jogo = jogo;
 
         // Carrega a textura de fundo
-        background = new Texture(Gdx.files.internal("files/backgrounds/background-light.png"));
+        background = new Texture(Gdx.files.internal("files/backgrounds/background-cloud.png"));
 
         // Cria o Stage e o Skin
         stage = new Stage();
