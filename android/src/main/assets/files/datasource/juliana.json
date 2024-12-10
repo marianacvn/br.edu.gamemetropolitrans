@@ -1,0 +1,31 @@
+{
+	"dialogosGenericos": [
+		"O que será que está acontecendo pelo bairro hoje?"
+	],
+	"dialogosMissao": [
+		{
+			"missao": 1,
+			"mensagem": "Ei! Você precisa resolver isto, olha como está a situação! Todo dia eles ficam fazendo o retorno neste trecho, óbvio que todo dia também tem acidentes, isto é um perigo! Outro dia um rapaz fez este retorno e fechou uma motocicleta onde vinha uma senhora, sai correndo para ajudar, mas por pouco não aconteceu algo pior."
+		},
+		{
+			"missao": 1,
+			"mensagem": "Agora sim! Muito obrigada por dar atenção a esta causa, vou contar para todos o quanto o novo(a) secretário(a) é atencioso(a)!"
+		},
+		{
+			"missao": 2,
+			"mensagem": "Ei! Secretário(a), eu já falei para o Paulo que este barulhos são irritantes e é impossível conviver com eles, eu não acredito que até hoje ninguém solucionou isto. Praticamente passam o dia todo buzinando em frente ao hospital, onde já se viu isso?"
+		},
+		{
+			"missao": 5,
+			"mensagem": "Quanto tempo haha, ouvi dizer por ai que você anda resolvendo todos os problemas da cidade, menos aqui nesta escola, olha ai como os carros passam, não respeitam os alunos e passam sem nenhuma preocupação, como é que pode isto?"
+		},
+		{
+			"missao": 8,
+			"mensagem": "Não é que estou besbilhotando ninguém, mas aqui nesta rua, tem um restaurante no qual sempre ocorrem acidentes de trânsito em frente, todos santo dia uma pessoa reclama que passam em alta velocidade na via, fazendo zigue-zague, batendo o carro em outros veículos parados. Então nesse tipo de caso é bom comentar né, antes que algo mais grave ocorra."
+		},
+		{
+			"missao": 8,
+			"mensagem": "Ta vendo, a gente se sente até mais seguro depois desta sua ação, com certeza o povo está orgulhoso do seu trabalho."
+		}
+	]
+}

@@ -1,0 +1,16 @@
+{
+	"dialogosGenericos": [
+		"Olá, estou na correria hoje, mas posso ajudar?"
+	
+	],
+	"dialogosMissao": [
+		{
+			"missao": 3,
+			"mensagem": "Veja bem, eu não acredito que o Heberto não arrumou alguém para melhorar o fluxo dos ônibus aqui da rodoviária, sempre tem um engraçadinho que estaciona o carro perto da entrada dos veículos, como que um ônibus gigante vai conseguir entrar tranquilamente aqui?... Opa, calma, você é o novo secretário(a)? Então espero que tenha vindo aqui para resolver o meu problema."
+		},
+		{
+			"missao": 3,
+			"mensagem": "Não sei nem como agradecer, estava díficil trabalharmos desta forma, todo dia ocorria atrasos na saída e chegada dos ônibus, mande meu muito obrigado para o prefeito Heberto, uma pessoa incrível!"
+		}
+	]
+}

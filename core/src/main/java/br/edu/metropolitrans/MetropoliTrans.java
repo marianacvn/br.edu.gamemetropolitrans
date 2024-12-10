@@ -21,7 +21,6 @@ import br.edu.metropolitrans.model.actors.ObjetoInterativo;
 import br.edu.metropolitrans.model.actors.Personagem;
 import br.edu.metropolitrans.model.maps.Mapas;
 import br.edu.metropolitrans.view.screens.LoadingScreen;
-import br.edu.metropolitrans.view.screens.MenuScreen;
 
 public class MetropoliTrans extends Game {
 
