@@ -6,7 +6,6 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -24,6 +23,7 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import br.edu.metropolitrans.MetropoliTrans;
 import br.edu.metropolitrans.view.components.buttons.ButtonBase;
 import br.edu.metropolitrans.view.components.buttons.TextButtonBase;
+import br.edu.metropolitrans.view.font.FontBase;
 
 
 public class ConfigScreen implements Screen {
@@ -66,19 +66,9 @@ public class ConfigScreen implements Screen {
         // Carrega a imagem do background
         Drawable backgroundDrawable = new TextureRegionDrawable(new TextureRegion(background));
 
-        // fonte título
-        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("files/fonts/Silver.ttf"));
-        FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
-        parameter.size = 80; // Define o tamanho da fonte para o título
-        BitmapFont fonteTitulo = generator.generateFont(parameter);
-        generator.dispose(); // Libera os recursos do gerador
-
-        // fonte texto corpo
-        FreeTypeFontGenerator generator2 = new FreeTypeFontGenerator(Gdx.files.internal("files/fonts/Silver.ttf"));
-        FreeTypeFontGenerator.FreeTypeFontParameter parameter2 = new FreeTypeFontGenerator.FreeTypeFontParameter();
-        parameter2.size = 29; // Define o tamanho da fonte para o título
-        BitmapFont fonteCorpo = generator2.generateFont(parameter2);
-        generator2.dispose(); // Libera os recursos do gerador
+        // Carrega as fontes
+        BitmapFont fonteTitulo = FontBase.getInstancia().getFonte(80, FontBase.Fontes.PADRAO);
+        BitmapFont fonteCorpo = FontBase.getInstancia().getFonte(29, FontBase.Fontes.PADRAO);
 
         // Cria o título
         Label.LabelStyle labelStyle = new Label.LabelStyle();

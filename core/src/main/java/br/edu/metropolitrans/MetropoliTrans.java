@@ -8,7 +8,6 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.maps.MapObjects;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Rectangle;
@@ -20,6 +19,7 @@ import br.edu.metropolitrans.model.actors.Npc;
 import br.edu.metropolitrans.model.actors.ObjetoInterativo;
 import br.edu.metropolitrans.model.actors.Personagem;
 import br.edu.metropolitrans.model.maps.Mapas;
+import br.edu.metropolitrans.view.font.FontBase;
 import br.edu.metropolitrans.view.screens.LoadingScreen;
 
 public class MetropoliTrans extends Game {
@@ -104,13 +104,7 @@ public class MetropoliTrans extends Game {
         estagioPrincipal = new Stage();
         batch = new SpriteBatch();
 
-        // Carrega a fonte personalizada
-        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("files/fonts/Silver.ttf"));
-        FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
-        parameter.size = 30; // Define o tamanho da fonte
-        fonte = generator.generateFont(parameter);
-        // Libera os recursos do gerador de fontes
-        generator.dispose();
+        fonte = FontBase.getInstancia().getFonte(30, FontBase.Fontes.PADRAO);
 
         // Carrega a música do menu
         MusicaMenu = Gdx.audio.newMusic(Gdx.files.internal("files/songs/lofi-ambient.mp3"));

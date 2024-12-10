@@ -6,7 +6,6 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -22,6 +21,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import br.edu.metropolitrans.MetropoliTrans;
 import br.edu.metropolitrans.view.components.buttons.ImageButtonBase;
 import br.edu.metropolitrans.view.components.buttons.TextButtonBase;
+import br.edu.metropolitrans.view.font.FontBase;
 
 public class MenuScreen implements Screen {
 
@@ -80,11 +80,8 @@ public class MenuScreen implements Screen {
             }
         });
 
-        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("files/fonts/monogram.ttf"));
-        FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
-        parameter.size = 80; // Define o tamanho da fonte para o título
-        BitmapFont fonteTitulo = generator.generateFont(parameter);
-        generator.dispose(); // Libera os recursos do gerador
+        // Carrega a fonte do título
+        BitmapFont fonteTitulo = FontBase.getInstancia().getFonte(80, FontBase.Fontes.PADRAO);
 
         // Cria o título
         Label.LabelStyle labelStyle = new Label.LabelStyle();

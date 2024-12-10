@@ -5,13 +5,13 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.ScreenUtils;
 
 import br.edu.metropolitrans.MetropoliTrans;
+import br.edu.metropolitrans.view.font.FontBase;
 
 public class LoadScreen implements Screen {
     public final MetropoliTrans jogo;
@@ -33,12 +33,7 @@ public class LoadScreen implements Screen {
         skin = new Skin();
         skin.add("default", jogo.fonte);
 
-        // fonte título
-        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("files/fonts/Silver.ttf"));
-        FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
-        parameter.size = 80; // Define o tamanho da fonte para o título
-        BitmapFont fonteTitulo = generator.generateFont(parameter);
-        generator.dispose(); // Libera os recursos do gerador
+        BitmapFont fonteTitulo = FontBase.getInstancia().getFonte(80, FontBase.Fontes.PADRAO);
 
         // Cria o título
         Label.LabelStyle labelStyle = new Label.LabelStyle();

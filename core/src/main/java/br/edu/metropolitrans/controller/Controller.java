@@ -21,7 +21,7 @@ import br.edu.metropolitrans.model.maps.Mapas;
 import br.edu.metropolitrans.view.screens.GameScreen;
 
 public class Controller {
-    
+
     /**
      * Classe principal do Jogo
      */
@@ -31,11 +31,16 @@ public class Controller {
      * Tela principal do jogo
      */
     private GameScreen gameScreen;
-    
+
     /**
      * Mapas do jogo
      */
     public Mapas mapas;
+
+    /**
+     * Informa ao renderizador quantos pixels correspondem a uma unidade do mundo
+     */
+    float unitScale = 1;
 
     /**
      * Personagem do jogo
@@ -51,7 +56,7 @@ public class Controller {
      * Objetos interativos
      */
     public ObjetoInterativo objeto, objetoSairSala;
-    
+
     /**
      * Missão atual
      */
@@ -70,7 +75,7 @@ public class Controller {
 
         if (jogo.telas.get("game") == null)
             jogo.telas.put("game", new GameScreen(jogo));
-        
+
         gameScreen = (GameScreen) jogo.telas.get("game");
     }
 
@@ -92,7 +97,7 @@ public class Controller {
 
     /**
      * Controle do personagem, movimenta de acordo com as teclas pressionadas (WSAD)
-     * 
+     *
      * @param delta
      */
     public void controlePersonagem2(float delta) {
@@ -126,7 +131,7 @@ public class Controller {
 
             // Muda o mapa para room.tmx
             jogo.mapaRenderizador.dispose();
-            jogo.mapaRenderizador = new OrthogonalTiledMapRenderer(mapas.sala, 1, jogo.batch);
+            jogo.mapaRenderizador = new OrthogonalTiledMapRenderer(mapas.sala, unitScale, jogo.batch);
 
             // Salva a última posicao e setar posição do personagem para a entrada
             personagem.setPosition(1248, 1000);
@@ -151,7 +156,7 @@ public class Controller {
 
             // Muda o mapa para map.tmx
             jogo.mapaRenderizador.dispose();
-            jogo.mapaRenderizador = new OrthogonalTiledMapRenderer(mapas.mapa, 1, jogo.batch);
+            jogo.mapaRenderizador = new OrthogonalTiledMapRenderer(mapas.mapa, unitScale, jogo.batch);
 
             // Ajusta para o personagem sair da sala mas longe do objeto de entrada da
             // prefeitura
@@ -170,7 +175,7 @@ public class Controller {
             personagem.setRetangulosColisao(jogo.retangulosColisao);
         }
     }
-    
+
     /**
      * Controle de diálogos
      */
@@ -182,7 +187,7 @@ public class Controller {
 
     /**
      * Verifica a interação do personagem com os NPCs
-     * 
+     *
      * @param npc Npc
      */
     public void interacaoComNpc(Npc npc) {
@@ -198,10 +203,10 @@ public class Controller {
         }
     }
 
-    
+
     /**
      * Carrega os diálogos do personagem
-     * @param nomePersonagem
+     * @param npc Npc
      */
     public String carregaDialogos(Npc npc) {
         // Carregar diálogos
@@ -215,7 +220,7 @@ public class Controller {
 
     /**
      * Monta os retângulos de colisão do mapa
-     * 
+     *
      * @param mapa TiledMap
      */
     public void montarColisao(TiledMap mapa) {

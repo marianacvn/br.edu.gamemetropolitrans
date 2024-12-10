@@ -8,11 +8,13 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.utils.viewport.ExtendViewport;
 
 import br.edu.metropolitrans.MetropoliTrans;
 import br.edu.metropolitrans.model.actors.Npc;
 import br.edu.metropolitrans.model.actors.Personagem;
 import br.edu.metropolitrans.view.components.dialog.DialogBox;
+import br.edu.metropolitrans.view.components.minimap.Minimap;
 import br.edu.metropolitrans.view.components.missionalert.MissionAlert;
 
 /**
@@ -21,8 +23,8 @@ import br.edu.metropolitrans.view.components.missionalert.MissionAlert;
 public class GameScreen implements Screen {
 
     // Largura e altura da tela do jogo
-    public static final int TELA_LARGURA = 1280;
-    public static final int TELA_ALTURA = 720;
+    public static final float TELA_LARGURA = 1280;
+    public static final float TELA_ALTURA = 720;
 
     /**
      * Referência para o jogo principal
@@ -33,11 +35,7 @@ public class GameScreen implements Screen {
      * Câmera do jogo
      */
     private final OrthographicCamera CAMERA;
-
-    /**
-     * Informa ao renderizador quantos pixels correspondem a uma unidade do mundo
-     */
-    float unitScale = 1;
+    private ExtendViewport viewport;
 
     /**
      * Renderizador de formas/objetos
@@ -64,7 +62,15 @@ public class GameScreen implements Screen {
      */
     public int MISSAO = 0;
 
-    public MissionAlert missionAlert;
+    /**
+     * Alerta de missão
+     */
+    public MissionAlert alertaMissao;
+
+    /**
+     * Minimapa
+     */
+    public Minimap minimapa;
 
     public GameScreen(final MetropoliTrans jogo) {
         this.jogo = jogo;
@@ -73,15 +79,17 @@ public class GameScreen implements Screen {
         renderizadorForma = new ShapeRenderer();
 
         // Define a camera do jogo
-        CAMERA = new OrthographicCamera();
-        CAMERA.setToOrtho(false, TELA_LARGURA, TELA_ALTURA);
+        CAMERA = new OrthographicCamera(TELA_LARGURA, TELA_ALTURA);
+        viewport = new ExtendViewport(TELA_LARGURA, TELA_ALTURA, CAMERA);
+        viewport.apply();
         CAMERA.update();
 
         // Inicializa a caixa de diálogo
         caixaDialogo = new DialogBox(0, 64, 1280, 150, jogo);
         mostrarDialogo = false;
 
-        missionAlert = new MissionAlert(jogo.batch);
+        alertaMissao = new MissionAlert(jogo.batch);
+        minimapa = new Minimap(1170, 200, 200, 200, jogo);
 
     }
 
@@ -116,6 +124,9 @@ public class GameScreen implements Screen {
             jogo.controller.controlePersonagem(delta);
             jogo.controller.controlePersonagem2(delta);
         }
+
+        // Renderiza a caixa dialogo, minimapa e alertas de missao
+        desenharComponentes();
     }
 
     /**
@@ -159,22 +170,33 @@ public class GameScreen implements Screen {
             jogo.mapaRenderizador.render(new int[] { 3 }); // Topo
         }
 
+        // Usado apenas para debug, comentar quando não for mais necessário
+        // debug();
+    }
+
+    /**
+     * Desenha os componentes do jogo
+     */
+    private void desenharComponentes() {
         // Atualiza a posição da caixa de diálogo para acompanhar a câmera
         caixaDialogo.setPosition(CAMERA.position.x - CAMERA.viewportWidth / 2,
                 CAMERA.position.y - CAMERA.viewportHeight / 2);
 
+        // Atualiza a posição do minimapa para acompanhar a câmera
+        minimapa.setPosition(CAMERA.position.x - CAMERA.viewportWidth / 2 + 1070,
+                CAMERA.position.y - CAMERA.viewportHeight / 2 + 10);
+        if (!mostrarDialogo)
+            minimapa.render(jogo.personagem);
+
         // Desenha o alerta de missão acima da posição do NPC
         if (jogo.personagem.npcs != null) {
             for (Npc npc : jogo.personagem.npcs) {
-                missionAlert.x = npc.getX();
-                missionAlert.y = npc.getY();
-                missionAlert.status = npc.statusAlertaMissao;
-                missionAlert.render();
+                alertaMissao.x = npc.getX();
+                alertaMissao.y = npc.getY();
+                alertaMissao.status = npc.statusAlertaMissao;
+                alertaMissao.render();
             }
         }
-
-        // Usado apenas para debug, comentar quando não for mais necessário
-        // debug();
     }
 
     /**
@@ -256,8 +278,8 @@ public class GameScreen implements Screen {
 
     @Override
     public void resize(int width, int height) {
+        viewport.update(width, height);
         jogo.estagioPrincipal.getViewport().update(width, height, true);
-
     }
 
     @Override
