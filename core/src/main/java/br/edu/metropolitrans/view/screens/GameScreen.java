@@ -10,7 +10,6 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
-
 import br.edu.metropolitrans.MetropoliTrans;
 import br.edu.metropolitrans.model.actors.Npc;
 import br.edu.metropolitrans.model.actors.Personagem;
@@ -27,55 +26,45 @@ public class GameScreen implements Screen {
     // Largura e altura da tela do jogo
     public static final float TELA_LARGURA = 1280;
     public static final float TELA_ALTURA = 720;
-
     /**
      * Referência para o jogo principal
      */
     final MetropoliTrans jogo;
-
     /**
      * Câmera do jogo
      */
     private final OrthographicCamera CAMERA;
     private ExtendViewport viewport;
-
     /**
      * Renderizador de formas/objetos
      */
     private final ShapeRenderer renderizadorForma;
-
     /**
      * Temporizador para acompanhar o tempo de jogo
      */
     float temporizador = 0f;
-
     /**
      * Caixa de diálogo
      */
     public DialogBox caixaDialogo;
-
     /**
      * Flag para mostrar a caixa de diálogo
      */
     public boolean mostrarDialogo;
-
     /**
      * Missão atual
      */
     public int MISSAO = 0;
-
     /**
      * Alerta de missão
      */
     public MissionAlert alertaMissao;
-
     /**
      * Minimapa
      */
     public Minimap minimapa;
-
     public SpriteBatch batch;
-    // Xp e Moedas
+    /** Xp e Moedas */
     public Hud hud;
 
     public GameScreen(final MetropoliTrans jogo) {
@@ -88,31 +77,30 @@ public class GameScreen implements Screen {
 
         // Define a camera do jogo
         CAMERA = new OrthographicCamera(TELA_LARGURA, TELA_ALTURA);
-        viewport = new ExtendViewport(TELA_LARGURA, TELA_ALTURA, CAMERA);
-        viewport.apply();
+        CAMERA.setToOrtho(false, TELA_LARGURA, TELA_ALTURA);
         CAMERA.update();
 
         // Inicializar a HUD
-        hud = new Hud(); 
+        hud = new Hud();
+
+        // Inicializar o minimapa
+        minimapa = new Minimap(1170, 200, 200, 200, jogo);
 
         // Inicializa a caixa de diálogo
         caixaDialogo = new DialogBox(0, 64, 1280, 150, jogo);
         mostrarDialogo = false;
 
+        // Inicializa o alerta de missão
         alertaMissao = new MissionAlert(jogo.batch);
-        minimapa = new Minimap(1170, 200, 200, 200, jogo);
-
     }
 
     @Override
     public void show() {
-        // Para a música do menu e inicia a música do jogo
         jogo.MusicaMenu.stop();
     }
 
     @Override
     public void render(float delta) {
-
         // Desenha os elementos do jogo
         desenhar();
 
@@ -144,14 +132,12 @@ public class GameScreen implements Screen {
      * Desenha a tela do jogo
      */
     private void desenhar() {
-
         // Atualiza o temporizador
         float dt = Gdx.graphics.getDeltaTime();
         temporizador += dt;
 
         // Limpa a tela com uma cor preta
         Gdx.gl.glClearColor(0, 0, 0, 1);
-        // Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         // Alinhamento da câmera do jogo
         alinhamentoCamera();
@@ -181,11 +167,6 @@ public class GameScreen implements Screen {
             jogo.mapaRenderizador.render(new int[] { 3 }); // Topo
         }
 
-        // Renderizar a HUD
-        hud.render(batch);
-
-        // Usado apenas para debug, comentar quando não for mais necessário
-        // debug();
     }
 
     /**
@@ -195,6 +176,10 @@ public class GameScreen implements Screen {
         // Atualiza a posição da caixa de diálogo para acompanhar a câmera
         caixaDialogo.setPosition(CAMERA.position.x - CAMERA.viewportWidth / 2,
                 CAMERA.position.y - CAMERA.viewportHeight / 2);
+
+        hud.setPosition(CAMERA.position.x - CAMERA.viewportWidth / 2 + 1150,
+        CAMERA.position.y - CAMERA.viewportHeight / 2 + 650);
+        hud.render(batch);
 
         // Atualiza a posição do minimapa para acompanhar a câmera
         minimapa.setPosition(CAMERA.position.x - CAMERA.viewportWidth / 2 + 1070,
@@ -292,7 +277,6 @@ public class GameScreen implements Screen {
 
     @Override
     public void resize(int width, int height) {
-        viewport.update(width, height);
         jogo.estagioPrincipal.getViewport().update(width, height, true);
     }
 
@@ -311,7 +295,6 @@ public class GameScreen implements Screen {
     @Override
     public void dispose() {
         jogo.mapaRenderizador.dispose();
-        batch.dispose();
     }
 
 }
