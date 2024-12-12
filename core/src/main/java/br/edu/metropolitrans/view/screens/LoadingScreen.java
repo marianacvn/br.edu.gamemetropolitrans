@@ -31,7 +31,7 @@ public class LoadingScreen implements Screen {
         batch = new SpriteBatch();
 
         // Carrega a textura de fundo
-        background = new Texture(Gdx.files.internal("files/backgrounds/background-cloud.png"));
+        background = new Texture(Gdx.files.internal("files/backgrounds/background-light.png"));
 
         // Carregar a fonte
         font = FontBase.getInstancia().getFonte(50, new Color(0x4c4869ff), FontBase.Fontes.MONOGRAM);

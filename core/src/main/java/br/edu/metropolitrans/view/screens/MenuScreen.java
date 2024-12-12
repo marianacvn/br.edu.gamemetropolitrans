@@ -26,6 +26,7 @@ import br.edu.metropolitrans.view.font.FontBase;
 public class MenuScreen implements Screen {
 
     public final MetropoliTrans jogo;
+    /*  Background da tela */
     public Texture background;
     /** Gerencia o botão */
     public Stage stage;
@@ -34,13 +35,19 @@ public class MenuScreen implements Screen {
     public Label titulo;
     public TextButtonBase botaoJogar, botaoNovoJogo, botaoConfig, botaoSair;
     public ImageButtonBase botaoMute;
+    /** 
+     * Define se o som está mutado ou não
+     */
     public boolean isMuted = false;
+    /**
+     * Viewport da tela
+     */
     public Viewport viewport;
 
     public MenuScreen(final MetropoliTrans jogo) {
         this.jogo = jogo;
         // Carrega a textura de fundo
-        background = new Texture(Gdx.files.internal("files/backgrounds/background-cloud.png"));
+        background = new Texture(Gdx.files.internal("files/backgrounds/background-light.png"));
 
         // Cria o Viewport e o Stage
         viewport = new ScreenViewport(); // Usa ScreenViewport para ajustar automaticamente ao tamanho da janela
@@ -81,7 +88,7 @@ public class MenuScreen implements Screen {
         });
 
         // Carrega a fonte do título
-        BitmapFont fonteTitulo = FontBase.getInstancia().getFonte(80, FontBase.Fontes.PADRAO);
+        BitmapFont fonteTitulo = FontBase.getInstancia().getFonte(80, FontBase.Fontes.MONOGRAM);
 
         // Cria o título
         Label.LabelStyle labelStyle = new Label.LabelStyle();
