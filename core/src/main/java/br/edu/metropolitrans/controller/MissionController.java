@@ -43,6 +43,7 @@ public class MissionController {
             if (jogo.controller.mostrarDialogo
                     && jogo.controller.gameScreen.caixaDialogo.npc.nome.equals("juliana")) {
                 jogo.vehicles.get("taxi").setVisible(true);
+                jogo.vehicles.get("taxi").animacaoAtivada = true;
             }
         }
     }

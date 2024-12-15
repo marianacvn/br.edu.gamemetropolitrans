@@ -147,8 +147,8 @@ public class MetropoliTrans extends Game {
         // Carrega os veículos
         vehicles.put(
                 "taxi",
-                new Vehicle("taxi", 1266, 1000, "taxi-sprite.png", estagioPrincipal,
-                        List.of("C-10*32", "E-9*32", "B-10*32")));
+                new Vehicle("taxi", 1266, 1000, 50, "taxi-sprite.png", estagioPrincipal,
+                        List.of("C-8*32", "E-8*32", "B-10*32")));
 
         objeto = new ObjetoInterativo("entradaPrefeitura", 32, 220, "background-transparent.png",
                 estagioPrincipal);

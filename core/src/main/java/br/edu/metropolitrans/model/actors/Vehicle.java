@@ -12,8 +12,12 @@ public class Vehicle extends BaseActor {
 
     public String nome;
     public String nomeArquivo;
+    public int velocidade;
     public int statusAlertaMissao;
     public Texture minimapaPonto;
+    public boolean animacaoAtivada;
+    private float xInicial;
+    private float yInicial;
 
     private Animation<TextureRegion> animacaoCima;
     private Animation<TextureRegion> animacaoEsquerda;
@@ -31,6 +35,7 @@ public class Vehicle extends BaseActor {
      * @param nome        nome do veículo
      * @param x           posição inicial x do veículo
      * @param y           posição inicial y do veículo
+     * @param velocidade  velocidade do veículo
      * @param nomeArquivo nome do arquivo de animação/gráfico do veículo
      * @param stage       palco do jogo
      * @param roteiro     roteiro do veículo, formato aceito
@@ -40,14 +45,28 @@ public class Vehicle extends BaseActor {
      *                    e BLOCOS é a quantidade de blocos a serem percorridos.
      *                    Exemplo: "C-1*2" (Cima, 1 bloco, 2 vezes)
      */
-    public Vehicle(String nome, float x, float y, String nomeArquivo, Stage stage, List<String> roteiro) {
+    public Vehicle(String nome, float x, float y, int velocidade, String nomeArquivo, Stage stage,
+            List<String> roteiro) {
         super(x, y, stage);
+
+        // Salva a posição inicial do veículo
+        xInicial = x;
+        yInicial = y;
+
+        // Atribui os valores recebidos aos atributos da classe
         this.nome = nome;
+        this.velocidade = velocidade;
         this.nomeArquivo = nomeArquivo;
         this.roteiro = roteiro;
 
+        // Define algumas configurações iniciais
         margemAltura = -15;
+        tempoMissao = 0;
+        etapaMissao = 0;
+        distanciaPercorrida = 0;
+        animacaoAtivada = false;
 
+        // Carrega as animações do veículo
         carregaAnimacoes("files/vehicles/" + nomeArquivo);
 
         try {
@@ -57,10 +76,7 @@ public class Vehicle extends BaseActor {
             Gdx.app.log("Vehicle", "Erro ao carregar minimapaPonto para " + nomeArquivo);
         }
 
-        tempoMissao = 0;
-        etapaMissao = 0;
-        distanciaPercorrida = 0;
-
+        // Inicializa o veículo como invisível
         setVisible(false);
     }
 
@@ -90,33 +106,41 @@ public class Vehicle extends BaseActor {
     @Override
     public void act(float delta) {
         super.act(delta);
-        if (etapaMissao < roteiro.size()) {
-            String[] instrucao = roteiro.get(etapaMissao).split("-");
-            String direcao = instrucao[0];
-            float distancia = Float.parseFloat(instrucao[1].split("\\*")[0])
-                    * Float.parseFloat(instrucao[1].split("\\*")[1]);
+        if (animacaoAtivada) {
+            if (etapaMissao < roteiro.size()) {
+                String[] instrucao = roteiro.get(etapaMissao).split("-");
+                String direcao = instrucao[0];
+                float distancia = Float.parseFloat(instrucao[1].split("\\*")[0])
+                        * Float.parseFloat(instrucao[1].split("\\*")[1]);
 
-            switch (direcao) {
-                case "C":
-                    animarParaCima();
-                    setVelocidade(100);
-                    moverParaCima(delta, distancia);
-                    break;
-                case "E":
-                    animarParaEsquerda();
-                    setVelocidade(100);
-                    moverParaEsquerda(delta, distancia);
-                    break;
-                case "B":
-                    animarParaBaixo();
-                    setVelocidade(100);
-                    moverParaBaixo(delta, distancia);
-                    break;
-                case "D":
-                    animarParaDireita();
-                    setVelocidade(100);
-                    moverParaDireita(delta, distancia);
-                    break;
+                switch (direcao) {
+                    case "C":
+                        animarParaCima();
+                        setVelocidade(velocidade);
+                        moverParaCima(delta, distancia);
+                        break;
+                    case "E":
+                        animarParaEsquerda();
+                        setVelocidade(velocidade);
+                        moverParaEsquerda(delta, distancia);
+                        break;
+                    case "B":
+                        animarParaBaixo();
+                        setVelocidade(velocidade);
+                        moverParaBaixo(delta, distancia);
+                        break;
+                    case "D":
+                        animarParaDireita();
+                        setVelocidade(velocidade);
+                        moverParaDireita(delta, distancia);
+                        break;
+                }
+            } else {
+                // Caso o veículo tenha terminado o roteiro, volta para a posição inicial
+                // e começa novamente
+                etapaMissao = 0;
+                distanciaPercorrida = 0;
+                setPosition(xInicial, yInicial);
             }
         }
     }
