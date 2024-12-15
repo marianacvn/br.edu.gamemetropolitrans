@@ -264,6 +264,39 @@ public class BaseActor extends Actor {
     }
 
     /**
+     * Cria uma animação a partir de uma spritesheet: uma grade retangular de
+     * imagens armazenadas em um único arquivo. Porém apenas uma linha da
+     * spritesheet
+     *
+     * @param nomeArquivo   nome do arquivo contendo a spritesheet
+     * @param linhas        número de linhas de imagens na spritesheet
+     * @param colunas       número de colunas de imagens na spritesheet
+     * @param duracaoQuadro quanto tempo cada quadro deve ser exibido
+     * @param loop          a animação deve ser em loop
+     * @param linha         linha da spritesheet a ser utilizada
+     * @return animação criada (útil para armazenar várias animações)
+     */
+    public Animation<TextureRegion> carregaAnimacaoDeSpriteSheet(String nomeArquivo, int linhas, int colunas,
+            float duracaoQuadro, boolean loop, int linha) {
+        Texture textura = new Texture(Gdx.files.internal(nomeArquivo), true);
+        textura.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+
+        int larguraQuadro = textura.getWidth() / colunas;
+        int alturaQuadro = textura.getHeight() / linhas;
+
+        TextureRegion[][] quadros = TextureRegion.split(textura, larguraQuadro, alturaQuadro);
+        TextureRegion[] linhaQuadros = new TextureRegion[colunas];
+        for (int c = 0; c < colunas; c++) {
+            linhaQuadros[c] = quadros[linha][c];
+        }
+
+        Animation<TextureRegion> anim = new Animation<>(duracaoQuadro, linhaQuadros);
+        anim.setPlayMode(loop ? Animation.PlayMode.LOOP : Animation.PlayMode.NORMAL);
+
+        return anim;
+    }
+
+    /**
      * Método ideal para criar uma animação de 1 quadro a partir de uma única
      * textura.
      *

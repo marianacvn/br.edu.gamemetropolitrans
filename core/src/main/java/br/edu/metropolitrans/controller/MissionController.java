@@ -5,6 +5,7 @@ import com.badlogic.gdx.Gdx;
 import br.edu.metropolitrans.MetropoliTrans;
 import br.edu.metropolitrans.model.Mission;
 import br.edu.metropolitrans.model.actors.Npc;
+import br.edu.metropolitrans.model.actors.Vehicle;
 import br.edu.metropolitrans.model.dao.MissionDataDAO;
 
 public class MissionController {
@@ -28,15 +29,20 @@ public class MissionController {
          * deve setar missao atual para 1
          */
         if (missaoId == 0) {
-            Gdx.app.log("Missão 0", "Missão 0");
             atualizarMissao(jogo, 1);
             controlaTrocaMissao = true;
         } else if (missaoId == 1) {
-            Gdx.app.log("Missão 1", "Missão 1");
             // Atualiza o status de alerta da missão dos NPCs que fazem parte da missão
             if (controlaTrocaMissao) {
                 atualizarAlertas(jogo);
                 controlaTrocaMissao = false;
+            }
+
+            // Verifica se o diálogo com juliana está sendo exibido,
+            // se sim exibe o veiculo realizando a ação
+            if (jogo.controller.mostrarDialogo
+                    && jogo.controller.gameScreen.caixaDialogo.npc.nome.equals("juliana")) {
+                jogo.vehicles.get("taxi").setVisible(true);
             }
         }
     }

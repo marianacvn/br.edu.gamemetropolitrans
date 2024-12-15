@@ -2,6 +2,8 @@ package br.edu.metropolitrans;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -17,6 +19,7 @@ import br.edu.metropolitrans.controller.Controller;
 import br.edu.metropolitrans.model.actors.Npc;
 import br.edu.metropolitrans.model.actors.ObjetoInterativo;
 import br.edu.metropolitrans.model.actors.Personagem;
+import br.edu.metropolitrans.model.actors.Vehicle;
 import br.edu.metropolitrans.model.maps.Mapas;
 import br.edu.metropolitrans.view.font.FontBase;
 import br.edu.metropolitrans.view.screens.LoadingScreen;
@@ -49,7 +52,7 @@ public class MetropoliTrans extends Game {
     public Music MusicaMenu;
 
     /**
-     * Lista de telas do jogo
+     * Map de telas do jogo
      */
     public HashMap<String, Screen> telas = new HashMap<>();
 
@@ -62,6 +65,11 @@ public class MetropoliTrans extends Game {
      * Lista de NPCs do jogo
      */
     public ArrayList<Npc> npcs;
+
+    /**
+     * Map de Veículos do jogo
+     */
+    public HashMap<String, Vehicle> vehicles = new HashMap<>();
 
     /**
      * Objetos interativos
@@ -135,6 +143,12 @@ public class MetropoliTrans extends Game {
 
         // Adiciona os npcs no array de colisão
         personagem.npcs = npcs;
+
+        // Carrega os veículos
+        vehicles.put(
+                "taxi",
+                new Vehicle("taxi", 1266, 1000, "taxi-sprite.png", estagioPrincipal,
+                        List.of("C-10*32", "E-9*32", "B-10*32")));
 
         objeto = new ObjetoInterativo("entradaPrefeitura", 32, 220, "background-transparent.png",
                 estagioPrincipal);

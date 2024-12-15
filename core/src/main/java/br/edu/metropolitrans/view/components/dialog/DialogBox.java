@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.Align;
 
 import br.edu.metropolitrans.MetropoliTrans;
+import br.edu.metropolitrans.model.actors.Npc;
 import br.edu.metropolitrans.view.font.FontBase;
 
 public class DialogBox {
@@ -25,6 +26,7 @@ public class DialogBox {
     private Texture npcTexture;
     private SpriteBatch batch;
     private boolean npcImagemComFundo;
+    public Npc npc;
 
     public DialogBox(float x, float y, float largura, float altura, MetropoliTrans jogo) {
         this.batch = jogo.batch;
@@ -45,14 +47,14 @@ public class DialogBox {
         this.texto = texto;
     }
 
-    public void setNpcTexture(String nomePersonagem) {
+    public void defineTexturaNpc() {
         try {
             if (npcImagemComFundo) {
                 npcTexture = new Texture(Gdx.files
-                        .internal("files/characters/" + nomePersonagem + "/portrait-" + nomePersonagem + "-256.png"));
+                        .internal("files/characters/" + npc.nome + "/portrait-" + npc.nome + "-256.png"));
             } else {
                 npcTexture = new Texture(Gdx.files.internal(
-                        "files/characters/" + nomePersonagem + "/portrait-" + nomePersonagem + "-256-semfundo.png"));
+                        "files/characters/" + npc.nome + "/portrait-" + npc.nome + "-256-semfundo.png"));
             }
         } catch (Exception e) {
             npcTexture = null;

@@ -48,10 +48,6 @@ public class GameScreen implements Screen {
      */
     public DialogBox caixaDialogo;
     /**
-     * Flag para mostrar a caixa de diálogo
-     */
-    public boolean mostrarDialogo;
-    /**
      * Flag para mostrar a caixa de missão
      */
     public boolean mostrarCaixaMissao;
@@ -95,7 +91,6 @@ public class GameScreen implements Screen {
 
         // Inicializa a caixa de diálogo
         caixaDialogo = new DialogBox(0, 64, 1280, 150, jogo);
-        mostrarDialogo = false;
 
         // Inicializa o alerta de missão
         alertaMissao = new MissionAlert(jogo.batch);
@@ -130,7 +125,7 @@ public class GameScreen implements Screen {
         // Verifica se a caixa de diálogo deve ser exibida
         // Se sim, exibe a caixa de diálogo, caso contrário permite
         // o controle do personagem continuando o jogo
-        if (!mostrarDialogo) {
+        if (!jogo.controller.mostrarDialogo) {
             // Controle do personagem Setas ou WASD
             jogo.controller.controlePersonagem(delta);
             jogo.controller.controlePersonagem2(delta);
@@ -192,7 +187,7 @@ public class GameScreen implements Screen {
         // Atualiza a posição da caixa de diálogo para acompanhar a câmera
         caixaDialogo.setPosition(CAMERA.position.x - CAMERA.viewportWidth / 2,
                 CAMERA.position.y - CAMERA.viewportHeight / 2);
-        if (mostrarDialogo) {
+        if (jogo.controller.mostrarDialogo) {
             caixaDialogo.render();
         }
 
@@ -203,7 +198,7 @@ public class GameScreen implements Screen {
         // Atualiza a posição do minimapa para acompanhar a câmera
         minimapa.setPosition(CAMERA.position.x - CAMERA.viewportWidth / 2 + 1070,
                 CAMERA.position.y - CAMERA.viewportHeight / 2 + 10);
-        if (!mostrarDialogo)
+        if (!jogo.controller.mostrarDialogo)
             minimapa.render(jogo.personagem);
 
         // Desenha o alerta de missão acima da posição do NPC

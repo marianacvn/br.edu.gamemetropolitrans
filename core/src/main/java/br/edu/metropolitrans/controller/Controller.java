@@ -30,7 +30,7 @@ public class Controller {
     /**
      * Tela principal do jogo
      */
-    private GameScreen gameScreen;
+    public GameScreen gameScreen;
 
     /**
      * Mapas do jogo
@@ -62,6 +62,11 @@ public class Controller {
      */
     public int MISSAO;
 
+    /**
+     * Flag para mostrar a caixa de diálogo
+     */
+    public boolean mostrarDialogo;
+
     public Controller(MetropoliTrans jogo) {
         this.jogo = jogo;
         this.mapas = jogo.mapas;
@@ -77,6 +82,7 @@ public class Controller {
             jogo.telas.put("game", new GameScreen(jogo));
 
         gameScreen = (GameScreen) jogo.telas.get("game");
+        mostrarDialogo = false;
     }
 
     /**
@@ -181,7 +187,7 @@ public class Controller {
      */
     public void controleDialogos() {
         if (Gdx.input.isKeyJustPressed(Input.Keys.ENTER)) {
-            gameScreen.mostrarDialogo = false;
+            mostrarDialogo = false;
             for (Npc npc : npcs) {
                 atualizaStatusAlertaMissaoNpc(npc);
             }
@@ -198,9 +204,10 @@ public class Controller {
             // GameScreen gameScreen = (GameScreen) jogo.telas.get("game");
             if (personagem.estaDentroDaDistancia(15, npc)) {
                 // Carrega os diálogos do NPC
+                gameScreen.caixaDialogo.npc = npc;
                 gameScreen.caixaDialogo.setTextoDialogo(carregaDialogos(npc));
-                gameScreen.caixaDialogo.setNpcTexture(npc.nome);
-                gameScreen.mostrarDialogo = true;
+                gameScreen.caixaDialogo.defineTexturaNpc();
+                mostrarDialogo = true;
                 return;
             }
         }
