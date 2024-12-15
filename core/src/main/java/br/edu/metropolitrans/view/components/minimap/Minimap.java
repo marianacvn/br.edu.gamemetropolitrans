@@ -1,11 +1,8 @@
 package br.edu.metropolitrans.view.components.minimap;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.math.Vector2;
 
 import br.edu.metropolitrans.MetropoliTrans;
 import br.edu.metropolitrans.model.actors.Npc;
@@ -16,22 +13,20 @@ public class Minimap {
     public Texture background;
     public Texture personagemTexture;
     // private Texture toggleButtonTexture;
-    private float x, y, largura, altura;
+    private float x, y;
     private SpriteBatch batch;
     private float minimapaLargura = 200;
     private float minimapaAltura = 200;
     // private boolean isVisible;
     // private Rectangle toggleButtonBounds;
 
-    public Minimap(float x, float y, float largura, float altura, MetropoliTrans jogo) {
+    public Minimap(float x, float y, MetropoliTrans jogo) {
         this.batch = jogo.batch;
         this.personagemTexture = jogo.personagem.minimapaPonto;
         // this.toggleButtonTexture = new
         // Texture(Gdx.files.internal("files/itens/seta.png"));
         this.x = x;
         this.y = y;
-        this.largura = largura;
-        this.altura = altura;
         // this.isVisible = false;
         // this.toggleButtonBounds = new Rectangle(Gdx.graphics.getWidth() - 34, 10, 24,
         // 24); // necessário

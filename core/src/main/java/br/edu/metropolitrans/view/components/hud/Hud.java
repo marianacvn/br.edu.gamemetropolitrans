@@ -6,10 +6,12 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
+import br.edu.metropolitrans.MetropoliTrans;
 import br.edu.metropolitrans.view.font.FontBase;
 
 public class Hud {
 
+    private SpriteBatch batch;
     private BitmapFont font;
     private int moedas;
     private float x;
@@ -17,7 +19,8 @@ public class Hud {
     private Texture xpIcon;
     private Texture moedasIcon;
 
-    public Hud() {
+    public Hud(MetropoliTrans jogo) {
+        this.batch = jogo.batch;
         this.moedas = 200;
 
         // Carregar a fonte
@@ -26,24 +29,16 @@ public class Hud {
         // Carregar as texturas dos ícones
         xpIcon = new Texture(Gdx.files.internal("files/itens/xp.png"));
         moedasIcon = new Texture(Gdx.files.internal("files/itens/moeda.png"));
-
-        // Inicializar a posição da HUD
-        // updatePosition(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
     }
 
-    // public void updatePosition(float screenWidth, float screenHeight) {
-    //     this.x = screenWidth - 150; // Ajuste conforme necessário
-    //     this.y = screenHeight - 10; // Ajuste conforme necessário
-    // }
-
-    public void render(SpriteBatch batch) {
+    public void render() {
         batch.begin();
         // Desenhar o ícone e o valor de XP
-        batch.draw(xpIcon, x, y, 80, 20);
+        batch.draw(xpIcon, x + 1170, y + 650, 80, 20);
         // Desenhar o ícone e o valor de Moedas
-        batch.draw(moedasIcon, x, y - 30, 20, 20);
+        batch.draw(moedasIcon, x + 1170, y  + 650 - 30, 20, 20);
         // Desenhar o valor de Moedas em cima do ícone
-        font.draw(batch, String.valueOf(moedas), x + 25, y - 15);
+        font.draw(batch, String.valueOf(moedas), x + 1170 + 25, y + 650 - 15);
         batch.end();
     }
 

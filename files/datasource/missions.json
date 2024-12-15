@@ -1,0 +1,25 @@
+{
+    "missoes": [
+        {
+            "id": 0,
+            "nome": "Inicio do jogo",
+            "descricao": "Apenas uma introdução para o jogador. [Diálogo com o prefeito]",
+            "recompensaMoedas": 200,
+            "experiencia": 0,
+            "personagens": [
+                "heberto"
+            ]
+        },
+        {
+            "id": 1,
+            "nome": "Retorno proibido",
+            "descricao": "Jogador precisa resolver problema do Artigo/Regra: 39, retorno proibido.",
+            "recompensaMoedas": 100,
+            "experiencia": 100,
+            "personagens": [
+                "betania",
+                "juliana"
+            ]
+        }
+    ]
+}

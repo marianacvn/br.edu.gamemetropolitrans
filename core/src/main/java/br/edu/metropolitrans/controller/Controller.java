@@ -60,7 +60,7 @@ public class Controller {
     /**
      * Missão atual
      */
-    public int MISSAO = 0;
+    public int MISSAO;
 
     public Controller(MetropoliTrans jogo) {
         this.jogo = jogo;
@@ -182,6 +182,9 @@ public class Controller {
     public void controleDialogos() {
         if (Gdx.input.isKeyJustPressed(Input.Keys.ENTER)) {
             gameScreen.mostrarDialogo = false;
+            for (Npc npc : npcs) {
+                atualizaStatusAlertaMissaoNpc(npc);
+            }
         }
     }
 
@@ -190,9 +193,9 @@ public class Controller {
      *
      * @param npc Npc
      */
-    public void interacaoComNpc(Npc npc) {
+    private void interacaoComNpc(Npc npc) {
         if (jogo.telas.get("game") != null) {
-            GameScreen gameScreen = (GameScreen) jogo.telas.get("game");
+            // GameScreen gameScreen = (GameScreen) jogo.telas.get("game");
             if (personagem.estaDentroDaDistancia(15, npc)) {
                 // Carrega os diálogos do NPC
                 gameScreen.caixaDialogo.setTextoDialogo(carregaDialogos(npc));
@@ -203,12 +206,31 @@ public class Controller {
         }
     }
 
+    /**
+     * Atualiza o status de alerta da missão do NPC
+     *
+     * @param npc Npc
+     */
+    private void atualizaStatusAlertaMissaoNpc(Npc npc) {
+        if (jogo.telas.get("game") != null) {
+            /**
+             * Verifica se está dentro da distancia e se o npc faz parte da missão
+             * Se sim, atualiza o status de alerta da missão
+             */
+            if (personagem.estaDentroDaDistancia(15, npc) &&
+                    MissionController.npcEstaNaMisao(npc) &&
+                    npc.statusAlertaMissao == 1) {
+                npc.statusAlertaMissao = 2;
+            }
+        }
+    }
 
     /**
      * Carrega os diálogos do personagem
+     * 
      * @param npc Npc
      */
-    public String carregaDialogos(Npc npc) {
+    private String carregaDialogos(Npc npc) {
         // Carregar diálogos
         Dialog dialogo = DialogDAO.carregarDialogos(npc.nome);
         if (dialogo != null) {
@@ -223,7 +245,7 @@ public class Controller {
      *
      * @param mapa TiledMap
      */
-    public void montarColisao(TiledMap mapa) {
+    private void montarColisao(TiledMap mapa) {
         // Carrega os objetos de colisão
         jogo.objetosColisao = mapa.getLayers().get("colisao").getObjects();
         jogo.retangulosColisao = new Array<Rectangle>();

@@ -17,7 +17,6 @@ public class DialogBox {
     private float TEXTO_Y;
     private float LARGURA_MAX;
 
-    private MetropoliTrans jogo;
     private ShapeRenderer renderizadorForma;
     private BitmapFont fonte;
     private String texto;
@@ -28,7 +27,6 @@ public class DialogBox {
     private boolean npcImagemComFundo;
 
     public DialogBox(float x, float y, float largura, float altura, MetropoliTrans jogo) {
-        this.jogo = jogo;
         this.batch = jogo.batch;
         this.x = x;
         this.y = y;

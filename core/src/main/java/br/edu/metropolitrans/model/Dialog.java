@@ -6,7 +6,7 @@ import java.util.List;
 public class Dialog {
     private List<String> dialogosGenericos;
     private List<DialogMission> dialogosMissao;
-    private transient Random random;
+    private transient Random random; // Campo não serializado do json
 
     public Dialog() {
         random = new Random();
@@ -56,6 +56,10 @@ public class Dialog {
 
         // Retorna o próximo diálogo
         return dialogosMissaoAtual.get(dialogoAtual + 1);
+    }
+
+    public boolean verificaSeDialogoMissaoExiste(int missao, int dialogoAtual) {
+        return listaDialogosMissao(missao).size() > dialogoAtual;
     }
 
     public Dialog(List<String> dialogosGenericos, List<DialogMission> dialogosMissao) {

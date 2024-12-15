@@ -9,14 +9,15 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import br.edu.metropolitrans.MetropoliTrans;
+import br.edu.metropolitrans.controller.MissionController;
 import br.edu.metropolitrans.model.actors.Npc;
 import br.edu.metropolitrans.model.actors.Personagem;
 import br.edu.metropolitrans.view.components.dialog.DialogBox;
 import br.edu.metropolitrans.view.components.hud.Hud;
 import br.edu.metropolitrans.view.components.minimap.Minimap;
-import br.edu.metropolitrans.view.components.missionalert.MissionAlert;
+import br.edu.metropolitrans.view.components.mission_alert.MissionAlert;
+import br.edu.metropolitrans.view.components.mission_modal.MissionModalBox;
 
 /**
  * Tela principal do jogo
@@ -34,7 +35,6 @@ public class GameScreen implements Screen {
      * Câmera do jogo
      */
     private final OrthographicCamera CAMERA;
-    private ExtendViewport viewport;
     /**
      * Renderizador de formas/objetos
      */
@@ -52,17 +52,24 @@ public class GameScreen implements Screen {
      */
     public boolean mostrarDialogo;
     /**
-     * Missão atual
+     * Flag para mostrar a caixa de missão
      */
-    public int MISSAO = 0;
+    public boolean mostrarCaixaMissao;
     /**
      * Alerta de missão
      */
     public MissionAlert alertaMissao;
     /**
+     * Caixa modal de missão
+     */
+    public MissionModalBox missionModalBox;
+    /**
      * Minimapa
      */
     public Minimap minimapa;
+    /**
+     * Batch de desenho
+     */
     public SpriteBatch batch;
     /** Xp e Moedas */
     public Hud hud;
@@ -81,10 +88,10 @@ public class GameScreen implements Screen {
         CAMERA.update();
 
         // Inicializar a HUD
-        hud = new Hud();
+        hud = new Hud(jogo);
 
         // Inicializar o minimapa
-        minimapa = new Minimap(1170, 200, 200, 200, jogo);
+        minimapa = new Minimap(1170, 200, jogo);
 
         // Inicializa a caixa de diálogo
         caixaDialogo = new DialogBox(0, 64, 1280, 150, jogo);
@@ -92,6 +99,10 @@ public class GameScreen implements Screen {
 
         // Inicializa o alerta de missão
         alertaMissao = new MissionAlert(jogo.batch);
+
+        // Inicializa a caixa modal de missão no centro da tela
+        missionModalBox = new MissionModalBox(TELA_LARGURA / 2 - 350, TELA_ALTURA / 2 - 350, 350, 350, jogo);
+        mostrarCaixaMissao = false;
     }
 
     @Override
@@ -113,12 +124,13 @@ public class GameScreen implements Screen {
         // Controle de diálogos
         jogo.controller.controleDialogos();
 
+        // Controle de missões
+        MissionController.controle(jogo.controller.MISSAO, jogo);
+
         // Verifica se a caixa de diálogo deve ser exibida
         // Se sim, exibe a caixa de diálogo, caso contrário permite
         // o controle do personagem continuando o jogo
-        if (mostrarDialogo) {
-            caixaDialogo.render();
-        } else {
+        if (!mostrarDialogo) {
             // Controle do personagem Setas ou WASD
             jogo.controller.controlePersonagem(delta);
             jogo.controller.controlePersonagem2(delta);
@@ -126,6 +138,10 @@ public class GameScreen implements Screen {
 
         // Renderiza a caixa dialogo, minimapa e alertas de missao
         desenharComponentes();
+
+        // Testes
+        //debug();
+        //Gdx.app.log("Teste", "Missão: " + MISSAO);
     }
 
     /**
@@ -176,10 +192,13 @@ public class GameScreen implements Screen {
         // Atualiza a posição da caixa de diálogo para acompanhar a câmera
         caixaDialogo.setPosition(CAMERA.position.x - CAMERA.viewportWidth / 2,
                 CAMERA.position.y - CAMERA.viewportHeight / 2);
+        if (mostrarDialogo) {
+            caixaDialogo.render();
+        }
 
-        hud.setPosition(CAMERA.position.x - CAMERA.viewportWidth / 2 + 1150,
-        CAMERA.position.y - CAMERA.viewportHeight / 2 + 650);
-        hud.render(batch);
+        hud.setPosition(CAMERA.position.x - CAMERA.viewportWidth / 2,
+                CAMERA.position.y - CAMERA.viewportHeight / 2);
+        hud.render();
 
         // Atualiza a posição do minimapa para acompanhar a câmera
         minimapa.setPosition(CAMERA.position.x - CAMERA.viewportWidth / 2 + 1070,
@@ -195,6 +214,15 @@ public class GameScreen implements Screen {
                 alertaMissao.status = npc.statusAlertaMissao;
                 alertaMissao.render();
             }
+        }
+
+        // Atualiza a posição da caixa modal de missão para acompanhar a câmera
+        missionModalBox.setPosition(CAMERA.position.x - CAMERA.viewportWidth / 2,
+                CAMERA.position.y - CAMERA.viewportHeight / 2);
+
+        // Desenha a caixa modal de missão caso a flag esteja ativada
+        if (mostrarCaixaMissao) {
+            missionModalBox.render();
         }
     }
 

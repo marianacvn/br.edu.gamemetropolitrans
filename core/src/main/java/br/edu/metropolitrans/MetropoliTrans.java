@@ -77,7 +77,7 @@ public class MetropoliTrans extends Game {
      * Usado para renderizar o mapa
      */
     public OrthogonalTiledMapRenderer mapaRenderizador;
-    
+
     /**
      * Objetos de colisão do mapa
      */
@@ -109,7 +109,7 @@ public class MetropoliTrans extends Game {
         MusicaMenu = Gdx.audio.newMusic(Gdx.files.internal("files/songs/lofi-ambient.mp3"));
         MusicaMenu.setLooping(true);
         MusicaMenu.setVolume(0.5f);
-        
+
         // Carrega o mapa
         mapas = new Mapas();// Carrega o mapa
         mapaRenderizador = new OrthogonalTiledMapRenderer(mapas.mapa, 1, batch);
@@ -123,7 +123,7 @@ public class MetropoliTrans extends Game {
         npcs = new ArrayList<Npc>();
 
         // Carrega os Npcs
-        npcs.add(new Npc("maria", 280, 1050, "maria/sprite.png", estagioPrincipal ));
+        npcs.add(new Npc("maria", 280, 1050, "maria/sprite.png", estagioPrincipal));
         npcs.add(new Npc("betania", 150, 400, "betania/sprite.png", estagioPrincipal));
         npcs.add(new Npc("bruna", 1190, 200, "bruna/sprite.png", estagioPrincipal));
         npcs.add(new Npc("antonio", 1500, 1000, "antonio/sprite.png", estagioPrincipal));

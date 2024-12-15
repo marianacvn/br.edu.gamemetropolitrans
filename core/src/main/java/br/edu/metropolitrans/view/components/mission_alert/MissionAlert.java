@@ -1,4 +1,4 @@
-package br.edu.metropolitrans.view.components.missionalert;
+package br.edu.metropolitrans.view.components.mission_alert;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
