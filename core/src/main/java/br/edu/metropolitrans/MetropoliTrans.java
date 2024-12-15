@@ -74,7 +74,7 @@ public class MetropoliTrans extends Game {
     /**
      * Objetos interativos
      */
-    public ObjetoInterativo objeto, objetoSairSala;
+    public ObjetoInterativo objeto, objetoSairSala, objetoMissao;
 
     /**
      * Mapas do jogo
@@ -122,6 +122,11 @@ public class MetropoliTrans extends Game {
         mapas = new Mapas();// Carrega o mapa
         mapaRenderizador = new OrthogonalTiledMapRenderer(mapas.mapa, 1, batch);
 
+        // Carrega o objeto interativo das missões
+        objetoMissao = new ObjetoInterativo("alertaMissao", 1294, 1240, "mission-alert.png",
+                estagioPrincipal);
+        objetoMissao.setVisible(false);
+
         // Carrega o personagem
         personagem = new Personagem(640, 250, estagioPrincipal);
         Personagem.setLimitacaoMundo(Mapas.MAPA_LARGURA, Mapas.MAPA_ALTURA);
@@ -150,6 +155,7 @@ public class MetropoliTrans extends Game {
                 new Vehicle("taxi", 1266, 1000, 50, "taxi-sprite.png", estagioPrincipal,
                         List.of("C-8*32", "E-8*32", "B-10*32")));
 
+        // Carrega os objetos interativos
         objeto = new ObjetoInterativo("entradaPrefeitura", 32, 220, "background-transparent.png",
                 estagioPrincipal);
 

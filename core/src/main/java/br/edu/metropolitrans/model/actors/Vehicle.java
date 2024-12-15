@@ -103,6 +103,12 @@ public class Vehicle extends BaseActor {
         setAnimacao(animacaoDireita);
     }
 
+    public void reiniciarAnimacao() {
+        etapaMissao = 0;
+        distanciaPercorrida = 0;
+        setPosition(xInicial, yInicial);
+    }
+
     @Override
     public void act(float delta) {
         super.act(delta);
@@ -138,9 +144,7 @@ public class Vehicle extends BaseActor {
             } else {
                 // Caso o veículo tenha terminado o roteiro, volta para a posição inicial
                 // e começa novamente
-                etapaMissao = 0;
-                distanciaPercorrida = 0;
-                setPosition(xInicial, yInicial);
+                reiniciarAnimacao();
             }
         }
     }

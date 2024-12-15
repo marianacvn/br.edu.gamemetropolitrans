@@ -48,10 +48,6 @@ public class GameScreen implements Screen {
      */
     public DialogBox caixaDialogo;
     /**
-     * Flag para mostrar a caixa de missão
-     */
-    public boolean mostrarCaixaMissao;
-    /**
      * Alerta de missão
      */
     public MissionAlert alertaMissao;
@@ -97,7 +93,7 @@ public class GameScreen implements Screen {
 
         // Inicializa a caixa modal de missão no centro da tela
         missionModalBox = new MissionModalBox(TELA_LARGURA / 2 - 350, TELA_ALTURA / 2 - 350, 350, 350, jogo);
-        mostrarCaixaMissao = false;
+
     }
 
     @Override
@@ -125,7 +121,7 @@ public class GameScreen implements Screen {
         // Verifica se a caixa de diálogo deve ser exibida
         // Se sim, exibe a caixa de diálogo, caso contrário permite
         // o controle do personagem continuando o jogo
-        if (!jogo.controller.mostrarDialogo) {
+        if (!jogo.controller.mostrarDialogo && !jogo.controller.mostrarCaixaMissao) {
             // Controle do personagem Setas ou WASD
             jogo.controller.controlePersonagem(delta);
             jogo.controller.controlePersonagem2(delta);
@@ -135,8 +131,8 @@ public class GameScreen implements Screen {
         desenharComponentes();
 
         // Testes
-        //debug();
-        //Gdx.app.log("Teste", "Missão: " + MISSAO);
+        // debug();
+        // Gdx.app.log("Teste", "Missão: " + MISSAO);
     }
 
     /**
@@ -216,7 +212,7 @@ public class GameScreen implements Screen {
                 CAMERA.position.y - CAMERA.viewportHeight / 2);
 
         // Desenha a caixa modal de missão caso a flag esteja ativada
-        if (mostrarCaixaMissao) {
+        if (jogo.controller.mostrarCaixaMissao) {
             missionModalBox.render();
         }
     }

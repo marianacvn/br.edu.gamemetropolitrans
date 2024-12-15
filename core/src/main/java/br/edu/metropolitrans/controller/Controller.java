@@ -55,7 +55,7 @@ public class Controller {
     /**
      * Objetos interativos
      */
-    public ObjetoInterativo objeto, objetoSairSala;
+    public ObjetoInterativo objeto, objetoSairSala, objetoMissao;
 
     /**
      * Missão atual
@@ -67,6 +67,11 @@ public class Controller {
      */
     public boolean mostrarDialogo;
 
+    /**
+     * Flag para mostrar a caixa de missão
+     */
+    public boolean mostrarCaixaMissao;
+
     public Controller(MetropoliTrans jogo) {
         this.jogo = jogo;
         this.mapas = jogo.mapas;
@@ -74,6 +79,7 @@ public class Controller {
         this.npcs = jogo.npcs;
         this.objeto = jogo.objeto;
         this.objetoSairSala = jogo.objetoSairSala;
+        this.objetoMissao = jogo.objetoMissao;
 
         // Carrega os objetos de colisão
         montarColisao(mapas.mapa);
@@ -83,6 +89,7 @@ public class Controller {
 
         gameScreen = (GameScreen) jogo.telas.get("game");
         mostrarDialogo = false;
+        mostrarCaixaMissao = false;
     }
 
     /**
@@ -126,6 +133,10 @@ public class Controller {
             for (Npc npc : npcs) {
                 interacaoComNpc(npc);
             }
+        }
+
+        if (objeto != null && objetoMissao != null && personagem.interagiu(objetoMissao) && Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
+            mostrarCaixaMissao = true;
         }
 
         if (objeto != null && personagem.interagiu(objeto) && Gdx.input.isKeyPressed(Input.Keys.SPACE)) {

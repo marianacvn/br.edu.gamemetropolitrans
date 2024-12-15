@@ -40,11 +40,24 @@ public class MissionController {
 
             // Verifica se o diálogo com juliana está sendo exibido,
             // se sim exibe o veiculo realizando a ação
+            Vehicle taxi = jogo.vehicles.get("taxi");
             if (jogo.controller.mostrarDialogo
                     && jogo.controller.gameScreen.caixaDialogo.npc.nome.equals("juliana")) {
-                jogo.vehicles.get("taxi").setVisible(true);
-                jogo.vehicles.get("taxi").animacaoAtivada = true;
+                taxi.setVisible(true);
+                taxi.animacaoAtivada = true;
+            } else {
+                taxi.setVisible(false);
+                taxi.animacaoAtivada = false;
+                taxi.reiniciarAnimacao();
             }
+
+            // Verifica se o alerta de juliana já foi exibido (status 2)
+            // Se sim, deve exibir o objeto interativo da missão
+            jogo.npcs.forEach(npc -> {
+                if (npc.nome.equals("juliana") && npc.statusAlertaMissao == 2) {
+                    jogo.objetoMissao.setVisible(true);
+                }
+            });
         }
     }
 
