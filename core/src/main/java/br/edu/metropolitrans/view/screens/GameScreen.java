@@ -54,7 +54,7 @@ public class GameScreen implements Screen {
     /**
      * Caixa modal de missão
      */
-    public MissionModalBox missionModalBox;
+    public MissionModalBox missaoModalBox;
     /**
      * Minimapa
      */
@@ -92,7 +92,7 @@ public class GameScreen implements Screen {
         alertaMissao = new MissionAlert(jogo.batch);
 
         // Inicializa a caixa modal de missão no centro da tela
-        missionModalBox = new MissionModalBox(TELA_LARGURA / 2 - 350, TELA_ALTURA / 2 - 350, 350, 350, jogo);
+        missaoModalBox = new MissionModalBox(TELA_LARGURA / 2 - 350, TELA_ALTURA / 2 - 350, 350, 350, jogo);
 
     }
 
@@ -128,7 +128,7 @@ public class GameScreen implements Screen {
         }
 
         // Renderiza a caixa dialogo, minimapa e alertas de missao
-        desenharComponentes();
+        desenharComponentes(delta);
 
         // Testes
         // debug();
@@ -179,7 +179,7 @@ public class GameScreen implements Screen {
     /**
      * Desenha os componentes do jogo
      */
-    private void desenharComponentes() {
+    private void desenharComponentes(float delta) {
         // Atualiza a posição da caixa de diálogo para acompanhar a câmera
         caixaDialogo.setPosition(CAMERA.position.x - CAMERA.viewportWidth / 2,
                 CAMERA.position.y - CAMERA.viewportHeight / 2);
@@ -208,12 +208,12 @@ public class GameScreen implements Screen {
         }
 
         // Atualiza a posição da caixa modal de missão para acompanhar a câmera
-        missionModalBox.setPosition(CAMERA.position.x - CAMERA.viewportWidth / 2,
+        missaoModalBox.setPosition(CAMERA.position.x - CAMERA.viewportWidth / 2,
                 CAMERA.position.y - CAMERA.viewportHeight / 2);
 
         // Desenha a caixa modal de missão caso a flag esteja ativada
         if (jogo.controller.mostrarCaixaMissao) {
-            missionModalBox.render();
+            missaoModalBox.render(delta);
         }
     }
 

@@ -68,6 +68,7 @@ public class LoadingScreen implements Screen {
             displayTime -= delta;
             if (displayTime <= 0) {
                 jogo.inicializarJogo();
+                jogo.inicializarComponentesMissao();
 
                 jogo.telas.put("menu", new MenuScreen(jogo));
                 jogo.setScreen(jogo.telas.get("menu"));

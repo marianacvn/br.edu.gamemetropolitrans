@@ -69,12 +69,12 @@ public class Vehicle extends BaseActor {
         // Carrega as animações do veículo
         carregaAnimacoes("files/vehicles/" + nomeArquivo);
 
-        try {
-            minimapaPonto = new Texture(
-                    Gdx.files.internal("files/characters/" + nomeArquivo.replace("sprite.png", "minimap.png")));
-        } catch (Exception ignore) {
-            Gdx.app.log("Vehicle", "Erro ao carregar minimapaPonto para " + nomeArquivo);
-        }
+        // try {
+        //     minimapaPonto = new Texture(
+        //             Gdx.files.internal("files/characters/" + nomeArquivo.replace("sprite.png", "minimap.png")));
+        // } catch (Exception ignore) {
+        //     Gdx.app.log("Vehicle", "Erro ao carregar minimapaPonto para " + nomeArquivo);
+        // }
 
         // Inicializa o veículo como invisível
         setVisible(false);

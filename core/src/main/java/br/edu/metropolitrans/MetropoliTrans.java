@@ -21,6 +21,7 @@ import br.edu.metropolitrans.model.actors.ObjetoInterativo;
 import br.edu.metropolitrans.model.actors.Personagem;
 import br.edu.metropolitrans.model.actors.Vehicle;
 import br.edu.metropolitrans.model.maps.Mapas;
+import br.edu.metropolitrans.view.components.mission_modal.MissionComponents;
 import br.edu.metropolitrans.view.font.FontBase;
 import br.edu.metropolitrans.view.screens.LoadingScreen;
 
@@ -101,6 +102,8 @@ public class MetropoliTrans extends Game {
      */
     public Controller controller;
 
+    public HashMap<String, MissionComponents> missionComponents = new HashMap<>();
+
     @Override
     public void create() {
         // Inicia a tela de loading do game
@@ -164,6 +167,18 @@ public class MetropoliTrans extends Game {
 
         // Cria o controle do jogo
         controller = new Controller(this);
+    }
+
+    public void inicializarComponentesMissao() {
+        MissionComponents missao1 = new MissionComponents(1);
+        missao1.adicionarTituloMissao("Missão " + controller.MISSAO + ": " + "texto aqui", 500, 150);
+        missao1.adicionarOpcaoPlaca("mission1-option1_reduced.png", false, 500, 200);
+        missao1.adicionarOpcaoPlaca("mission1-option2_reduced.png", false, 500, 265);
+        missao1.adicionarOpcaoPlaca("mission1-option3_reduced.png", true, 500, 330);
+        missao1.adicionarOpcaoPlaca("mission1-option4_reduced.png", false, 500, 395);
+        missao1.adicionarOpcaoPlaca("mission1-option5_reduced.png", false, 500, 460);
+        missionComponents.put("missao1", missao1);
+        // controller.gameScreen.missaoModalBox.missionComponents = missao1;
     }
 
     @Override
