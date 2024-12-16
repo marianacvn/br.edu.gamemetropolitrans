@@ -29,7 +29,7 @@ public class MissionComponents {
         this.stage = new Stage();
         botoesPlacas = new ArrayList<>();
 
-        //Gdx.input.setInputProcessor(stage);
+        // Gdx.input.setInputProcessor(stage);
     }
 
     public void adicionarTituloMissao(String textoTitulo, float x, float y) {
@@ -41,7 +41,9 @@ public class MissionComponents {
         labelStyle.font = fonteTitulo;
         labelStyle.fontColor = Color.BLACK;
         Label titulo = new Label(textoTitulo, labelStyle);
-        titulo.setPosition(baseX + x, baseY + y);
+        // titulo.setPosition(baseX + x, baseY + y);
+        // Define a posição no canto superior esquerdo
+        titulo.setPosition(baseX + x, baseY + stage.getHeight() - titulo.getHeight() - y - 20);
 
         stage.addActor(titulo);
     }

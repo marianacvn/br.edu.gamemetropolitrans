@@ -1,10 +1,8 @@
 package br.edu.metropolitrans.view.components.mission_modal;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.utils.Align;
 
 import br.edu.metropolitrans.MetropoliTrans;
 import br.edu.metropolitrans.view.font.FontBase;
