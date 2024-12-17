@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
@@ -22,6 +23,7 @@ public class MissionComponents {
     public Stage stage;
     public Label titulo;
     public List<ImageButton> botoesPlacas;
+    public Image imagemCena;
 
     public MissionComponents(int missaoId) {
         this.missaoId = missaoId;
@@ -29,6 +31,13 @@ public class MissionComponents {
         botoesPlacas = new ArrayList<>();
     }
 
+    /**
+     * Adiciona o título da missão
+     * 
+     * @param textoTitulo Texto do título
+     * @param x           Posição X
+     * @param y           Posição Y
+     */
     public void adicionarTituloMissao(String textoTitulo, float x, float y) {
         // Carrega a fonte do título
         BitmapFont fonteTitulo = FontBase.getInstancia().getFonte(30, FontBase.Fontes.PADRAO);
@@ -43,6 +52,14 @@ public class MissionComponents {
         stage.addActor(titulo);
     }
 
+    /**
+     * Adiciona uma opção de placa
+     * 
+     * @param caminhoImagem Caminho da imagem
+     * @param correta       Se a placa é correta
+     * @param x             Posição X
+     * @param y             Posição Y
+     */
     public void adicionarOpcaoPlaca(String caminhoImagem, boolean correta, float x, float y) {
         // Skin skin = new Skin();
         Texture texture = new Texture(Gdx.files.internal("files/missionComponents/" + caminhoImagem));
@@ -55,18 +72,31 @@ public class MissionComponents {
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 if (correta) {
                     // Lógica para resposta correta
-                    Gdx.app.log("MissionComponents","Resposta correta!");
+                    Gdx.app.log("MissionComponents", "Resposta correta!");
                 } else {
                     // Lógica para resposta incorreta
-                    Gdx.app.log("MissionComponents","Resposta incorreta!");
+                    Gdx.app.log("MissionComponents", "Resposta incorreta!");
                 }
                 return true;
             }
         });
-        
+
         botaoPlaca.setPosition(x, y);
         botoesPlacas.add(botaoPlaca);
         stage.addActor(botaoPlaca);
     }
 
+    /**
+     * Adiciona uma imagem de cena
+     * 
+     * @param caminhoImagem Caminho da imagem
+     * @param x             Posição X
+     * @param y             Posição Y
+     */
+    public void adicionarImagemCena(String caminhoImagem, float x, float y) {
+        Texture texture = new Texture(Gdx.files.internal("files/missionComponents/" + caminhoImagem));
+        imagemCena = new Image(texture);
+        imagemCena.setPosition(x, y);
+        stage.addActor(imagemCena);
+    }
 }

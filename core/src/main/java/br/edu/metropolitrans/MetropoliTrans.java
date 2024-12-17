@@ -175,11 +175,12 @@ public class MetropoliTrans extends Game {
         float baseY = (GameScreen.TELA_ALTURA - 400) / 2;
         MissionComponents missao1 = new MissionComponents(1);
         missao1.adicionarTituloMissao("Missão " + controller.MISSAO + ": ", baseX + 15, baseY);
-        missao1.adicionarOpcaoPlaca("mission1-option1_reduced.png", false, baseX, baseY + 265);
-        missao1.adicionarOpcaoPlaca("mission1-option2_reduced.png", false, baseX, baseY + 265 - 50 - 15);
-        missao1.adicionarOpcaoPlaca("mission1-option3_reduced.png", true, baseX, baseY + 200 - 50 - 15);
-        missao1.adicionarOpcaoPlaca("mission1-option4_reduced.png", false, baseX, baseY + 135 - 50 - 15);
-        missao1.adicionarOpcaoPlaca("mission1-option5_reduced.png", false, baseX, baseY + 70 - 50 - 15);
+        missao1.adicionarOpcaoPlaca("mission1-option1_reduced.png", false, baseX + 15, baseY + 265);
+        missao1.adicionarOpcaoPlaca("mission1-option2_reduced.png", false, baseX + 15, baseY + 265 - 50 - 15);
+        missao1.adicionarOpcaoPlaca("mission1-option3_reduced.png", true, baseX + 15, baseY + 200 - 50 - 15);
+        missao1.adicionarOpcaoPlaca("mission1-option4_reduced.png", false, baseX + 15, baseY + 135 - 50 - 15);
+        missao1.adicionarOpcaoPlaca("mission1-option5_reduced.png", false, baseX + 15, baseY + 70 - 50 - 15);
+        missao1.adicionarImagemCena("mission1-scene.png", baseX + 150, baseY + 15);
         missionComponents.put("missao1", missao1);
     }
 
