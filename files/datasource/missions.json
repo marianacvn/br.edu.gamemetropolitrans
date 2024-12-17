@@ -6,6 +6,7 @@
             "descricao": "Apenas uma introdução para o jogador. [Diálogo com o prefeito]",
             "recompensaMoedas": 200,
             "experiencia": 0,
+            "valorErro": 0,
             "personagens": [
                 "heberto"
             ]
@@ -16,6 +17,7 @@
             "descricao": "Qual placa representa uma possível solução\r\npara o problema apresentado? [Artigo/Regra: 39]",
             "recompensaMoedas": 100,
             "experiencia": 100,
+            "valorErro": 20,
             "personagens": [
                 "betania",
                 "juliana"

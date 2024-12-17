@@ -16,6 +16,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Array;
 import br.edu.metropolitrans.controller.Controller;
+import br.edu.metropolitrans.controller.MissionController;
 import br.edu.metropolitrans.model.actors.Npc;
 import br.edu.metropolitrans.model.actors.ObjetoInterativo;
 import br.edu.metropolitrans.model.actors.Personagem;
@@ -127,7 +128,7 @@ public class MetropoliTrans extends Game {
         mapaRenderizador = new OrthogonalTiledMapRenderer(mapas.mapa, 1, batch);
 
         // Carrega o objeto interativo das missões
-        objetoMissao = new ObjetoInterativo("alertaMissao", 1294, 1240, "mission-alert.png",
+        objetoMissao = new ObjetoInterativo("alertaMissao", 1290, 1245, "mission-alert.png",
                 estagioPrincipal);
         objetoMissao.setVisible(false);
 
@@ -170,6 +171,30 @@ public class MetropoliTrans extends Game {
         controller = new Controller(this);
     }
 
+    public void reiniciarJogo() {
+        // Pausa o jogo
+
+        // Reinicia o jogo
+        MissionController.reiniciarJogo();
+        controller.MISSAO = 0;
+
+        setPausado(true);
+
+        // Fecha todas as telas
+        for (Screen tela : telas.values()) {
+            tela.dispose();
+        }
+
+        // Limpa todas as telas
+        telas.clear();
+
+        // Retoma o jogo
+        setPausado(false);
+
+        // Inicializa o jogo novamente
+        inicializarJogo();
+    }
+
     public void inicializarComponentesMissao() {
         float baseX = ((GameScreen.TELA_LARGURA - 530) / 2);
         float baseY = (GameScreen.TELA_ALTURA - 400) / 2;
@@ -182,6 +207,18 @@ public class MetropoliTrans extends Game {
         missao1.adicionarOpcaoPlaca("mission1-option5_reduced.png", false, baseX + 15, baseY + 70 - 50 - 15);
         missao1.adicionarImagemCena("mission1-scene.png", baseX + 150, baseY + 15);
         missionComponents.put("missao1", missao1);
+    }
+
+    public void trocarTela(String tela) {
+        this.setScreen(telas.get(tela));
+    }
+
+    public void setPausado(boolean pausado) {
+        if (pausado) {
+            Gdx.app.postRunnable(() -> Gdx.graphics.setContinuousRendering(false));
+        } else {
+            Gdx.app.postRunnable(() -> Gdx.graphics.setContinuousRendering(true));
+        }
     }
 
     @Override

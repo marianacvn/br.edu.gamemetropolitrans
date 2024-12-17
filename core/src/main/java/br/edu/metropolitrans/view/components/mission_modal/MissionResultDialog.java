@@ -4,7 +4,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -64,9 +63,15 @@ public class MissionResultDialog {
         botaoConfirmar.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                // desativarAcao();
-                System.out.println("Botão OK clicado");
-                jogo.controller.acertouMissao = 0;
+                if (jogo.personagem.moedas < 0) {
+                    jogo.controller.perdeuJogo = true;
+                }
+
+                if (jogo.controller.resultadoRespostaMissao == 1) {
+                    jogo.controller.resultadoRespostaMissao = 0;
+                    jogo.controller.mostrarCaixaMissao = false;
+                }
+                jogo.controller.resultadoRespostaMissao = 0;
             }
         });
 

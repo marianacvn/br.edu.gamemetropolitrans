@@ -16,6 +16,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 
 import br.edu.metropolitrans.MetropoliTrans;
+import br.edu.metropolitrans.controller.MissionController;
 import br.edu.metropolitrans.view.font.FontBase;
 
 public class MissionComponents {
@@ -75,12 +76,14 @@ public class MissionComponents {
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 if (correta) {
                     // Lógica para resposta correta
-                    Gdx.app.log("MissionComponents", "Resposta correta!");
-                    jogo.controller.acertouMissao = 1;
+                    jogo.controller.resultadoRespostaMissao = 1;
+                    jogo.personagem.moedas += MissionController.getRecompensaMoedasMissao();
+                    jogo.personagem.xp += 100;
+                    jogo.controller.objetoMissao.setVisible(false);
                 } else {
                     // Lógica para resposta incorreta
-                    Gdx.app.log("MissionComponents", "Resposta incorreta!");
-                    jogo.controller.acertouMissao = 2;
+                    jogo.controller.resultadoRespostaMissao = 2;
+                    jogo.personagem.moedas -= MissionController.getValorErroMissao();
                 }
                 return true;
             }

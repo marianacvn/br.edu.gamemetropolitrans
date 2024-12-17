@@ -19,6 +19,9 @@ public class MissionController {
      * @param jogo     Instância do jogo
      */
     public static void controle(int missaoId, MetropoliTrans jogo) {
+        // Executa o controle da lógica do jogo
+        jogo.controller.controleLogicaJogo();
+
         // Carrega a missão referente ao id
         missao = MissionDataDAO.buscaMissaoPorId(missaoId);
 
@@ -64,6 +67,11 @@ public class MissionController {
         }
     }
 
+    public static void reiniciarJogo() {
+        missao = null;
+        controlaTrocaMissao = false;
+    }
+
     /**
      * Verifica se o NPC está na missão
      * 
@@ -103,4 +111,30 @@ public class MissionController {
         });
     }
 
+    /**
+     * Retorna a missão
+     * 
+     * @return Missão
+     */
+    public static Mission getMissao() {
+        return missao;
+    }
+
+    /**
+     * Retorna o valor de erro da missão
+     * 
+     * @return Valor de erro
+     */
+    public static int getValorErroMissao() {
+        return missao != null ? missao.getValorErro() : 0;
+    }
+
+    /**
+     * Retorna a recompensa de moedas da missão
+     * 
+     * @return Recompensa de moedas
+     */
+    public static int getRecompensaMoedasMissao() {
+        return missao != null ? missao.getRecompensaMoedas() : 0;
+    }
 }

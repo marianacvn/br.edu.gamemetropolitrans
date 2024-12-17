@@ -4,24 +4,22 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import br.edu.metropolitrans.MetropoliTrans;
 import br.edu.metropolitrans.view.font.FontBase;
 
 public class Hud {
 
-    private SpriteBatch batch;
+    private MetropoliTrans jogo;
     private BitmapFont font;
-    private int moedas;
+    
     private float x;
     private float y;
     private Texture xpIcon;
     private Texture moedasIcon;
 
     public Hud(MetropoliTrans jogo) {
-        this.batch = jogo.batch;
-        this.moedas = 200;
+        this.jogo = jogo;
 
         // Carregar a fonte
         font = FontBase.getInstancia().getFonte(18, new Color(1, 1, 1, 1), FontBase.Fontes.PADRAO);
@@ -32,28 +30,21 @@ public class Hud {
     }
 
     public void render() {
-        batch.begin();
+        jogo.batch.begin();
         // Desenhar o ícone e o valor de XP
-        batch.draw(xpIcon, x + 1170, y + 650, 80, 20);
+        jogo.batch.draw(xpIcon, x + 1170, y + 650, 80, 20);
+        // Desenha a linha de XP, com XP 0 é apenas uma bolinha, com XP 100 é uma linha cheia
+        // TODO: Implementar a lógica de desenho da linha de XP - Campo personagem.xp
         // Desenhar o ícone e o valor de Moedas
-        batch.draw(moedasIcon, x + 1170, y  + 650 - 30, 20, 20);
+        jogo.batch.draw(moedasIcon, x + 1170, y  + 650 - 30, 20, 20);
         // Desenhar o valor de Moedas em cima do ícone
-        font.draw(batch, String.valueOf(moedas), x + 1170 + 25, y + 650 - 15);
-        batch.end();
-    }
-
-    public void addMoedas(int amount) {
-        moedas += amount;
-    }
-
-    public void setMoedas(int moedas) {
-        this.moedas = moedas;
+        font.draw(jogo.batch, String.valueOf(jogo.personagem.moedas), x + 1170 + 25, y + 650 - 15);
+        jogo.batch.end();
     }
 
     public void setPosition(float x, float y) {
         this.x = x;
         this.y = y;
-
     }
 
     public void dispose() {

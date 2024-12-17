@@ -78,7 +78,12 @@ public class Controller {
      * - 1: Acertou
      * - 2: Errou
      */
-    public int acertouMissao;
+    public int resultadoRespostaMissao;
+
+    /**
+     * Flag para perdeu o jogo
+     */
+    public boolean perdeuJogo;
 
     public Controller(MetropoliTrans jogo) {
         this.jogo = jogo;
@@ -99,7 +104,7 @@ public class Controller {
         mostrarDialogo = false;
         mostrarCaixaMissao = false;
     }
- 
+
     /**
      * Controle do personagem, movimenta de acordo com as teclas pressionadas
      * (Setas)
@@ -143,7 +148,8 @@ public class Controller {
             }
         }
 
-        if (objeto != null && objetoMissao != null && personagem.interagiu(objetoMissao) && Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
+        if (objeto != null && objetoMissao != null && personagem.interagiu(objetoMissao)
+                && Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
             mostrarCaixaMissao = true;
         }
 
@@ -210,6 +216,20 @@ public class Controller {
             for (Npc npc : npcs) {
                 atualizaStatusAlertaMissaoNpc(npc);
             }
+        }
+    }
+
+    /**
+     * Controle de lógica do jogo
+     */
+    public void controleLogicaJogo() {
+        // Verifica se o personagem zerou as moedas
+        // Se sim, volta para a tela de início pois perdeu o jogo
+        if (perdeuJogo) {
+            // Volta todas as informações do jogo para o início
+            jogo.reiniciarJogo();
+            // Volta para a tela de início
+            jogo.trocarTela("menu");
         }
     }
 

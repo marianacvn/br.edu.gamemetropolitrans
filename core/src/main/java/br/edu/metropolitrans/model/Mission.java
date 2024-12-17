@@ -8,18 +8,20 @@ public class Mission {
     private String descricao;
     private int recompensaMoedas;
     private int experiencia;
+    private int valorErro;
     private List<String> personagens;
 
     public Mission() {
     }
 
-    public Mission(int id, String nome, String descricao, int recompensaMoedas, int experiencia,
+    public Mission(int id, String nome, String descricao, int recompensaMoedas, int experiencia, int valorErro,
             List<String> personagens) {
         this.id = id;
         this.nome = nome;
         this.descricao = descricao;
         this.recompensaMoedas = recompensaMoedas;
         this.experiencia = experiencia;
+        this.valorErro = valorErro;
         this.personagens = personagens;
     }
 
@@ -61,6 +63,14 @@ public class Mission {
 
     public void setExperiencia(int experiencia) {
         this.experiencia = experiencia;
+    }
+
+    public int getValorErro() {
+        return valorErro;
+    }
+
+    public void setValorErro(int valorErro) {
+        this.valorErro = valorErro;
     }
 
     public List<String> getPersonagens() {

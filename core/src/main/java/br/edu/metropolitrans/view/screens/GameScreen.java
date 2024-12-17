@@ -228,10 +228,15 @@ public class GameScreen implements Screen {
                 CAMERA.position.y - CAMERA.viewportHeight / 2);
 
         // Desenha o diálogo de resultado de missão caso a flag esteja ativada
-        if (jogo.controller.acertouMissao == 1) {
+        if (jogo.controller.resultadoRespostaMissao == 1) {
             missaoDialogoResultado.ativarAcao("Parabéns, você\r\nconcluiu a missão!");
-        } else if (jogo.controller.acertouMissao == 2) {
-            missaoDialogoResultado.ativarAcao("Desculpe, você\r\nnão acertou, tente\r\nnovamente!");
+        } else if (jogo.controller.resultadoRespostaMissao == 2) {
+            if (jogo.personagem.moedas == 0) {
+                jogo.personagem.moedas = -1;
+                missaoDialogoResultado.ativarAcao("Desculpe, você\r\nperdeu o jogo!");
+            } else {
+                missaoDialogoResultado.ativarAcao("Desculpe, você\r\nnão acertou, tente\r\nnovamente!");
+            }
         } else {
             missaoDialogoResultado.desativarAcao();
         }

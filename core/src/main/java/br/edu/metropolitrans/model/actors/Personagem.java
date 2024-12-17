@@ -37,6 +37,16 @@ public class Personagem extends BaseActor {
 
     public Texture minimapaPonto;
 
+    /**
+     * Moedas do personagem
+     */
+    public int moedas;
+
+    /**
+     * XP do personagem
+     */
+    public int xp;
+
     public Personagem(float x, float y, Stage s) {
         super(x, y, s);
 
@@ -95,6 +105,8 @@ public class Personagem extends BaseActor {
         angulo = 270;
 
         // Configuracao do personagem
+        moedas = 200;
+        xp = 0;
         setAceleracao(800);
         setVelocidadeMaxima(200);
         setDesaceleracao(800);
