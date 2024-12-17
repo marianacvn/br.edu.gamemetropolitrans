@@ -72,6 +72,14 @@ public class Controller {
      */
     public boolean mostrarCaixaMissao;
 
+    /**
+     * Flag para acertar a missão
+     * - 0: Não respondeu
+     * - 1: Acertou
+     * - 2: Errou
+     */
+    public int acertouMissao;
+
     public Controller(MetropoliTrans jogo) {
         this.jogo = jogo;
         this.mapas = jogo.mapas;

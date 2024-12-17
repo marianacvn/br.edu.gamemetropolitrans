@@ -18,6 +18,7 @@ import br.edu.metropolitrans.view.components.hud.Hud;
 import br.edu.metropolitrans.view.components.minimap.Minimap;
 import br.edu.metropolitrans.view.components.mission_alert.MissionAlert;
 import br.edu.metropolitrans.view.components.mission_modal.MissionModalBox;
+import br.edu.metropolitrans.view.components.mission_modal.MissionResultDialog;
 
 /**
  * Tela principal do jogo
@@ -55,6 +56,10 @@ public class GameScreen implements Screen {
      * Caixa modal de missão
      */
     public MissionModalBox missaoModalBox;
+    /**
+     * Diálogo de resultado de missão
+     */
+    public MissionResultDialog missaoDialogoResultado;
     /**
      * Minimapa
      */
@@ -94,6 +99,8 @@ public class GameScreen implements Screen {
         // Inicializa a caixa modal de missão no centro da tela
         missaoModalBox = new MissionModalBox(TELA_LARGURA / 2 - 550, TELA_ALTURA / 2 - 400, 550, 400, jogo);
 
+        // Inicializa o diálogo de resultado de missão
+        missaoDialogoResultado = new MissionResultDialog(TELA_LARGURA / 2 - 250, TELA_ALTURA / 2 - 200, 250, 200, jogo);
     }
 
     @Override
@@ -215,6 +222,21 @@ public class GameScreen implements Screen {
         if (jogo.controller.mostrarCaixaMissao) {
             missaoModalBox.render(delta);
         }
+
+        // Atualiza a posição do diálogo de resultado de missão para acompanhar a câmera
+        missaoDialogoResultado.setPosition(CAMERA.position.x - CAMERA.viewportWidth / 2,
+                CAMERA.position.y - CAMERA.viewportHeight / 2);
+
+        // Desenha o diálogo de resultado de missão caso a flag esteja ativada
+        if (jogo.controller.acertouMissao == 1) {
+            missaoDialogoResultado.ativarAcao("Parabéns, você\r\nconcluiu a missão!");
+        } else if (jogo.controller.acertouMissao == 2) {
+            missaoDialogoResultado.ativarAcao("Desculpe, você\r\nnão acertou, tente\r\nnovamente!");
+        } else {
+            missaoDialogoResultado.desativarAcao();
+        }
+
+        missaoDialogoResultado.render(delta);
     }
 
     /**

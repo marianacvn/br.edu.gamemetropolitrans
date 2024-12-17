@@ -173,7 +173,7 @@ public class MetropoliTrans extends Game {
     public void inicializarComponentesMissao() {
         float baseX = ((GameScreen.TELA_LARGURA - 530) / 2);
         float baseY = (GameScreen.TELA_ALTURA - 400) / 2;
-        MissionComponents missao1 = new MissionComponents(1);
+        MissionComponents missao1 = new MissionComponents(1, this);
         missao1.adicionarTituloMissao("Missão " + controller.MISSAO + ": ", baseX + 15, baseY);
         missao1.adicionarOpcaoPlaca("mission1-option1_reduced.png", false, baseX + 15, baseY + 265);
         missao1.adicionarOpcaoPlaca("mission1-option2_reduced.png", false, baseX + 15, baseY + 265 - 50 - 15);

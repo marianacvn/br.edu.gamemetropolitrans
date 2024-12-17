@@ -15,17 +15,20 @@ import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 
+import br.edu.metropolitrans.MetropoliTrans;
 import br.edu.metropolitrans.view.font.FontBase;
 
 public class MissionComponents {
 
+    public MetropoliTrans jogo;
     public int missaoId;
     public Stage stage;
     public Label titulo;
     public List<ImageButton> botoesPlacas;
     public Image imagemCena;
 
-    public MissionComponents(int missaoId) {
+    public MissionComponents(int missaoId, MetropoliTrans jogo) {
+        this.jogo = jogo;
         this.missaoId = missaoId;
         this.stage = new Stage();
         botoesPlacas = new ArrayList<>();
@@ -73,9 +76,11 @@ public class MissionComponents {
                 if (correta) {
                     // Lógica para resposta correta
                     Gdx.app.log("MissionComponents", "Resposta correta!");
+                    jogo.controller.acertouMissao = 1;
                 } else {
                     // Lógica para resposta incorreta
                     Gdx.app.log("MissionComponents", "Resposta incorreta!");
+                    jogo.controller.acertouMissao = 2;
                 }
                 return true;
             }
