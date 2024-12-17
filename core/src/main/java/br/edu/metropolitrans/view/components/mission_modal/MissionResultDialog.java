@@ -50,7 +50,6 @@ public class MissionResultDialog {
         labelStyle.fontColor = Color.BLACK;
         titulo = new Label(textoTitulo, labelStyle);
         titulo.setAlignment(Align.center);
-        // titulo.setPosition(x + titulo.getWidth(), y + 250);
         // Centraliza o título de acordo com o tamanho do dialogo
         titulo.setPosition(x + largura - titulo.getWidth(), y + 240);
 
@@ -90,7 +89,6 @@ public class MissionResultDialog {
     public void desativarAcao() {
         this.textoTitulo = "";
         exibeDialogo = false;
-        // Gdx.input.setInputProcessor(jogo.estagioPrincipal);
     }
 
     public void render(float delta) {
