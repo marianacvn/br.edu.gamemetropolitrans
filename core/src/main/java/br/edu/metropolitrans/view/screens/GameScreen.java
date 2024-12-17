@@ -92,7 +92,7 @@ public class GameScreen implements Screen {
         alertaMissao = new MissionAlert(jogo.batch);
 
         // Inicializa a caixa modal de missão no centro da tela
-        missaoModalBox = new MissionModalBox(TELA_LARGURA / 2 - 350, TELA_ALTURA / 2 - 350, 350, 350, jogo);
+        missaoModalBox = new MissionModalBox(TELA_LARGURA / 2 - 550, TELA_ALTURA / 2 - 400, 550, 400, jogo);
 
     }
 

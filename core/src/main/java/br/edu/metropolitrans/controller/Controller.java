@@ -91,7 +91,7 @@ public class Controller {
         mostrarDialogo = false;
         mostrarCaixaMissao = false;
     }
-
+ 
     /**
      * Controle do personagem, movimenta de acordo com as teclas pressionadas
      * (Setas)
@@ -150,7 +150,7 @@ public class Controller {
             jogo.mapaRenderizador.dispose();
             jogo.mapaRenderizador = new OrthogonalTiledMapRenderer(mapas.sala, unitScale, jogo.batch);
 
-            // Salva a última posicao e setar posição do personagem para a entrada
+            // Salva a última posicao e seta posição do personagem para a entrada
             personagem.setPosition(1248, 1000);
             objetoSairSala = new ObjetoInterativo("sairSala", 1216, 964, "background-transparent.png",
                     jogo.estagioPrincipal);

@@ -13,7 +13,7 @@
         {
             "id": 1,
             "nome": "Retorno proibido",
-            "descricao": "Jogador precisa resolver problema do Artigo/Regra: 39, retorno proibido.",
+            "descricao": "Qual placa representa uma possível solução\r\npara o problema apresentado? [Artigo/Regra: 39]",
             "recompensaMoedas": 100,
             "experiencia": 100,
             "personagens": [

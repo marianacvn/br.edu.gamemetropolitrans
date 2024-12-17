@@ -12,24 +12,21 @@ import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 
 import br.edu.metropolitrans.view.font.FontBase;
 
 public class MissionComponents {
 
-    public float baseX, baseY;
     public int missaoId;
     public Stage stage;
-    List<ImageButton> botoesPlacas;
+    public Label titulo;
+    public List<ImageButton> botoesPlacas;
 
     public MissionComponents(int missaoId) {
         this.missaoId = missaoId;
         this.stage = new Stage();
         botoesPlacas = new ArrayList<>();
-
-        // Gdx.input.setInputProcessor(stage);
     }
 
     public void adicionarTituloMissao(String textoTitulo, float x, float y) {
@@ -40,48 +37,36 @@ public class MissionComponents {
         Label.LabelStyle labelStyle = new Label.LabelStyle();
         labelStyle.font = fonteTitulo;
         labelStyle.fontColor = Color.BLACK;
-        Label titulo = new Label(textoTitulo, labelStyle);
-        // titulo.setPosition(baseX + x, baseY + y);
-        // Define a posição no canto superior esquerdo
-        titulo.setPosition(baseX + x, baseY + stage.getHeight() - titulo.getHeight() - y - 20);
+        titulo = new Label(textoTitulo, labelStyle);
+        titulo.setPosition(x, stage.getHeight() - titulo.getHeight() - y - 20);
 
         stage.addActor(titulo);
     }
 
     public void adicionarOpcaoPlaca(String caminhoImagem, boolean correta, float x, float y) {
-        Skin skin = new Skin();
+        // Skin skin = new Skin();
         Texture texture = new Texture(Gdx.files.internal("files/missionComponents/" + caminhoImagem));
         ImageButton.ImageButtonStyle style = new ImageButton.ImageButtonStyle();
         style.imageUp = new TextureRegionDrawable(texture);
         ImageButton botaoPlaca = new ImageButton(style);
-        botaoPlaca.setPosition(baseX + x, baseY + y);
 
         botaoPlaca.addListener(new InputListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 if (correta) {
                     // Lógica para resposta correta
-                    System.out.println("Resposta correta!");
+                    Gdx.app.log("MissionComponents","Resposta correta!");
                 } else {
                     // Lógica para resposta incorreta
-                    System.out.println("Resposta incorreta!");
+                    Gdx.app.log("MissionComponents","Resposta incorreta!");
                 }
                 return true;
             }
         });
-
+        
+        botaoPlaca.setPosition(x, y);
         botoesPlacas.add(botaoPlaca);
         stage.addActor(botaoPlaca);
     }
 
-    public void setBasePosition(float x, float y) {
-        baseX = x;
-        baseY = y;
-    }
-
-    // public void setPosition(float x, float y) {
-    // for (ImageButton botao : botoesPlacas) {
-    // botao.setPosition(x, y);
-    // }
-    // }
 }

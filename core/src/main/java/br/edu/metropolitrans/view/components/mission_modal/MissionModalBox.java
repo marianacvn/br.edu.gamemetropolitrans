@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 
 import br.edu.metropolitrans.MetropoliTrans;
 import br.edu.metropolitrans.view.font.FontBase;
+import br.edu.metropolitrans.view.screens.GameScreen;
 
 public class MissionModalBox {
 
@@ -40,14 +41,15 @@ public class MissionModalBox {
 
         jogo.batch.draw(
                 backgroundTexture,
-                x + 490,
-                y + 200,
+                x + (GameScreen.TELA_LARGURA - largura) / 2,
+                y + (GameScreen.TELA_ALTURA - altura) / 2,
                 largura,
                 altura);
 
         jogo.batch.end();
 
         if (missionComponents != null) {
+            Gdx.input.setInputProcessor(missionComponents.stage);
             missionComponents.stage.act(delta);
             missionComponents.stage.draw();
         }
@@ -56,8 +58,5 @@ public class MissionModalBox {
     public void setPosition(float x, float y) {
         this.x = x;
         this.y = y;
-        if (missionComponents != null) {
-            missionComponents.setBasePosition(x, y);
-        }
     }
 }

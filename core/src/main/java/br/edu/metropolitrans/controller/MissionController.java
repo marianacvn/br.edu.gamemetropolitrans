@@ -5,6 +5,7 @@ import br.edu.metropolitrans.model.Mission;
 import br.edu.metropolitrans.model.actors.Npc;
 import br.edu.metropolitrans.model.actors.Vehicle;
 import br.edu.metropolitrans.model.dao.MissionDataDAO;
+import br.edu.metropolitrans.view.components.mission_modal.MissionComponents;
 
 public class MissionController {
 
@@ -39,9 +40,9 @@ public class MissionController {
             // Verifica se o diálogo com juliana está sendo exibido,
             // se sim exibe o veiculo realizando a ação
             Vehicle taxi = jogo.vehicles.get("taxi");
-            Npc juliana = jogo.controller.gameScreen.caixaDialogo.npc;
+            Npc npc = jogo.controller.gameScreen.caixaDialogo.npc;
             if (jogo.controller.mostrarDialogo
-                    && juliana.nome.equals("juliana")) {
+                    && npc.nome.equals("juliana")) {
                 taxi.setVisible(true);
                 taxi.animacaoAtivada = true;
             } else {
@@ -51,8 +52,12 @@ public class MissionController {
             }
 
             if (!taxi.isVisible()) {
-                if (juliana.nome.equals("juliana") && juliana.statusAlertaMissao == 2) {
-                    jogo.controller.gameScreen.missaoModalBox.missionComponents = jogo.missionComponents.get("missao1");
+                if (npc.nome.equals("juliana") && npc.statusAlertaMissao == 2) {
+                    taxi.remove();
+                    MissionComponents componentesMissao = jogo.missionComponents.get("missao1");
+                    componentesMissao.titulo
+                            .setText("Missão " + (jogo.controller.MISSAO) + ": " + missao.getDescricao());
+                    jogo.controller.gameScreen.missaoModalBox.missionComponents = componentesMissao;
                     jogo.objetoMissao.setVisible(true);
                 }
             }

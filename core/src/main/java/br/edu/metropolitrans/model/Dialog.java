@@ -50,12 +50,12 @@ public class Dialog {
         }
 
         // Se o diálogo atual for o último, retorna o primeiro
-        if (dialogoAtual + 1 >= dialogosMissaoAtual.size()) {
+        if (dialogoAtual >= dialogosMissaoAtual.size()) {
             return dialogosMissaoAtual.get(0);
         }
 
         // Retorna o próximo diálogo
-        return dialogosMissaoAtual.get(dialogoAtual + 1);
+        return dialogosMissaoAtual.get(dialogoAtual);
     }
 
     public boolean verificaSeDialogoMissaoExiste(int missao, int dialogoAtual) {
