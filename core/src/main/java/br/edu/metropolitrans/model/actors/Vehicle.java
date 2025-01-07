@@ -1,6 +1,5 @@
 package br.edu.metropolitrans.model.actors;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -70,10 +69,11 @@ public class Vehicle extends BaseActor {
         carregaAnimacoes("files/vehicles/" + nomeArquivo);
 
         // try {
-        //     minimapaPonto = new Texture(
-        //             Gdx.files.internal("files/characters/" + nomeArquivo.replace("sprite.png", "minimap.png")));
+        // minimapaPonto = new Texture(
+        // Gdx.files.internal("files/characters/" + nomeArquivo.replace("sprite.png",
+        // "minimap.png")));
         // } catch (Exception ignore) {
-        //     Gdx.app.log("Vehicle", "Erro ao carregar minimapaPonto para " + nomeArquivo);
+        // Gdx.app.log("Vehicle", "Erro ao carregar minimapaPonto para " + nomeArquivo);
         // }
 
         // Inicializa o veículo como invisível
@@ -187,5 +187,28 @@ public class Vehicle extends BaseActor {
             etapaMissao++;
             distanciaPercorrida = 0;
         }
+    }
+
+    /**
+     * Atualiza o roteiro do veículo
+     * 
+     * @param roteiro Lista de instruções do roteiro, formato aceito
+     *                "DIREÇÃO-DISTÂNCIA*BLOCOS",
+     *                onde DIREÇÃO é C, E, B ou D (Cima, Esquerda, Baixo,
+     *                Direita) e DISTÂNCIA é a distância a ser percorrida
+     *                e BLOCOS é a quantidade de blocos a serem percorridos.
+     *                Exemplo: "C-1*2" (Cima, 1 bloco, 2 vezes)
+     */
+    public void setRoteiro(List<String> roteiro) {
+        this.roteiro = roteiro;
+    }
+
+    /**
+     * Atualiza a posição do veículo
+     */
+    public void setPosition(float x, float y) {
+        super.setPosition(x, y);
+        xInicial = x;
+        yInicial = y;
     }
 }

@@ -9,12 +9,14 @@ public class Mission {
     private int recompensaMoedas;
     private int experiencia;
     private int valorErro;
+    private boolean finalizouMissao;
     private List<String> personagens;
 
     public Mission() {
     }
 
     public Mission(int id, String nome, String descricao, int recompensaMoedas, int experiencia, int valorErro,
+            boolean finalizouMissao,
             List<String> personagens) {
         this.id = id;
         this.nome = nome;
@@ -22,6 +24,7 @@ public class Mission {
         this.recompensaMoedas = recompensaMoedas;
         this.experiencia = experiencia;
         this.valorErro = valorErro;
+        this.finalizouMissao = finalizouMissao;
         this.personagens = personagens;
     }
 
@@ -71,6 +74,14 @@ public class Mission {
 
     public void setValorErro(int valorErro) {
         this.valorErro = valorErro;
+    }
+
+    public boolean isFinalizouMissao() {
+        return finalizouMissao;
+    }
+
+    public void setFinalizouMissao(boolean finalizouMissao) {
+        this.finalizouMissao = finalizouMissao;
     }
 
     public List<String> getPersonagens() {

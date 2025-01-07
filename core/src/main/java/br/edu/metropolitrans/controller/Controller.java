@@ -154,7 +154,8 @@ public class Controller {
         }
 
         if (objeto != null && personagem.interagiu(objeto) && Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
-
+            // Remove o objeto da missão da sala
+            objetoMissao.setVisible(false);
             // Remove os NPCs do mapa
             for (Npc npc : npcs) {
                 npc.remove();
@@ -178,7 +179,8 @@ public class Controller {
             personagem.setRetangulosColisao(jogo.retangulosColisao);
         } else if (objetoSairSala != null && personagem.interagiu(objetoSairSala)
                 && Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
-
+            // coloca o objeto da missão ao sair da sala
+            objetoMissao.setVisible(true);
             // Adiciona os NPCs no array
             personagem.npcs = npcs;
             for (Npc npc : npcs) {
@@ -264,7 +266,7 @@ public class Controller {
              * Se sim, atualiza o status de alerta da missão
              */
             if (personagem.estaDentroDaDistancia(15, npc) &&
-                    MissionController.npcEstaNaMisao(npc) &&
+                    MissionController.npcEstaNaMisao(npc.nome) != null &&
                     npc.statusAlertaMissao == 1) {
                 npc.statusAlertaMissao = 2;
             }

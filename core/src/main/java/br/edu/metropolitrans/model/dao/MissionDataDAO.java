@@ -35,9 +35,21 @@ public class MissionDataDAO {
         return null;
     }
 
-    // public static void salvarDialogos(String personagem, Dialog dialog) {
-    // DataSource ds = DataSource.getInstancia();
-    // ds.desconectar(personagem + ".json", dialog);
-    // }
+    /**
+     * Atualiza a missão ou submissão
+     * 
+     * @param mission     Missão
+     * @param isSubmissao Se é submissão
+     */
+    public static void atualizarMissao(Mission mission) {
+        MissionData missionData = carregarDadosMissoes();
+        for (Mission m : missionData.getMissoes()) {
+            if (m.getId() == mission.getId()) {
+                m.setFinalizouMissao(mission.isFinalizouMissao());
+            }
+        }
+        DataSource ds = DataSource.getInstancia();
+        ds.desconectar("missions.json", missionData);
+    }
 
 }

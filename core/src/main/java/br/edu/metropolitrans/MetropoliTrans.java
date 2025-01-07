@@ -133,7 +133,7 @@ public class MetropoliTrans extends Game {
         objetoMissao.setVisible(false);
 
         // Carrega o personagem
-        personagem = new Personagem(640, 250, estagioPrincipal);
+        personagem = new Personagem(150, 650, estagioPrincipal);
         Personagem.setLimitacaoMundo(Mapas.MAPA_LARGURA, Mapas.MAPA_ALTURA);
 
         // Carrega os NPCs
@@ -141,11 +141,11 @@ public class MetropoliTrans extends Game {
         npcs = new ArrayList<Npc>();
 
         // Carrega os Npcs
-        npcs.add(new Npc("maria", 280, 1050, "maria/sprite.png", estagioPrincipal));
-        npcs.add(new Npc("betania", 150, 400, "betania/sprite.png", estagioPrincipal));
+        npcs.add(new Npc("maria", 280, 1220, "maria/sprite.png", estagioPrincipal));
+        npcs.add(new Npc("betania", 264, 200, "betania/sprite.png", estagioPrincipal));
         npcs.add(new Npc("bruna", 1190, 200, "bruna/sprite.png", estagioPrincipal));
         npcs.add(new Npc("antonio", 1500, 1000, "antonio/sprite.png", estagioPrincipal));
-        npcs.add(new Npc("heberto", 150, 200, "heberto/sprite.png", estagioPrincipal, 1));
+        npcs.add(new Npc("heberto", 25, 650, "heberto/sprite.png", estagioPrincipal, 1));
         npcs.add(new Npc("jose", 90, 1450, "jose/sprite.png", estagioPrincipal));
         npcs.add(new Npc("josinaldo", 2090, 150, "josinaldo/sprite.png", estagioPrincipal));
         npcs.add(new Npc("paulo", 1500, 100, "paulo/sprite.png", estagioPrincipal));
@@ -157,8 +157,12 @@ public class MetropoliTrans extends Game {
         // Carrega os veículos
         vehicles.put(
                 "taxi",
-                new Vehicle("taxi", 1266, 1000, 50, "taxi-sprite.png", estagioPrincipal,
-                        List.of("C-8*32", "E-8*32", "B-10*32")));
+                new Vehicle("taxi", 394, 940, 100, "taxi-sprite.png", estagioPrincipal,
+                        List.of("C-10*32", "D-25*32")));
+        vehicles.put(
+                "onibus",
+                new Vehicle("onibus", 394, 1400, 50, "bus-sprite.png", estagioPrincipal,
+                        List.of("B-2*32", "E-3*32", "B-18*32")));
 
         // Carrega os objetos interativos
         objeto = new ObjetoInterativo("entradaPrefeitura", 32, 220, "background-transparent.png",

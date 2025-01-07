@@ -7,6 +7,7 @@
             "recompensaMoedas": 200,
             "experiencia": 0,
             "valorErro": 0,
+            "finalizouMissao": false,
             "personagens": [
                 "heberto"
             ]
@@ -18,8 +19,10 @@
             "recompensaMoedas": 100,
             "experiencia": 100,
             "valorErro": 20,
+            "finalizouMissao": false,
             "personagens": [
                 "betania",
+                "maria",
                 "juliana"
             ]
         }

@@ -73,6 +73,7 @@ public class GameScreen implements Screen {
 
     public GameScreen(final MetropoliTrans jogo) {
         this.jogo = jogo;
+        MissionController.iniciarControleMissao(jogo);
 
         // Inicializa o renderizador de formas
         renderizadorForma = new ShapeRenderer();
@@ -123,7 +124,7 @@ public class GameScreen implements Screen {
         jogo.controller.controleDialogos();
 
         // Controle de missões
-        MissionController.controle(jogo.controller.MISSAO, jogo);
+        MissionController.controle(jogo.controller.MISSAO);
 
         // Verifica se a caixa de diálogo deve ser exibida
         // Se sim, exibe a caixa de diálogo, caso contrário permite
@@ -158,7 +159,7 @@ public class GameScreen implements Screen {
 
         // Renderiza o mapa, camadas de sobpiso, piso e colisão
         jogo.mapaRenderizador.setView(CAMERA);
-        jogo.mapaRenderizador.render(new int[] { 0, 1, 2 }); // Sobpiso
+        jogo.mapaRenderizador.render(new int[] { 0, 1, 2, 3, 4, 5 }); // Sobpiso
 
         // Inicia o batch de desenho
         jogo.batch.begin();
@@ -176,9 +177,9 @@ public class GameScreen implements Screen {
         jogo.batch.end();
 
         // Verifica se a camada de topo existe antes de renderizá-la
-        if (jogo.mapas.mapa.getLayers().getCount() > 3) {
+        if (jogo.mapas.mapa.getLayers().getCount() > 6) {
             // Renderiza a camada de Topo
-            jogo.mapaRenderizador.render(new int[] { 3 }); // Topo
+            jogo.mapaRenderizador.render(new int[] { 6 }); // Topo
         }
 
     }
