@@ -16,7 +16,7 @@ public class ObjetoInterativo extends BaseActor {
         this.y = y;
         this.nomeArquivo = nomeArquivo;
         this.stage = stage;
-        carregaTexturaEstatica("files/objetoInterativo/" + nomeArquivo);
+        carregaTexturaEstatica("files/objects/" + nomeArquivo);
     }
 
 }
