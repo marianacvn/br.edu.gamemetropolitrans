@@ -65,6 +65,7 @@ public class MissionController {
                 }
                 if (npc.nome.equals("juliana")) {
                     taxi.setPosition(1266, 1000);
+                    taxi.reiniciarAnimacao();
                     taxi.setRoteiro(List.of("C-8*32", "E-8*32", "B-10*32"));
                     taxi.setVisible(true);
                     taxi.animacaoAtivada = true;
