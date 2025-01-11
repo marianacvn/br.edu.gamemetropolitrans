@@ -154,8 +154,9 @@ public class Controller {
         }
 
         if (objeto != null && personagem.interagiu(objeto) && Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
-            // Remove o objeto da missão da sala
+            // Remove o objeto da missão da sala e minimapa
             objetoMissao.setVisible(false);
+            gameScreen.minimapa.isVisible = false;
             // Remove os NPCs do mapa
             for (Npc npc : npcs) {
                 npc.remove();
@@ -179,8 +180,9 @@ public class Controller {
             personagem.setRetangulosColisao(jogo.retangulosColisao);
         } else if (objetoSairSala != null && personagem.interagiu(objetoSairSala)
                 && Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
-            // coloca o objeto da missão ao sair da sala
+            // coloca o objeto da missão ao sair da sala e minimapa
             objetoMissao.setVisible(true);
+            gameScreen.minimapa.isVisible = true;
             // Adiciona os NPCs no array
             personagem.npcs = npcs;
             for (Npc npc : npcs) {
@@ -195,8 +197,8 @@ public class Controller {
             // prefeitura
 
             // setar posição do personagem para a entrada
-            personagem.setPosition(77, 150);
-            objeto = new ObjetoInterativo("entradaPrefeitura", 32, 220, "background-transparent.png",
+            personagem.setPosition(100, 690);
+            objeto = new ObjetoInterativo("entradaPrefeitura", 100, 760, "background-transparent.png",
                     jogo.estagioPrincipal);
             objetoSairSala = null;
 

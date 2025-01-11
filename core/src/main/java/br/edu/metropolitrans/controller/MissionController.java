@@ -15,6 +15,7 @@ public class MissionController {
     private static Mission missao;
     private static boolean controlaTrocaMissao;
     private static Npc npcAtualMissao;
+    public static boolean missaoConcluida;
 
     /**
      * Inicia o controle de missão
@@ -85,6 +86,10 @@ public class MissionController {
                             .setText("Missão " + (jogo.controller.MISSAO) + ": " + missao.getDescricao());
                     jogo.controller.gameScreen.missaoModalBox.missionComponents = componentesMissao;
                     jogo.objetoMissao.setVisible(true);
+                }
+                if (missaoConcluida){
+                    jogo.objetoMissao.setVisible(false);
+                    jogo.objetoPlaca1.setVisible(true);
                 }
             }
         } else if (missaoId == 2) {

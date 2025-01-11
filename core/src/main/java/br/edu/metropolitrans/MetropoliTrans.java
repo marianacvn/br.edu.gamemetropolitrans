@@ -77,7 +77,7 @@ public class MetropoliTrans extends Game {
     /**
      * Objetos interativos
      */
-    public ObjetoInterativo objeto, objetoSairSala, objetoMissao;
+    public ObjetoInterativo objeto, objetoChao, objetoSairSala, objetoMissao, objetoPlaca1;
 
     /**
      * Mapas do jogo
@@ -165,8 +165,15 @@ public class MetropoliTrans extends Game {
                         List.of("B-2*32", "E-3*32", "B-18*32")));
 
         // Carrega os objetos interativos
-        objeto = new ObjetoInterativo("entradaPrefeitura", 32, 220, "background-transparent.png",
+        objeto = new ObjetoInterativo("entradaPrefeitura", 100, 760, "background-transparent.png",
                 estagioPrincipal);
+
+        // Carrega o objeto interativo do chão
+        objetoChao = new ObjetoInterativo("chao", 320, 1210, "asphalt-obj.png", estagioPrincipal);
+
+        // Carrega o objeto interativo da placa da primeira missão
+        objetoPlaca1 = new ObjetoInterativo("placa", 1290, 1245, "mission1-result.png", estagioPrincipal);
+        objetoPlaca1.setVisible(false);	
 
         // Inicia a reprodução da música do menu
         MusicaMenu.play();

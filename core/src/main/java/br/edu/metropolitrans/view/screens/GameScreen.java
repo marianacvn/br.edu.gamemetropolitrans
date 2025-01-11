@@ -156,10 +156,19 @@ public class GameScreen implements Screen {
 
         // Alinhamento da câmera do jogo
         alinhamentoCamera();
-
-        // Renderiza o mapa, camadas de sobpiso, piso e colisão
         jogo.mapaRenderizador.setView(CAMERA);
-        jogo.mapaRenderizador.render(new int[] { 0, 1, 2, 3, 4, 5 }); // Sobpiso
+
+        // Renderiza o mapa e suas camadas Ex: piso e colisão
+        // Verifica se o objeto de entrar existe, se sim, deve criar um vetor com a quantidade de camadas
+        // Obs.: Caso as camadas mudem no tiled, deve-se alterar aqui também
+        int[] camadas = null;
+        if (jogo.controller.objeto != null) {
+            camadas = new int[] { 0, 1, 2, 3, 4 };
+        } else {
+            camadas = new int[] { 0, 1, 2 };
+        }
+        jogo.mapaRenderizador.render(camadas);
+        
 
         // Inicia o batch de desenho
         jogo.batch.begin();
@@ -176,10 +185,11 @@ public class GameScreen implements Screen {
         // Finaliza o batch de desenho
         jogo.batch.end();
 
-        // Verifica se a camada de topo existe antes de renderizá-la
-        if (jogo.mapas.mapa.getLayers().getCount() > 6) {
-            // Renderiza a camada de Topo
-            jogo.mapaRenderizador.render(new int[] { 6 }); // Topo
+        // Renderiza a camada de Topo
+        if (jogo.controller.objeto != null) {
+            jogo.mapaRenderizador.render(new int[] { 5 }); // Topo
+        } else {
+            jogo.mapaRenderizador.render(new int[] { 3 }); // Topo
         }
 
     }

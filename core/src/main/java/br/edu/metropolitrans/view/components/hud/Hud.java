@@ -18,18 +18,20 @@ public class Hud {
     private float y;
     private Texture xpIcon;
     private Texture moedasIcon;
+    private Texture estrelaIcon;
     private ShapeRenderer shapeRenderer;
 
     public Hud(MetropoliTrans jogo) {
         this.jogo = jogo;
 
         // Carregar a fonte
-        font = FontBase.getInstancia().getFonte(24, new Color(Color.BLACK), FontBase.Fontes.PADRAO);
+        font = FontBase.getInstancia().getFonte(28, new Color(Color.BLACK), FontBase.Fontes.MONOGRAM);
 
         this.shapeRenderer = new ShapeRenderer();
         // Carregar as texturas dos ícones
         xpIcon = new Texture(Gdx.files.internal("files/itens/xp2.png"));
         moedasIcon = new Texture(Gdx.files.internal("files/itens/moeda.png"));
+        estrelaIcon = new Texture(Gdx.files.internal("files/itens/estrela-pintada.png"));
     }
 
     public void render() {
@@ -66,6 +68,11 @@ public class Hud {
         jogo.batch.draw(moedasIcon, x + 1170, y + 650 - 30, 20, 20);
         // Desenhar o valor de Moedas em cima do ícone
         font.draw(jogo.batch, String.valueOf(jogo.personagem.moedas), x + 1170 + 25, y + 650 - 15);
+        // Desenha as quatro estrelas lado a lado 
+        jogo.batch.draw(estrelaIcon, x + 1170, y + 650 - 60, 20, 20);
+        jogo.batch.draw(estrelaIcon, x + 1170 + 25, y + 650 - 60, 20, 20);
+        jogo.batch.draw(estrelaIcon, x + 1170 + 50, y + 650 - 60, 20, 20);
+        jogo.batch.draw(estrelaIcon, x + 1170 + 75, y + 650 - 60, 20, 20);
         jogo.batch.end();
     }
 
