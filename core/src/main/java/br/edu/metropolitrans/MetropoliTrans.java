@@ -198,12 +198,6 @@ public class MetropoliTrans extends Game {
         Gdx.app.log("MetropoliTrans", "Reiniciando os valores padrões.");
         controller.MISSAO = 0;
 
-        // Fecha todas as telas
-        Gdx.app.log("MetropoliTrans", "Fechando todas as telas...");
-        for (Screen tela : telas.values()) {
-            tela.dispose();
-        }
-
         // Limpa todas as telas
         Gdx.app.log("MetropoliTrans", "Excluindo todas as telas...");
         telas.clear();

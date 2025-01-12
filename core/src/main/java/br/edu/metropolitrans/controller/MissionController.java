@@ -55,41 +55,43 @@ public class MissionController {
             // Verifica qual dialogo está sendo exibido
             // e exibe os veículos
             Npc npc = jogo.controller.gameScreen.caixaDialogo.npc;
-            if (jogo.controller.mostrarDialogo) {
-                if (npc.nome.equals("maria")) {
-                    basicCar.setVisible(true);
-                    onibus.setVisible(true);
-                    basicCar.animacaoAtivada = true;
-                    onibus.animacaoAtivada = true;
+            if (npc != null) {
+                if (jogo.controller.mostrarDialogo) {
+                    if (npc.nome.equals("maria")) {
+                        basicCar.setVisible(true);
+                        onibus.setVisible(true);
+                        basicCar.animacaoAtivada = true;
+                        onibus.animacaoAtivada = true;
+                    }
+                    if (npc.nome.equals("juliana")) {
+                        taxi.setVisible(true);
+                        taxi.animacaoAtivada = true;
+                    }
+                } else {
+                    taxi.animacaoAtivada = false;
+                    taxi.setVisible(false);
+                    taxi.reiniciarAnimacao();
+                    basicCar.animacaoAtivada = false;
+                    basicCar.setVisible(false);
+                    basicCar.reiniciarAnimacao();
+                    onibus.animacaoAtivada = false;
+                    onibus.setVisible(false);
+                    onibus.reiniciarAnimacao();
                 }
-                if (npc.nome.equals("juliana")) {
-                    taxi.setVisible(true);
-                    taxi.animacaoAtivada = true;
-                }
-            } else {
-                taxi.animacaoAtivada = false;
-                taxi.setVisible(false);
-                taxi.reiniciarAnimacao();
-                basicCar.animacaoAtivada = false;
-                basicCar.setVisible(false);
-                basicCar.reiniciarAnimacao();
-                onibus.animacaoAtivada = false;
-                onibus.setVisible(false);
-                onibus.reiniciarAnimacao();
-            }
 
-            if (!taxi.isVisible()) {
-                if (npc.nome.equals("juliana") && npc.statusAlertaMissao == 2) {
-                    taxi.remove();
-                    MissionComponents componentesMissao = jogo.missionComponents.get("missao1");
-                    componentesMissao.titulo
-                            .setText("Missão " + (jogo.controller.MISSAO) + ": " + missao.getDescricao());
-                    jogo.controller.gameScreen.missaoModalBox.missionComponents = componentesMissao;
-                    jogo.objetoMissao.setVisible(true);
-                }
-                if (missaoConcluida) {
-                    jogo.objetoMissao.setVisible(false);
-                    jogo.objetoPlaca1.setVisible(true);
+                if (!taxi.isVisible()) {
+                    if (npc.nome.equals("juliana") && npc.statusAlertaMissao == 2) {
+                        taxi.remove();
+                        MissionComponents componentesMissao = jogo.missionComponents.get("missao1");
+                        componentesMissao.titulo
+                                .setText("Missão " + (jogo.controller.MISSAO) + ": " + missao.getDescricao());
+                        jogo.controller.gameScreen.missaoModalBox.missionComponents = componentesMissao;
+                        jogo.objetoMissao.setVisible(true);
+                    }
+                    if (missaoConcluida) {
+                        jogo.objetoMissao.setVisible(false);
+                        jogo.objetoPlaca1.setVisible(true);
+                    }
                 }
             }
         } else if (missaoId == 2) {
