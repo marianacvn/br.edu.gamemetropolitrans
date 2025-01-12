@@ -52,21 +52,19 @@ public class MissionController {
             trocaMissao();
 
             Vehicle taxi = jogo.vehicles.get("taxi");
+            Vehicle basicCar = jogo.vehicles.get("basic-car");
             Vehicle onibus = jogo.vehicles.get("onibus");
             // Verifica qual dialogo está sendo exibido
             // e exibe os veículos
             Npc npc = jogo.controller.gameScreen.caixaDialogo.npc;
             if (jogo.controller.mostrarDialogo) {
                 if (npc.nome.equals("maria")) {
-                    taxi.setVisible(true);
+                    basicCar.setVisible(true);
                     onibus.setVisible(true);
-                    taxi.animacaoAtivada = true;
+                    basicCar.animacaoAtivada = true;
                     onibus.animacaoAtivada = true;
                 }
                 if (npc.nome.equals("juliana")) {
-                    taxi.setPosition(1266, 1000);
-                    taxi.reiniciarAnimacao();
-                    taxi.setRoteiro(List.of("C-8*32", "E-8*32", "B-10*32"));
                     taxi.setVisible(true);
                     taxi.animacaoAtivada = true;
                 }
@@ -74,6 +72,9 @@ public class MissionController {
                 taxi.animacaoAtivada = false;
                 taxi.setVisible(false);
                 taxi.reiniciarAnimacao();
+                basicCar.animacaoAtivada = false;
+                basicCar.setVisible(false);
+                basicCar.reiniciarAnimacao();
                 onibus.animacaoAtivada = false;
                 onibus.setVisible(false);
                 onibus.reiniciarAnimacao();
