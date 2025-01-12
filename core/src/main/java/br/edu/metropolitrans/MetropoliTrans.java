@@ -131,6 +131,9 @@ public class MetropoliTrans extends Game {
         objetoMissao = new ObjetoInterativo("alertaMissao", 1290, 1245, "mission-alert.png",
                 estagioPrincipal);
         objetoMissao.setVisible(false);
+        
+        // Carrega o objeto do chão
+        objetoChao = new ObjetoInterativo("chao", 320, 1210, "asphalt-obj.png", estagioPrincipal);
 
         // Carrega o personagem
         personagem = new Personagem(150, 650, estagioPrincipal);
@@ -161,7 +164,7 @@ public class MetropoliTrans extends Game {
                         List.of("C-8*32", "E-8*32", "B-10*32")));
         vehicles.put(
                 "basic-car",
-                new Vehicle("basic-car", 394, 940, 100, "taxi-sprite.png", estagioPrincipal,
+                new Vehicle("basic-car", 394, 940, 100, "car-sprite.png", estagioPrincipal,
                         List.of("C-10*32", "D-25*32")));
         vehicles.put(
                 "onibus",
@@ -171,9 +174,6 @@ public class MetropoliTrans extends Game {
         // Carrega os objetos interativos
         objeto = new ObjetoInterativo("entradaPrefeitura", 100, 760, "background-transparent.png",
                 estagioPrincipal);
-
-        // Carrega o objeto interativo do chão
-        objetoChao = new ObjetoInterativo("chao", 320, 1210, "asphalt-obj.png", estagioPrincipal);
 
         // Carrega o objeto interativo da placa da primeira missão
         objetoPlaca1 = new ObjetoInterativo("placa", 1290, 1245, "mission1-result.png", estagioPrincipal);
