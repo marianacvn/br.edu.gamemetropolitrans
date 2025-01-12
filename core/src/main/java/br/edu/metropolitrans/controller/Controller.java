@@ -27,6 +27,8 @@ public class Controller {
      */
     private MetropoliTrans jogo;
 
+    public MissionController controleMissao;
+
     /**
      * Tela principal do jogo
      */
@@ -103,6 +105,9 @@ public class Controller {
         gameScreen = (GameScreen) jogo.telas.get("game");
         mostrarDialogo = false;
         mostrarCaixaMissao = false;
+
+        // Inicia o controle de missão
+        controleMissao = new MissionController(jogo);
     }
 
     /**
@@ -230,10 +235,10 @@ public class Controller {
         // Verifica se o personagem zerou as moedas
         // Se sim, volta para a tela de início pois perdeu o jogo
         if (perdeuJogo) {
+            Gdx.app.log("Controller", "Perdeu o jogo!");
             // Volta todas as informações do jogo para o início
+            Gdx.app.log("Controller", "Reiniciando o jogo...");
             jogo.reiniciarJogo();
-            // Volta para a tela de início
-            jogo.trocarTela("menu");
         }
     }
 
@@ -268,7 +273,7 @@ public class Controller {
              * Se sim, atualiza o status de alerta da missão
              */
             if (personagem.estaDentroDaDistancia(15, npc) &&
-                    MissionController.npcEstaNaMisao(npc.nome) != null &&
+                    controleMissao.npcEstaNaMisao(npc.nome) != null &&
                     npc.statusAlertaMissao == 1) {
                 npc.statusAlertaMissao = 2;
             }

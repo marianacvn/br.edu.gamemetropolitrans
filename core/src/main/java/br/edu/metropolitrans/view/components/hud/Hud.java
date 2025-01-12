@@ -25,7 +25,7 @@ public class Hud {
         this.jogo = jogo;
 
         // Carregar a fonte
-        font = FontBase.getInstancia().getFonte(28, new Color(Color.BLACK), FontBase.Fontes.MONOGRAM);
+        font = FontBase.getInstancia().getFonte(28, new Color(Color.WHITE), FontBase.Fontes.MONOGRAM);
 
         this.shapeRenderer = new ShapeRenderer();
         // Carregar as texturas dos ícones

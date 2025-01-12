@@ -187,26 +187,33 @@ public class MetropoliTrans extends Game {
     }
 
     public void reiniciarJogo() {
-        // Pausa o jogo
+        
+        setPausado(true);
+        Gdx.app.log("MetropoliTrans", "Parando o jogo e voltando para o Menu...");
 
-        // Reinicia o jogo
-        MissionController.reiniciarJogo();
+        // Troca a tela voltando para a tela de início
+        trocarTela("menu");
+
+        // Reinicia os valores Padrões
+        Gdx.app.log("MetropoliTrans", "Reiniciando os valores padrões.");
         controller.MISSAO = 0;
 
-        setPausado(true);
-
         // Fecha todas as telas
+        Gdx.app.log("MetropoliTrans", "Fechando todas as telas...");
         for (Screen tela : telas.values()) {
             tela.dispose();
         }
 
         // Limpa todas as telas
+        Gdx.app.log("MetropoliTrans", "Excluindo todas as telas...");
         telas.clear();
 
         // Retoma o jogo
         setPausado(false);
+        Gdx.app.log("MetropoliTrans", "Retomando o jogo...");
 
         // Inicializa o jogo novamente
+        Gdx.app.log("MetropoliTrans", "Inicializando o jogo novamente...");
         inicializarJogo();
     }
 

@@ -1,6 +1,6 @@
 package br.edu.metropolitrans.controller;
 
-import java.util.List;
+import com.badlogic.gdx.Gdx;
 
 import br.edu.metropolitrans.MetropoliTrans;
 import br.edu.metropolitrans.model.Mission;
@@ -11,19 +11,17 @@ import br.edu.metropolitrans.view.components.mission_modal.MissionComponents;
 
 public class MissionController {
 
-    private static MetropoliTrans jogo;
-    private static Mission missao;
-    private static boolean controlaTrocaMissao;
-    private static Npc npcAtualMissao;
-    public static boolean missaoConcluida;
+    private MetropoliTrans jogo;
+    private Mission missao;
+    private boolean controlaTrocaMissao;
+    private Npc npcAtualMissao;
+    public boolean missaoConcluida;
 
-    /**
-     * Inicia o controle de missão
-     * 
-     * @param j Instância do jogo
-     */
-    public static void iniciarControleMissao(MetropoliTrans j) {
-        jogo = j;
+    public MissionController(MetropoliTrans jogo) {
+        this.jogo = jogo;
+        missao = null;
+        controlaTrocaMissao = false;
+        missaoConcluida = false;
     }
 
     /**
@@ -32,7 +30,7 @@ public class MissionController {
      * @param missaoId ID da missão
      * @param jogo     Instância do jogo
      */
-    public static void controle(int missaoId) {
+    public void controle(int missaoId) {
         // Executa o controle da lógica do jogo
         jogo.controller.controleLogicaJogo();
 
@@ -89,7 +87,7 @@ public class MissionController {
                     jogo.controller.gameScreen.missaoModalBox.missionComponents = componentesMissao;
                     jogo.objetoMissao.setVisible(true);
                 }
-                if (missaoConcluida){
+                if (missaoConcluida) {
                     jogo.objetoMissao.setVisible(false);
                     jogo.objetoPlaca1.setVisible(true);
                 }
@@ -99,12 +97,7 @@ public class MissionController {
         }
     }
 
-    public static void reiniciarJogo() {
-        missao = null;
-        controlaTrocaMissao = false;
-    }
-
-    public static void trocaMissao() {
+    public void trocaMissao() {
         if (controlaTrocaMissao) {
             atualizarAlertas();
             controlaTrocaMissao = false;
@@ -117,7 +110,7 @@ public class MissionController {
      * @param nomeNpc Nome do NPC
      * @return true se o NPC está na missão
      */
-    public static Npc npcEstaNaMisao(String nomeNpc) {
+    public Npc npcEstaNaMisao(String nomeNpc) {
         if (missao.getPersonagens().contains(nomeNpc)) {
             return buscaNpcPorNome(nomeNpc);
         }
@@ -130,7 +123,7 @@ public class MissionController {
      * @param nomeNpc Nome do NPC
      * @return NPC
      */
-    private static Npc buscaNpcPorNome(String nomeNpc) {
+    private Npc buscaNpcPorNome(String nomeNpc) {
         return jogo.npcs.stream()
                 .filter(npc -> npc.nome.equals(nomeNpc))
                 .findFirst()
@@ -143,7 +136,7 @@ public class MissionController {
      * @param jogo     Instância do jogo
      * @param missaoId ID da missão
      */
-    private static void atualizarMissao(int missaoId, String nomeNpc) {
+    private void atualizarMissao(int missaoId, String nomeNpc) {
         Npc npc = npcEstaNaMisao(nomeNpc);
         if (npc != null && npc.statusAlertaMissao == 2) {
             jogo.controller.MISSAO = missaoId;
@@ -155,7 +148,7 @@ public class MissionController {
      * 
      * @param jogo Instância do jogo
      */
-    private static void atualizarAlertas() {
+    private void atualizarAlertas() {
         jogo.npcs.stream().forEach(npc -> {
             if (npcEstaNaMisao(npc.nome) != null) {
                 npc.statusAlertaMissao = 1;
@@ -170,7 +163,7 @@ public class MissionController {
      * 
      * @return Missão
      */
-    public static Mission getMissao() {
+    public Mission getMissao() {
         return missao;
     }
 
@@ -179,7 +172,7 @@ public class MissionController {
      * 
      * @return Valor de erro
      */
-    public static int getValorErroMissao() {
+    public int getValorErroMissao() {
         return missao != null ? missao.getValorErro() : 0;
     }
 
@@ -188,7 +181,7 @@ public class MissionController {
      * 
      * @return Recompensa de moedas
      */
-    public static int getRecompensaMoedasMissao() {
+    public int getRecompensaMoedasMissao() {
         return missao != null ? missao.getRecompensaMoedas() : 0;
     }
 }

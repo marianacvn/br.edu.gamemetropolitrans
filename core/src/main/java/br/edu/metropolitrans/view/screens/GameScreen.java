@@ -73,7 +73,7 @@ public class GameScreen implements Screen {
 
     public GameScreen(final MetropoliTrans jogo) {
         this.jogo = jogo;
-        MissionController.iniciarControleMissao(jogo);
+//        MissionController.iniciarControleMissao(jogo);
 
         // Inicializa o renderizador de formas
         renderizadorForma = new ShapeRenderer();
@@ -124,7 +124,7 @@ public class GameScreen implements Screen {
         jogo.controller.controleDialogos();
 
         // Controle de missões
-        MissionController.controle(jogo.controller.MISSAO);
+        jogo.controller.controleMissao.controle(jogo.controller.MISSAO);
 
         // Verifica se a caixa de diálogo deve ser exibida
         // Se sim, exibe a caixa de diálogo, caso contrário permite
@@ -243,7 +243,6 @@ public class GameScreen implements Screen {
             missaoDialogoResultado.ativarAcao("Parabéns, você\r\nconcluiu a missão!");
         } else if (jogo.controller.resultadoRespostaMissao == 2) {
             if (jogo.personagem.moedas == 0) {
-                jogo.personagem.moedas = -1;
                 missaoDialogoResultado.ativarAcao("Desculpe, você\r\nperdeu o jogo!");
             } else {
                 missaoDialogoResultado.ativarAcao("Desculpe, você\r\nnão acertou, tente\r\nnovamente!");

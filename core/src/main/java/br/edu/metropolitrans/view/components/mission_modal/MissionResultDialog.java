@@ -63,14 +63,14 @@ public class MissionResultDialog {
         botaoConfirmar.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                if (jogo.personagem.moedas < 0) {
+                if (jogo.personagem.moedas == 0) {
                     jogo.controller.perdeuJogo = true;
                 }
 
                 if (jogo.controller.resultadoRespostaMissao == 1) {
                     jogo.controller.resultadoRespostaMissao = 0;
                     jogo.controller.mostrarCaixaMissao = false;
-                    MissionController.missaoConcluida = true;
+                    jogo.controller.controleMissao.missaoConcluida = true;
                 }
                 jogo.controller.resultadoRespostaMissao = 0;
             }

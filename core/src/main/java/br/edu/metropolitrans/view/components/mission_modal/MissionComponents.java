@@ -77,13 +77,13 @@ public class MissionComponents {
                 if (correta) {
                     // Lógica para resposta correta
                     jogo.controller.resultadoRespostaMissao = 1;
-                    jogo.personagem.moedas += MissionController.getRecompensaMoedasMissao();
+                    jogo.personagem.moedas += jogo.controller.controleMissao.getRecompensaMoedasMissao();
                     jogo.personagem.xp += 10;
                     jogo.controller.objetoMissao.setVisible(false);
                 } else {
                     // Lógica para resposta incorreta
                     jogo.controller.resultadoRespostaMissao = 2;
-                    jogo.personagem.moedas -= MissionController.getValorErroMissao();
+                    jogo.personagem.moedas -= jogo.controller.controleMissao.getValorErroMissao();
 
                 }
                 return true;
