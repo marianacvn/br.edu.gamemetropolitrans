@@ -13,6 +13,7 @@ import com.badlogic.gdx.utils.Array;
 
 import br.edu.metropolitrans.MetropoliTrans;
 import br.edu.metropolitrans.model.Dialog;
+import br.edu.metropolitrans.model.PersonagemDirecao;
 import br.edu.metropolitrans.model.actors.Npc;
 import br.edu.metropolitrans.model.actors.ObjetoInterativo;
 import br.edu.metropolitrans.model.actors.Personagem;
@@ -87,6 +88,11 @@ public class Controller {
      */
     public boolean perdeuJogo;
 
+    /**
+     * NPC do guarda de trânsito
+     */
+    private Npc guarda;
+
     public Controller(MetropoliTrans jogo) {
         this.jogo = jogo;
         this.mapas = jogo.mapas;
@@ -98,6 +104,7 @@ public class Controller {
 
         // Carrega os objetos de colisão
         montarColisao(mapas.mapa);
+        montarCamadaPista(false);
 
         if (jogo.telas.get("game") == null)
             jogo.telas.put("game", new GameScreen(jogo));
@@ -105,6 +112,8 @@ public class Controller {
         gameScreen = (GameScreen) jogo.telas.get("game");
         mostrarDialogo = false;
         mostrarCaixaMissao = false;
+
+        guarda = new Npc("guarda", jogo.estagioPrincipal);
 
         // Inicia o controle de missão
         controleMissao = new MissionController(jogo);
@@ -114,16 +123,13 @@ public class Controller {
      * Controle do personagem, movimenta de acordo com as teclas pressionadas
      * (Setas)
      */
-    public void controlePersonagem(float delta) {
-        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
-            personagem.acelerarEmAngulo(0);
-        } else if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
-            personagem.acelerarEmAngulo(180);
-        } else if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
-            personagem.acelerarEmAngulo(90);
-        } else if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
-            personagem.acelerarEmAngulo(270);
-        }
+    public void controlePersonagemSetas(float delta) {
+        boolean up = Gdx.input.isKeyPressed(Input.Keys.UP);
+        boolean down = Gdx.input.isKeyPressed(Input.Keys.DOWN);
+        boolean left = Gdx.input.isKeyPressed(Input.Keys.LEFT);
+        boolean right = Gdx.input.isKeyPressed(Input.Keys.RIGHT);
+
+        controlePersonagem(up, down, left, right);
     }
 
     /**
@@ -131,15 +137,40 @@ public class Controller {
      *
      * @param delta
      */
-    public void controlePersonagem2(float delta) {
-        if (Gdx.input.isKeyPressed(Input.Keys.D)) {
-            personagem.acelerarEmAngulo(0);
-        } else if (Gdx.input.isKeyPressed(Input.Keys.A)) {
-            personagem.acelerarEmAngulo(180);
-        } else if (Gdx.input.isKeyPressed(Input.Keys.W)) {
+    public void controlePersonagemWASD(float delta) {
+        boolean up = Gdx.input.isKeyPressed(Input.Keys.W);
+        boolean down = Gdx.input.isKeyPressed(Input.Keys.S);
+        boolean left = Gdx.input.isKeyPressed(Input.Keys.A);
+        boolean right = Gdx.input.isKeyPressed(Input.Keys.D);
+
+        controlePersonagem(up, down, left, right);
+    }
+
+    private void controlePersonagem(boolean up, boolean down, boolean left, boolean right) {
+        if (up && right) {
+            personagem.acelerarEmAngulo(45);
+            personagem.setUltimaDirecao(PersonagemDirecao.NORDESTE);
+        } else if (up && left) {
+            personagem.acelerarEmAngulo(135);
+            personagem.setUltimaDirecao(PersonagemDirecao.NOROESTE);
+        } else if (down && right) {
+            personagem.acelerarEmAngulo(315);
+            personagem.setUltimaDirecao(PersonagemDirecao.SUDESTE);
+        } else if (down && left) {
+            personagem.acelerarEmAngulo(225);
+            personagem.setUltimaDirecao(PersonagemDirecao.SUDOESTE);
+        } else if (up) {
             personagem.acelerarEmAngulo(90);
-        } else if (Gdx.input.isKeyPressed(Input.Keys.S)) {
+            personagem.setUltimaDirecao(PersonagemDirecao.NORTE);
+        } else if (down) {
             personagem.acelerarEmAngulo(270);
+            personagem.setUltimaDirecao(PersonagemDirecao.SUL);
+        } else if (left) {
+            personagem.acelerarEmAngulo(180);
+            personagem.setUltimaDirecao(PersonagemDirecao.OESTE);
+        } else if (right) {
+            personagem.acelerarEmAngulo(0);
+            personagem.setUltimaDirecao(PersonagemDirecao.LESTE);
         }
     }
 
@@ -179,10 +210,12 @@ public class Controller {
 
             // Carrega os objetos de colisão
             montarColisao(mapas.sala);
+            montarCamadaPista(true);
 
             // Renova os retângulos de colisão
             personagem.npcs = new ArrayList<Npc>();
             personagem.setRetangulosColisao(jogo.retangulosColisao);
+            personagem.setRetangulosPista(jogo.retangulosPista);
         } else if (objetoSairSala != null && personagem.interagiu(objetoSairSala)
                 && Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
             // coloca o objeto da missão ao sair da sala e minimapa
@@ -209,10 +242,12 @@ public class Controller {
 
             // Carrega os objetos de colisão
             montarColisao(mapas.mapa);
+            montarCamadaPista(false);
 
             // Renova os retângulos de colisão e os npcs
             personagem.npcs = npcs;
             personagem.setRetangulosColisao(jogo.retangulosColisao);
+            personagem.setRetangulosPista(jogo.retangulosPista);
         }
     }
 
@@ -222,8 +257,13 @@ public class Controller {
     public void controleDialogos() {
         if (Gdx.input.isKeyJustPressed(Input.Keys.ENTER)) {
             mostrarDialogo = false;
-            for (Npc npc : npcs) {
-                atualizaStatusAlertaMissaoNpc(npc);
+            if (personagem.sofreuInfracao) {
+                personagem.sofreuInfracao = false;
+                atualizaInfracao();
+            } else {
+                for (Npc npc : npcs) {
+                    atualizaStatusAlertaMissaoNpc(npc);
+                }
             }
         }
     }
@@ -240,6 +280,34 @@ public class Controller {
             Gdx.app.log("Controller", "Reiniciando o jogo...");
             jogo.reiniciarJogo();
         }
+    }
+
+    /**
+     * Controle de infrações do personagem
+     */
+    public void controleInfracao() {
+        // Se as infrações forem maiores ou iguais a 4, perde o jogo
+        if (personagem.infracoes > 4) {
+            perdeuJogo = true;
+        }
+
+        // Verifica se o personagem saiu da pista e mostra a caixa de diálogo
+        if (personagem.sofreuInfracao) {
+            gameScreen.caixaDialogo.npc = guarda;
+            gameScreen.caixaDialogo.setTextoDialogo(carregaDialogos(guarda, 0));
+            gameScreen.caixaDialogo.defineTexturaNpc();
+            mostrarDialogo = true;
+        }
+    }
+
+    private void atualizaInfracao() {
+        // Atualiza a posição do personagem, precisa verificar para qual sentido ele
+        // está indo, desta forma ajustar -x valor que é a margem para sofrer a
+        // infração.
+        // personagem.setPosition()
+        guarda.DIALOGO_ATUAL++;
+        personagem.infracoes++;
+        Gdx.app.log("Controller", "Atualizando diálogo do guarda... Atual: " + guarda.DIALOGO_ATUAL);
     }
 
     /**
@@ -286,11 +354,21 @@ public class Controller {
      * @param npc Npc
      */
     private String carregaDialogos(Npc npc) {
+        return carregaDialogos(npc, MISSAO);
+    }
+
+    /**
+     * Carrega os diálogos do personagem
+     * 
+     * @param npc    Npc
+     * @param missao int
+     */
+    private String carregaDialogos(Npc npc, int missao) {
         // Carregar diálogos
         Dialog dialogo = DialogDAO.carregarDialogos(npc.nome);
         if (dialogo != null) {
             // Verifica se tem uma missão
-            return dialogo.buscarProximoDialogoMissao(MISSAO, npc.DIALOGO_ATUAL).getMensagem();
+            return dialogo.buscarProximoDialogoMissao(missao, npc.DIALOGO_ATUAL).getMensagem();
         }
         return "Olá, eu sou o " + npc.nome + "!";
     }
@@ -301,9 +379,12 @@ public class Controller {
      * @param mapa TiledMap
      */
     private void montarColisao(TiledMap mapa) {
+        Gdx.app.log("Controller", "Crianado a camada de colisao...");
         // Carrega os objetos de colisão
         jogo.objetosColisao = mapa.getLayers().get("colisao").getObjects();
+        Gdx.app.log("Controller", "Objetos carregados: " + jogo.objetosColisao.getCount());
         jogo.retangulosColisao = new Array<Rectangle>();
+        Gdx.app.log("Controller", "Array de retângulos de colisão criado... Tamanho: " + jogo.retangulosColisao.size);
 
         // Adiciona os retângulos de colisão do mapa ao array
         for (MapObject objeto : jogo.objetosColisao) {
@@ -314,7 +395,42 @@ public class Controller {
         }
 
         // Adiciona os retângulos de colisão do mapa ao personagem
+        Gdx.app.log("Controller", "Verificando cada retângulo da colisao, objetos: " + jogo.retangulosColisao.size);
         personagem.setRetangulosColisao(jogo.retangulosColisao);
+    }
+
+    /**
+     * Monta os retângulos de colisão da pista
+     *
+     * @param mapa        TiledMap
+     * @param removePista boolean - Remove a pista
+     */
+    private void montarCamadaPista(boolean removePista) {
+        Gdx.app.log("Controller", "Iniciando chamada montagem da camada de objetos da pista...");
+        if (removePista) {
+            Gdx.app.log("Controller", "Removendo a camada de objetos da pista...");
+            jogo.retangulosPista = new Array<Rectangle>();
+            personagem.setRetangulosPista(jogo.retangulosPista);
+        } else {
+            Gdx.app.log("Controller", "Crianado a camada de objetos da pista...");
+            // Carrega os objetos de pista
+            jogo.objetosPista = mapas.mapa.getLayers().get("pista").getObjects();
+            Gdx.app.log("Controller", "Objetos carregados: " + jogo.objetosPista.getCount());
+            jogo.retangulosPista = new Array<Rectangle>();
+            Gdx.app.log("Controller", "Array de retângulos de colisão criado... Tamanho: " + jogo.retangulosPista.size);
+
+            // Adiciona os retângulos de pista do mapa ao array
+            for (MapObject objeto : jogo.objetosPista) {
+                if (objeto instanceof RectangleMapObject) {
+                    Rectangle retangulo = ((RectangleMapObject) objeto).getRectangle();
+                    jogo.retangulosPista.add(retangulo);
+                }
+            }
+
+            // Adiciona os retângulos de pista do mapa ao personagem
+            Gdx.app.log("Controller", "Verificando cada retângulo da pista, objetos: " + jogo.retangulosPista.size);
+            personagem.setRetangulosPista(jogo.retangulosPista);
+        }
     }
 
 }

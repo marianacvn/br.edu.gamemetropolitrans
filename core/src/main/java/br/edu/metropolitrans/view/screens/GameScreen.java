@@ -10,7 +10,6 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Rectangle;
 import br.edu.metropolitrans.MetropoliTrans;
-import br.edu.metropolitrans.controller.MissionController;
 import br.edu.metropolitrans.model.actors.Npc;
 import br.edu.metropolitrans.model.actors.Personagem;
 import br.edu.metropolitrans.view.components.dialog.DialogBox;
@@ -73,7 +72,7 @@ public class GameScreen implements Screen {
 
     public GameScreen(final MetropoliTrans jogo) {
         this.jogo = jogo;
-//        MissionController.iniciarControleMissao(jogo);
+        // MissionController.iniciarControleMissao(jogo);
 
         // Inicializa o renderizador de formas
         renderizadorForma = new ShapeRenderer();
@@ -123,6 +122,9 @@ public class GameScreen implements Screen {
         // Controle de diálogos
         jogo.controller.controleDialogos();
 
+        // Controle de Infrações
+        jogo.controller.controleInfracao();
+
         // Controle de missões
         jogo.controller.controleMissao.controle(jogo.controller.MISSAO);
 
@@ -131,15 +133,15 @@ public class GameScreen implements Screen {
         // o controle do personagem continuando o jogo
         if (!jogo.controller.mostrarDialogo && !jogo.controller.mostrarCaixaMissao) {
             // Controle do personagem Setas ou WASD
-            jogo.controller.controlePersonagem(delta);
-            jogo.controller.controlePersonagem2(delta);
+            jogo.controller.controlePersonagemSetas(delta);
+            jogo.controller.controlePersonagemWASD(delta);
         }
 
         // Renderiza a caixa dialogo, minimapa e alertas de missao
         desenharComponentes(delta);
 
         // Testes
-        // debug();
+        debug();
         // Gdx.app.log("Teste", "Missão: " + MISSAO);
     }
 
@@ -159,7 +161,8 @@ public class GameScreen implements Screen {
         jogo.mapaRenderizador.setView(CAMERA);
 
         // Renderiza o mapa e suas camadas Ex: piso e colisão
-        // Verifica se o objeto de entrar existe, se sim, deve criar um vetor com a quantidade de camadas
+        // Verifica se o objeto de entrar existe, se sim, deve criar um vetor com a
+        // quantidade de camadas
         // Obs.: Caso as camadas mudem no tiled, deve-se alterar aqui também
         int[] camadas = null;
         if (jogo.controller.objeto != null) {
@@ -168,7 +171,6 @@ public class GameScreen implements Screen {
             camadas = new int[] { 0, 1, 2 };
         }
         jogo.mapaRenderizador.render(camadas);
-        
 
         // Inicia o batch de desenho
         jogo.batch.begin();
@@ -301,6 +303,11 @@ public class GameScreen implements Screen {
             for (Rectangle retangulo : jogo.retangulosColisao) {
                 renderizadorForma.rect(retangulo.x, retangulo.y, retangulo.width, retangulo.height);
             }
+        }
+
+        // Desenha os retângulos de colisão da pista
+        for (Rectangle retangulo : jogo.retangulosPista) {
+            renderizadorForma.rect(retangulo.x, retangulo.y, retangulo.width, retangulo.height);
         }
 
         // Desenha polígono de colisão do personagem

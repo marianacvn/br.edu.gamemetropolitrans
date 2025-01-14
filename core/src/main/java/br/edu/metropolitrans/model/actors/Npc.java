@@ -11,6 +11,11 @@ public class Npc extends BaseActor {
     public int statusAlertaMissao;
     public Texture minimapaPonto;
 
+    public Npc(String nome, Stage stage) {
+        super(0, 0, stage);
+        this.nome = nome;
+    }
+
     /**
      * Diálogo atual
      */

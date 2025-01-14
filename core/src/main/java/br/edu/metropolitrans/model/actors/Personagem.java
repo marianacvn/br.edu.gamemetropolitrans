@@ -11,6 +11,8 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.utils.Array;
 
+import br.edu.metropolitrans.model.PersonagemDirecao;
+
 /**
  * Personagem principal do jogo
  */
@@ -26,12 +28,14 @@ public class Personagem extends BaseActor {
      */
     Animation<TextureRegion> norte, sul, leste, oeste;
 
+    private PersonagemDirecao ultimaDirecao;
+
     /**
      * Ângulo de rotação do personagem
      */
     private float angulo;
 
-    private Array<Rectangle> retangulosColisao;
+    private Array<Rectangle> retangulosColisao, retangulosPista;
 
     public ArrayList<Npc> npcs;
 
@@ -46,6 +50,18 @@ public class Personagem extends BaseActor {
      * XP do personagem
      */
     public int xp;
+
+    /**
+     * Indica se o personagem sofreu uma infração
+     */
+    public boolean sofreuInfracao;
+
+    /**
+     * Infrações cometidas pelo personagem
+     */
+    public int infracoes;
+
+    private float margemInfracao = -30.0f;
 
     public Personagem(float x, float y, Stage s) {
         super(x, y, s);
@@ -107,10 +123,11 @@ public class Personagem extends BaseActor {
         // Configuracao do personagem
         moedas = 200;
         xp = 10;
+        sofreuInfracao = false;
+        infracoes = 0;
         setAceleracao(800);
         setVelocidadeMaxima(200);
         setDesaceleracao(800);
-
     }
 
     public boolean interagiu(ObjetoInterativo objetoInterativo) {
@@ -138,6 +155,9 @@ public class Personagem extends BaseActor {
 
     }
 
+    /**
+     * Verifica e define a animação do personagem
+     */
     private void animacao() {
         // Pausa a animação quando o personagem não está se movendo
         if (getVelocidade() == 0) {
@@ -163,6 +183,49 @@ public class Personagem extends BaseActor {
         }
     }
 
+    /**
+     * Atualiza a posição do personagem relacionado a infração
+     */
+    private void atualizaPosicaoInfracao() {
+        switch (ultimaDirecao) {
+            case NORTE:
+                setPosition(getX(), getY() + margemInfracao);
+                break;
+            case SUL:
+                setPosition(getX(), getY() - margemInfracao);
+                break;
+            case LESTE:
+                setPosition(getX() + margemInfracao, getY());
+                break;
+            case OESTE:
+                setPosition(getX() - margemInfracao, getY());
+                break;
+            case NORDESTE:
+                setPosition(getX() + margemInfracao / ((float) Math.sqrt(2)),
+                        getY() + margemInfracao / ((float) Math.sqrt(2)));
+                break;
+            case NOROESTE:
+                setPosition(getX() - margemInfracao / ((float) Math.sqrt(2)),
+                        getY() + margemInfracao / ((float) Math.sqrt(2)));
+                break;
+            case SUDESTE:
+                setPosition(getX() + margemInfracao / ((float) Math.sqrt(2)),
+                        getY() - margemInfracao / ((float) Math.sqrt(2)));
+                break;
+            case SUDOESTE:
+                setPosition(getX() - margemInfracao / ((float) Math.sqrt(2)),
+                        getY() - margemInfracao / ((float) Math.sqrt(2)));
+                break;
+            default:
+                break;
+        }
+    }
+
+    /**
+     * Verifica se o personagem colidiu com algum objeto
+     * 
+     * @param delta tempo entre um quadro e outro
+     */
     private void colisao(float delta) {
         // Verifica colisões
         for (Rectangle retangulo : retangulosColisao) {
@@ -175,12 +238,25 @@ public class Personagem extends BaseActor {
             }
         }
 
+        // Verifica colisões com o NPC
         for (Npc npc : npcs) {
             if (sobrepoe(npc)) {
                 // Ajusta a posição do personagem para evitar a colisão
                 // Isso pode ser feito de várias maneiras, dependendo da lógica do seu jogo
                 // Por exemplo, você pode mover o personagem de volta para a posição anterior
                 setPosition(getX() - getVelocidadeVetor().x * delta, getY() - getVelocidadeVetor().y * delta);
+                break;
+            }
+        }
+
+        // Verifica colisões com a pista
+        for (Rectangle retangulo : retangulosPista) {
+            // Verifica se o personagem passou x do retangulo da pista,
+            // caso isto ocorra deverá comunicar que o personagem saiu da pista
+            // cometendo uma infração
+            if (estaDentroDaDistancia(margemInfracao, retangulo)) {
+                sofreuInfracao = true;
+                atualizaPosicaoInfracao();
                 break;
             }
         }
@@ -192,6 +268,14 @@ public class Personagem extends BaseActor {
 
     public void setRetangulosColisao(Array<Rectangle> retangulosColisao) {
         this.retangulosColisao = retangulosColisao;
+    }
+
+    public void setRetangulosPista(Array<Rectangle> retangulosPista) {
+        this.retangulosPista = retangulosPista;
+    }
+
+    public void setUltimaDirecao(PersonagemDirecao direcao) {
+        this.ultimaDirecao = direcao;
     }
 
 }

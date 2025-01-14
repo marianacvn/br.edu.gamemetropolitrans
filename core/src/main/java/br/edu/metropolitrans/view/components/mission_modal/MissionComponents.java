@@ -16,7 +16,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 
 import br.edu.metropolitrans.MetropoliTrans;
-import br.edu.metropolitrans.controller.MissionController;
 import br.edu.metropolitrans.view.font.FontBase;
 
 public class MissionComponents {

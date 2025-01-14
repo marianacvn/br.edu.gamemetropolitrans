@@ -16,7 +16,6 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Array;
 import br.edu.metropolitrans.controller.Controller;
-import br.edu.metropolitrans.controller.MissionController;
 import br.edu.metropolitrans.model.actors.Npc;
 import br.edu.metropolitrans.model.actors.ObjetoInterativo;
 import br.edu.metropolitrans.model.actors.Personagem;
@@ -94,10 +93,14 @@ public class MetropoliTrans extends Game {
      */
     public MapObjects objetosColisao;
 
+    public MapObjects objetosPista;
+
     /**
      * Retângulos de colisão
      */
     public Array<Rectangle> retangulosColisao;
+
+    public Array<Rectangle> retangulosPista;
 
     /**
      * Controle do jogo

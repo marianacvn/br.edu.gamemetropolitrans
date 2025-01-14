@@ -12,7 +12,6 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 
 import br.edu.metropolitrans.MetropoliTrans;
-import br.edu.metropolitrans.controller.MissionController;
 import br.edu.metropolitrans.view.components.buttons.TextButtonBase;
 import br.edu.metropolitrans.view.font.FontBase;
 import br.edu.metropolitrans.view.screens.GameScreen;

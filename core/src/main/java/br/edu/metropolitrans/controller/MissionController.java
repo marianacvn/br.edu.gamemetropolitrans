@@ -1,7 +1,5 @@
 package br.edu.metropolitrans.controller;
 
-import com.badlogic.gdx.Gdx;
-
 import br.edu.metropolitrans.MetropoliTrans;
 import br.edu.metropolitrans.model.Mission;
 import br.edu.metropolitrans.model.actors.Npc;
@@ -14,7 +12,7 @@ public class MissionController {
     private MetropoliTrans jogo;
     private Mission missao;
     private boolean controlaTrocaMissao;
-    private Npc npcAtualMissao;
+    //private Npc npcAtualMissao;
     public boolean missaoConcluida;
 
     public MissionController(MetropoliTrans jogo) {

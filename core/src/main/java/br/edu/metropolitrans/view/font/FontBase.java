@@ -13,7 +13,6 @@ import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 public class FontBase {
 
     private static FontBase intancia;
-    private FreeTypeFontGenerator generator;
 
     public enum Fontes {
         PADRAO("files/fonts/Silver.ttf"),

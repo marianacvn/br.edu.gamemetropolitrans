@@ -23,7 +23,7 @@ public class Vehicle extends BaseActor {
     private Animation<TextureRegion> animacaoBaixo;
     private Animation<TextureRegion> animacaoDireita;
 
-    private float tempoMissao;
+    //private float tempoMissao;
     private int etapaMissao;
     private List<String> roteiro;
     private float distanciaPercorrida;
@@ -60,7 +60,7 @@ public class Vehicle extends BaseActor {
 
         // Define algumas configurações iniciais
         margemAltura = -15;
-        tempoMissao = 0;
+        //tempoMissao = 0;
         etapaMissao = 0;
         distanciaPercorrida = 0;
         animacaoAtivada = false;

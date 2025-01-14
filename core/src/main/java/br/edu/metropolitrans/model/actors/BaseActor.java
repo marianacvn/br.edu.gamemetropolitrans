@@ -671,13 +671,46 @@ public class BaseActor extends Actor {
         float escalaY = (this.getHeight() + 2 * distancia) / this.getHeight();
         poligono1.setScale(escalaX, escalaY);
 
-        Polygon polpoligono2 = outro.getLimitePoligono();
+        Polygon poligono2 = outro.getLimitePoligono();
 
         // Teste inicial para melhorar o desempenho
-        if (!poligono1.getBoundingRectangle().overlaps(polpoligono2.getBoundingRectangle()))
+        if (!poligono1.getBoundingRectangle().overlaps(poligono2.getBoundingRectangle()))
             return false;
 
-        return Intersector.overlapConvexPolygons(poligono1, polpoligono2);
+        return Intersector.overlapConvexPolygons(poligono1, poligono2);
+    }
+
+    /**
+     * Determina se este BaseActor está próximo de outro BaseActor (de acordo com os
+     * polígonos de colisão).
+     *
+     * @param distancia quantia (pixels) pela qual aumentar a largura e a altura do
+     *                  polígono de colisão
+     * @param outro     Retangulo para verificar a proximidade
+     * @return verdadeiro se os polígonos de colisão deste (aumentado) e de outro
+     *         Retangulo se sobrepõem
+     * @see #setLimiteRetangulo
+     * @see #setLimitePoligono
+     */
+    public boolean estaDentroDaDistancia(float distancia, Rectangle outro) {
+        Polygon poligono1 = this.getLimitePoligono();
+        float escalaX = (this.getWidth() + 2 * distancia) / this.getWidth();
+        float escalaY = (this.getHeight() + 2 * distancia) / this.getHeight();
+        poligono1.setScale(escalaX, escalaY);
+
+        // Cria um polígono a partir do retângulo
+        Polygon poligono2 = new Polygon(new float[] {
+            outro.x, outro.y,
+            outro.x + outro.width, outro.y,
+            outro.x + outro.width, outro.y + outro.height,
+            outro.x, outro.y + outro.height
+        });
+
+        // Teste inicial para melhorar o desempenho
+        if (!poligono1.getBoundingRectangle().overlaps(poligono2.getBoundingRectangle()))
+            return false;
+
+        return Intersector.overlapConvexPolygons(poligono1, poligono2);
     }
 
     /**
