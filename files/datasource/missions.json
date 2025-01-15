@@ -17,7 +17,7 @@
             "nome": "Retorno proibido",
             "descricao": "Qual placa representa uma possível solução\r\npara o problema apresentado? [Artigo/Regra: 39]",
             "recompensaMoedas": 100,
-            "experiencia": 100,
+            "experiencia": 10,
             "valorErro": 20,
             "finalizouMissao": false,
             "personagens": [

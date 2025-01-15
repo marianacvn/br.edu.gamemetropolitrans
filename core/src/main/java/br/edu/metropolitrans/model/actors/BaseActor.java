@@ -32,7 +32,7 @@ import com.badlogic.gdx.graphics.g2d.Batch;
  * @see #Actor
  * @author Lee Stemkoski (Traduzido por Mariana)
  */
-public class BaseActor extends Actor {
+public abstract class BaseActor extends Actor {
 
     /**
      * Margem para ajuste de retangulo de colisao

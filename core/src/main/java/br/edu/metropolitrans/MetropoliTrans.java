@@ -151,15 +151,15 @@ public class MetropoliTrans extends Game {
         npcs = new ArrayList<Npc>();
 
         // Carrega os Npcs
-        npcs.add(new Npc("maria", 280, 1220, "maria/sprite.png", estagioPrincipal));
-        npcs.add(new Npc("betania", 264, 200, "betania/sprite.png", estagioPrincipal));
-        npcs.add(new Npc("bruna", 1190, 200, "bruna/sprite.png", estagioPrincipal));
-        npcs.add(new Npc("antonio", 1500, 1000, "antonio/sprite.png", estagioPrincipal));
-        npcs.add(new Npc("heberto", 25, 650, "heberto/sprite.png", estagioPrincipal, 1));
-        npcs.add(new Npc("jose", 90, 1450, "jose/sprite.png", estagioPrincipal));
-        npcs.add(new Npc("josinaldo", 2090, 150, "josinaldo/sprite.png", estagioPrincipal));
-        npcs.add(new Npc("paulo", 1500, 100, "paulo/sprite.png", estagioPrincipal));
-        npcs.add(new Npc("juliana", 1200, 1250, "juliana/sprite.png", estagioPrincipal));
+        npcs.add(new Npc("maria", 280, 1220, "maria/sprite.png", estagioPrincipal, true));
+        npcs.add(new Npc("betania", 264, 200, "betania/sprite.png", estagioPrincipal, false));
+        npcs.add(new Npc("bruna", 1190, 200, "bruna/sprite.png", estagioPrincipal, false));
+        npcs.add(new Npc("antonio", 1500, 1000, "antonio/sprite.png", estagioPrincipal, false));
+        npcs.add(new Npc("heberto", 25, 650, "heberto/sprite.png", estagioPrincipal, 1, false));
+        npcs.add(new Npc("jose", 90, 1450, "jose/sprite.png", estagioPrincipal, false));
+        npcs.add(new Npc("josinaldo", 2090, 150, "josinaldo/sprite.png", estagioPrincipal, false));
+        npcs.add(new Npc("paulo", 1500, 100, "paulo/sprite.png", estagioPrincipal, false));
+        npcs.add(new Npc("juliana", 1200, 1250, "juliana/sprite.png", estagioPrincipal, false));
 
         // Adiciona os npcs no array de colisão
         personagem.npcs = npcs;
@@ -168,15 +168,15 @@ public class MetropoliTrans extends Game {
         vehicles.put(
                 "taxi",
                 new Vehicle("taxi", 1266, 1000, 50, "taxi-sprite.png", estagioPrincipal,
-                        List.of("C-8*32", "E-8*32", "B-10*32")));
+                        List.of("C-8*32", "E-8*32", "B-10*32"), true));
         vehicles.put(
                 "basic-car",
                 new Vehicle("basic-car", 394, 940, 100, "car-sprite.png", estagioPrincipal,
-                        List.of("C-10*32", "D-25*32")));
+                        List.of("C-10*32", "D-25*32"), true));
         vehicles.put(
                 "onibus",
                 new Vehicle("onibus", 394, 1400, 50, "bus-sprite.png", estagioPrincipal,
-                        List.of("B-2*32", "E-3*32", "B-18*32")));
+                        List.of("B-2*32", "E-3*32", "B-18*32"), true));
 
         // Carrega os objetos interativos
         objeto = new ObjetoInterativo("entradaPrefeitura", 100, 760, "background-transparent.png",
@@ -190,7 +190,7 @@ public class MetropoliTrans extends Game {
     }
 
     public void reiniciarJogo() {
-        
+
         setPausado(true);
         Gdx.app.log("MetropoliTrans", "Parando o jogo e voltando para o Menu...");
 
@@ -217,13 +217,29 @@ public class MetropoliTrans extends Game {
     public void inicializarComponentesMissao() {
         float baseX = ((GameScreen.TELA_LARGURA - 530) / 2);
         float baseY = (GameScreen.TELA_ALTURA - 400) / 2;
+
+        MissionComponents missao0 = new MissionComponents(0, this);
+        missao0.adicionarTituloMissao("Missão " + controller.MISSAO + ": ", baseX + 15, baseY);
+        missionComponents.put("missao0", missao0);
+        missao0.adicionarOpcaoImagem("mission0-option1", "mission0-option1.png", true, baseX + 5,
+                baseY + 230, false);
+        missao0.adicionarOpcaoImagem("mission0-option2", "mission0-option2.png", false, baseX + 65,
+                baseY + 35, false);
+        missao0.adicionarImagemCena("mission0-scene.png", baseX + 180, baseY + 15);
+        missionComponents.put("missao0", missao0);
+
         MissionComponents missao1 = new MissionComponents(1, this);
         missao1.adicionarTituloMissao("Missão " + controller.MISSAO + ": ", baseX + 15, baseY);
-        missao1.adicionarOpcaoPlaca("mission1-option1_reduced.png", false, baseX + 15, baseY + 265);
-        missao1.adicionarOpcaoPlaca("mission1-option2_reduced.png", false, baseX + 15, baseY + 265 - 50 - 15);
-        missao1.adicionarOpcaoPlaca("mission1-option3_reduced.png", true, baseX + 15, baseY + 200 - 50 - 15);
-        missao1.adicionarOpcaoPlaca("mission1-option4_reduced.png", false, baseX + 15, baseY + 135 - 50 - 15);
-        missao1.adicionarOpcaoPlaca("mission1-option5_reduced.png", false, baseX + 15, baseY + 70 - 50 - 15);
+        missao1.adicionarOpcaoImagem("mission1-option1", "mission1-option1_reduced.png", false, baseX + 15,
+                baseY + 265, true);
+        missao1.adicionarOpcaoImagem("mission2-option2", "mission1-option2_reduced.png", false, baseX + 15,
+                baseY + 265 - 50 - 15, true);
+        missao1.adicionarOpcaoImagem("mission1-option3", "mission1-option3_reduced.png", true, baseX + 15,
+                baseY + 200 - 50 - 15, true);
+        missao1.adicionarOpcaoImagem("mission1-option4", "mission1-option4_reduced.png", false, baseX + 15,
+                baseY + 135 - 50 - 15, true);
+        missao1.adicionarOpcaoImagem("mission1-option5", "mission1-option5_reduced.png", false, baseX + 15,
+                baseY + 70 - 50 - 15, true);
         missao1.adicionarImagemCena("mission1-scene.png", baseX + 150, baseY + 15);
         missionComponents.put("missao1", missao1);
     }

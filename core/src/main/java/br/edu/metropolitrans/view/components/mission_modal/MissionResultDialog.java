@@ -70,8 +70,11 @@ public class MissionResultDialog {
                     jogo.controller.resultadoRespostaMissao = 0;
                     jogo.controller.mostrarCaixaMissao = false;
                     jogo.controller.controleMissao.missaoConcluida = true;
+                    Gdx.app.log("DialogoMissao", "Resposta correta!");
+                } else {
+                    jogo.controller.resultadoRespostaMissao = 0;
+                    Gdx.app.log("DialogoMissao", "Resposta Incorreta!");
                 }
-                jogo.controller.resultadoRespostaMissao = 0;
             }
         });
 

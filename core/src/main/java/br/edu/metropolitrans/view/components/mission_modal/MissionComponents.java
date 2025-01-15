@@ -1,7 +1,9 @@
 package br.edu.metropolitrans.view.components.mission_modal;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
@@ -24,14 +26,14 @@ public class MissionComponents {
     public int missaoId;
     public Stage stage;
     public Label titulo;
-    public List<ImageButton> botoesPlacas;
+    public Map<String, ImageButton> botoesImagens;
     public Image imagemCena;
 
     public MissionComponents(int missaoId, MetropoliTrans jogo) {
         this.jogo = jogo;
         this.missaoId = missaoId;
         this.stage = new Stage();
-        botoesPlacas = new ArrayList<>();
+        botoesImagens = new HashMap<>();
     }
 
     /**
@@ -56,28 +58,33 @@ public class MissionComponents {
     }
 
     /**
-     * Adiciona uma opção de placa
+     * Adiciona uma opção de botão de imagem
      * 
+     * @param nome          Nome
      * @param caminhoImagem Caminho da imagem
-     * @param correta       Se a placa é correta
+     * @param correta       Se é correta resposta correta
      * @param x             Posição X
      * @param y             Posição Y
+     * @param geraXp        Se gera XP
      */
-    public void adicionarOpcaoPlaca(String caminhoImagem, boolean correta, float x, float y) {
+    public void adicionarOpcaoImagem(String nome, String caminhoImagem, boolean correta, float x, float y, boolean geraXp) {
         // Skin skin = new Skin();
         Texture texture = new Texture(Gdx.files.internal("files/missionComponents/" + caminhoImagem));
         ImageButton.ImageButtonStyle style = new ImageButton.ImageButtonStyle();
         style.imageUp = new TextureRegionDrawable(texture);
-        ImageButton botaoPlaca = new ImageButton(style);
+        ImageButton botaoImagem = new ImageButton(style);
 
-        botaoPlaca.addListener(new InputListener() {
+        botaoImagem.addListener(new InputListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 if (correta) {
                     // Lógica para resposta correta
                     jogo.controller.resultadoRespostaMissao = 1;
                     jogo.personagem.moedas += jogo.controller.controleMissao.getRecompensaMoedasMissao();
-                    jogo.personagem.xp += 10;
+    
+                    if (geraXp)
+                        jogo.personagem.xp += 10;
+    
                     jogo.controller.objetoMissao.setVisible(false);
                 } else {
                     // Lógica para resposta incorreta
@@ -89,9 +96,9 @@ public class MissionComponents {
             }
         });
 
-        botaoPlaca.setPosition(x, y);
-        botoesPlacas.add(botaoPlaca);
-        stage.addActor(botaoPlaca);
+        botaoImagem.setPosition(x, y);
+        botoesImagens.put(nome, botaoImagem);
+        stage.addActor(botaoImagem);
     }
 
     /**

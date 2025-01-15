@@ -141,7 +141,7 @@ public class GameScreen implements Screen {
         desenharComponentes(delta);
 
         // Testes
-        debug();
+        //debug();
         // Gdx.app.log("Teste", "Missão: " + MISSAO);
     }
 

@@ -1,5 +1,7 @@
 package br.edu.metropolitrans.controller;
 
+import java.util.List;
+
 import br.edu.metropolitrans.MetropoliTrans;
 import br.edu.metropolitrans.model.Mission;
 import br.edu.metropolitrans.model.actors.Npc;
@@ -12,7 +14,7 @@ public class MissionController {
     private MetropoliTrans jogo;
     private Mission missao;
     private boolean controlaTrocaMissao;
-    //private Npc npcAtualMissao;
+    // private Npc npcAtualMissao;
     public boolean missaoConcluida;
 
     public MissionController(MetropoliTrans jogo) {
@@ -60,26 +62,52 @@ public class MissionController {
                         onibus.setVisible(true);
                         basicCar.animacaoAtivada = true;
                         onibus.animacaoAtivada = true;
+
+                        MissionComponents componentesMissao = jogo.missionComponents.get("missao0");
+                        componentesMissao.titulo
+                                .setText("Missão " + (jogo.controller.MISSAO) + ": " + "Ajuda para Maria");
+                        jogo.controller.gameScreen.missaoModalBox.missionComponents = componentesMissao;
                     }
                     if (npc.nome.equals("juliana")) {
                         taxi.setVisible(true);
                         taxi.animacaoAtivada = true;
                     }
                 } else {
-                    taxi.animacaoAtivada = false;
-                    taxi.setVisible(false);
-                    taxi.reiniciarAnimacao();
                     basicCar.animacaoAtivada = false;
                     basicCar.setVisible(false);
                     basicCar.reiniciarAnimacao();
+
                     onibus.animacaoAtivada = false;
                     onibus.setVisible(false);
                     onibus.reiniciarAnimacao();
+
+                    // Verifica se a animação de Maria já foi exibida e se o diálogo já foi lido,
+                    // pois deverá exibir a caixa da missão
+                    if (!basicCar.animacaoAtivada && !onibus.animacaoAtivada && npc.nome.equals("maria")
+                            && npc.statusAlertaMissao == 2 && !missaoConcluida) {
+                        jogo.controller.mostrarCaixaMissao = true;
+                    }
+
+                    // Mostra a faixa de pedestroe, ativa uma animação de maria atravessando a pista
+                    // e libera o personagem para atravessar
+                    if (npc.nome.equals("maria") && npc.statusAlertaMissao == 2 && missaoConcluida) {
+                        jogo.objetoChao.setVisible(false);
+                        npc.setRoteiro(List.of("D-6*32", "B-3*32"));
+                        npc.animacaoAtivada = true;
+                        missaoConcluida = false;
+                        npc = null;
+                    }
+
+                    taxi.animacaoAtivada = false;
+                    taxi.setVisible(false);
+                    taxi.reiniciarAnimacao();
                 }
 
                 if (!taxi.isVisible()) {
-                    if (npc.nome.equals("juliana") && npc.statusAlertaMissao == 2) {
+                    if (npc != null && npc.nome.equals("juliana") && npc.statusAlertaMissao == 2) {
+                        missaoConcluida = false;
                         taxi.remove();
+                        
                         MissionComponents componentesMissao = jogo.missionComponents.get("missao1");
                         componentesMissao.titulo
                                 .setText("Missão " + (jogo.controller.MISSAO) + ": " + missao.getDescricao());

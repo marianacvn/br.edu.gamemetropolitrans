@@ -1,19 +1,20 @@
 package br.edu.metropolitrans.model.actors;
 
+import java.util.List;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 
-public class Npc extends BaseActor {
+public class Npc extends ActorAnimation {
 
-    public String nome;
     public String nomeArquivo;
     public int statusAlertaMissao;
     public Texture minimapaPonto;
 
     public Npc(String nome, Stage stage) {
-        super(0, 0, stage);
-        this.nome = nome;
+        super(nome, 0, 0, stage, 100, "sprite-animation.png", "files/characters/" + nome + "/", List.of(), false, 4, 11,
+                false);
     }
 
     /**
@@ -21,9 +22,9 @@ public class Npc extends BaseActor {
      */
     public int DIALOGO_ATUAL = 0;
 
-    public Npc(String nome, float x, float y, String nomeArquivo, Stage stage) {
-        super(x, y, stage);
-        this.nome = nome;
+    public Npc(String nome, float x, float y, String nomeArquivo, Stage stage, boolean temAnimacao) {
+        super(nome, x, y, stage, 100, "sprite-animation.png", "files/characters/" + nome + "/", List.of(), temAnimacao,
+                4, 11, false);
         this.nomeArquivo = nomeArquivo;
 
         margemAltura = -15;
@@ -38,8 +39,9 @@ public class Npc extends BaseActor {
         }
     }
 
-    public Npc(String nome, float x, float y, String nomeArquivo, Stage stage, int statusAlertaMissao) {
-        this(nome, x, y, nomeArquivo, stage);
+    public Npc(String nome, float x, float y, String nomeArquivo, Stage stage, int statusAlertaMissao,
+            boolean temAnimacao) {
+        this(nome, x, y, nomeArquivo, stage, temAnimacao);
         this.statusAlertaMissao = statusAlertaMissao;
     }
 
