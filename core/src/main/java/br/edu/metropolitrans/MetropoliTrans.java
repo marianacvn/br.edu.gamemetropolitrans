@@ -159,7 +159,7 @@ public class MetropoliTrans extends Game {
         npcs.add(new Npc("jose", 90, 1450, "jose/sprite.png", estagioPrincipal, false));
         npcs.add(new Npc("josinaldo", 2090, 150, "josinaldo/sprite.png", estagioPrincipal, false));
         npcs.add(new Npc("paulo", 1500, 100, "paulo/sprite.png", estagioPrincipal, false));
-        npcs.add(new Npc("juliana", 1200, 1250, "juliana/sprite.png", estagioPrincipal, false));
+        npcs.add(new Npc("juliana", 1200, 1130, "juliana/sprite.png", estagioPrincipal, false));
 
         // Adiciona os npcs no array de colisão
         personagem.npcs = npcs;

@@ -103,8 +103,8 @@ public class MissionController {
                     }
                 }
 
-                if (!taxi.isVisible()) {
-                    if (npc != null && npc.nome.equals("juliana") && npc.statusAlertaMissao == 2) {
+                if (!taxi.isVisible() && npc != null && npc.nome.equals("juliana")) {
+                    if (npc.statusAlertaMissao == 2 && !missaoConcluida) {
                         missaoConcluida = false;
                         taxi.remove();
 
