@@ -147,6 +147,22 @@ public class Controller {
     }
 
     private void controlePersonagem(boolean up, boolean down, boolean left, boolean right) {
+        int teclas = 0;
+        if (up)
+            teclas++;
+        if (down)
+            teclas++;
+        if (left)
+            teclas++;
+        if (right)
+            teclas++;
+
+        // Verifica se mais de duas tecas estão pressionadas
+        // Se sim, não faz nada
+        if (teclas > 1 || (up && down) || (left && right)) {
+            return;
+        }
+
         if (up && right) {
             personagem.acelerarEmAngulo(45);
             personagem.setUltimaDirecao(PersonagemDirecao.NORDESTE);

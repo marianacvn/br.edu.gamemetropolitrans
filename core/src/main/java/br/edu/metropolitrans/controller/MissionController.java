@@ -94,6 +94,10 @@ public class MissionController {
                         // Mostra a faixa de pedestroe, ativa uma animação de maria atravessando a pista
                         // e libera o personagem para atravessar
                         if (npc.statusAlertaMissao == 2 && missaoConcluida) {
+                            // Para as animações dos veículos
+                            onibus.pararAnimacao();
+                            basicCar.pararAnimacao();
+
                             jogo.objetoChao.setVisible(false);
                             npc.setRoteiro(List.of("D-6*32", "B-3*32"));
                             npc.repeteAnimacao = false;
@@ -106,7 +110,7 @@ public class MissionController {
                 if (!taxi.isVisible() && npc != null && npc.nome.equals("juliana")) {
                     if (npc.statusAlertaMissao == 2 && !missaoConcluida) {
                         missaoConcluida = false;
-                        taxi.remove();
+                        taxi.pararAnimacao();
 
                         MissionComponents componentesMissao = jogo.missionComponents.get("missao1");
                         componentesMissao.titulo

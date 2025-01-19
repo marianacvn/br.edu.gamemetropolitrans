@@ -217,8 +217,15 @@ public class Personagem extends BaseActor {
                         getY() - margemInfracao / ((float) Math.sqrt(2)));
                 break;
             default:
+                Gdx.app.log("Personagem", "Direção inválida durante o ajuste de infração!");
                 break;
         }
+    
+        // Adiciona log para depuração
+        Gdx.app.log("Personagem", String.format(
+            "Infracao! Direção: %s | Posição final: X=%.2f, Y=%.2f",
+            ultimaDirecao, getX(), getY()
+        ));
     }
 
     /**
@@ -276,6 +283,7 @@ public class Personagem extends BaseActor {
 
     public void setUltimaDirecao(PersonagemDirecao direcao) {
         this.ultimaDirecao = direcao;
+        Gdx.app.log("Personagem", "Última direção atualizada para: " + direcao);
     }
 
 }
