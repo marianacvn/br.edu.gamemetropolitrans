@@ -2,6 +2,7 @@ package br.edu.metropolitrans.model.actors;
 
 import java.util.List;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -13,6 +14,7 @@ public abstract class ActorAnimation extends BaseActor {
     public int velocidade;
     public int statusAlertaMissao;
     public boolean animacaoAtivada;
+    public boolean repeteAnimacao;
     private float xInicial;
     private float yInicial;
 
@@ -26,7 +28,6 @@ public abstract class ActorAnimation extends BaseActor {
     private float distanciaPercorrida;
     private boolean temAnimacao;
     private int linhas, colunas;
-    private boolean repeteAnimacao;
 
     /**
      * Construtor da classe de Animacao
@@ -107,10 +108,10 @@ public abstract class ActorAnimation extends BaseActor {
             distanciaPercorrida = 0;
             setPosition(xInicial, yInicial);
         } else {
-            animacaoAtivada = false;
-            etapaMissao = 0;
-            distanciaPercorrida = 0;
+            setVelocidade(0);
             roteiro = List.of();
+            animacaoAtivada = false;
+            setAnimacaoPausada(true);
         }
     }
 

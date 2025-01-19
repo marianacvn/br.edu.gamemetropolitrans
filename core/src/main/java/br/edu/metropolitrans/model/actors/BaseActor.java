@@ -183,6 +183,10 @@ public abstract class BaseActor extends Actor {
             }
         }
     }
+    
+    public void pararAnimacao() {
+        animacao = null;
+    }
 
     /**
      * Cria uma animação a partir de imagens armazenadas em arquivos separados.
@@ -315,6 +319,10 @@ public abstract class BaseActor extends Actor {
      */
     public void setAnimacaoPausada(boolean pausa) {
         animacaoPausada = pausa;
+    }
+
+    public void finalizarAnimacao() {
+        tempoAnimacao = 0;
     }
 
     /**
