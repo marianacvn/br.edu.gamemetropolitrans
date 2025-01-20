@@ -283,7 +283,7 @@ public class Personagem extends BaseActor {
 
     public void setUltimaDirecao(PersonagemDirecao direcao) {
         this.ultimaDirecao = direcao;
-        Gdx.app.log("Personagem", "Última direção atualizada para: " + direcao);
+        //Gdx.app.log("Personagem", "Última direção atualizada para: " + direcao);
     }
 
 }

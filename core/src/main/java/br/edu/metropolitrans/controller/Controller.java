@@ -19,6 +19,7 @@ import br.edu.metropolitrans.model.actors.ObjetoInterativo;
 import br.edu.metropolitrans.model.actors.Personagem;
 import br.edu.metropolitrans.model.dao.DialogDAO;
 import br.edu.metropolitrans.model.maps.Mapas;
+import br.edu.metropolitrans.view.screens.CoursesScreen;
 import br.edu.metropolitrans.view.screens.GameScreen;
 
 public class Controller {
@@ -58,7 +59,7 @@ public class Controller {
     /**
      * Objetos interativos
      */
-    public ObjetoInterativo objeto, objetoSairSala, objetoMissao;
+    public ObjetoInterativo objeto, objetoSairSala, objetoMissao, objetoPc;
 
     /**
      * Missão atual
@@ -101,6 +102,7 @@ public class Controller {
         this.objeto = jogo.objeto;
         this.objetoSairSala = jogo.objetoSairSala;
         this.objetoMissao = jogo.objetoMissao;
+        this.objetoPc = jogo.objetoPc;
 
         // Carrega os objetos de colisão
         montarColisao(mapas.mapa);
@@ -264,6 +266,13 @@ public class Controller {
             personagem.npcs = npcs;
             personagem.setRetangulosColisao(jogo.retangulosColisao);
             personagem.setRetangulosPista(jogo.retangulosPista);
+        } else if (objetoPc != null && personagem.interagiu(objetoPc) && Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
+            Gdx.app.log("Controller", "Interagindo com o PC...");
+            // abre a tela de CoursesScreen
+            if (jogo.telas.get("courses") == null)
+                jogo.telas.put("courses", new CoursesScreen(jogo));
+
+            jogo.setScreen(jogo.telas.get("courses"));
         }
     }
 

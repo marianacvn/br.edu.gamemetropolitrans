@@ -76,7 +76,7 @@ public class MetropoliTrans extends Game {
     /**
      * Objetos interativos
      */
-    public ObjetoInterativo objeto, objetoChao, objetoSairSala, objetoMissao, objetoPlaca1;
+    public ObjetoInterativo objeto, objetoChao, objetoSairSala, objetoMissao, objetoPlaca1, objetoPc;
 
     /**
      * Mapas do jogo
@@ -142,6 +142,10 @@ public class MetropoliTrans extends Game {
         objetoPlaca1 = new ObjetoInterativo("placa", 1290, 1245, "mission1-result.png", estagioPrincipal);
         objetoPlaca1.setVisible(false);
 
+        // Carrega o objeto interativo do PC no mapa room
+        objetoPc = new ObjetoInterativo("pc", 1020, 1470, "background-transparent.png", estagioPrincipal);
+        // objetoPc.setVisible(false);
+
         // Carrega o personagem
         personagem = new Personagem(150, 650, estagioPrincipal);
         Personagem.setLimitacaoMundo(Mapas.MAPA_LARGURA, Mapas.MAPA_ALTURA);
@@ -177,6 +181,13 @@ public class MetropoliTrans extends Game {
                 "onibus",
                 new Vehicle("onibus", 394, 1400, 50, "bus-sprite.png", estagioPrincipal,
                         List.of("B-2*32", "E-3*32", "B-18*32"), true));
+
+        // um veiculo com a rota vazia e sem animacao
+        vehicles.put(
+                "basic-car-2",
+                new Vehicle("basic-car-2", 300, 600, 50, "sedan-gray-sprite.png", estagioPrincipal,
+                        List.of("C-1*32"), true));
+        vehicles.get("basic-car-2").setVisible(true); // TODO: Verificar porque não está aparecendo
 
         // Carrega os objetos interativos
         objeto = new ObjetoInterativo("entradaPrefeitura", 100, 760, "background-transparent.png",
