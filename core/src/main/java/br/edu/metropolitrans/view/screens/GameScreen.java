@@ -18,6 +18,7 @@ import br.edu.metropolitrans.view.components.minimap.Minimap;
 import br.edu.metropolitrans.view.components.mission_alert.MissionAlert;
 import br.edu.metropolitrans.view.components.mission_modal.MissionModalBox;
 import br.edu.metropolitrans.view.components.mission_modal.MissionResultDialog;
+import br.edu.metropolitrans.view.components.phone.Phone;
 
 /**
  * Tela principal do jogo
@@ -67,8 +68,12 @@ public class GameScreen implements Screen {
      * Batch de desenho
      */
     public SpriteBatch batch;
+
     /** Xp e Moedas */
     public Hud hud;
+
+    /* Telefone dos cursos */
+    public Phone phone;
 
     public GameScreen(final MetropoliTrans jogo) {
         this.jogo = jogo;
@@ -89,6 +94,9 @@ public class GameScreen implements Screen {
 
         // Inicializar o minimapa
         minimapa = new Minimap(1170, 200, jogo);
+
+        // Inicializar o telefone
+        phone = new Phone(1170, 420, jogo);
 
         // Inicializa a caixa de diálogo
         caixaDialogo = new DialogBox(0, 64, 1280, 150, jogo);
@@ -135,13 +143,14 @@ public class GameScreen implements Screen {
             // Controle do personagem Setas ou WASD
             jogo.controller.controlePersonagemSetas(delta);
             jogo.controller.controlePersonagemWASD(delta);
+            jogo.controller.controleTelefone();
         }
 
         // Renderiza a caixa dialogo, minimapa e alertas de missao
         desenharComponentes(delta);
 
         // Testes
-        //debug();
+        // debug();
         // Gdx.app.log("Teste", "Missão: " + MISSAO);
     }
 
@@ -216,6 +225,10 @@ public class GameScreen implements Screen {
                 CAMERA.position.y - CAMERA.viewportHeight / 2 + 10);
         if (!jogo.controller.mostrarDialogo)
             minimapa.render(jogo.personagem);
+
+        phone.setPosition(CAMERA.position.x - CAMERA.viewportWidth / 2 + 591,
+                CAMERA.position.y - CAMERA.viewportHeight / 2 + 220);
+        phone.render();
 
         // Desenha o alerta de missão acima da posição do NPC
         if (jogo.personagem.npcs != null) {

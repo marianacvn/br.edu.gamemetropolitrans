@@ -10,6 +10,7 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.Timer;
 
 import br.edu.metropolitrans.MetropoliTrans;
 import br.edu.metropolitrans.model.Dialog;
@@ -192,6 +193,25 @@ public class Controller {
         }
     }
 
+    public void controleTelefone() {
+        if (Gdx.input.isKeyJustPressed(Input.Keys.T)) {
+            // Informa que o celular está visível
+            gameScreen.phone.isVisible = true;
+
+            // Agenda a transição para a tela CoursesScreen após 1 segundo
+            Timer.schedule(new Timer.Task() {
+                @Override
+                public void run() {
+                    gameScreen.phone.isVisible = false;
+                    if (jogo.telas.get("courses") == null)
+                        jogo.telas.put("courses", new CoursesScreen(jogo, jogo.getScreen()));
+
+                    jogo.setScreen(jogo.telas.get("courses"));
+                }
+            }, 1); // 1 segundo
+        }
+    }
+
     /**
      * Verifica a interação do personagem com os objetos do mapa
      */
@@ -270,7 +290,7 @@ public class Controller {
             Gdx.app.log("Controller", "Interagindo com o PC...");
             // abre a tela de CoursesScreen
             if (jogo.telas.get("courses") == null)
-                jogo.telas.put("courses", new CoursesScreen(jogo));
+                jogo.telas.put("courses", new CoursesScreen(jogo, jogo.getScreen()));
 
             jogo.setScreen(jogo.telas.get("courses"));
         }

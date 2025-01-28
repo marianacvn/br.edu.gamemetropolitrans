@@ -1,0 +1,76 @@
+{
+    "cursos": [
+      {
+        "id": 1,
+        "nome": "Módulo 1",
+        "descricao": "Descrição do Módulo 1",
+        "status": "LIBERADO",
+        "imagemPath": "files/itens/estrela-pintada.png",
+        "videoUrl": "https://www.youtube.com/watch?v=example1"
+      },
+      {
+        "id": 2,
+        "nome": "Módulo 2",
+        "descricao": "Descrição do Módulo 2",
+        "status": "BLOQUEADO",
+        "imagemPath": "files/itens/estrela-pintada.png",
+        "videoUrl": "https://www.youtube.com/watch?v=example2"
+      },
+        {
+            "id": 3,
+            "nome": "Módulo 3",
+            "descricao": "Descrição do Módulo 3",
+            "status": "BLOQUEADO",
+            "imagemPath": "files/itens/estrela-pintada.png",
+            "videoUrl": "https://www.youtube.com/watch?v=example3"
+        },
+        {
+            "id": 4,
+            "nome": "Módulo 4",
+            "descricao": "Descrição do Módulo 4",
+            "status": "BLOQUEADO",
+            "imagemPath": "files/itens/estrela-pintada.png",
+            "videoUrl": "https://www.youtube.com/watch?v=example4"
+        },
+        {
+            "id": 5,
+            "nome": "Módulo 5",
+            "descricao": "Descrição do Módulo 5",
+            "status": "BLOQUEADO",
+            "imagemPath": "files/itens/estrela-pintada.png",
+            "videoUrl": "https://www.youtube.com/watch?v=example5"
+        },
+        {
+            "id": 6,
+            "nome": "Módulo 6",
+            "descricao": "Descrição do Módulo 6",
+            "status": "BLOQUEADO",
+            "imagemPath": "files/itens/estrela-pintada.png",
+            "videoUrl": "https://www.youtube.com/watch?v=example6"
+        },
+        {
+            "id": 7,
+            "nome": "Módulo 7",
+            "descricao": "Descrição do Módulo 7",
+            "status": "BLOQUEADO",
+            "imagemPath": "files/itens/estrela-pintada.png",
+            "videoUrl": "https://www.youtube.com/watch?v=example7"
+        },
+        {
+            "id": 8,
+            "nome": "Módulo 8",
+            "descricao": "Descrição do Módulo 8",
+            "status": "BLOQUEADO",
+            "imagemPath": "files/itens/estrela-pintada.png",
+            "videoUrl": "https://www.youtube.com/watch?v=example8"
+        },
+        {
+            "id": 9,
+            "nome": "Módulo 9",
+            "descricao": "Descrição do Módulo 9",
+            "status": "BLOQUEADO",
+            "imagemPath": "files/itens/estrela-pintada.png",
+            "videoUrl": "https://www.youtube.com/watch?v=example9"
+        }
+    ]
+  }

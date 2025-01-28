@@ -1,8 +1,6 @@
 package br.edu.metropolitrans.view.components.mission_modal;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import com.badlogic.gdx.Gdx;
@@ -67,7 +65,8 @@ public class MissionComponents {
      * @param y             Posição Y
      * @param geraXp        Se gera XP
      */
-    public void adicionarOpcaoImagem(String nome, String caminhoImagem, boolean correta, float x, float y, boolean geraXp) {
+    public void adicionarOpcaoImagem(String nome, String caminhoImagem, boolean correta, float x, float y,
+            boolean geraXp) {
         // Skin skin = new Skin();
         Texture texture = new Texture(Gdx.files.internal("files/missionComponents/" + caminhoImagem));
         ImageButton.ImageButtonStyle style = new ImageButton.ImageButtonStyle();
@@ -81,10 +80,10 @@ public class MissionComponents {
                     // Lógica para resposta correta
                     jogo.controller.resultadoRespostaMissao = 1;
                     jogo.personagem.moedas += jogo.controller.controleMissao.getRecompensaMoedasMissao();
-    
+
                     if (geraXp)
                         jogo.personagem.xp += 10;
-    
+
                     jogo.controller.objetoMissao.setVisible(false);
                 } else {
                     // Lógica para resposta incorreta

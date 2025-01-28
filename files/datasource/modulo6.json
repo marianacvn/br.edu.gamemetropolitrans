@@ -1,0 +1,12 @@
+{
+    "curso": [
+        {
+            "id": 6,
+            "nome": "Módulo 6",
+            "descricao": "Colocar aqui descrição do módulo 6",
+            "status": "BLOQUEADO",
+            "imagemPath": "", 
+            "videoUrl": "https://www.youtube.com/watch?v=3qJQdSxN3Z0"
+        }
+    ]
+    }

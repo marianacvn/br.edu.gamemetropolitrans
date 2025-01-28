@@ -1,5 +1,6 @@
 package br.edu.metropolitrans.model.connection;
 
+import com.badlogic.gdx.Gdx;
 import com.google.gson.Gson;
 
 import java.io.FileInputStream;
@@ -41,6 +42,7 @@ public class DataSource {
         try (InputStreamReader reader = new InputStreamReader(new FileInputStream(PASTA_DATASOURCE + nomeArquivo), StandardCharsets.UTF_8)) {
             return gson.fromJson(reader, clazz);
         } catch (IOException e) {
+            Gdx.app.log("DataSource", "Erro ao carregar o arquivo JSON: " + e.getMessage());
             e.printStackTrace();
             return null;
         }
@@ -53,6 +55,7 @@ public class DataSource {
         try (OutputStreamWriter writer = new OutputStreamWriter(new FileOutputStream(PASTA_DATASOURCE + nomeArquivo), StandardCharsets.UTF_8)) {
             gson.toJson(dados, writer);
         } catch (IOException e) {
+            Gdx.app.log("DataSource", "Erro ao salvar o arquivo JSON: " + e.getMessage());
             e.printStackTrace();
         }
     }

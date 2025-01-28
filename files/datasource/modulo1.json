@@ -1,0 +1,13 @@
+
+{
+"curso": [
+    {
+        "id": 1,
+        "nome": "Módulo 1 - Faixas de Pedestre",
+        "descricao": "Colocar aqui descrição do módulo 1",
+        "status": "LIBERADO",
+        "imagemPath": "", 
+        "videoUrl": "https://www.youtube.com/watch?v=3qJQdSxN3Z0"
+    }
+]
+}
