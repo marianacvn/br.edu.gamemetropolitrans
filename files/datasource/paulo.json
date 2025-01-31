@@ -1,12 +1,12 @@
 {
 	"dialogosGenericos": [
-		"Vejo cada coisa aqui no hospital, é cada coisa que acontece que vocês não imaginam."
+		"Olá, senhor(a), como vai? Posso ajudar?"
 	
 	],
 	"dialogosMissao": [
 		{
 			"missao": 2,
-			"mensagem": "Olá, sou o Paulo, trabalho como segurança aqui do hospital a 10 anos, já não aguento mais esta situação, sempre saio brigando com os motoristas que param para pegar os pacientes e ficam buzinando, mas não tem jeito! Eu preciso de férias."
+			"mensagem": "Olá, senhor(a), sou o Paulo, trabalho como segurança aqui do hospital a 10 anos, já não aguento mais esta situação, sempre saio brigando com os motoristas que param para pegar os pacientes e ficam buzinando, mas não tem jeito para não ter sons de buzina o tempo inteiro por aqui, o que incomoda os doentes. "
 		},
 		{
 			"missao": 2,

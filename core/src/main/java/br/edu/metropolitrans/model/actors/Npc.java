@@ -8,6 +8,8 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 
 public class Npc extends ActorAnimation {
 
+    public static String DIALOGO_INICIAL = "Olá, senhor(a) estágiario(a) da secretária de trânsito, seja bem-vindo a cidade de Metropolitrans. O(a) senhor(a) precisa falar com o prefeito da cidade para ele lhe repassar os detalhes sobre o seu novo trabalho.";
+
     public String nomeArquivo;
     public int statusAlertaMissao;
     public Texture minimapaPonto;

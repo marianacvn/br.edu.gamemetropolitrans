@@ -1,16 +1,16 @@
 {
 	"dialogosGenericos": [
-		"Nossa que vontade de comer um pastel de feira!"
+		"Olá, tudo bem? Como posso te ajudar?"
 	
 	],
 	"dialogosMissao": [
 		{
 			"missao": 5,
-			"mensagem": "Meu filho(a), você precisa me ajudar, ainda ontem uma senhora quase era atropelada aqui, sem contar os muitos outros casos de atropelamento que ocorreram aqui no ano passado, esta situação esta incontrolável! Esta via atravessa todos os dias milhares de idosos e isto é um perigo, é uma via local, mas ninguém respeita nada aqui nesta cidade!"
+			"mensagem": "Olá, senhor(a), preciso da sua ajuda, ainda ontem uma senhora quase era atropelada aqui, sem contar os muitos outros casos de atropelamento que ocorreram aqui no ano passado, esta situação esta incontrolável! Esta via atravessa todos os dias milhares de idosos e isto é um perigo, é uma via local, mas ninguém respeita nada aqui nesta cidade!"
 		},
 		{
 			"missao": 5,
-			"mensagem": "Finalmente, com isto estes casos serão reduzidos drasticamente, muito obrigado meu filho(a)."
+			"mensagem": "Finalmente, com isto estes casos serão reduzidos drasticamente, muito obrigado."
 		}
 	]
 }

@@ -54,25 +54,30 @@ public class CoursePageScreen implements Screen {
         BitmapFont fonteTexto = FontBase.getInstancia().getFonte(40, FontBase.Fontes.PADRAO);
         BitmapFont fonteTitulo = FontBase.getInstancia().getFonte(80, FontBase.Fontes.PADRAO);
 
-       // Cria o título
-       Label.LabelStyle labelStyleTitulo = new Label.LabelStyle();
-       labelStyleTitulo.font = fonteTitulo;
-       labelStyleTitulo.fontColor = Color.valueOf("4c4869"); // Ajuste a cor do texto para preto
-       this.titulo = new Label(course.getNome(), labelStyleTitulo);
-       this.titulo.setPosition(Gdx.graphics.getWidth() / 2 - this.titulo.getWidth() / 2, Gdx.graphics.getHeight() - this.titulo.getHeight() - 50);
-       
+        // Cria o título
+        Label.LabelStyle labelStyleTitulo = new Label.LabelStyle();
+        labelStyleTitulo.font = fonteTitulo;
+        labelStyleTitulo.fontColor = Color.BLACK; // Ajuste a cor do texto para preto
+        this.titulo = new Label(course.getNome(), labelStyleTitulo);
+        this.titulo.setPosition(Gdx.graphics.getWidth() / 2 - this.titulo.getWidth() / 2,
+                Gdx.graphics.getHeight() - this.titulo.getHeight() - 50);
 
         // Cria o texto
         Label.LabelStyle labelStyleTexto = new Label.LabelStyle();
         labelStyleTexto.font = fonteTexto;
-        labelStyleTexto.fontColor = Color.valueOf("4c4869"); // Ajuste a cor do texto para preto
+        labelStyleTexto.fontColor = Color.BLACK; // Ajuste a cor do texto para preto
         this.texto = new Label(course.getDescricao(), labelStyleTexto);
-        this.texto.setPosition(50, Gdx.graphics.getHeight() - this.titulo.getHeight() - 150);
+        // seta a posição do texto com um gap de respiro abaixo do título
+        this.texto.setPosition(Gdx.graphics.getWidth() / 2 - this.texto.getWidth() / 2,
+                this.titulo.getY() - this.texto.getHeight() - 10);
 
         // Cria a imagem (opcional)
         if (course.getImagemPath() != null && !course.getImagemPath().isEmpty()) {
             this.imagem = new Image(new Texture(Gdx.files.internal(course.getImagemPath())));
-            this.imagem.setPosition(Gdx.graphics.getWidth() / 2 - this.imagem.getWidth() / 2, Gdx.graphics.getHeight() / 2 - this.imagem.getHeight() / 2);
+            // SETA A POSIÇÃO IMAGEM PARA ABAIXO DO TEXTO
+            this.imagem.setPosition(Gdx.graphics.getWidth() / 2 - this.imagem.getWidth() / 2,
+                    this.texto.getY() - this.imagem.getHeight() - 5);
+            // Adiciona a imagem ao stage
             stage.addActor(this.imagem);
         } else {
             this.imagem = null;
@@ -80,7 +85,10 @@ public class CoursePageScreen implements Screen {
 
         // Cria o link para o vídeo
         this.linkVideo = new TextButton("Assista ao vídeo", skin);
-        this.linkVideo.setPosition(Gdx.graphics.getWidth() / 2 - this.linkVideo.getWidth() / 2, 100);
+        // setar o link do video para abaixo da imagem 
+        this.linkVideo.setPosition(Gdx.graphics.getWidth() / 2 - this.linkVideo.getWidth() / 2,
+                this.imagem.getY() - this.linkVideo.getHeight() - 10);
+        
         this.linkVideo.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -88,7 +96,6 @@ public class CoursePageScreen implements Screen {
             }
         });
 
-       
         // Cria um botão para voltar à tela anterior
         TextButtonBase botaoVoltar = new TextButtonBase("Voltar", "files/buttons/botao-dark2.png", skin);
         botaoVoltar.setSize(100, 50);

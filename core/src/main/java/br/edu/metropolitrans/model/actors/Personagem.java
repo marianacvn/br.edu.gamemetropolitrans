@@ -76,9 +76,54 @@ public class Personagem extends BaseActor {
         margemLargura = -15;
         margemX = 15;
 
+        // // Carrega a textura
+        atualizarSpritePersonagem("male");
+
+        angulo = 270;
+
+        // Configuracao do personagem
+        moedas = 200;
+        xp = 10;
+        sofreuInfracao = false;
+        infracoes = 0;
+        setAceleracao(800);
+        setVelocidadeMaxima(200);
+        setDesaceleracao(800);
+    }
+
+    public boolean interagiu(ObjetoInterativo objetoInterativo) {
+        return this.sobrepoe(objetoInterativo);
+    }
+
+    @Override
+    public void act(float delta) {
+        super.act(delta);
+
+        // Movimenta o personagem
+        animacao();
+
+        // Atualiza a posição do personagem
+        aplicarFisica(delta);
+
+        // Verifica colisões
+        colisao(delta);
+
+        // Limita o personagem ao mundo
+        limitaMundo();
+
+        // Alinha a câmera após atualizar a posição do personagem
+        alinhamentoCamera();
+
+    }
+
+    public void atualizarSpritePersonagem(String selectedCharacter) {
+        String nomeArquivo = "files/characters/mainCharacter/character-"+selectedCharacter+"_spritesheet.png";
+        int linhas = 4;
+        int colunas = 11; 
+
         // Carrega a textura
         Texture textura = new Texture(Gdx.files.internal(nomeArquivo), true);
-        minimapaPonto = new Texture(Gdx.files.internal("files/characters/mainCharacter/minimap-male.png"));
+        minimapaPonto = new Texture(Gdx.files.internal("files/characters/mainCharacter/minimap-"+selectedCharacter+".png"));
 
         // Divide a textura em quadros
         int larguraQuadro = textura.getWidth() / colunas;
@@ -118,41 +163,6 @@ public class Personagem extends BaseActor {
 
         // Inicia a animação com a direção SUL
         setAnimacao(sul);
-        angulo = 270;
-
-        // Configuracao do personagem
-        moedas = 200;
-        xp = 10;
-        sofreuInfracao = false;
-        infracoes = 0;
-        setAceleracao(800);
-        setVelocidadeMaxima(200);
-        setDesaceleracao(800);
-    }
-
-    public boolean interagiu(ObjetoInterativo objetoInterativo) {
-        return this.sobrepoe(objetoInterativo);
-    }
-
-    @Override
-    public void act(float delta) {
-        super.act(delta);
-
-        // Movimenta o personagem
-        animacao();
-
-        // Atualiza a posição do personagem
-        aplicarFisica(delta);
-
-        // Verifica colisões
-        colisao(delta);
-
-        // Limita o personagem ao mundo
-        limitaMundo();
-
-        // Alinha a câmera após atualizar a posição do personagem
-        alinhamentoCamera();
-
     }
 
     /**

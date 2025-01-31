@@ -1,19 +1,19 @@
 {
 	"dialogosGenericos": [
-		"Que lindo dia!"
+		"Olá, como vai o(a) Senhor(a)? Precisa de algo?"
 	],
 	"dialogosMissao": [
 		{
 			"missao": 0,
-			"mensagem": "Olá, me chamo Heberto, sou o prefeito da cidade de Metropolitrans. Hoje começa seu novo trabalho de secretário de trânsito. Mas primeiro, será necessário que você vá até a escola de trânsito da cidade e aprenda o primeiro módulo, para que possa iniciar os serviços. Boa sorte, esta cidade precisa de muitas melhorias haha!"
+			"mensagem": "Olá, me chamo Heberto, sou o prefeito da cidade de Metropolitrans. Hoje começa seu trabalho como estagiário da secretária de trânsito. Mas primeiro, será necessário que se locomova até a escola de trânsito da cidade e aprenda o primeiro módulo dos cursos, para que possa iniciar os serviços. Boa sorte, esta cidade precisa de muitas melhorias!"
 		},
 		{
 			"missao": 2,
-			"mensagem": "Haha olha só quem apareceu, vim aqui lhe desejar os parabéns, só estou recebendo elogios de você. Foi a melhor pessoa que escolhi para o cargo, sem mim essa cidade não iria para frente haha!  A Betânia deve ter novidades para você."
+			"mensagem": "Olá, Senhor(a)! Vim aqui para lhe desejar os parabéns, só estou recebendo elogios de você. Foi a melhor escolha para o cargo. A Betânia deve ter novidades para você."
 		},
 		{
 			"missao": 4,
-			"mensagem": "Olá, não temos muito tempo, estamos com um problema urgente para resolver, esperamos que este caso não repercurta mais do que o necessário, você já sabe o que fazer."
+			"mensagem": "Olá, não temos muito tempo, estamos com um problema urgente para resolver, esperamos que este caso não repercuta mais do que o necessário, você já sabe o que fazer."
 		},
 		{
 			"missao": 4,

@@ -15,7 +15,7 @@
         {
             "id": 1,
             "nome": "Retorno proibido",
-            "descricao": "Qual placa representa uma possível solução\r\npara o problema apresentado? [Artigo/Regra: 39]",
+            "descricao": "Qual placa representa uma possível solução\r\npara o problema apresentado? [Artigo/Regra: 204]",
             "recompensaMoedas": 100,
             "experiencia": 10,
             "valorErro": 20,

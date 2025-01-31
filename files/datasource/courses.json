@@ -2,19 +2,19 @@
     "cursos": [
       {
         "id": 1,
-        "nome": "Módulo 1",
-        "descricao": "Descrição do Módulo 1",
+        "nome": "Faixas de Pedestre [Art. 70]",
+        "descricao": "Os pedestres que estiverem atravessando a via sobre as faixas delimitadas para esse fim \r\nterão prioridade de passagem,exceto nos locais com sinalização semafórica.",
         "status": "LIBERADO",
-        "imagemPath": "files/itens/estrela-pintada.png",
-        "videoUrl": "https://www.youtube.com/watch?v=example1"
+        "imagemPath": "files/itens/faixadepedestre.png",
+        "videoUrl": "https://www.youtube.com/watch?v=pLfrj5Hajsc"
       },
       {
         "id": 2,
-        "nome": "Módulo 2",
-        "descricao": "Descrição do Módulo 2",
+        "nome": "Placa de Proibido Retornar à esquerda [Art. 204]",
+        "descricao": "A placa adverte ao motorista a proibição de efetuar o retorno à esquerda,é utilizada em vias de duplo sentido\r\n que tenham mais de duas pistas,proibindo o retorno em situações de riscos de segurança ou em casos \r\nque possam afetar a fluidez do trânsito.",
         "status": "BLOQUEADO",
-        "imagemPath": "files/itens/estrela-pintada.png",
-        "videoUrl": "https://www.youtube.com/watch?v=example2"
+        "imagemPath": "files/itens/proibidoretornaraesquerda.png",
+        "videoUrl": "https://www.youtube.com/watch?v=3wGR4V_xLVU"
       },
         {
             "id": 3,

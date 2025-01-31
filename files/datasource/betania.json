@@ -5,15 +5,19 @@
 	"dialogosMissao": [
 		{
 			"missao": 1,
-			"mensagem": "Olá, sou betânia, você deve ser o novo(a) secretário(a)! Tenho que lhe desejar muita sorte haha! Bem, estou aqui para te receber na nossa escola municipal. Desculpe a confusão que o prefeito Heberto causou, não temos uma escola específica para trânsito haha, quem dera. Mas temos aqui na nossa escola municipal, uma sala de informática, ele solicitou a instalação de um curso que explica diversos assuntos sobre trânsito, é lá que você irá aprender o que precisar."
+			"mensagem": "Olá, sou betânia, você deve ser o novo(a) estagiário(a)! Tenho que lhe desejar muita sorte. Bem, estou aqui para te receber na nossa escola municipal. Desculpe a confusão que o prefeito Heberto causou, não temos uma escola específica para trânsito, quem dera. Mas temos aqui na nossa escola municipal, uma sala de informática, ele solicitou a instalação de um curso que explica diversos assuntos sobre trânsito, é lá que você irá aprender o que precisar."
 		},
 		{
 			"missao": 1,
-			"mensagem": "Olha só, fiquei sabendo que você já anda resolvendo problemas por ai, todo mundo já está sabendo haha! Muito bem, Heberto passou aqui mais cedo perguntando se você veio aqui, disse a ele que você já ta melhorando a cidade no seu primeiro dia haha! Bem, agora você pode ver mais um módulo do curso."
+			"mensagem": "Olha só, fiquei sabendo que você já anda resolvendo problemas por ai, todo mundo já está sabendo haha! Muito bem, Heberto passou aqui mais cedo perguntando se você veio aqui, disse a ele que você já ta melhorando a cidade no seu primeiro dia! Bem, agora você pode ver mais um módulo do curso."
 		},
 		{
 			"missao": 2,
-			"mensagem": "Meus parabéns, o Heberto deve tá por ai falando de você para todo mundo, com certeza ele deve reconhecer o seu trabalho haha. Mas enfim, um novo módulo foi liberado, fique a vontade."
+			"mensagem": "Meus parabéns, o Heberto deve tá por ai falando de você para todo mundo, com certeza ele deve reconhecer o seu trabalho. Mas enfim, um novo módulo foi liberado, fique a vontade."
+		},
+		{
+			"missao": 3,
+			"mensagem": "Olá, senhor(a). Agora temos o acesso aos cursos através do celular, basta pressionar a tecla 'T' para acessar o menu de cursos."
 		},
 		{
 			"missao": 4,
@@ -25,7 +29,7 @@
 		},
 		{
 			"missao": 5,
-			"mensagem": "Você viu que aqui também precisa resolver uma situação? Bem, mas antes você precisa ver mais um módulo do curso."
+			"mensagem": "O(a) Senhor(a) viu que aqui também precisa resolver uma situação? Bem, mas antes você precisa ver mais um módulo do curso."
 		},
 		{
 			"missao": 6,

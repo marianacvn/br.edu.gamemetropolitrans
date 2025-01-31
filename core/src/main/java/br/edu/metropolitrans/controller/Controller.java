@@ -95,6 +95,7 @@ public class Controller {
      */
     private Npc guarda;
 
+
     public Controller(MetropoliTrans jogo) {
         this.jogo = jogo;
         this.mapas = jogo.mapas;
@@ -117,6 +118,11 @@ public class Controller {
         mostrarCaixaMissao = false;
 
         guarda = new Npc("guarda", jogo.estagioPrincipal);
+
+        gameScreen.caixaDialogo.npc = guarda;
+        gameScreen.caixaDialogo.setTextoDialogo(Npc.DIALOGO_INICIAL);
+        gameScreen.caixaDialogo.defineTexturaNpc();
+        mostrarDialogo = true;
 
         // Inicia o controle de missão
         controleMissao = new MissionController(jogo);

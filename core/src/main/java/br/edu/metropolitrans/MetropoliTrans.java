@@ -147,7 +147,7 @@ public class MetropoliTrans extends Game {
         // objetoPc.setVisible(false);
 
         // Carrega o personagem
-        personagem = new Personagem(150, 650, estagioPrincipal);
+        personagem = new Personagem(250, 860, estagioPrincipal);
         Personagem.setLimitacaoMundo(Mapas.MAPA_LARGURA, Mapas.MAPA_ALTURA);
 
         // Carrega os NPCs
@@ -176,11 +176,11 @@ public class MetropoliTrans extends Game {
         vehicles.put(
                 "basic-car",
                 new Vehicle("basic-car", 394, 940, 100, "car-sprite.png", estagioPrincipal,
-                        List.of("C-10*32", "D-25*32"), true));
+                        List.of("C-10*32", "D-12*32", "B-11*32"), true));
         vehicles.put(
                 "onibus",
-                new Vehicle("onibus", 394, 1400, 50, "bus-sprite.png", estagioPrincipal,
-                        List.of("B-2*32", "E-3*32", "B-18*32"), true));
+                new Vehicle("onibus", 0, 1260, 50, "bus-sprite.png", estagioPrincipal,
+                        List.of("D-9*32", "B-18*32"), true));
 
         // um veiculo com a rota vazia e sem animacao
         vehicles.put(

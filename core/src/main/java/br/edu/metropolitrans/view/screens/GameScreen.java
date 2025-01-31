@@ -75,6 +75,7 @@ public class GameScreen implements Screen {
     /* Telefone dos cursos */
     public Phone phone;
 
+
     public GameScreen(final MetropoliTrans jogo) {
         this.jogo = jogo;
         // MissionController.iniciarControleMissao(jogo);
@@ -109,6 +110,7 @@ public class GameScreen implements Screen {
 
         // Inicializa o diálogo de resultado de missão
         missaoDialogoResultado = new MissionResultDialog(TELA_LARGURA / 2 - 250, TELA_ALTURA / 2 - 200, 250, 200, jogo);
+
     }
 
     @Override
