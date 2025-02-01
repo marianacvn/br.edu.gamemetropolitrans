@@ -216,4 +216,26 @@ public abstract class ActorAnimation extends BaseActor {
         xInicial = x;
         yInicial = y;
     }
+
+    @Override
+    public void dispose() {
+        super.dispose();
+
+        if (animacaoCima != null) {
+            animacaoCima.getKeyFrame(0).getTexture().dispose();
+        }
+
+        if (animacaoEsquerda != null) {
+            animacaoEsquerda.getKeyFrame(0).getTexture().dispose();
+        }
+
+        if (animacaoBaixo != null) {
+            animacaoBaixo.getKeyFrame(0).getTexture().dispose();
+        }
+
+        if (animacaoDireita != null) {
+            animacaoDireita.getKeyFrame(0).getTexture().dispose();
+        }
+        
+    }
 }

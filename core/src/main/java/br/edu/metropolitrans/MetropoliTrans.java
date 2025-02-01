@@ -274,9 +274,68 @@ public class MetropoliTrans extends Game {
 
     @Override
     public void dispose() {
-        batch.dispose();
-        fonte.dispose();
-        MusicaMenu.dispose();
-        estagioPrincipal.dispose();
+        // OBS.: É necessário entender se o dispose náo está impedindo o funcionamento do jogo
+        // Descarte de telas
+        for (Screen screen : telas.values()) {
+            if (screen != null) {
+                screen.dispose();
+            }
+        }
+        telas.clear();
+
+        // Descarte de atores
+        if (personagem != null)
+            personagem.dispose();
+
+        for (Npc npc : npcs) {
+            if (npc != null)
+                npc.dispose();
+        }
+        npcs.clear();
+
+        for (Vehicle vehicle : vehicles.values()) {
+            if (vehicle != null)
+                vehicle.dispose();
+        }
+        vehicles.clear();
+
+        // Descarte de objetos interativos
+        if (objeto != null)
+            objeto.dispose();
+        if (objetoChao != null)
+            objetoChao.dispose();
+        if (objetoSairSala != null)
+            objetoSairSala.dispose();
+        if (objetoMissao != null)
+            objetoMissao.dispose();
+        if (objetoPlaca1 != null)
+            objetoPlaca1.dispose();
+        if (objetoPc != null)
+            objetoPc.dispose();
+
+        // Descarte de mapas
+        if (mapas != null && mapas.mapa != null)
+            mapas.mapa.dispose();
+
+        if (mapas != null && mapas.sala != null)
+            mapas.sala.dispose();
+
+        // Descarte de renderizadores
+        if (mapaRenderizador != null)
+            mapaRenderizador.dispose();
+
+        // Dispose of other resources
+        if (batch != null) {
+            batch.dispose();
+        }
+        if (fonte != null) {
+            fonte.dispose();
+        }
+        if (MusicaMenu != null) {
+            MusicaMenu.dispose();
+        }
+        if (estagioPrincipal != null) {
+            estagioPrincipal.dispose();
+        }
     }
 }
