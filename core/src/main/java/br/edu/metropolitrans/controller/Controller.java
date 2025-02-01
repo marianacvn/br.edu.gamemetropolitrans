@@ -172,19 +172,7 @@ public class Controller {
             return;
         }
 
-        if (up && right) {
-            personagem.acelerarEmAngulo(45);
-            personagem.setUltimaDirecao(PersonagemDirecao.NORDESTE);
-        } else if (up && left) {
-            personagem.acelerarEmAngulo(135);
-            personagem.setUltimaDirecao(PersonagemDirecao.NOROESTE);
-        } else if (down && right) {
-            personagem.acelerarEmAngulo(315);
-            personagem.setUltimaDirecao(PersonagemDirecao.SUDESTE);
-        } else if (down && left) {
-            personagem.acelerarEmAngulo(225);
-            personagem.setUltimaDirecao(PersonagemDirecao.SUDOESTE);
-        } else if (up) {
+        if (up) {
             personagem.acelerarEmAngulo(90);
             personagem.setUltimaDirecao(PersonagemDirecao.NORTE);
         } else if (down) {

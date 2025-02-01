@@ -210,22 +210,6 @@ public class Personagem extends BaseActor {
             case OESTE:
                 setPosition(getX() - margemInfracao, getY());
                 break;
-            case NORDESTE:
-                setPosition(getX() + margemInfracao / ((float) Math.sqrt(2)),
-                        getY() + margemInfracao / ((float) Math.sqrt(2)));
-                break;
-            case NOROESTE:
-                setPosition(getX() - margemInfracao / ((float) Math.sqrt(2)),
-                        getY() + margemInfracao / ((float) Math.sqrt(2)));
-                break;
-            case SUDESTE:
-                setPosition(getX() + margemInfracao / ((float) Math.sqrt(2)),
-                        getY() - margemInfracao / ((float) Math.sqrt(2)));
-                break;
-            case SUDOESTE:
-                setPosition(getX() - margemInfracao / ((float) Math.sqrt(2)),
-                        getY() - margemInfracao / ((float) Math.sqrt(2)));
-                break;
             default:
                 Gdx.app.log("Personagem", "Direção inválida durante o ajuste de infração!");
                 break;
