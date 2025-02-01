@@ -883,4 +883,11 @@ public abstract class BaseActor extends Actor {
 
     // endregion
 
+    
+    public void dispose() {
+        if (animacao != null) {
+            animacao.getKeyFrame(0).getTexture().dispose();
+        }
+    }
+
 }

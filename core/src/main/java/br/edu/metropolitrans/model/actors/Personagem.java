@@ -66,11 +66,6 @@ public class Personagem extends BaseActor {
     public Personagem(float x, float y, Stage s) {
         super(x, y, s);
 
-        // Carraga a animação do personagem
-        String nomeArquivo = "files/characters/mainCharacter/character-male_spritesheet.png";
-        int linhas = 4;
-        int colunas = 11;
-
         // Ajusta as margens para centralizar o personagem na colisão
         margemAltura = -10;
         margemLargura = -15;
@@ -117,13 +112,14 @@ public class Personagem extends BaseActor {
     }
 
     public void atualizarSpritePersonagem(String selectedCharacter) {
-        String nomeArquivo = "files/characters/mainCharacter/character-"+selectedCharacter+"_spritesheet.png";
+        String nomeArquivo = "files/characters/mainCharacter/character-" + selectedCharacter + "_spritesheet.png";
         int linhas = 4;
-        int colunas = 11; 
+        int colunas = 11;
 
         // Carrega a textura
         Texture textura = new Texture(Gdx.files.internal(nomeArquivo), true);
-        minimapaPonto = new Texture(Gdx.files.internal("files/characters/mainCharacter/minimap-"+selectedCharacter+".png"));
+        minimapaPonto = new Texture(
+                Gdx.files.internal("files/characters/mainCharacter/minimap-" + selectedCharacter + ".png"));
 
         // Divide a textura em quadros
         int larguraQuadro = textura.getWidth() / colunas;
@@ -214,12 +210,11 @@ public class Personagem extends BaseActor {
                 Gdx.app.log("Personagem", "Direção inválida durante o ajuste de infração!");
                 break;
         }
-    
+
         // Adiciona log para depuração
         Gdx.app.log("Personagem", String.format(
-            "Infracao! Direção: %s | Posição final: X=%.2f, Y=%.2f",
-            ultimaDirecao, getX(), getY()
-        ));
+                "Infracao! Direção: %s | Posição final: X=%.2f, Y=%.2f",
+                ultimaDirecao, getX(), getY()));
     }
 
     /**
@@ -277,7 +272,37 @@ public class Personagem extends BaseActor {
 
     public void setUltimaDirecao(PersonagemDirecao direcao) {
         this.ultimaDirecao = direcao;
-        //Gdx.app.log("Personagem", "Última direção atualizada para: " + direcao);
+        // Gdx.app.log("Personagem", "Última direção atualizada para: " + direcao);
+    }
+
+    @Override
+    public void dispose() {
+        super.dispose();
+
+        if (minimapaPonto != null) {
+            minimapaPonto.dispose();
+        }
+
+        if (norte != null) {
+            norte.getKeyFrame(0).getTexture().dispose();
+        }
+
+        if (sul != null) {
+            sul.getKeyFrame(0).getTexture().dispose();
+        }
+
+        if (leste != null) {
+            leste.getKeyFrame(0).getTexture().dispose();
+        }
+
+        if (oeste != null) {
+            oeste.getKeyFrame(0).getTexture().dispose();
+        }
+
+        norte = null;
+        sul = null;
+        leste = null;
+        oeste = null;
     }
 
 }

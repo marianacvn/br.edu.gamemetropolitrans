@@ -61,4 +61,13 @@ public class Npc extends ActorAnimation {
     public int hashCode() {
         return nome.hashCode();
     }
+
+    @Override
+    public void dispose() {
+        super.dispose();
+
+        if (minimapaPonto != null) {
+            minimapaPonto.dispose();
+        }
+    }
 }
