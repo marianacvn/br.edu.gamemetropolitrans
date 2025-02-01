@@ -1,11 +1,15 @@
 {
 	"dialogosGenericos": [
-		"Meus olhos não são mais como antes, mas ainda consigo ver a beleza da cidade."
+		"Olá, como vai? Precisa de ajuda?"
 	],
 	"dialogosMissao": [
 		{
+			"missao": 1,
+			"mensagem": "Olá, senhor(a) estágiario(a), você poderia me ajudar? Estou tentando atravessar a rua, mas não consigo, os carros não param. Poderia fazer algo para melhorar a travessia de pedestres?"
+		},
+		{
 			"missao": 7,
-			"mensagem": "Até que fim alguém me ouviu, já solicitei diversas vezes para que me ouvissem, todo dia ocorre acidente aqui no centro da cidade, é incrível como isto nunca foi ouvido. Eu vou solicitar pela última vez, precisamos de uma forma de ensinar aos condutores, poderia ser uma palestra, pode perguntar a qualquer um aqui do bairro que a opinião vai ser a mesma, isto deveria ser prioridade pois poderia ajudar a evitar estes acidentes. "
+			"mensagem": "Olá, senhor(a). Até que fim alguém me ouviu, já solicitei diversas vezes para que me ouvissem, todo dia ocorre acidente aqui no centro da cidade, é incrível como isto nunca foi ouvido. Eu vou solicitar pela última vez, precisamos de uma forma de ensinar aos condutores, poderia ser uma palestra, pode perguntar a qualquer um aqui do bairro que a opinião vai ser a mesma, isto deveria ser prioridade pois poderia ajudar a evitar estes acidentes. "
 		}
 	]
 }

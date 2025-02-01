@@ -4,66 +4,92 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
+import br.edu.metropolitrans.MetropoliTrans;
 import br.edu.metropolitrans.view.font.FontBase;
 
 public class Hud {
 
+    private MetropoliTrans jogo;
     private BitmapFont font;
-    private int moedas;
+
     private float x;
     private float y;
     private Texture xpIcon;
     private Texture moedasIcon;
+    private Texture estrelaIcon, estrelaVaziaIcon;
+    private ShapeRenderer shapeRenderer;
 
-    public Hud() {
-        this.moedas = 200;
+    public Hud(MetropoliTrans jogo) {
+        this.jogo = jogo;
 
         // Carregar a fonte
-        font = FontBase.getInstancia().getFonte(18, new Color(1, 1, 1, 1), FontBase.Fontes.PADRAO);
+        font = FontBase.getInstancia().getFonte(28, new Color(Color.WHITE), FontBase.Fontes.MONOGRAM);
 
+        this.shapeRenderer = new ShapeRenderer();
         // Carregar as texturas dos ícones
-        xpIcon = new Texture(Gdx.files.internal("files/itens/xp.png"));
+        xpIcon = new Texture(Gdx.files.internal("files/itens/xp2.png"));
         moedasIcon = new Texture(Gdx.files.internal("files/itens/moeda.png"));
-
-        // Inicializar a posição da HUD
-        // updatePosition(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        estrelaIcon = new Texture(Gdx.files.internal("files/itens/estrela-pintada.png"));
+        estrelaVaziaIcon = new Texture(Gdx.files.internal("files/itens/estrela-vazia.png"));
     }
 
-    // public void updatePosition(float screenWidth, float screenHeight) {
-    //     this.x = screenWidth - 150; // Ajuste conforme necessário
-    //     this.y = screenHeight - 10; // Ajuste conforme necessário
-    // }
-
-    public void render(SpriteBatch batch) {
-        batch.begin();
+    public void render() {
+        jogo.batch.begin();
         // Desenhar o ícone e o valor de XP
-        batch.draw(xpIcon, x, y, 80, 20);
+        jogo.batch.draw(xpIcon, x + 1170, y + 650, 80, 20);
+        jogo.batch.end();
+        // Desenha a linha de XP, com XP 0 é apenas uma bolinha, com XP 100 é uma linha cheia
+
+        // Salvar o estado da matriz de projeção da câmera
+        shapeRenderer.setProjectionMatrix(jogo.batch.getProjectionMatrix());
+
+        // Desenhar a linha de XP
+        float xpPercent = jogo.personagem.xp / 100.0f; // Supondo que o XP máximo é 100
+        float xpBarWidth = 100 * xpPercent; // Largura da barra de XP
+
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+        shapeRenderer.setColor(Color.GREEN);
+
+        if (xpPercent == 0) {
+            // Desenha um quadrado quando o XP é 0
+            shapeRenderer.rect(x + 1170 + 4, y + 655, 10, 10);
+        } else {
+            // Desenha a barra de XP quando o XP é maior que 0
+            shapeRenderer.rect(x + 1170 + 4, y + 655, xpBarWidth, 10);
+        }
+
+        shapeRenderer.end();
+
+        jogo.batch.begin();
         // Desenhar o ícone e o valor de Moedas
-        batch.draw(moedasIcon, x, y - 30, 20, 20);
+        jogo.batch.draw(moedasIcon, x + 1170, y + 650 - 30, 20, 20);
         // Desenhar o valor de Moedas em cima do ícone
-        font.draw(batch, String.valueOf(moedas), x + 25, y - 15);
-        batch.end();
-    }
+        font.draw(jogo.batch, String.valueOf(jogo.personagem.moedas), x + 1170 + 25, y + 650 - 15);
+        // Desenha as quatro estrelas lado a lado 
+        // Verifica quantas infrações o personagem sofreu
+        // Ex.: se sofreu 1, desenha uma estrela vazia e as outras cheias
+        for (int i = 0; i < jogo.personagem.infracoes; i++) {
+            jogo.batch.draw(estrelaVaziaIcon, x + 1170 + 25 * i, y + 650 - 60, 20, 20);
+        }
 
-    public void addMoedas(int amount) {
-        moedas += amount;
-    }
+        for (int i = jogo.personagem.infracoes; i < 4; i++) {
+            jogo.batch.draw(estrelaIcon, x + 1170 + 25 * i, y + 650 - 60, 20, 20);
+        }
 
-    public void setMoedas(int moedas) {
-        this.moedas = moedas;
+        jogo.batch.end();
     }
 
     public void setPosition(float x, float y) {
         this.x = x;
         this.y = y;
-
     }
 
     public void dispose() {
         font.dispose();
         xpIcon.dispose();
         moedasIcon.dispose();
+        shapeRenderer.dispose();
     }
 }

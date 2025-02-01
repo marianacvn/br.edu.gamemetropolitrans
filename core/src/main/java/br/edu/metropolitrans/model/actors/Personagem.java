@@ -11,6 +11,8 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.utils.Array;
 
+import br.edu.metropolitrans.model.PersonagemDirecao;
+
 /**
  * Personagem principal do jogo
  */
@@ -26,33 +28,98 @@ public class Personagem extends BaseActor {
      */
     Animation<TextureRegion> norte, sul, leste, oeste;
 
+    private PersonagemDirecao ultimaDirecao;
+
     /**
      * Ângulo de rotação do personagem
      */
     private float angulo;
 
-    private Array<Rectangle> retangulosColisao;
+    private Array<Rectangle> retangulosColisao, retangulosPista;
 
     public ArrayList<Npc> npcs;
 
     public Texture minimapaPonto;
 
+    /**
+     * Moedas do personagem
+     */
+    public int moedas;
+
+    /**
+     * XP do personagem
+     */
+    public int xp;
+
+    /**
+     * Indica se o personagem sofreu uma infração
+     */
+    public boolean sofreuInfracao;
+
+    /**
+     * Infrações cometidas pelo personagem
+     */
+    public int infracoes;
+
+    private float margemInfracao = -30.0f;
+
     public Personagem(float x, float y, Stage s) {
         super(x, y, s);
-
-        // Carraga a animação do personagem
-        String nomeArquivo = "files/characters/mainCharacter/character-male_spritesheet.png";
-        int linhas = 4;
-        int colunas = 11;
 
         // Ajusta as margens para centralizar o personagem na colisão
         margemAltura = -10;
         margemLargura = -15;
         margemX = 15;
 
+        // // Carrega a textura
+        atualizarSpritePersonagem("male");
+
+        angulo = 270;
+
+        // Configuracao do personagem
+        moedas = 200;
+        xp = 10;
+        sofreuInfracao = false;
+        infracoes = 0;
+        setAceleracao(800);
+        setVelocidadeMaxima(200);
+        setDesaceleracao(800);
+    }
+
+    public boolean interagiu(ObjetoInterativo objetoInterativo) {
+        return this.sobrepoe(objetoInterativo);
+    }
+
+    @Override
+    public void act(float delta) {
+        super.act(delta);
+
+        // Movimenta o personagem
+        animacao();
+
+        // Atualiza a posição do personagem
+        aplicarFisica(delta);
+
+        // Verifica colisões
+        colisao(delta);
+
+        // Limita o personagem ao mundo
+        limitaMundo();
+
+        // Alinha a câmera após atualizar a posição do personagem
+        alinhamentoCamera();
+
+    }
+
+    public void atualizarSpritePersonagem(String selectedCharacter) {
+        String nomeArquivo = "files/characters/mainCharacter/character-" + selectedCharacter + "_spritesheet.png";
+        int linhas = 4;
+        int colunas = 11;
+
         // Carrega a textura
         Texture textura = new Texture(Gdx.files.internal(nomeArquivo), true);
-        minimapaPonto = new Texture(Gdx.files.internal("files/characters/mainCharacter/minimap-male.png"));
+        minimapaPonto = new Texture(
+                Gdx.files.internal("files/characters/mainCharacter/minimap-" + selectedCharacter + ".png"));
 
         // Divide a textura em quadros
         int larguraQuadro = textura.getWidth() / colunas;
@@ -92,40 +159,11 @@ public class Personagem extends BaseActor {
 
         // Inicia a animação com a direção SUL
         setAnimacao(sul);
-        angulo = 270;
-
-        // Configuracao do personagem
-        setAceleracao(800);
-        setVelocidadeMaxima(200);
-        setDesaceleracao(800);
-
     }
 
-    public boolean interagiu(ObjetoInterativo objetoInterativo) {
-        return this.sobrepoe(objetoInterativo);
-    }
-
-    @Override
-    public void act(float delta) {
-        super.act(delta);
-
-        // Movimenta o personagem
-        animacao();
-
-        // Atualiza a posição do personagem
-        aplicarFisica(delta);
-
-        // Verifica colisões
-        colisao(delta);
-
-        // Limita o personagem ao mundo
-        limitaMundo();
-
-        // Alinha a câmera após atualizar a posição do personagem
-        alinhamentoCamera();
-
-    }
-
+    /**
+     * Verifica e define a animação do personagem
+     */
     private void animacao() {
         // Pausa a animação quando o personagem não está se movendo
         if (getVelocidade() == 0) {
@@ -151,6 +189,39 @@ public class Personagem extends BaseActor {
         }
     }
 
+    /**
+     * Atualiza a posição do personagem relacionado a infração
+     */
+    private void atualizaPosicaoInfracao() {
+        switch (ultimaDirecao) {
+            case NORTE:
+                setPosition(getX(), getY() + margemInfracao);
+                break;
+            case SUL:
+                setPosition(getX(), getY() - margemInfracao);
+                break;
+            case LESTE:
+                setPosition(getX() + margemInfracao, getY());
+                break;
+            case OESTE:
+                setPosition(getX() - margemInfracao, getY());
+                break;
+            default:
+                Gdx.app.log("Personagem", "Direção inválida durante o ajuste de infração!");
+                break;
+        }
+
+        // Adiciona log para depuração
+        Gdx.app.log("Personagem", String.format(
+                "Infracao! Direção: %s | Posição final: X=%.2f, Y=%.2f",
+                ultimaDirecao, getX(), getY()));
+    }
+
+    /**
+     * Verifica se o personagem colidiu com algum objeto
+     * 
+     * @param delta tempo entre um quadro e outro
+     */
     private void colisao(float delta) {
         // Verifica colisões
         for (Rectangle retangulo : retangulosColisao) {
@@ -163,12 +234,25 @@ public class Personagem extends BaseActor {
             }
         }
 
+        // Verifica colisões com o NPC
         for (Npc npc : npcs) {
             if (sobrepoe(npc)) {
                 // Ajusta a posição do personagem para evitar a colisão
                 // Isso pode ser feito de várias maneiras, dependendo da lógica do seu jogo
                 // Por exemplo, você pode mover o personagem de volta para a posição anterior
                 setPosition(getX() - getVelocidadeVetor().x * delta, getY() - getVelocidadeVetor().y * delta);
+                break;
+            }
+        }
+
+        // Verifica colisões com a pista
+        for (Rectangle retangulo : retangulosPista) {
+            // Verifica se o personagem passou x do retangulo da pista,
+            // caso isto ocorra deverá comunicar que o personagem saiu da pista
+            // cometendo uma infração
+            if (estaDentroDaDistancia(margemInfracao, retangulo)) {
+                sofreuInfracao = true;
+                atualizaPosicaoInfracao();
                 break;
             }
         }
@@ -180,6 +264,45 @@ public class Personagem extends BaseActor {
 
     public void setRetangulosColisao(Array<Rectangle> retangulosColisao) {
         this.retangulosColisao = retangulosColisao;
+    }
+
+    public void setRetangulosPista(Array<Rectangle> retangulosPista) {
+        this.retangulosPista = retangulosPista;
+    }
+
+    public void setUltimaDirecao(PersonagemDirecao direcao) {
+        this.ultimaDirecao = direcao;
+        // Gdx.app.log("Personagem", "Última direção atualizada para: " + direcao);
+    }
+
+    @Override
+    public void dispose() {
+        super.dispose();
+
+        if (minimapaPonto != null) {
+            minimapaPonto.dispose();
+        }
+
+        if (norte != null) {
+            norte.getKeyFrame(0).getTexture().dispose();
+        }
+
+        if (sul != null) {
+            sul.getKeyFrame(0).getTexture().dispose();
+        }
+
+        if (leste != null) {
+            leste.getKeyFrame(0).getTexture().dispose();
+        }
+
+        if (oeste != null) {
+            oeste.getKeyFrame(0).getTexture().dispose();
+        }
+
+        norte = null;
+        sul = null;
+        leste = null;
+        oeste = null;
     }
 
 }

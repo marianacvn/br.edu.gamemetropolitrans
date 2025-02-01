@@ -1,0 +1,30 @@
+{
+    "missoes": [
+        {
+            "id": 0,
+            "nome": "Inicio do jogo",
+            "descricao": "Apenas uma introdução para o jogador. [Diálogo com o prefeito]",
+            "recompensaMoedas": 200,
+            "experiencia": 0,
+            "valorErro": 0,
+            "finalizouMissao": false,
+            "personagens": [
+                "heberto"
+            ]
+        },
+        {
+            "id": 1,
+            "nome": "Retorno proibido",
+            "descricao": "Qual placa representa uma possível solução\r\npara o problema apresentado? [Artigo/Regra: 204]",
+            "recompensaMoedas": 100,
+            "experiencia": 10,
+            "valorErro": 20,
+            "finalizouMissao": false,
+            "personagens": [
+                "betania",
+                "maria",
+                "juliana"
+            ]
+        }
+    ]
+}

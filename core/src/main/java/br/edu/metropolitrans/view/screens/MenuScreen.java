@@ -129,9 +129,10 @@ public class MenuScreen implements Screen {
         botaoNovoJogo.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                if (jogo.telas.get("load") == null)
-                    jogo.telas.put("load", new LoadScreen(jogo));
-                jogo.setScreen(jogo.telas.get("load"));
+                // if (jogo.telas.get("load") == null)
+                //     jogo.telas.put("load", new LoadScreen(jogo));
+                // jogo.setScreen(jogo.telas.get("load"));
+                jogo.setScreen(new CharacterSelectionScreen(jogo));
             }
         });
 
@@ -147,9 +148,10 @@ public class MenuScreen implements Screen {
         botaoJogar.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                if (jogo.telas.get("load") == null)
-                    jogo.telas.put("load", new LoadScreen(jogo));
-                jogo.setScreen(jogo.telas.get("load"));
+                // if (jogo.telas.get("load") == null)
+                //     jogo.telas.put("load", new LoadScreen(jogo));
+                // jogo.setScreen(jogo.telas.get("load"));
+                jogo.setScreen(new CharacterSelectionScreen(jogo));
             }
         });
 

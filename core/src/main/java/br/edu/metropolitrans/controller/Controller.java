@@ -10,14 +10,17 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.Timer;
 
 import br.edu.metropolitrans.MetropoliTrans;
 import br.edu.metropolitrans.model.Dialog;
+import br.edu.metropolitrans.model.PersonagemDirecao;
 import br.edu.metropolitrans.model.actors.Npc;
 import br.edu.metropolitrans.model.actors.ObjetoInterativo;
 import br.edu.metropolitrans.model.actors.Personagem;
 import br.edu.metropolitrans.model.dao.DialogDAO;
 import br.edu.metropolitrans.model.maps.Mapas;
+import br.edu.metropolitrans.view.screens.CoursesScreen;
 import br.edu.metropolitrans.view.screens.GameScreen;
 
 public class Controller {
@@ -27,10 +30,12 @@ public class Controller {
      */
     private MetropoliTrans jogo;
 
+    public MissionController controleMissao;
+
     /**
      * Tela principal do jogo
      */
-    private GameScreen gameScreen;
+    public GameScreen gameScreen;
 
     /**
      * Mapas do jogo
@@ -55,12 +60,41 @@ public class Controller {
     /**
      * Objetos interativos
      */
-    public ObjetoInterativo objeto, objetoSairSala;
+    public ObjetoInterativo objeto, objetoSairSala, objetoMissao, objetoPc;
 
     /**
      * Missão atual
      */
-    public int MISSAO = 0;
+    public int MISSAO;
+
+    /**
+     * Flag para mostrar a caixa de diálogo
+     */
+    public boolean mostrarDialogo;
+
+    /**
+     * Flag para mostrar a caixa de missão
+     */
+    public boolean mostrarCaixaMissao;
+
+    /**
+     * Flag para acertar a missão
+     * - 0: Não respondeu
+     * - 1: Acertou
+     * - 2: Errou
+     */
+    public int resultadoRespostaMissao;
+
+    /**
+     * Flag para perdeu o jogo
+     */
+    public boolean perdeuJogo;
+
+    /**
+     * NPC do guarda de trânsito
+     */
+    private Npc guarda;
+
 
     public Controller(MetropoliTrans jogo) {
         this.jogo = jogo;
@@ -69,30 +103,42 @@ public class Controller {
         this.npcs = jogo.npcs;
         this.objeto = jogo.objeto;
         this.objetoSairSala = jogo.objetoSairSala;
+        this.objetoMissao = jogo.objetoMissao;
+        this.objetoPc = jogo.objetoPc;
 
         // Carrega os objetos de colisão
         montarColisao(mapas.mapa);
+        montarCamadaPista(false);
 
         if (jogo.telas.get("game") == null)
             jogo.telas.put("game", new GameScreen(jogo));
 
         gameScreen = (GameScreen) jogo.telas.get("game");
+        mostrarDialogo = false;
+        mostrarCaixaMissao = false;
+
+        guarda = new Npc("guarda", jogo.estagioPrincipal);
+
+        gameScreen.caixaDialogo.npc = guarda;
+        gameScreen.caixaDialogo.setTextoDialogo(Npc.DIALOGO_INICIAL);
+        gameScreen.caixaDialogo.defineTexturaNpc();
+        mostrarDialogo = true;
+
+        // Inicia o controle de missão
+        controleMissao = new MissionController(jogo);
     }
 
     /**
      * Controle do personagem, movimenta de acordo com as teclas pressionadas
      * (Setas)
      */
-    public void controlePersonagem(float delta) {
-        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
-            personagem.acelerarEmAngulo(0);
-        } else if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
-            personagem.acelerarEmAngulo(180);
-        } else if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
-            personagem.acelerarEmAngulo(90);
-        } else if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
-            personagem.acelerarEmAngulo(270);
-        }
+    public void controlePersonagemSetas(float delta) {
+        boolean up = Gdx.input.isKeyPressed(Input.Keys.UP);
+        boolean down = Gdx.input.isKeyPressed(Input.Keys.DOWN);
+        boolean left = Gdx.input.isKeyPressed(Input.Keys.LEFT);
+        boolean right = Gdx.input.isKeyPressed(Input.Keys.RIGHT);
+
+        controlePersonagem(up, down, left, right);
     }
 
     /**
@@ -100,15 +146,63 @@ public class Controller {
      *
      * @param delta
      */
-    public void controlePersonagem2(float delta) {
-        if (Gdx.input.isKeyPressed(Input.Keys.D)) {
-            personagem.acelerarEmAngulo(0);
-        } else if (Gdx.input.isKeyPressed(Input.Keys.A)) {
-            personagem.acelerarEmAngulo(180);
-        } else if (Gdx.input.isKeyPressed(Input.Keys.W)) {
+    public void controlePersonagemWASD(float delta) {
+        boolean up = Gdx.input.isKeyPressed(Input.Keys.W);
+        boolean down = Gdx.input.isKeyPressed(Input.Keys.S);
+        boolean left = Gdx.input.isKeyPressed(Input.Keys.A);
+        boolean right = Gdx.input.isKeyPressed(Input.Keys.D);
+
+        controlePersonagem(up, down, left, right);
+    }
+
+    private void controlePersonagem(boolean up, boolean down, boolean left, boolean right) {
+        int teclas = 0;
+        if (up)
+            teclas++;
+        if (down)
+            teclas++;
+        if (left)
+            teclas++;
+        if (right)
+            teclas++;
+
+        // Verifica se mais de duas tecas estão pressionadas
+        // Se sim, não faz nada
+        if (teclas > 1 || (up && down) || (left && right)) {
+            return;
+        }
+
+        if (up) {
             personagem.acelerarEmAngulo(90);
-        } else if (Gdx.input.isKeyPressed(Input.Keys.S)) {
+            personagem.setUltimaDirecao(PersonagemDirecao.NORTE);
+        } else if (down) {
             personagem.acelerarEmAngulo(270);
+            personagem.setUltimaDirecao(PersonagemDirecao.SUL);
+        } else if (left) {
+            personagem.acelerarEmAngulo(180);
+            personagem.setUltimaDirecao(PersonagemDirecao.OESTE);
+        } else if (right) {
+            personagem.acelerarEmAngulo(0);
+            personagem.setUltimaDirecao(PersonagemDirecao.LESTE);
+        }
+    }
+
+    public void controleTelefone() {
+        if (Gdx.input.isKeyJustPressed(Input.Keys.T)) {
+            // Informa que o celular está visível
+            gameScreen.phone.isVisible = true;
+
+            // Agenda a transição para a tela CoursesScreen após 1 segundo
+            Timer.schedule(new Timer.Task() {
+                @Override
+                public void run() {
+                    gameScreen.phone.isVisible = false;
+                    if (jogo.telas.get("courses") == null)
+                        jogo.telas.put("courses", new CoursesScreen(jogo, jogo.getScreen()));
+
+                    jogo.setScreen(jogo.telas.get("courses"));
+                }
+            }, 1); // 1 segundo
         }
     }
 
@@ -122,8 +216,15 @@ public class Controller {
             }
         }
 
-        if (objeto != null && personagem.interagiu(objeto) && Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
+        if (objeto != null && objetoMissao != null && personagem.interagiu(objetoMissao)
+                && Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
+            mostrarCaixaMissao = true;
+        }
 
+        if (objeto != null && personagem.interagiu(objeto) && Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
+            // Remove o objeto da missão da sala e minimapa
+            objetoMissao.setVisible(false);
+            gameScreen.minimapa.isVisible = false;
             // Remove os NPCs do mapa
             for (Npc npc : npcs) {
                 npc.remove();
@@ -133,7 +234,7 @@ public class Controller {
             jogo.mapaRenderizador.dispose();
             jogo.mapaRenderizador = new OrthogonalTiledMapRenderer(mapas.sala, unitScale, jogo.batch);
 
-            // Salva a última posicao e setar posição do personagem para a entrada
+            // Salva a última posicao e seta posição do personagem para a entrada
             personagem.setPosition(1248, 1000);
             objetoSairSala = new ObjetoInterativo("sairSala", 1216, 964, "background-transparent.png",
                     jogo.estagioPrincipal);
@@ -141,13 +242,17 @@ public class Controller {
 
             // Carrega os objetos de colisão
             montarColisao(mapas.sala);
+            montarCamadaPista(true);
 
             // Renova os retângulos de colisão
             personagem.npcs = new ArrayList<Npc>();
             personagem.setRetangulosColisao(jogo.retangulosColisao);
+            personagem.setRetangulosPista(jogo.retangulosPista);
         } else if (objetoSairSala != null && personagem.interagiu(objetoSairSala)
                 && Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
-
+            // coloca o objeto da missão ao sair da sala e minimapa
+            objetoMissao.setVisible(true);
+            gameScreen.minimapa.isVisible = true;
             // Adiciona os NPCs no array
             personagem.npcs = npcs;
             for (Npc npc : npcs) {
@@ -162,17 +267,26 @@ public class Controller {
             // prefeitura
 
             // setar posição do personagem para a entrada
-            personagem.setPosition(77, 150);
-            objeto = new ObjetoInterativo("entradaPrefeitura", 32, 220, "background-transparent.png",
+            personagem.setPosition(100, 690);
+            objeto = new ObjetoInterativo("entradaPrefeitura", 100, 760, "background-transparent.png",
                     jogo.estagioPrincipal);
             objetoSairSala = null;
 
             // Carrega os objetos de colisão
             montarColisao(mapas.mapa);
+            montarCamadaPista(false);
 
             // Renova os retângulos de colisão e os npcs
             personagem.npcs = npcs;
             personagem.setRetangulosColisao(jogo.retangulosColisao);
+            personagem.setRetangulosPista(jogo.retangulosPista);
+        } else if (objetoPc != null && personagem.interagiu(objetoPc) && Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
+            Gdx.app.log("Controller", "Interagindo com o PC...");
+            // abre a tela de CoursesScreen
+            if (jogo.telas.get("courses") == null)
+                jogo.telas.put("courses", new CoursesScreen(jogo, jogo.getScreen()));
+
+            jogo.setScreen(jogo.telas.get("courses"));
         }
     }
 
@@ -181,8 +295,58 @@ public class Controller {
      */
     public void controleDialogos() {
         if (Gdx.input.isKeyJustPressed(Input.Keys.ENTER)) {
-            gameScreen.mostrarDialogo = false;
+            mostrarDialogo = false;
+            if (personagem.sofreuInfracao) {
+                personagem.sofreuInfracao = false;
+                atualizaInfracao();
+            } else {
+                for (Npc npc : npcs) {
+                    atualizaStatusAlertaMissaoNpc(npc);
+                }
+            }
         }
+    }
+
+    /**
+     * Controle de lógica do jogo
+     */
+    public void controleLogicaJogo() {
+        // Verifica se o personagem zerou as moedas
+        // Se sim, volta para a tela de início pois perdeu o jogo
+        if (perdeuJogo) {
+            Gdx.app.log("Controller", "Perdeu o jogo!");
+            // Volta todas as informações do jogo para o início
+            Gdx.app.log("Controller", "Reiniciando o jogo...");
+            jogo.reiniciarJogo();
+        }
+    }
+
+    /**
+     * Controle de infrações do personagem
+     */
+    public void controleInfracao() {
+        // Se as infrações forem maiores ou iguais a 4, perde o jogo
+        if (personagem.infracoes > 4) {
+            perdeuJogo = true;
+        }
+
+        // Verifica se o personagem saiu da pista e mostra a caixa de diálogo
+        if (personagem.sofreuInfracao) {
+            gameScreen.caixaDialogo.npc = guarda;
+            gameScreen.caixaDialogo.setTextoDialogo(carregaDialogos(guarda, 0));
+            gameScreen.caixaDialogo.defineTexturaNpc();
+            mostrarDialogo = true;
+        }
+    }
+
+    private void atualizaInfracao() {
+        // Atualiza a posição do personagem, precisa verificar para qual sentido ele
+        // está indo, desta forma ajustar -x valor que é a margem para sofrer a
+        // infração.
+        // personagem.setPosition()
+        guarda.DIALOGO_ATUAL++;
+        personagem.infracoes++;
+        Gdx.app.log("Controller", "Atualizando diálogo do guarda... Atual: " + guarda.DIALOGO_ATUAL);
     }
 
     /**
@@ -190,30 +354,60 @@ public class Controller {
      *
      * @param npc Npc
      */
-    public void interacaoComNpc(Npc npc) {
+    private void interacaoComNpc(Npc npc) {
         if (jogo.telas.get("game") != null) {
-            GameScreen gameScreen = (GameScreen) jogo.telas.get("game");
+            // GameScreen gameScreen = (GameScreen) jogo.telas.get("game");
             if (personagem.estaDentroDaDistancia(15, npc)) {
                 // Carrega os diálogos do NPC
+                gameScreen.caixaDialogo.npc = npc;
                 gameScreen.caixaDialogo.setTextoDialogo(carregaDialogos(npc));
-                gameScreen.caixaDialogo.setNpcTexture(npc.nome);
-                gameScreen.mostrarDialogo = true;
+                gameScreen.caixaDialogo.defineTexturaNpc();
+                mostrarDialogo = true;
                 return;
             }
         }
     }
 
+    /**
+     * Atualiza o status de alerta da missão do NPC
+     *
+     * @param npc Npc
+     */
+    private void atualizaStatusAlertaMissaoNpc(Npc npc) {
+        if (jogo.telas.get("game") != null) {
+            /**
+             * Verifica se está dentro da distancia e se o npc faz parte da missão
+             * Se sim, atualiza o status de alerta da missão
+             */
+            if (personagem.estaDentroDaDistancia(15, npc) &&
+                    controleMissao.npcEstaNaMisao(npc.nome) != null &&
+                    npc.statusAlertaMissao == 1) {
+                npc.statusAlertaMissao = 2;
+            }
+        }
+    }
 
     /**
      * Carrega os diálogos do personagem
+     * 
      * @param npc Npc
      */
-    public String carregaDialogos(Npc npc) {
+    private String carregaDialogos(Npc npc) {
+        return carregaDialogos(npc, MISSAO);
+    }
+
+    /**
+     * Carrega os diálogos do personagem
+     * 
+     * @param npc    Npc
+     * @param missao int
+     */
+    private String carregaDialogos(Npc npc, int missao) {
         // Carregar diálogos
         Dialog dialogo = DialogDAO.carregarDialogos(npc.nome);
         if (dialogo != null) {
             // Verifica se tem uma missão
-            return dialogo.buscarProximoDialogoMissao(MISSAO, npc.DIALOGO_ATUAL).getMensagem();
+            return dialogo.buscarProximoDialogoMissao(missao, npc.DIALOGO_ATUAL).getMensagem();
         }
         return "Olá, eu sou o " + npc.nome + "!";
     }
@@ -223,10 +417,13 @@ public class Controller {
      *
      * @param mapa TiledMap
      */
-    public void montarColisao(TiledMap mapa) {
+    private void montarColisao(TiledMap mapa) {
+        Gdx.app.log("Controller", "Crianado a camada de colisao...");
         // Carrega os objetos de colisão
         jogo.objetosColisao = mapa.getLayers().get("colisao").getObjects();
+        Gdx.app.log("Controller", "Objetos carregados: " + jogo.objetosColisao.getCount());
         jogo.retangulosColisao = new Array<Rectangle>();
+        Gdx.app.log("Controller", "Array de retângulos de colisão criado... Tamanho: " + jogo.retangulosColisao.size);
 
         // Adiciona os retângulos de colisão do mapa ao array
         for (MapObject objeto : jogo.objetosColisao) {
@@ -237,7 +434,42 @@ public class Controller {
         }
 
         // Adiciona os retângulos de colisão do mapa ao personagem
+        Gdx.app.log("Controller", "Verificando cada retângulo da colisao, objetos: " + jogo.retangulosColisao.size);
         personagem.setRetangulosColisao(jogo.retangulosColisao);
+    }
+
+    /**
+     * Monta os retângulos de colisão da pista
+     *
+     * @param mapa        TiledMap
+     * @param removePista boolean - Remove a pista
+     */
+    private void montarCamadaPista(boolean removePista) {
+        Gdx.app.log("Controller", "Iniciando chamada montagem da camada de objetos da pista...");
+        if (removePista) {
+            Gdx.app.log("Controller", "Removendo a camada de objetos da pista...");
+            jogo.retangulosPista = new Array<Rectangle>();
+            personagem.setRetangulosPista(jogo.retangulosPista);
+        } else {
+            Gdx.app.log("Controller", "Crianado a camada de objetos da pista...");
+            // Carrega os objetos de pista
+            jogo.objetosPista = mapas.mapa.getLayers().get("pista").getObjects();
+            Gdx.app.log("Controller", "Objetos carregados: " + jogo.objetosPista.getCount());
+            jogo.retangulosPista = new Array<Rectangle>();
+            Gdx.app.log("Controller", "Array de retângulos de colisão criado... Tamanho: " + jogo.retangulosPista.size);
+
+            // Adiciona os retângulos de pista do mapa ao array
+            for (MapObject objeto : jogo.objetosPista) {
+                if (objeto instanceof RectangleMapObject) {
+                    Rectangle retangulo = ((RectangleMapObject) objeto).getRectangle();
+                    jogo.retangulosPista.add(retangulo);
+                }
+            }
+
+            // Adiciona os retângulos de pista do mapa ao personagem
+            Gdx.app.log("Controller", "Verificando cada retângulo da pista, objetos: " + jogo.retangulosPista.size);
+            personagem.setRetangulosPista(jogo.retangulosPista);
+        }
     }
 
 }

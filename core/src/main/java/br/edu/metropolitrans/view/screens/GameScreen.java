@@ -9,14 +9,16 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import br.edu.metropolitrans.MetropoliTrans;
 import br.edu.metropolitrans.model.actors.Npc;
 import br.edu.metropolitrans.model.actors.Personagem;
 import br.edu.metropolitrans.view.components.dialog.DialogBox;
 import br.edu.metropolitrans.view.components.hud.Hud;
 import br.edu.metropolitrans.view.components.minimap.Minimap;
-import br.edu.metropolitrans.view.components.missionalert.MissionAlert;
+import br.edu.metropolitrans.view.components.mission_alert.MissionAlert;
+import br.edu.metropolitrans.view.components.mission_modal.MissionModalBox;
+import br.edu.metropolitrans.view.components.mission_modal.MissionResultDialog;
+import br.edu.metropolitrans.view.components.phone.Phone;
 
 /**
  * Tela principal do jogo
@@ -34,7 +36,6 @@ public class GameScreen implements Screen {
      * Câmera do jogo
      */
     private final OrthographicCamera CAMERA;
-    private ExtendViewport viewport;
     /**
      * Renderizador de formas/objetos
      */
@@ -48,27 +49,36 @@ public class GameScreen implements Screen {
      */
     public DialogBox caixaDialogo;
     /**
-     * Flag para mostrar a caixa de diálogo
-     */
-    public boolean mostrarDialogo;
-    /**
-     * Missão atual
-     */
-    public int MISSAO = 0;
-    /**
      * Alerta de missão
      */
     public MissionAlert alertaMissao;
     /**
+     * Caixa modal de missão
+     */
+    public MissionModalBox missaoModalBox;
+    /**
+     * Diálogo de resultado de missão
+     */
+    public MissionResultDialog missaoDialogoResultado;
+    /**
      * Minimapa
      */
     public Minimap minimapa;
+    /**
+     * Batch de desenho
+     */
     public SpriteBatch batch;
+
     /** Xp e Moedas */
     public Hud hud;
 
+    /* Telefone dos cursos */
+    public Phone phone;
+
+
     public GameScreen(final MetropoliTrans jogo) {
         this.jogo = jogo;
+        // MissionController.iniciarControleMissao(jogo);
 
         // Inicializa o renderizador de formas
         renderizadorForma = new ShapeRenderer();
@@ -81,17 +91,26 @@ public class GameScreen implements Screen {
         CAMERA.update();
 
         // Inicializar a HUD
-        hud = new Hud();
+        hud = new Hud(jogo);
 
         // Inicializar o minimapa
-        minimapa = new Minimap(1170, 200, 200, 200, jogo);
+        minimapa = new Minimap(1170, 200, jogo);
+
+        // Inicializar o telefone
+        phone = new Phone(1170, 420, jogo);
 
         // Inicializa a caixa de diálogo
         caixaDialogo = new DialogBox(0, 64, 1280, 150, jogo);
-        mostrarDialogo = false;
 
         // Inicializa o alerta de missão
         alertaMissao = new MissionAlert(jogo.batch);
+
+        // Inicializa a caixa modal de missão no centro da tela
+        missaoModalBox = new MissionModalBox(TELA_LARGURA / 2 - 550, TELA_ALTURA / 2 - 400, 550, 400, jogo);
+
+        // Inicializa o diálogo de resultado de missão
+        missaoDialogoResultado = new MissionResultDialog(TELA_LARGURA / 2 - 250, TELA_ALTURA / 2 - 200, 250, 200, jogo);
+
     }
 
     @Override
@@ -113,19 +132,28 @@ public class GameScreen implements Screen {
         // Controle de diálogos
         jogo.controller.controleDialogos();
 
+        // Controle de Infrações
+        jogo.controller.controleInfracao();
+
+        // Controle de missões
+        jogo.controller.controleMissao.controle(jogo.controller.MISSAO);
+
         // Verifica se a caixa de diálogo deve ser exibida
         // Se sim, exibe a caixa de diálogo, caso contrário permite
         // o controle do personagem continuando o jogo
-        if (mostrarDialogo) {
-            caixaDialogo.render();
-        } else {
+        if (!jogo.controller.mostrarDialogo && !jogo.controller.mostrarCaixaMissao) {
             // Controle do personagem Setas ou WASD
-            jogo.controller.controlePersonagem(delta);
-            jogo.controller.controlePersonagem2(delta);
+            jogo.controller.controlePersonagemSetas(delta);
+            jogo.controller.controlePersonagemWASD(delta);
+            jogo.controller.controleTelefone();
         }
 
         // Renderiza a caixa dialogo, minimapa e alertas de missao
-        desenharComponentes();
+        desenharComponentes(delta);
+
+        // Testes
+        // debug();
+        // Gdx.app.log("Teste", "Missão: " + MISSAO);
     }
 
     /**
@@ -141,10 +169,19 @@ public class GameScreen implements Screen {
 
         // Alinhamento da câmera do jogo
         alinhamentoCamera();
-
-        // Renderiza o mapa, camadas de sobpiso, piso e colisão
         jogo.mapaRenderizador.setView(CAMERA);
-        jogo.mapaRenderizador.render(new int[] { 0, 1, 2 }); // Sobpiso
+
+        // Renderiza o mapa e suas camadas Ex: piso e colisão
+        // Verifica se o objeto de entrar existe, se sim, deve criar um vetor com a
+        // quantidade de camadas
+        // Obs.: Caso as camadas mudem no tiled, deve-se alterar aqui também
+        int[] camadas = null;
+        if (jogo.controller.objeto != null) {
+            camadas = new int[] { 0, 1, 2, 3, 4 };
+        } else {
+            camadas = new int[] { 0, 1, 2 };
+        }
+        jogo.mapaRenderizador.render(camadas);
 
         // Inicia o batch de desenho
         jogo.batch.begin();
@@ -161,9 +198,10 @@ public class GameScreen implements Screen {
         // Finaliza o batch de desenho
         jogo.batch.end();
 
-        // Verifica se a camada de topo existe antes de renderizá-la
-        if (jogo.mapas.mapa.getLayers().getCount() > 3) {
-            // Renderiza a camada de Topo
+        // Renderiza a camada de Topo
+        if (jogo.controller.objeto != null) {
+            jogo.mapaRenderizador.render(new int[] { 5 }); // Topo
+        } else {
             jogo.mapaRenderizador.render(new int[] { 3 }); // Topo
         }
 
@@ -172,20 +210,27 @@ public class GameScreen implements Screen {
     /**
      * Desenha os componentes do jogo
      */
-    private void desenharComponentes() {
+    private void desenharComponentes(float delta) {
         // Atualiza a posição da caixa de diálogo para acompanhar a câmera
         caixaDialogo.setPosition(CAMERA.position.x - CAMERA.viewportWidth / 2,
                 CAMERA.position.y - CAMERA.viewportHeight / 2);
+        if (jogo.controller.mostrarDialogo) {
+            caixaDialogo.render();
+        }
 
-        hud.setPosition(CAMERA.position.x - CAMERA.viewportWidth / 2 + 1150,
-        CAMERA.position.y - CAMERA.viewportHeight / 2 + 650);
-        hud.render(batch);
+        hud.setPosition(CAMERA.position.x - CAMERA.viewportWidth / 2,
+                CAMERA.position.y - CAMERA.viewportHeight / 2);
+        hud.render();
 
         // Atualiza a posição do minimapa para acompanhar a câmera
         minimapa.setPosition(CAMERA.position.x - CAMERA.viewportWidth / 2 + 1070,
                 CAMERA.position.y - CAMERA.viewportHeight / 2 + 10);
-        if (!mostrarDialogo)
+        if (!jogo.controller.mostrarDialogo)
             minimapa.render(jogo.personagem);
+
+        phone.setPosition(CAMERA.position.x - CAMERA.viewportWidth / 2 + 591,
+                CAMERA.position.y - CAMERA.viewportHeight / 2 + 220);
+        phone.render();
 
         // Desenha o alerta de missão acima da posição do NPC
         if (jogo.personagem.npcs != null) {
@@ -196,6 +241,34 @@ public class GameScreen implements Screen {
                 alertaMissao.render();
             }
         }
+
+        // Atualiza a posição da caixa modal de missão para acompanhar a câmera
+        missaoModalBox.setPosition(CAMERA.position.x - CAMERA.viewportWidth / 2,
+                CAMERA.position.y - CAMERA.viewportHeight / 2);
+
+        // Desenha a caixa modal de missão caso a flag esteja ativada
+        if (jogo.controller.mostrarCaixaMissao) {
+            missaoModalBox.render(delta);
+        }
+
+        // Atualiza a posição do diálogo de resultado de missão para acompanhar a câmera
+        missaoDialogoResultado.setPosition(CAMERA.position.x - CAMERA.viewportWidth / 2,
+                CAMERA.position.y - CAMERA.viewportHeight / 2);
+
+        // Desenha o diálogo de resultado de missão caso a flag esteja ativada
+        if (jogo.controller.resultadoRespostaMissao == 1) {
+            missaoDialogoResultado.ativarAcao("Parabéns, você\r\nconcluiu a missão!");
+        } else if (jogo.controller.resultadoRespostaMissao == 2) {
+            if (jogo.personagem.moedas == 0) {
+                missaoDialogoResultado.ativarAcao("Desculpe, você\r\nperdeu o jogo!");
+            } else {
+                missaoDialogoResultado.ativarAcao("Desculpe, você\r\nnão acertou, tente\r\nnovamente!");
+            }
+        } else {
+            missaoDialogoResultado.desativarAcao();
+        }
+
+        missaoDialogoResultado.render(delta);
     }
 
     /**
@@ -245,6 +318,11 @@ public class GameScreen implements Screen {
             for (Rectangle retangulo : jogo.retangulosColisao) {
                 renderizadorForma.rect(retangulo.x, retangulo.y, retangulo.width, retangulo.height);
             }
+        }
+
+        // Desenha os retângulos de colisão da pista
+        for (Rectangle retangulo : jogo.retangulosPista) {
+            renderizadorForma.rect(retangulo.x, retangulo.y, retangulo.width, retangulo.height);
         }
 
         // Desenha polígono de colisão do personagem

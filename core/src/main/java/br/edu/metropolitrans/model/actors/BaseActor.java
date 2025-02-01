@@ -32,7 +32,7 @@ import com.badlogic.gdx.graphics.g2d.Batch;
  * @see #Actor
  * @author Lee Stemkoski (Traduzido por Mariana)
  */
-public class BaseActor extends Actor {
+public abstract class BaseActor extends Actor {
 
     /**
      * Margem para ajuste de retangulo de colisao
@@ -183,6 +183,10 @@ public class BaseActor extends Actor {
             }
         }
     }
+    
+    public void pararAnimacao() {
+        animacao = null;
+    }
 
     /**
      * Cria uma animação a partir de imagens armazenadas em arquivos separados.
@@ -264,6 +268,39 @@ public class BaseActor extends Actor {
     }
 
     /**
+     * Cria uma animação a partir de uma spritesheet: uma grade retangular de
+     * imagens armazenadas em um único arquivo. Porém apenas uma linha da
+     * spritesheet
+     *
+     * @param nomeArquivo   nome do arquivo contendo a spritesheet
+     * @param linhas        número de linhas de imagens na spritesheet
+     * @param colunas       número de colunas de imagens na spritesheet
+     * @param duracaoQuadro quanto tempo cada quadro deve ser exibido
+     * @param loop          a animação deve ser em loop
+     * @param linha         linha da spritesheet a ser utilizada
+     * @return animação criada (útil para armazenar várias animações)
+     */
+    public Animation<TextureRegion> carregaAnimacaoDeSpriteSheet(String nomeArquivo, int linhas, int colunas,
+            float duracaoQuadro, boolean loop, int linha) {
+        Texture textura = new Texture(Gdx.files.internal(nomeArquivo), true);
+        textura.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+
+        int larguraQuadro = textura.getWidth() / colunas;
+        int alturaQuadro = textura.getHeight() / linhas;
+
+        TextureRegion[][] quadros = TextureRegion.split(textura, larguraQuadro, alturaQuadro);
+        TextureRegion[] linhaQuadros = new TextureRegion[colunas];
+        for (int c = 0; c < colunas; c++) {
+            linhaQuadros[c] = quadros[linha][c];
+        }
+
+        Animation<TextureRegion> anim = new Animation<>(duracaoQuadro, linhaQuadros);
+        anim.setPlayMode(loop ? Animation.PlayMode.LOOP : Animation.PlayMode.NORMAL);
+
+        return anim;
+    }
+
+    /**
      * Método ideal para criar uma animação de 1 quadro a partir de uma única
      * textura.
      *
@@ -282,6 +319,10 @@ public class BaseActor extends Actor {
      */
     public void setAnimacaoPausada(boolean pausa) {
         animacaoPausada = pausa;
+    }
+
+    public void finalizarAnimacao() {
+        tempoAnimacao = 0;
     }
 
     /**
@@ -638,13 +679,46 @@ public class BaseActor extends Actor {
         float escalaY = (this.getHeight() + 2 * distancia) / this.getHeight();
         poligono1.setScale(escalaX, escalaY);
 
-        Polygon polpoligono2 = outro.getLimitePoligono();
+        Polygon poligono2 = outro.getLimitePoligono();
 
         // Teste inicial para melhorar o desempenho
-        if (!poligono1.getBoundingRectangle().overlaps(polpoligono2.getBoundingRectangle()))
+        if (!poligono1.getBoundingRectangle().overlaps(poligono2.getBoundingRectangle()))
             return false;
 
-        return Intersector.overlapConvexPolygons(poligono1, polpoligono2);
+        return Intersector.overlapConvexPolygons(poligono1, poligono2);
+    }
+
+    /**
+     * Determina se este BaseActor está próximo de outro BaseActor (de acordo com os
+     * polígonos de colisão).
+     *
+     * @param distancia quantia (pixels) pela qual aumentar a largura e a altura do
+     *                  polígono de colisão
+     * @param outro     Retangulo para verificar a proximidade
+     * @return verdadeiro se os polígonos de colisão deste (aumentado) e de outro
+     *         Retangulo se sobrepõem
+     * @see #setLimiteRetangulo
+     * @see #setLimitePoligono
+     */
+    public boolean estaDentroDaDistancia(float distancia, Rectangle outro) {
+        Polygon poligono1 = this.getLimitePoligono();
+        float escalaX = (this.getWidth() + 2 * distancia) / this.getWidth();
+        float escalaY = (this.getHeight() + 2 * distancia) / this.getHeight();
+        poligono1.setScale(escalaX, escalaY);
+
+        // Cria um polígono a partir do retângulo
+        Polygon poligono2 = new Polygon(new float[] {
+            outro.x, outro.y,
+            outro.x + outro.width, outro.y,
+            outro.x + outro.width, outro.y + outro.height,
+            outro.x, outro.y + outro.height
+        });
+
+        // Teste inicial para melhorar o desempenho
+        if (!poligono1.getBoundingRectangle().overlaps(poligono2.getBoundingRectangle()))
+            return false;
+
+        return Intersector.overlapConvexPolygons(poligono1, poligono2);
     }
 
     /**
@@ -808,5 +882,12 @@ public class BaseActor extends Actor {
     }
 
     // endregion
+
+    
+    public void dispose() {
+        if (animacao != null) {
+            animacao.getKeyFrame(0).getTexture().dispose();
+        }
+    }
 
 }
