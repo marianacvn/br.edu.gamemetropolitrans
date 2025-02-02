@@ -303,8 +303,7 @@ public class Controller {
     public void controleDialogos() {
         if (Gdx.input.isKeyJustPressed(Input.Keys.ENTER)) {
             mostrarDialogo = false;
-            if (personagem.sofreuInfracao) {
-                personagem.sofreuInfracao = false;
+            if (personagem.tipoInfracao != null) {
                 atualizaInfracao();
             } else {
                 for (Npc npc : npcs) {
@@ -338,7 +337,7 @@ public class Controller {
         }
 
         // Verifica se o personagem saiu da pista e mostra a caixa de diálogo
-        if (personagem.sofreuInfracao) {
+        if (personagem.tipoInfracao != null) {
             gameScreen.caixaDialogo.npc = guarda;
             gameScreen.caixaDialogo.setTextoDialogo(carregaDialogos(guarda, 0));
             gameScreen.caixaDialogo.defineTexturaNpc();
@@ -351,9 +350,20 @@ public class Controller {
         // está indo, desta forma ajustar -x valor que é a margem para sofrer a
         // infração.
         // personagem.setPosition()
-        guarda.DIALOGO_ATUAL++;
-        personagem.infracoes++;
+        if (personagem.tipoInfracao == Personagem.TipoInfracao.ALERTA) {
+            personagem.tipoInfracao = null;
+            guarda.DIALOGO_ATUAL++;
+            personagem.dialogosGuarda++;
+        } else if (personagem.tipoInfracao == Personagem.TipoInfracao.MULTA) {
+            personagem.tipoInfracao = null;
+            guarda.DIALOGO_ATUAL++;
+            personagem.dialogosGuarda++;
+            personagem.infracoes++;
+        }
+        // personagem.infracoes++;
+        Gdx.app.log("Controller", "Sofreu infração: " + personagem.tipoInfracao);
         Gdx.app.log("Controller", "Atualizando diálogo do guarda... Atual: " + guarda.DIALOGO_ATUAL);
+        Gdx.app.log("Controller", "Infracoes: " + personagem.infracoes);
     }
 
     /**

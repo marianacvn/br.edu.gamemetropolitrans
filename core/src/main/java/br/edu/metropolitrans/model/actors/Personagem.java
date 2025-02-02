@@ -54,7 +54,13 @@ public class Personagem extends BaseActor {
     /**
      * Indica se o personagem sofreu uma infração
      */
-    public boolean sofreuInfracao;
+    public TipoInfracao tipoInfracao;
+
+    public enum TipoInfracao {
+        ALERTA, MULTA
+    }
+
+    public int dialogosGuarda = 0;
 
     /**
      * Infrações cometidas pelo personagem
@@ -79,7 +85,7 @@ public class Personagem extends BaseActor {
         // Configuracao do personagem
         moedas = 200;
         xp = 10;
-        sofreuInfracao = false;
+        tipoInfracao = null;
         infracoes = 0;
         setAceleracao(800);
         setVelocidadeMaxima(200);
@@ -251,7 +257,11 @@ public class Personagem extends BaseActor {
             // caso isto ocorra deverá comunicar que o personagem saiu da pista
             // cometendo uma infração
             if (estaDentroDaDistancia(margemInfracao, retangulo)) {
-                sofreuInfracao = true;
+                if (dialogosGuarda > 0) {
+                    tipoInfracao = Personagem.TipoInfracao.MULTA;
+                } else {
+                    tipoInfracao = Personagem.TipoInfracao.ALERTA;
+                }
                 atualizaPosicaoInfracao();
                 break;
             }
