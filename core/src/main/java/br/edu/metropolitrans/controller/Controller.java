@@ -20,6 +20,7 @@ import br.edu.metropolitrans.model.actors.ObjetoInterativo;
 import br.edu.metropolitrans.model.actors.Personagem;
 import br.edu.metropolitrans.model.dao.DialogDAO;
 import br.edu.metropolitrans.model.maps.Mapas;
+import br.edu.metropolitrans.view.screens.ConfigScreen;
 import br.edu.metropolitrans.view.screens.CoursesScreen;
 import br.edu.metropolitrans.view.screens.GameScreen;
 
@@ -110,29 +111,25 @@ public class Controller {
         montarColisao(mapas.mapa);
         montarCamadaPista(false);
 
-        if (jogo.telas.get("game") == null)
-            jogo.telas.put("game", new GameScreen(jogo));
+        // Inicia o controle de missão
+        controleMissao = new MissionController(jogo);
+    }
 
-        gameScreen = (GameScreen) jogo.telas.get("game");
-        mostrarDialogo = false;
-        mostrarCaixaMissao = false;
-
+    public void inicializiar() {
         guarda = new Npc("guarda", jogo.estagioPrincipal);
+        gameScreen = (GameScreen) jogo.telas.get("game");
 
         gameScreen.caixaDialogo.npc = guarda;
         gameScreen.caixaDialogo.setTextoDialogo(Npc.DIALOGO_INICIAL);
         gameScreen.caixaDialogo.defineTexturaNpc();
         mostrarDialogo = true;
-
-        // Inicia o controle de missão
-        controleMissao = new MissionController(jogo);
     }
 
     /**
      * Controle do personagem, movimenta de acordo com as teclas pressionadas
      * (Setas)
      */
-    public void controlePersonagemSetas(float delta) {
+    public void controlePersonagemSetas() {
         boolean up = Gdx.input.isKeyPressed(Input.Keys.UP);
         boolean down = Gdx.input.isKeyPressed(Input.Keys.DOWN);
         boolean left = Gdx.input.isKeyPressed(Input.Keys.LEFT);
@@ -146,7 +143,7 @@ public class Controller {
      *
      * @param delta
      */
-    public void controlePersonagemWASD(float delta) {
+    public void controlePersonagemWASD() {
         boolean up = Gdx.input.isKeyPressed(Input.Keys.W);
         boolean down = Gdx.input.isKeyPressed(Input.Keys.S);
         boolean left = Gdx.input.isKeyPressed(Input.Keys.A);
@@ -203,6 +200,16 @@ public class Controller {
                     jogo.setScreen(jogo.telas.get("courses"));
                 }
             }, 1); // 1 segundo
+        }
+    }
+
+    /**
+     * Controle da tela de configurações
+     */
+    public void controleTelaConfig() {
+        if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
+            jogo.telas.put("config", new ConfigScreen(jogo, gameScreen));
+            jogo.setScreen(jogo.telas.get("config"));
         }
     }
 

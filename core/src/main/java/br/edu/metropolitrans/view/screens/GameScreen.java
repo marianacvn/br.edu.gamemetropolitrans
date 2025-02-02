@@ -1,7 +1,6 @@
 package br.edu.metropolitrans.view.screens;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -123,11 +122,23 @@ public class GameScreen implements Screen {
         // Desenha os elementos do jogo
         desenhar();
 
+        // Controlers
+        controllers();
+
+        // Renderiza a caixa dialogo, minimapa e alertas de missao
+        desenharComponentes(delta);
+
+        // Testes
+        // debug();
+        // Gdx.app.log("Teste", "Missão: " + MISSAO);
+    }
+
+    public void controllers() {
         // Controle da interação do personagem com os objetos do mapa
         jogo.controller.controleInteracao();
 
         // Controle da tela de configurações
-        controleConfig();
+        jogo.controller.controleTelaConfig();
 
         // Controle de diálogos
         jogo.controller.controleDialogos();
@@ -143,17 +154,10 @@ public class GameScreen implements Screen {
         // o controle do personagem continuando o jogo
         if (!jogo.controller.mostrarDialogo && !jogo.controller.mostrarCaixaMissao) {
             // Controle do personagem Setas ou WASD
-            jogo.controller.controlePersonagemSetas(delta);
-            jogo.controller.controlePersonagemWASD(delta);
+            jogo.controller.controlePersonagemSetas();
+            jogo.controller.controlePersonagemWASD();
             jogo.controller.controleTelefone();
         }
-
-        // Renderiza a caixa dialogo, minimapa e alertas de missao
-        desenharComponentes(delta);
-
-        // Testes
-        // debug();
-        // Gdx.app.log("Teste", "Missão: " + MISSAO);
     }
 
     /**
@@ -269,16 +273,6 @@ public class GameScreen implements Screen {
         }
 
         missaoDialogoResultado.render(delta);
-    }
-
-    /**
-     * Controle da tela de configurações
-     */
-    public void controleConfig() {
-        if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
-            jogo.telas.put("config", new ConfigScreen(jogo, GameScreen.this));
-            jogo.setScreen(jogo.telas.get("config"));
-        }
     }
 
     /**

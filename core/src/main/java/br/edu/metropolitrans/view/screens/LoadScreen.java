@@ -71,6 +71,8 @@ public class LoadScreen implements Screen {
                     public void run() {
                         if (jogo.telas.get("game") == null)
                             jogo.telas.put("game", new GameScreen(jogo));
+                        
+                        jogo.controller.inicializiar();
                         jogo.setScreen(jogo.telas.get("game"));
                     }
                 });
