@@ -139,7 +139,7 @@ public class GameScreen implements Screen {
         jogo.controller.controleInteracao();
 
         // Controle da tela de configurações
-        controleConfig();
+        jogo.controller.controleTelaConfig();
 
         // Controle de diálogos
         jogo.controller.controleDialogos();
@@ -274,16 +274,6 @@ public class GameScreen implements Screen {
         }
 
         missaoDialogoResultado.render(delta);
-    }
-
-    /**
-     * Controle da tela de configurações
-     */
-    public void controleConfig() {
-        if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
-            jogo.telas.put("config", new ConfigScreen(jogo, GameScreen.this));
-            jogo.setScreen(jogo.telas.get("config"));
-        }
     }
 
     /**

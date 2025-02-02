@@ -20,6 +20,7 @@ import br.edu.metropolitrans.model.actors.ObjetoInterativo;
 import br.edu.metropolitrans.model.actors.Personagem;
 import br.edu.metropolitrans.model.dao.DialogDAO;
 import br.edu.metropolitrans.model.maps.Mapas;
+import br.edu.metropolitrans.view.screens.ConfigScreen;
 import br.edu.metropolitrans.view.screens.CoursesScreen;
 import br.edu.metropolitrans.view.screens.GameScreen;
 
@@ -199,6 +200,16 @@ public class Controller {
                     jogo.setScreen(jogo.telas.get("courses"));
                 }
             }, 1); // 1 segundo
+        }
+    }
+
+    /**
+     * Controle da tela de configurações
+     */
+    public void controleTelaConfig() {
+        if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
+            jogo.telas.put("config", new ConfigScreen(jogo, gameScreen));
+            jogo.setScreen(jogo.telas.get("config"));
         }
     }
 
