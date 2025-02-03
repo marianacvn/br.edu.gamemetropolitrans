@@ -11,6 +11,7 @@ import com.badlogic.gdx.math.Rectangle;
 import br.edu.metropolitrans.MetropoliTrans;
 import br.edu.metropolitrans.model.actors.Npc;
 import br.edu.metropolitrans.model.actors.Personagem;
+import br.edu.metropolitrans.model.utils.DebugMode;
 import br.edu.metropolitrans.view.components.dialog.DialogBox;
 import br.edu.metropolitrans.view.components.hud.Hud;
 import br.edu.metropolitrans.view.components.minimap.Minimap;
@@ -34,11 +35,11 @@ public class GameScreen implements Screen {
     /**
      * Câmera do jogo
      */
-    private final OrthographicCamera CAMERA;
+    public final OrthographicCamera CAMERA;
     /**
      * Renderizador de formas/objetos
      */
-    private final ShapeRenderer renderizadorForma;
+    public final ShapeRenderer renderizadorForma;
     /**
      * Temporizador para acompanhar o tempo de jogo
      */
@@ -73,7 +74,6 @@ public class GameScreen implements Screen {
 
     /* Telefone dos cursos */
     public Phone phone;
-
 
     public GameScreen(final MetropoliTrans jogo) {
         this.jogo = jogo;
@@ -129,8 +129,7 @@ public class GameScreen implements Screen {
         desenharComponentes(delta);
 
         // Testes
-        // debug();
-        // Gdx.app.log("Teste", "Missão: " + MISSAO);
+        DebugMode.debugUI(this, jogo);
     }
 
     public void controllers() {
@@ -297,54 +296,6 @@ public class GameScreen implements Screen {
 
         // Atualiza a câmera
         CAMERA.update();
-    }
-
-    /**
-     * Desenha formas para debug
-     */
-    public void debug() {
-        // Desenha quadrados da colisão para debug
-        renderizadorForma.begin(ShapeRenderer.ShapeType.Line);
-        renderizadorForma.setColor(1, 0, 0, 1);
-
-        // Desenha retângulos de colisão do mapa
-        if (jogo.retangulosColisao != null) {
-            for (Rectangle retangulo : jogo.retangulosColisao) {
-                renderizadorForma.rect(retangulo.x, retangulo.y, retangulo.width, retangulo.height);
-            }
-        }
-
-        // Desenha os retângulos de colisão da pista
-        for (Rectangle retangulo : jogo.retangulosPista) {
-            renderizadorForma.rect(retangulo.x, retangulo.y, retangulo.width, retangulo.height);
-        }
-
-        // Desenha polígono de colisão do personagem
-        if (jogo.personagem != null) {
-            Polygon personagemPoligono = jogo.personagem.getLimitePoligono();
-            renderizadorForma.polygon(personagemPoligono.getTransformedVertices());
-        }
-
-        // Desenha polígonos de colisão dos NPCs
-        if (jogo.personagem.npcs != null) {
-            for (Npc npc : jogo.personagem.npcs) {
-                Polygon npcPoligono = npc.getLimitePoligono();
-                renderizadorForma.polygon(npcPoligono.getTransformedVertices());
-            }
-        }
-
-        // Desenha o polígono de colisão do objeto interativo
-        if (jogo.objeto != null) {
-            Polygon objetoPoligono = jogo.objeto.getLimitePoligono();
-            renderizadorForma.polygon(objetoPoligono.getTransformedVertices());
-        }
-
-        // Desenha o polígono de colisão do objeto interativo
-        if (jogo.objetoSairSala != null) {
-            Polygon objetoPoligono = jogo.objetoSairSala.getLimitePoligono();
-            renderizadorForma.polygon(objetoPoligono.getTransformedVertices());
-        }
-        renderizadorForma.end();
     }
 
     @Override

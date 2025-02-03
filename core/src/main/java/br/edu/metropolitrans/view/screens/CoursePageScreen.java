@@ -14,6 +14,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.ScreenUtils;
 import br.edu.metropolitrans.model.Course;
+import br.edu.metropolitrans.model.utils.DebugMode;
 import br.edu.metropolitrans.MetropoliTrans;
 import br.edu.metropolitrans.view.components.buttons.TextButtonBase;
 import br.edu.metropolitrans.view.font.FontBase;
@@ -104,7 +105,7 @@ public class CoursePageScreen implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 jogo.setScreen(coursesScreen);
-                Gdx.app.log("CoursePageScreen", "Voltando para a tela de cursos.");
+                DebugMode.mostrarLog("CoursePageScreen", "Voltando para a tela de cursos.");
             }
         });
 

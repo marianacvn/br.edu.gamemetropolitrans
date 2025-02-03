@@ -12,6 +12,7 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.utils.Array;
 
 import br.edu.metropolitrans.model.PersonagemDirecao;
+import br.edu.metropolitrans.model.utils.DebugMode;
 
 /**
  * Personagem principal do jogo
@@ -115,6 +116,8 @@ public class Personagem extends BaseActor {
         // Alinha a câmera após atualizar a posição do personagem
         alinhamentoCamera();
 
+        //Gdx.app.log("", "Personagem: " + getX() + ", " + getY()); // TODO: Remover isto aqui
+
     }
 
     public void atualizarSpritePersonagem(String selectedCharacter) {
@@ -213,12 +216,12 @@ public class Personagem extends BaseActor {
                 setPosition(getX() - margemInfracao, getY());
                 break;
             default:
-                Gdx.app.log("Personagem", "Direção inválida durante o ajuste de infração!");
+                DebugMode.mostrarLog("Personagem", "Direção inválida durante o ajuste de infração!");
                 break;
         }
 
         // Adiciona log para depuração
-        Gdx.app.log("Personagem", String.format(
+        DebugMode.mostrarLog("Personagem", String.format(
                 "Infracao! Direção: %s | Posição final: X=%.2f, Y=%.2f",
                 ultimaDirecao, getX(), getY()));
     }
@@ -252,18 +255,20 @@ public class Personagem extends BaseActor {
         }
 
         // Verifica colisões com a pista
-        for (Rectangle retangulo : retangulosPista) {
-            // Verifica se o personagem passou x do retangulo da pista,
-            // caso isto ocorra deverá comunicar que o personagem saiu da pista
-            // cometendo uma infração
-            if (estaDentroDaDistancia(margemInfracao, retangulo)) {
-                if (dialogosGuarda > 0) {
-                    tipoInfracao = Personagem.TipoInfracao.MULTA;
-                } else {
-                    tipoInfracao = Personagem.TipoInfracao.ALERTA;
+        if (DebugMode.INFRACOES_ATIVAS) {
+            for (Rectangle retangulo : retangulosPista) {
+                // Verifica se o personagem passou x do retangulo da pista,
+                // caso isto ocorra deverá comunicar que o personagem saiu da pista
+                // cometendo uma infração
+                if (estaDentroDaDistancia(margemInfracao, retangulo)) {
+                    if (dialogosGuarda > 0) {
+                        tipoInfracao = Personagem.TipoInfracao.MULTA;
+                    } else {
+                        tipoInfracao = Personagem.TipoInfracao.ALERTA;
+                    }
+                    atualizaPosicaoInfracao();
+                    break;
                 }
-                atualizaPosicaoInfracao();
-                break;
             }
         }
     }
@@ -282,7 +287,8 @@ public class Personagem extends BaseActor {
 
     public void setUltimaDirecao(PersonagemDirecao direcao) {
         this.ultimaDirecao = direcao;
-        // Gdx.app.log("Personagem", "Última direção atualizada para: " + direcao);
+        // DebugMode.mostrarLog("Personagem", "Última direção atualizada para: " +
+        // direcao);
     }
 
     @Override

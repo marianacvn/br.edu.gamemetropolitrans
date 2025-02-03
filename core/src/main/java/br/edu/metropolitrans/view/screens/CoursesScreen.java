@@ -15,6 +15,7 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import br.edu.metropolitrans.MetropoliTrans;
 import br.edu.metropolitrans.model.Course;
 import br.edu.metropolitrans.model.dao.CourseDAO;
+import br.edu.metropolitrans.model.utils.DebugMode;
 import br.edu.metropolitrans.view.components.buttons.TextButtonBase;
 import br.edu.metropolitrans.view.components.buttons.TextButtonSecond;
 import br.edu.metropolitrans.view.font.FontBase;
@@ -65,7 +66,7 @@ public class CoursesScreen implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 Course course = CourseDAO.carregarDadosModulo(1);
-                Gdx.app.log("CoursesScreen", "Dados do Módulo 1 carregados: " + course.getNome());
+                DebugMode.mostrarLog("CoursesScreen", "Dados do Módulo 1 carregados: " + course.getNome());
                 jogo.setScreen(new CoursePageScreen(jogo, CoursesScreen.this, course));
             }
         });
@@ -76,7 +77,7 @@ public class CoursesScreen implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 Course course = CourseDAO.carregarDadosModulo(2);
-                Gdx.app.log("CoursesScreen", "Dados do Módulo 2 carregados: " + course.getNome());
+                DebugMode.mostrarLog("CoursesScreen", "Dados do Módulo 2 carregados: " + course.getNome());
                 jogo.setScreen(new CoursePageScreen(jogo, CoursesScreen.this, course));
             }
         });
@@ -87,7 +88,7 @@ public class CoursesScreen implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 Course course = CourseDAO.carregarDadosModulo(3);
-                Gdx.app.log("CoursesScreen", "Dados do Módulo 33 carregados: " + course.getNome());
+                DebugMode.mostrarLog("CoursesScreen", "Dados do Módulo 33 carregados: " + course.getNome());
                 jogo.setScreen(new CoursePageScreen(jogo, CoursesScreen.this, course));
             }
         });
@@ -98,7 +99,7 @@ public class CoursesScreen implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 Course course = CourseDAO.carregarDadosModulo(4);
-                Gdx.app.log("CoursesScreen", "Dados do Módulo 4 carregados: " + course.getNome());
+                DebugMode.mostrarLog("CoursesScreen", "Dados do Módulo 4 carregados: " + course.getNome());
                 jogo.setScreen(new CoursePageScreen(jogo, CoursesScreen.this, course));
             }
         });
@@ -109,7 +110,7 @@ public class CoursesScreen implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 Course course = CourseDAO.carregarDadosModulo(5);
-                Gdx.app.log("CoursesScreen", "Dados do Módulo 5 carregados: " + course.getNome());
+                DebugMode.mostrarLog("CoursesScreen", "Dados do Módulo 5 carregados: " + course.getNome());
                 jogo.setScreen(new CoursePageScreen(jogo, CoursesScreen.this, course));
             }
         });
@@ -120,7 +121,7 @@ public class CoursesScreen implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 Course course = CourseDAO.carregarDadosModulo(6);
-                Gdx.app.log("CoursesScreen", "Dados do Módulo 6 carregados: " + course.getNome());
+                DebugMode.mostrarLog("CoursesScreen", "Dados do Módulo 6 carregados: " + course.getNome());
                 jogo.setScreen(new CoursePageScreen(jogo, CoursesScreen.this, course));
             }
         });
@@ -131,7 +132,7 @@ public class CoursesScreen implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 Course course = CourseDAO.carregarDadosModulo(7);
-                Gdx.app.log("CoursesScreen", "Dados do Módulo 7 carregados: " + course.getNome());
+                DebugMode.mostrarLog("CoursesScreen", "Dados do Módulo 7 carregados: " + course.getNome());
                 jogo.setScreen(new CoursePageScreen(jogo, CoursesScreen.this, course));
             }
         });
@@ -142,7 +143,7 @@ public class CoursesScreen implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 Course course = CourseDAO.carregarDadosModulo(8);
-                Gdx.app.log("CoursesScreen", "Dados do Módulo 8 carregados: " + course.getNome());
+                DebugMode.mostrarLog("CoursesScreen", "Dados do Módulo 8 carregados: " + course.getNome());
                 jogo.setScreen(new CoursePageScreen(jogo, CoursesScreen.this, course));
             }
         });
@@ -153,7 +154,7 @@ public class CoursesScreen implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 Course course = CourseDAO.carregarDadosModulo(9);
-                Gdx.app.log("CoursesScreen", "Dados do Módulo 9 carregados: " + course.getNome());
+                DebugMode.mostrarLog("CoursesScreen", "Dados do Módulo 9 carregados: " + course.getNome());
                 jogo.setScreen(new CoursePageScreen(jogo, CoursesScreen.this, course));
             }
         });

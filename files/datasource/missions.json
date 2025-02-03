@@ -25,6 +25,18 @@
                 "maria",
                 "juliana"
             ]
+        },
+        {
+            "id": 2,
+            "nome": "Sentido único",
+            "descricao": "Qual placa representa uma possível solução\r\npara o problema apresentado? [Artigo/Regra: 208]",
+            "recompensaMoedas": 100,
+            "experiencia": 10,
+            "valorErro": 20,
+            "finalizouMissao": false,
+            "personagens": [
+                "antonio"
+            ]
         }
     ]
 }

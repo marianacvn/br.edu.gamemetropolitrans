@@ -2,6 +2,7 @@ package br.edu.metropolitrans.model.dao;
 
 import br.edu.metropolitrans.model.CourseData;
 import br.edu.metropolitrans.model.connection.DataSource;
+import br.edu.metropolitrans.model.utils.DebugMode;
 
 import com.badlogic.gdx.Gdx;
 
@@ -23,12 +24,12 @@ public class CourseDAO {
 
     public static CourseData carregarDadosCursos() {
         DataSource ds = DataSource.getInstancia();
-        Gdx.app.log("CourseDAO", "Tentando carregar dados dos cursos do arquivo JSON.");
+        DebugMode.mostrarLog("CourseDAO", "Tentando carregar dados dos cursos do arquivo JSON.");
         CourseData courseData = ds.conectar("courses.json", CourseData.class);
         if (courseData != null) {
-            Gdx.app.log("CourseDAO", "Dados dos cursos carregados com sucesso.");
+            DebugMode.mostrarLog("CourseDAO", "Dados dos cursos carregados com sucesso.");
         } else {
-            Gdx.app.log("CourseDAO", "Falha ao carregar os dados dos cursos.");
+            DebugMode.mostrarLog("CourseDAO", "Falha ao carregar os dados dos cursos.");
         }
         return courseData;
     }
@@ -43,16 +44,16 @@ public class CourseDAO {
     public static Course buscaCursoPorId(int id) {
         CourseData courseData = carregarDadosCursos();
         if (courseData == null) {
-            Gdx.app.log("CourseDAO", "CourseData está nulo.");
+            DebugMode.mostrarLog("CourseDAO", "CourseData está nulo.");
             return null;
         }
         for (Course course : courseData.getCursos()) {
             if (course.getId() == id) {
-                Gdx.app.log("CourseDAO", "Curso encontrado: " + course.getNome());
+                DebugMode.mostrarLog("CourseDAO", "Curso encontrado: " + course.getNome());
                 return course;
             }
         }
-        Gdx.app.log("CourseDAO", "Curso não encontrado para o id: " + id);
+        DebugMode.mostrarLog("CourseDAO", "Curso não encontrado para o id: " + id);
         return null;
     }
 
@@ -66,7 +67,7 @@ public class CourseDAO {
     public static void atualizaStatusCurso(int id, String status) {
         CourseData courseData = carregarDadosCursos();
         if (courseData == null) {
-            Gdx.app.log("CourseDAO", "CourseData está nulo.");
+            DebugMode.mostrarLog("CourseDAO", "CourseData está nulo.");
             return;
         }
         for (Course course : courseData.getCursos()) {
@@ -88,9 +89,9 @@ public class CourseDAO {
     public static Course carregarDadosModulo(int id) {
         Course course = buscaCursoPorId(id);
         if (course != null) {
-            Gdx.app.log("CourseDAO", "Dados do módulo carregados: " + course.getNome());
+            DebugMode.mostrarLog("CourseDAO", "Dados do módulo carregados: " + course.getNome());
         } else {
-            Gdx.app.log("CourseDAO", "Dados do módulo não encontrados para o id: " + id);
+            DebugMode.mostrarLog("CourseDAO", "Dados do módulo não encontrados para o id: " + id);
         }
         return course;
     }
