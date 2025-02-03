@@ -28,6 +28,7 @@ public class CoursesScreen implements Screen {
     public Label titulo;
     public Screen telaAnterior;
     public TextButtonSecond botao1, botao2, botao3, botao4, botao5, botao6, botao7, botao8, botao9;
+    
 
     public CoursesScreen(final MetropoliTrans jogo, Screen telaAnterior) {
         this.jogo = jogo;
@@ -43,6 +44,7 @@ public class CoursesScreen implements Screen {
         skin = new Skin();
         skin.add("default", jogo.fonte);
 
+        // Carrega a fonte para o título
         BitmapFont fonteTitulo = FontBase.getInstancia().getFonte(80, FontBase.Fontes.PADRAO);
 
         // Cria o título
@@ -212,6 +214,8 @@ public class CoursesScreen implements Screen {
     public void render(float delta) {
         // Limpa a tela com uma cor preta
         ScreenUtils.clear(Color.WHITE);
+
+        
 
         // Desenha o fundo
         jogo.batch.begin();

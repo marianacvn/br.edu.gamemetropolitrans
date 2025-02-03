@@ -1,10 +1,12 @@
 package br.edu.metropolitrans.model.actors;
 
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 
 import java.util.List;
 
 public class Vehicle extends ActorAnimation {
+    private Rectangle boundingRectangle;
 
     /**
      * Construtor da classe Vehicle
@@ -27,5 +29,16 @@ public class Vehicle extends ActorAnimation {
         super(nome, x, y, stage, velocidade, nomeArquivo, "files/vehicles/", roteiro, temAnimacao, 4, 6, true);
         margemAltura = -15;
         setVisible(false);
+        boundingRectangle = new Rectangle(x, y, getWidth(), getHeight());
+    }
+
+    @Override
+    public void act(float delta) {
+        super.act(delta);
+        boundingRectangle.setPosition(getX(), getY());
+    }
+
+    public Rectangle getBoundingRectangle() {
+        return boundingRectangle;
     }
 }

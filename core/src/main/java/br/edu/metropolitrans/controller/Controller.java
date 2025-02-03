@@ -1,6 +1,7 @@
 package br.edu.metropolitrans.controller;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -18,6 +19,7 @@ import br.edu.metropolitrans.model.PersonagemDirecao;
 import br.edu.metropolitrans.model.actors.Npc;
 import br.edu.metropolitrans.model.actors.ObjetoInterativo;
 import br.edu.metropolitrans.model.actors.Personagem;
+import br.edu.metropolitrans.model.actors.Vehicle;
 import br.edu.metropolitrans.model.dao.DialogDAO;
 import br.edu.metropolitrans.model.maps.Mapas;
 import br.edu.metropolitrans.model.utils.DebugMode;
@@ -96,7 +98,6 @@ public class Controller {
      * NPC do guarda de trânsito
      */
     private Npc guarda;
-
 
     public Controller(MetropoliTrans jogo) {
         this.jogo = jogo;
@@ -441,7 +442,8 @@ public class Controller {
         jogo.objetosColisao = mapa.getLayers().get("colisao").getObjects();
         DebugMode.mostrarLog("Controller", "Objetos carregados: " + jogo.objetosColisao.getCount());
         jogo.retangulosColisao = new Array<Rectangle>();
-        DebugMode.mostrarLog("Controller", "Array de retângulos de colisão criado... Tamanho: " + jogo.retangulosColisao.size);
+        DebugMode.mostrarLog("Controller",
+                "Array de retângulos de colisão criado... Tamanho: " + jogo.retangulosColisao.size);
 
         // Adiciona os retângulos de colisão do mapa ao array
         for (MapObject objeto : jogo.objetosColisao) {
@@ -452,7 +454,8 @@ public class Controller {
         }
 
         // Adiciona os retângulos de colisão do mapa ao personagem
-        DebugMode.mostrarLog("Controller", "Verificando cada retângulo da colisao, objetos: " + jogo.retangulosColisao.size);
+        DebugMode.mostrarLog("Controller",
+                "Verificando cada retângulo da colisao, objetos: " + jogo.retangulosColisao.size);
         personagem.setRetangulosColisao(jogo.retangulosColisao);
     }
 
@@ -474,7 +477,8 @@ public class Controller {
             jogo.objetosPista = mapas.mapa.getLayers().get("pista").getObjects();
             DebugMode.mostrarLog("Controller", "Objetos carregados: " + jogo.objetosPista.getCount());
             jogo.retangulosPista = new Array<Rectangle>();
-            DebugMode.mostrarLog("Controller", "Array de retângulos de colisão criado... Tamanho: " + jogo.retangulosPista.size);
+            DebugMode.mostrarLog("Controller",
+                    "Array de retângulos de colisão criado... Tamanho: " + jogo.retangulosPista.size);
 
             // Adiciona os retângulos de pista do mapa ao array
             for (MapObject objeto : jogo.objetosPista) {
@@ -485,9 +489,25 @@ public class Controller {
             }
 
             // Adiciona os retângulos de pista do mapa ao personagem
-            DebugMode.mostrarLog("Controller", "Verificando cada retângulo da pista, objetos: " + jogo.retangulosPista.size);
+            DebugMode.mostrarLog("Controller",
+                    "Verificando cada retângulo da pista, objetos: " + jogo.retangulosPista.size);
             personagem.setRetangulosPista(jogo.retangulosPista);
         }
     }
+
+    // public void verificarColisaoCarros() {
+    //     List<Vehicle> vehicles = jogo.vehicles.values().stream().toList();
+    //     for (int i = 0; i < vehicles.size(); i++) {
+    //         for (int j = i + 1; j < vehicles.size(); j++) {
+    //             Vehicle vehicle1 = vehicles.get(i);
+    //             Vehicle vehicle2 = vehicles.get(j);
+    //             if (vehicle1.getBoundingRectangle().overlaps(vehicle2.getBoundingRectangle())) {
+    //                 DebugMode.mostrarLog("Controller",
+    //                         "Colisão detectada entre os veiculos");
+
+    //             }
+    //         }
+    //     }
+    // }
 
 }

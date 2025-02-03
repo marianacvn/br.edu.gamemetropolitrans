@@ -9,6 +9,7 @@ import br.edu.metropolitrans.model.Mission;
 import br.edu.metropolitrans.model.actors.Npc;
 import br.edu.metropolitrans.model.actors.Vehicle;
 import br.edu.metropolitrans.model.dao.MissionDataDAO;
+import br.edu.metropolitrans.model.maps.Mapas;
 import br.edu.metropolitrans.model.utils.DebugMode;
 import br.edu.metropolitrans.view.components.mission_modal.MissionComponents;
 
@@ -149,6 +150,8 @@ public class MissionController {
             DebugMode.mostrarLog("Missão", "Iniciando veículos da missão 2");
             Vehicle basicVehicle2 = jogo.vehicles.get("basic-car-2");
             Vehicle basicVehicle3 = jogo.vehicles.get("basic-car-3");
+            basicVehicle2.setLimiteRetangulo();
+            basicVehicle3.setLimiteRetangulo();
             // Verifica qual dialogo está sendo exibido
             // e exibe os veículos
             if (npc != null) {
@@ -156,10 +159,15 @@ public class MissionController {
                     if (npc.nome.equals("antonio")) {
                         basicVehicle2.setVisible(true);
                         basicVehicle2.animacaoAtivada = true;
-                        
+
                         basicVehicle3.setVisible(true);
                         basicVehicle3.animacaoAtivada = true;
-                        
+
+                        if (basicVehicle2.sobrepoe(basicVehicle3)) {
+                            Gdx.app.log("Missão", "Veículos sobrepostos");
+                            jogo.explosao.setVisible(true);
+                        }
+
                         missaoConcluida = false;
                     }
                 } else {
@@ -170,7 +178,7 @@ public class MissionController {
                     basicVehicle3.animacaoAtivada = false;
                 }
             }
-            
+
             if (!basicVehicle2.isVisible() && npc != null && npc.nome.equals("antonio")) {
                 if (npc.statusAlertaMissao == 2 && !missaoConcluida) {
                     DebugMode.mostrarLog("Missão", "Missão 2: Exibindo desafio de Antônio");
@@ -190,8 +198,9 @@ public class MissionController {
                     jogo.objetoPlaca2.setVisible(true);
 
                     // Atualiza a missão
-                    //atualizarMissao(3, "juliana");
-                    //controlaTrocaMissao = true; // TODO: Verificar se a missão 3 está funcionando para habilitar
+                    // atualizarMissao(3, "juliana");
+                    // controlaTrocaMissao = true; // TODO: Verificar se a missão 3 está funcionando
+                    // para habilitar
                 }
             }
         }

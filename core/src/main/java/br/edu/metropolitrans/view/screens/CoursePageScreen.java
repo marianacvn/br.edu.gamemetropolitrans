@@ -159,6 +159,7 @@ public class CoursePageScreen implements Screen {
     public void dispose() {
         stage.dispose();
         skin.dispose();
+        background.dispose();
 
     }
 

@@ -16,6 +16,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Array;
 import br.edu.metropolitrans.controller.Controller;
+import br.edu.metropolitrans.model.actors.ExplosionAnimation;
 import br.edu.metropolitrans.model.actors.Npc;
 import br.edu.metropolitrans.model.actors.ObjetoInterativo;
 import br.edu.metropolitrans.model.actors.Personagem;
@@ -110,10 +111,13 @@ public class MetropoliTrans extends Game {
 
     public HashMap<String, MissionComponents> missionComponents = new HashMap<>();
 
+    public ExplosionAnimation explosao;
+
     @Override
     public void create() {
         // Inicia a tela de loading do game
         this.setScreen(new LoadingScreen(this));
+
     }
 
     public void inicializarJogo() {
@@ -142,7 +146,7 @@ public class MetropoliTrans extends Game {
         // Carrega o objeto interativo da placa das missões
         objetoPlaca1 = new ObjetoInterativo("placa", 1290, 1245, "mission1-result.png", estagioPrincipal);
         objetoPlaca1.setVisible(false);
-        
+
         objetoPlaca2 = new ObjetoInterativo("placa2", 1700, 1450, "mission2-result.png", estagioPrincipal);
         objetoPlaca2.setVisible(false);
 
@@ -193,6 +197,27 @@ public class MetropoliTrans extends Game {
                 "basic-car-3",
                 new Vehicle("basic-car-2", 1300, 612, 100, "coupe-midnight-sprite.png", estagioPrincipal,
                         List.of("C-23*32"), true));
+
+        // Instância animação de explosão
+        explosao = new ExplosionAnimation(1305, 1380, estagioPrincipal);
+        String[] nomeArquivos = {
+                "files/animacao/Explosion/1.png",
+                "files/animacao/Explosion/2.png",
+                "files/animacao/Explosion/3.png",
+                "files/animacao/Explosion/4.png",
+                "files/animacao/Explosion/5.png",
+                "files/animacao/Explosion/6.png",
+                "files/animacao/Explosion/7.png",
+                "files/animacao/Explosion/8.png",
+                "files/animacao/Explosion/9.png",
+                "files/animacao/Explosion/10.png",
+                "files/animacao/Explosion/11.png",
+                "files/animacao/Explosion/12.png",
+
+        };
+        explosao.carregaAnimacaoDeArquivos(
+                nomeArquivos, 0.1f, true);
+        explosao.setVisible(false);
 
         // Carrega os objetos interativos
         objeto = new ObjetoInterativo("entradaPrefeitura", 100, 760, "background-transparent.png",
@@ -294,7 +319,8 @@ public class MetropoliTrans extends Game {
 
     @Override
     public void dispose() {
-        // OBS.: É necessário entender se o dispose náo está impedindo o funcionamento do jogo
+        // OBS.: É necessário entender se o dispose náo está impedindo o funcionamento
+        // do jogo
         // Descarte de telas
         for (Screen screen : telas.values()) {
             if (screen != null) {
