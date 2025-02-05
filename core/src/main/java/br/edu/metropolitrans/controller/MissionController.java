@@ -85,7 +85,7 @@ public class MissionController {
                     MissionComponents componentesMissao = jogo.missionComponents.get("missao0");
                     componentesMissao.titulo
                             .setText("Missão " + (jogo.controller.MISSAO) + ": "
-                                    + "Ajuda para Maria atravessar a rua [Artigo/Regra: 70]");
+                                    + "Ajuda para Maria atravessar a rua\r\n[Artigo/Regra: 70]");
                     jogo.controller.gameScreen.missaoModalBox.missionComponents = componentesMissao;
                 }
 
