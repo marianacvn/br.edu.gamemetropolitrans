@@ -9,7 +9,6 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Slider;
@@ -24,7 +23,6 @@ import br.edu.metropolitrans.MetropoliTrans;
 import br.edu.metropolitrans.view.components.buttons.ButtonBase;
 import br.edu.metropolitrans.view.components.buttons.TextButtonBase;
 import br.edu.metropolitrans.view.font.FontBase;
-
 
 public class ConfigScreen implements Screen {
 
@@ -53,18 +51,12 @@ public class ConfigScreen implements Screen {
         botaoSpace = new ButtonBase("files/buttons/botao-space.png", botaoSpaceLabel);
         botaoEsc = new ButtonBase("files/buttons/botao-esc.png", botaoEscLabel);
 
-        // Carrega a textura de fundo e outras
-        Texture background = new Texture(Gdx.files.internal("files/backgrounds/background-light.png"));
-
         // Cria o Stage e o Skin
         stage = new Stage();
         Gdx.input.setInputProcessor(stage);
 
         skin = new Skin();
         skin.add("default", jogo.fonte);
-
-        // Carrega a imagem do background
-        Drawable backgroundDrawable = new TextureRegionDrawable(new TextureRegion(background));
 
         // Carrega as fontes
         BitmapFont fonteTitulo = FontBase.getInstancia().getFonte(80, FontBase.Fontes.PADRAO);
@@ -153,15 +145,8 @@ public class ConfigScreen implements Screen {
         botaoEscLabel = new Label("Configurações", labelStyle2);
         botaoEscLabel.setPosition(sliderVolume.getX() + 70, botaoSpaceLabel.getY() - 28);
 
-        // Cria o background e seta a posição
-        ImageButton.ImageButtonStyle backgroundStyle = new ImageButton.ImageButtonStyle();
-        backgroundStyle.imageUp = backgroundDrawable;
-        ImageButton backgroundButton = new ImageButton(backgroundStyle);
-        backgroundButton.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        backgroundButton.setPosition(0, 0);
-
         // Adiciona o título ao Stage
-        stage.addActor(backgroundButton);
+
         stage.addActor(botaoVoltar);
         stage.addActor(titulo);
         stage.addActor(volumeLabel);
@@ -197,7 +182,7 @@ public class ConfigScreen implements Screen {
     @Override
     public void render(float delta) {
         // Limpa a tela com uma cor preta
-        ScreenUtils.clear(Color.BLACK);
+        ScreenUtils.clear(Color.WHITE);
 
         stage.act(delta);
         stage.draw();

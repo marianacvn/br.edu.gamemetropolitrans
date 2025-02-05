@@ -1,3 +1,4 @@
+// Removed non-existent initialization script reference
 buildscript {
   repositories {
     mavenCentral()
