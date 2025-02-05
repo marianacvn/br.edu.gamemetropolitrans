@@ -20,6 +20,7 @@ import br.edu.metropolitrans.model.actors.ObjetoInterativo;
 import br.edu.metropolitrans.model.actors.Personagem;
 import br.edu.metropolitrans.model.dao.DialogDAO;
 import br.edu.metropolitrans.model.maps.Mapas;
+import br.edu.metropolitrans.model.utils.DebugMode;
 import br.edu.metropolitrans.view.screens.ConfigScreen;
 import br.edu.metropolitrans.view.screens.CoursesScreen;
 import br.edu.metropolitrans.view.screens.GameScreen;
@@ -95,7 +96,6 @@ public class Controller {
      * NPC do guarda de trânsito
      */
     private Npc guarda;
-
 
     public Controller(MetropoliTrans jogo) {
         this.jogo = jogo;
@@ -288,7 +288,7 @@ public class Controller {
             personagem.setRetangulosColisao(jogo.retangulosColisao);
             personagem.setRetangulosPista(jogo.retangulosPista);
         } else if (objetoPc != null && personagem.interagiu(objetoPc) && Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
-            Gdx.app.log("Controller", "Interagindo com o PC...");
+            DebugMode.mostrarLog("Controller", "Interagindo com o PC...");
             // abre a tela de CoursesScreen
             if (jogo.telas.get("courses") == null)
                 jogo.telas.put("courses", new CoursesScreen(jogo, jogo.getScreen()));
@@ -301,10 +301,9 @@ public class Controller {
      * Controle de diálogos
      */
     public void controleDialogos() {
-        if (Gdx.input.isKeyJustPressed(Input.Keys.ENTER)) {
+        if (Gdx.input.isKeyJustPressed(Input.Keys.ENTER) && mostrarDialogo) {
             mostrarDialogo = false;
-            if (personagem.sofreuInfracao) {
-                personagem.sofreuInfracao = false;
+            if (personagem.tipoInfracao != null) {
                 atualizaInfracao();
             } else {
                 for (Npc npc : npcs) {
@@ -321,9 +320,9 @@ public class Controller {
         // Verifica se o personagem zerou as moedas
         // Se sim, volta para a tela de início pois perdeu o jogo
         if (perdeuJogo) {
-            Gdx.app.log("Controller", "Perdeu o jogo!");
+            DebugMode.mostrarLog("Controller", "Perdeu o jogo!");
             // Volta todas as informações do jogo para o início
-            Gdx.app.log("Controller", "Reiniciando o jogo...");
+            DebugMode.mostrarLog("Controller", "Reiniciando o jogo...");
             jogo.reiniciarJogo();
         }
     }
@@ -338,7 +337,7 @@ public class Controller {
         }
 
         // Verifica se o personagem saiu da pista e mostra a caixa de diálogo
-        if (personagem.sofreuInfracao) {
+        if (personagem.tipoInfracao != null) {
             gameScreen.caixaDialogo.npc = guarda;
             gameScreen.caixaDialogo.setTextoDialogo(carregaDialogos(guarda, 0));
             gameScreen.caixaDialogo.defineTexturaNpc();
@@ -351,9 +350,20 @@ public class Controller {
         // está indo, desta forma ajustar -x valor que é a margem para sofrer a
         // infração.
         // personagem.setPosition()
-        guarda.DIALOGO_ATUAL++;
-        personagem.infracoes++;
-        Gdx.app.log("Controller", "Atualizando diálogo do guarda... Atual: " + guarda.DIALOGO_ATUAL);
+        if (personagem.tipoInfracao == Personagem.TipoInfracao.ALERTA) {
+            personagem.tipoInfracao = null;
+            guarda.DIALOGO_ATUAL++;
+            personagem.dialogosGuarda++;
+        } else if (personagem.tipoInfracao == Personagem.TipoInfracao.MULTA) {
+            personagem.tipoInfracao = null;
+            guarda.DIALOGO_ATUAL++;
+            personagem.dialogosGuarda++;
+            personagem.infracoes++;
+        }
+        // personagem.infracoes++;
+        DebugMode.mostrarLog("Controller", "Sofreu infração: " + personagem.tipoInfracao);
+        DebugMode.mostrarLog("Controller", "Atualizando diálogo do guarda... Atual: " + guarda.DIALOGO_ATUAL);
+        DebugMode.mostrarLog("Controller", "Infracoes: " + personagem.infracoes);
     }
 
     /**
@@ -425,12 +435,13 @@ public class Controller {
      * @param mapa TiledMap
      */
     private void montarColisao(TiledMap mapa) {
-        Gdx.app.log("Controller", "Crianado a camada de colisao...");
+        DebugMode.mostrarLog("Controller", "Crianado a camada de colisao...");
         // Carrega os objetos de colisão
         jogo.objetosColisao = mapa.getLayers().get("colisao").getObjects();
-        Gdx.app.log("Controller", "Objetos carregados: " + jogo.objetosColisao.getCount());
+        DebugMode.mostrarLog("Controller", "Objetos carregados: " + jogo.objetosColisao.getCount());
         jogo.retangulosColisao = new Array<Rectangle>();
-        Gdx.app.log("Controller", "Array de retângulos de colisão criado... Tamanho: " + jogo.retangulosColisao.size);
+        DebugMode.mostrarLog("Controller",
+                "Array de retângulos de colisão criado... Tamanho: " + jogo.retangulosColisao.size);
 
         // Adiciona os retângulos de colisão do mapa ao array
         for (MapObject objeto : jogo.objetosColisao) {
@@ -441,7 +452,8 @@ public class Controller {
         }
 
         // Adiciona os retângulos de colisão do mapa ao personagem
-        Gdx.app.log("Controller", "Verificando cada retângulo da colisao, objetos: " + jogo.retangulosColisao.size);
+        DebugMode.mostrarLog("Controller",
+                "Verificando cada retângulo da colisao, objetos: " + jogo.retangulosColisao.size);
         personagem.setRetangulosColisao(jogo.retangulosColisao);
     }
 
@@ -452,18 +464,19 @@ public class Controller {
      * @param removePista boolean - Remove a pista
      */
     private void montarCamadaPista(boolean removePista) {
-        Gdx.app.log("Controller", "Iniciando chamada montagem da camada de objetos da pista...");
+        DebugMode.mostrarLog("Controller", "Iniciando chamada montagem da camada de objetos da pista...");
         if (removePista) {
-            Gdx.app.log("Controller", "Removendo a camada de objetos da pista...");
+            DebugMode.mostrarLog("Controller", "Removendo a camada de objetos da pista...");
             jogo.retangulosPista = new Array<Rectangle>();
             personagem.setRetangulosPista(jogo.retangulosPista);
         } else {
-            Gdx.app.log("Controller", "Crianado a camada de objetos da pista...");
+            DebugMode.mostrarLog("Controller", "Crianado a camada de objetos da pista...");
             // Carrega os objetos de pista
             jogo.objetosPista = mapas.mapa.getLayers().get("pista").getObjects();
-            Gdx.app.log("Controller", "Objetos carregados: " + jogo.objetosPista.getCount());
+            DebugMode.mostrarLog("Controller", "Objetos carregados: " + jogo.objetosPista.getCount());
             jogo.retangulosPista = new Array<Rectangle>();
-            Gdx.app.log("Controller", "Array de retângulos de colisão criado... Tamanho: " + jogo.retangulosPista.size);
+            DebugMode.mostrarLog("Controller",
+                    "Array de retângulos de colisão criado... Tamanho: " + jogo.retangulosPista.size);
 
             // Adiciona os retângulos de pista do mapa ao array
             for (MapObject objeto : jogo.objetosPista) {
@@ -474,9 +487,25 @@ public class Controller {
             }
 
             // Adiciona os retângulos de pista do mapa ao personagem
-            Gdx.app.log("Controller", "Verificando cada retângulo da pista, objetos: " + jogo.retangulosPista.size);
+            DebugMode.mostrarLog("Controller",
+                    "Verificando cada retângulo da pista, objetos: " + jogo.retangulosPista.size);
             personagem.setRetangulosPista(jogo.retangulosPista);
         }
     }
+
+    // public void verificarColisaoCarros() {
+    //     List<Vehicle> vehicles = jogo.vehicles.values().stream().toList();
+    //     for (int i = 0; i < vehicles.size(); i++) {
+    //         for (int j = i + 1; j < vehicles.size(); j++) {
+    //             Vehicle vehicle1 = vehicles.get(i);
+    //             Vehicle vehicle2 = vehicles.get(j);
+    //             if (vehicle1.getBoundingRectangle().overlaps(vehicle2.getBoundingRectangle())) {
+    //                 DebugMode.mostrarLog("Controller",
+    //                         "Colisão detectada entre os veiculos");
+
+    //             }
+    //         }
+    //     }
+    // }
 
 }

@@ -5,11 +5,11 @@
 	"dialogosMissao": [
 		{
 			"missao": 1,
-			"mensagem": "Olá, sou betânia, você deve ser o novo(a) estagiário(a)! Tenho que lhe desejar muita sorte. Bem, estou aqui para te receber na nossa escola municipal. Desculpe a confusão que o prefeito Heberto causou, não temos uma escola específica para trânsito, quem dera. Mas temos aqui na nossa escola municipal, uma sala de informática, ele solicitou a instalação de um curso que explica diversos assuntos sobre trânsito, é lá que você irá aprender o que precisar."
+			"mensagem": "Olá, sou betânia, você deve ser o novo(a) estagiário(a)! Tenho que lhe desejar muita sorte. Bem, estou aqui para te receber na nossa escola municipal. Desculpe a confusão que o prefeito Heberto causou, não temos uma escola específica para trânsito, quem dera. Mas temos aqui na nossa prefeitura, uma sala de informática, ele solicitou a instalação de um curso que explica diversos assuntos sobre trânsito, é lá que você irá aprender o que precisar."
 		},
 		{
 			"missao": 1,
-			"mensagem": "Olha só, fiquei sabendo que você já anda resolvendo problemas por ai, todo mundo já está sabendo haha! Muito bem, Heberto passou aqui mais cedo perguntando se você veio aqui, disse a ele que você já ta melhorando a cidade no seu primeiro dia! Bem, agora você pode ver mais um módulo do curso."
+			"mensagem": "Olha só, fiquei sabendo que você já anda resolvendo problemas por ai, todo mundo já está sabendo! Muito bem, Heberto passou aqui mais cedo perguntando se você veio aqui, disse a ele que você já ta melhorando a cidade no seu primeiro dia! Bem, agora você pode ver mais um módulo do curso."
 		},
 		{
 			"missao": 2,

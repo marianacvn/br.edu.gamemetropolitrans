@@ -183,7 +183,7 @@ public abstract class BaseActor extends Actor {
             }
         }
     }
-    
+
     public void pararAnimacao() {
         animacao = null;
     }
@@ -552,6 +552,8 @@ public abstract class BaseActor extends Actor {
      * @return Polígono de colisão deste objeto
      */
     public Polygon getLimitePoligono() {
+        if (limitePoligono == null)
+            return null;
         limitePoligono.setPosition(getX(), getY());
         limitePoligono.setOrigin(getOriginX(), getOriginY());
         limitePoligono.setRotation(getRotation());
@@ -708,10 +710,10 @@ public abstract class BaseActor extends Actor {
 
         // Cria um polígono a partir do retângulo
         Polygon poligono2 = new Polygon(new float[] {
-            outro.x, outro.y,
-            outro.x + outro.width, outro.y,
-            outro.x + outro.width, outro.y + outro.height,
-            outro.x, outro.y + outro.height
+                outro.x, outro.y,
+                outro.x + outro.width, outro.y,
+                outro.x + outro.width, outro.y + outro.height,
+                outro.x, outro.y + outro.height
         });
 
         // Teste inicial para melhorar o desempenho
@@ -883,7 +885,6 @@ public abstract class BaseActor extends Actor {
 
     // endregion
 
-    
     public void dispose() {
         if (animacao != null) {
             animacao.getKeyFrame(0).getTexture().dispose();

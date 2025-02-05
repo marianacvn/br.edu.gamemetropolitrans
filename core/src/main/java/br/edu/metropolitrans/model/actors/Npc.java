@@ -6,6 +6,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 
+import br.edu.metropolitrans.model.utils.DebugMode;
+
 public class Npc extends ActorAnimation {
 
     public static String DIALOGO_INICIAL = "Olá, senhor(a) estágiario(a) da secretária de trânsito, seja bem-vindo a cidade de Metropolitrans. O(a) senhor(a) precisa falar com o prefeito da cidade para ele lhe repassar os detalhes sobre o seu novo trabalho.";
@@ -37,7 +39,7 @@ public class Npc extends ActorAnimation {
             minimapaPonto = new Texture(
                     Gdx.files.internal("files/characters/" + nomeArquivo.replace("sprite.png", "minimap.png")));
         } catch (Exception ignore) {
-            Gdx.app.log("Npc", "Erro ao carregar minimapaPonto para " + nomeArquivo);
+            DebugMode.mostrarLog("Npc", "Erro ao carregar minimapaPonto para " + nomeArquivo);
         }
     }
 

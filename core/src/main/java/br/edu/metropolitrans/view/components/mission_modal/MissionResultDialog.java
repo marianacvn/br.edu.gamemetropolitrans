@@ -12,6 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 
 import br.edu.metropolitrans.MetropoliTrans;
+import br.edu.metropolitrans.model.utils.DebugMode;
 import br.edu.metropolitrans.view.components.buttons.TextButtonBase;
 import br.edu.metropolitrans.view.font.FontBase;
 import br.edu.metropolitrans.view.screens.GameScreen;
@@ -70,10 +71,10 @@ public class MissionResultDialog {
                     jogo.controller.resultadoRespostaMissao = 0;
                     jogo.controller.mostrarCaixaMissao = false;
                     jogo.controller.controleMissao.missaoConcluida = true;
-                    Gdx.app.log("DialogoMissao", "Resposta correta!");
+                    DebugMode.mostrarLog("DialogoMissao", "Resposta correta!");
                 } else {
                     jogo.controller.resultadoRespostaMissao = 0;
-                    Gdx.app.log("DialogoMissao", "Resposta Incorreta!");
+                    DebugMode.mostrarLog("DialogoMissao", "Resposta Incorreta!");
                 }
             }
         });

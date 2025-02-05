@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 import br.edu.metropolitrans.MetropoliTrans;
+import br.edu.metropolitrans.model.actors.Personagem;
 import br.edu.metropolitrans.view.font.FontBase;
 
 public class Hud {
@@ -40,7 +41,8 @@ public class Hud {
         // Desenhar o ícone e o valor de XP
         jogo.batch.draw(xpIcon, x + 1170, y + 650, 80, 20);
         jogo.batch.end();
-        // Desenha a linha de XP, com XP 0 é apenas uma bolinha, com XP 100 é uma linha cheia
+        // Desenha a linha de XP, com XP 0 é apenas uma bolinha, com XP 100 é uma linha
+        // cheia
 
         // Salvar o estado da matriz de projeção da câmera
         shapeRenderer.setProjectionMatrix(jogo.batch.getProjectionMatrix());
@@ -67,15 +69,21 @@ public class Hud {
         jogo.batch.draw(moedasIcon, x + 1170, y + 650 - 30, 20, 20);
         // Desenhar o valor de Moedas em cima do ícone
         font.draw(jogo.batch, String.valueOf(jogo.personagem.moedas), x + 1170 + 25, y + 650 - 15);
-        // Desenha as quatro estrelas lado a lado 
+        // Desenha as quatro estrelas lado a lado
         // Verifica quantas infrações o personagem sofreu
         // Ex.: se sofreu 1, desenha uma estrela vazia e as outras cheias
-        for (int i = 0; i < jogo.personagem.infracoes; i++) {
-            jogo.batch.draw(estrelaVaziaIcon, x + 1170 + 25 * i, y + 650 - 60, 20, 20);
-        }
+        if (jogo.personagem.tipoInfracao != null && jogo.personagem.tipoInfracao == Personagem.TipoInfracao.ALERTA) {
+            for (int i = 0; i < 4; i++) {
+                jogo.batch.draw(estrelaIcon, x + 1170 + 25 * i, y + 650 - 60, 20, 20);
+            }
+        } else {
+            for (int i = 0; i < jogo.personagem.infracoes; i++) {
+                jogo.batch.draw(estrelaVaziaIcon, x + 1170 + 25 * i, y + 650 - 60, 20, 20);
+            }
 
-        for (int i = jogo.personagem.infracoes; i < 4; i++) {
-            jogo.batch.draw(estrelaIcon, x + 1170 + 25 * i, y + 650 - 60, 20, 20);
+            for (int i = jogo.personagem.infracoes; i < 4; i++) {
+                jogo.batch.draw(estrelaIcon, x + 1170 + 25 * i, y + 650 - 60, 20, 20);
+            }
         }
 
         jogo.batch.end();
