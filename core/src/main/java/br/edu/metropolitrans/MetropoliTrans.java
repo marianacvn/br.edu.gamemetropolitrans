@@ -78,7 +78,8 @@ public class MetropoliTrans extends Game {
     /**
      * Objetos interativos
      */
-    public ObjetoInterativo objeto, objetoChao, objetoSairSala, objetoMissao, objetoPlaca1, objetoPlaca2, objetoPc;
+    public ObjetoInterativo objeto, objetoChao, objetoSairSala, objetoMissao, objetoPlaca1, objetoPlaca2, objetoPlaca3,
+            objetoPc;
 
     /**
      * Mapas do jogo
@@ -150,6 +151,9 @@ public class MetropoliTrans extends Game {
         objetoPlaca2 = new ObjetoInterativo("placa2", 1700, 1450, "mission2-result.png", estagioPrincipal);
         objetoPlaca2.setVisible(false);
 
+        objetoPlaca3 = new ObjetoInterativo("placa3", 380, 1450, "mission3-result.png", estagioPrincipal);
+        objetoPlaca3.setVisible(false);
+
         // Carrega o objeto interativo do PC no mapa room
         objetoPc = new ObjetoInterativo("pc", 1020, 1470, "background-transparent.png", estagioPrincipal);
         // objetoPc.setVisible(false);
@@ -166,7 +170,7 @@ public class MetropoliTrans extends Game {
         npcs.add(new Npc("maria", 280, 1220, "maria/sprite.png", estagioPrincipal, true));
         npcs.add(new Npc("betania", 264, 200, "betania/sprite.png", estagioPrincipal, false));
         npcs.add(new Npc("bruna", 1190, 200, "bruna/sprite.png", estagioPrincipal, false));
-        npcs.add(new Npc("antonio", 1500, 1000, "antonio/sprite.png", estagioPrincipal, false));
+        npcs.add(new Npc("antonio", 1485, 1130, "antonio/sprite.png", estagioPrincipal, false));
         npcs.add(new Npc("heberto", 25, 650, "heberto/sprite.png", estagioPrincipal, 1, false));
         npcs.add(new Npc("jose", 90, 1450, "jose/sprite.png", estagioPrincipal, false));
         npcs.add(new Npc("josinaldo", 2090, 150, "josinaldo/sprite.png", estagioPrincipal, false));
@@ -191,29 +195,31 @@ public class MetropoliTrans extends Game {
                         List.of("D-9*32", "B-18*32"), true));
         vehicles.put(
                 "basic-car-2",
-                new Vehicle("basic-car-2", 2118, 1340, 100, "sedan-gray-sprite.png", estagioPrincipal,
+                new Vehicle("basic-car-2", 2086, 1340, 100, "sedan-gray-sprite.png", estagioPrincipal,
                         List.of("E-24*32"), true));
         vehicles.put(
                 "basic-car-3",
-                new Vehicle("basic-car-2", 1300, 612, 100, "coupe-midnight-sprite.png", estagioPrincipal,
-                        List.of("C-23*32"), true));
-
+                new Vehicle("basic-car-2", 1300, 582, 100, "coupe-midnight-sprite.png", estagioPrincipal,
+                        List.of("C-24*32"), true));
+        vehicles.put(
+                "compact-car",
+                new Vehicle("compact-car", 380, 1335, 0, "compact-red-sprite.png", estagioPrincipal,
+                        List.of("E-1*32"), true));
+        vehicles.put(
+            "sport-blue-car",
+            new Vehicle("sport-blue-car", 385, 1500, 20, "sport-blue-sprite.png", estagioPrincipal,
+                    List.of("B-2*16"), true));
+            
         // Instância animação de explosão
-        explosao = new ExplosionAnimation(1305, 1380, estagioPrincipal);
+        explosao = new ExplosionAnimation(1350, 1350, estagioPrincipal);
         String[] nomeArquivos = {
-                "files/animacao/Explosion/1.png",
-                "files/animacao/Explosion/2.png",
-                "files/animacao/Explosion/3.png",
-                "files/animacao/Explosion/4.png",
-                "files/animacao/Explosion/5.png",
-                "files/animacao/Explosion/6.png",
-                "files/animacao/Explosion/7.png",
-                "files/animacao/Explosion/8.png",
-                "files/animacao/Explosion/9.png",
-                "files/animacao/Explosion/10.png",
-                "files/animacao/Explosion/11.png",
-                "files/animacao/Explosion/12.png",
-
+                "files/animation/explosion/4.png",
+                "files/animation/explosion/5.png",
+                "files/animation/explosion/6.png",
+                "files/animation/explosion/7.png",
+                "files/animation/explosion/8.png",
+                "files/animation/explosion/9.png",
+                "files/animation/explosion/10.png"
         };
         explosao.carregaAnimacaoDeArquivos(
                 nomeArquivos, 0.1f, true);
@@ -298,6 +304,21 @@ public class MetropoliTrans extends Game {
                 baseY + 70 - 50 - 15, true);
         missao2.adicionarImagemCena("mission2-scene.png", baseX + 150, baseY + 15);
         missionComponents.put("missao2", missao2);
+
+        MissionComponents missao3 = new MissionComponents(3, this);
+        missao3.adicionarTituloMissao("Missão " + controller.MISSAO + ": ", baseX + 15, baseY);
+        missao3.adicionarOpcaoImagem("mission3-option1", "mission3-option1.png", false, baseX + 15,
+                baseY + 265, true);
+        missao3.adicionarOpcaoImagem("mission3-option2", "mission3-option2.png", false, baseX + 15,
+                baseY + 265 - 50 - 15, true);
+        missao3.adicionarOpcaoImagem("mission3-option3", "mission3-option3.png", false, baseX + 15,
+                baseY + 200 - 50 - 15, true);
+        missao3.adicionarOpcaoImagem("mission3-option4", "mission3-option4.png", false, baseX + 15,
+                baseY + 135 - 50 - 15, true);
+        missao3.adicionarOpcaoImagem("mission3-option5", "mission3-option5.png", true, baseX + 15,
+                baseY + 70 - 50 - 15, true);
+        missao3.adicionarImagemCena("mission3-scene.png", baseX + 150, baseY + 15);
+        missionComponents.put("missao3", missao3);
     }
 
     public void trocarTela(String tela) {

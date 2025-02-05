@@ -7,6 +7,7 @@ import com.badlogic.gdx.math.Rectangle;
 
 import br.edu.metropolitrans.MetropoliTrans;
 import br.edu.metropolitrans.model.actors.Npc;
+import br.edu.metropolitrans.model.actors.Vehicle;
 import br.edu.metropolitrans.view.screens.GameScreen;
 
 public class DebugMode {
@@ -57,6 +58,15 @@ public class DebugMode {
                 for (Npc npc : jogo.personagem.npcs) {
                     Polygon npcPoligono = npc.getLimitePoligono();
                     gameScreen.renderizadorForma.polygon(npcPoligono.getTransformedVertices());
+                }
+            }
+
+            // Desenha polígonos de colisão dos veículos
+            if (jogo.vehicles != null) {
+                for (Vehicle veiculo : jogo.vehicles.values()) {
+                    Polygon veiculoPoligono = veiculo.getLimitePoligono();
+                    if (veiculoPoligono != null)
+                        gameScreen.renderizadorForma.polygon(veiculoPoligono.getTransformedVertices());
                 }
             }
 

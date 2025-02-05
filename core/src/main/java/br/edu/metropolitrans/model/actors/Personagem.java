@@ -117,7 +117,6 @@ public class Personagem extends BaseActor {
         alinhamentoCamera();
 
         //Gdx.app.log("", "Personagem: " + getX() + ", " + getY()); // TODO: Remover isto aqui
-
     }
 
     public void atualizarSpritePersonagem(String selectedCharacter) {

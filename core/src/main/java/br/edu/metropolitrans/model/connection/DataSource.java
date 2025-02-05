@@ -1,6 +1,5 @@
 package br.edu.metropolitrans.model.connection;
 
-import com.badlogic.gdx.Gdx;
 import com.google.gson.Gson;
 
 import br.edu.metropolitrans.model.utils.DebugMode;

@@ -17,7 +17,7 @@ public class Phone {
         this.x = x;
         this.y = y;
         this.isVisible = false;
-        telefoneTexture = new Texture(Gdx.files.internal("files/animacao/Phone_2.png"));
+        telefoneTexture = new Texture(Gdx.files.internal("files/animation/Phone_2.png"));
     }
 
     public void render() {

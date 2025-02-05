@@ -2,14 +2,11 @@ package br.edu.metropolitrans.controller;
 
 import java.util.List;
 
-import com.badlogic.gdx.Gdx;
-
 import br.edu.metropolitrans.MetropoliTrans;
 import br.edu.metropolitrans.model.Mission;
 import br.edu.metropolitrans.model.actors.Npc;
 import br.edu.metropolitrans.model.actors.Vehicle;
 import br.edu.metropolitrans.model.dao.MissionDataDAO;
-import br.edu.metropolitrans.model.maps.Mapas;
 import br.edu.metropolitrans.model.utils.DebugMode;
 import br.edu.metropolitrans.view.components.mission_modal.MissionComponents;
 
@@ -48,160 +45,228 @@ public class MissionController {
          * deve setar missao atual para 1
          */
         if (missaoId == 0) {
-            DebugMode.mostrarLog("Missão", "Início do jogo");
-            atualizarMissao(1, "heberto");
-            controlaTrocaMissao = true;
+            logicaIniciakl();
         } else if (missaoId == 1) {
-            DebugMode.mostrarLog("Missão", "Início da missão 1");
-            // Atualiza o status de alerta da missão dos NPCs que fazem parte da missão
-            trocaMissao();
-
-            DebugMode.mostrarLog("Missão", "Iniciando veículos da missão 1");
-            Vehicle taxi = jogo.vehicles.get("taxi");
-            Vehicle basicCar = jogo.vehicles.get("basic-car");
-            Vehicle onibus = jogo.vehicles.get("onibus");
-
-            // Verifica qual dialogo está sendo exibido
-            // e exibe os veículos
-            if (npc != null) {
-                if (jogo.controller.mostrarDialogo) {
-                    if (npc.nome.equals("maria")) {
-                        DebugMode.mostrarLog("Missão", "Missão 1: Exibindo desafio de Maria");
-                        basicCar.setVisible(true);
-                        onibus.setVisible(true);
-                        basicCar.animacaoAtivada = true;
-                        onibus.animacaoAtivada = true;
-
-                        MissionComponents componentesMissao = jogo.missionComponents.get("missao0");
-                        componentesMissao.titulo
-                                .setText("Missão " + (jogo.controller.MISSAO) + ": "
-                                        + "Ajuda para Maria atravessar a rua [Artigo/Regra: 70]");
-                        jogo.controller.gameScreen.missaoModalBox.missionComponents = componentesMissao;
-                    }
-
-                    if (npc.nome.equals("juliana")) {
-                        taxi.setVisible(true);
-                        taxi.animacaoAtivada = true;
-                        missaoConcluida = false;
-                    }
-                } else {
-                    basicCar.setVisible(false);
-                    basicCar.animacaoAtivada = false;
-
-                    onibus.setVisible(false);
-                    onibus.animacaoAtivada = false;
-
-                    taxi.setVisible(false);
-                    taxi.animacaoAtivada = false;
-
-                    if (npc.nome.equals("maria")) {
-                        // Verifica se a animação de Maria já foi exibida e se o diálogo já foi lido,
-                        // pois deverá exibir a caixa da missão
-                        if (npc.statusAlertaMissao == 2 && !missaoConcluida) {
-                            jogo.controller.mostrarCaixaMissao = true;
-                        }
-
-                        // Mostra a faixa de pedestroe, ativa uma animação de maria atravessando a pista
-                        // e libera o personagem para atravessar
-                        if (npc.statusAlertaMissao == 2 && missaoConcluida) {
-                            // Para as animações dos veículos
-                            onibus.pararAnimacao();
-                            basicCar.pararAnimacao();
-
-                            jogo.objetoChao.setVisible(false);
-                            npc.setRoteiro(List.of("D-6*32", "B-3*32"));
-                            npc.repeteAnimacao = false;
-                            npc.animacaoAtivada = true;
-                            npc.statusAlertaMissao = 0;
-                        }
-                    }
-                }
-
-                // Verifica se o taxi está visível e se o diálogo de Juliana foi exibido
-                // para exibir a caixa da missão ou se a missão foi concluída
-                if (!taxi.isVisible() && npc != null && npc.nome.equals("juliana")) {
-                    if (npc.statusAlertaMissao == 2 && !missaoConcluida) {
-                        DebugMode.mostrarLog("Missão", "Missão 1: Exibindo desafio de Juliana");
-                        missaoConcluida = false;
-                        taxi.pararAnimacao();
-
-                        MissionComponents componentesMissao = jogo.missionComponents.get("missao1");
-                        componentesMissao.titulo
-                                .setText("Missão " + (jogo.controller.MISSAO) + ": " + missao.getDescricao());
-                        jogo.controller.gameScreen.missaoModalBox.missionComponents = componentesMissao;
-                        jogo.objetoMissao.setVisible(true);
-                    }
-                    if (missaoConcluida) {
-                        DebugMode.mostrarLog("Missão", "Missão 1 finalizada, exibindo placa");
-                        jogo.objetoMissao.setVisible(false);
-                        jogo.objetoPlaca1.setVisible(true);
-
-                        // Atualiza a missão
-                        atualizarMissao(2, "juliana");
-                        controlaTrocaMissao = true;
-                        jogo.objetoMissao.setPosition(1700, 1450);
-                    }
-                }
-            }
+            logicaMissao1(npc);
         } else if (missaoId == 2) {
-            DebugMode.mostrarLog("Missão", "Início da missão 2");
-            trocaMissao();
+            logicaMissao2(npc);
+        } else if (missaoId == 3) {
+            logicaMissao3(npc);
+        }
+    }
 
-            DebugMode.mostrarLog("Missão", "Iniciando veículos da missão 2");
-            Vehicle basicVehicle2 = jogo.vehicles.get("basic-car-2");
-            Vehicle basicVehicle3 = jogo.vehicles.get("basic-car-3");
-            basicVehicle2.setLimiteRetangulo();
-            basicVehicle3.setLimiteRetangulo();
-            // Verifica qual dialogo está sendo exibido
-            // e exibe os veículos
-            if (npc != null) {
-                if (jogo.controller.mostrarDialogo) {
-                    if (npc.nome.equals("antonio")) {
-                        basicVehicle2.setVisible(true);
-                        basicVehicle2.animacaoAtivada = true;
+    private void logicaIniciakl() {
+        DebugMode.mostrarLog("Missão", "Início do jogo");
+        atualizarMissao(1, "heberto");
+        controlaTrocaMissao = true;
+    }
 
-                        basicVehicle3.setVisible(true);
-                        basicVehicle3.animacaoAtivada = true;
+    private void logicaMissao1(Npc npc) {
+        DebugMode.mostrarLog("Missão", "Início da missão 1");
+        // Atualiza o status de alerta da missão dos NPCs que fazem parte da missão
+        trocaMissao();
 
-                        if (basicVehicle2.sobrepoe(basicVehicle3)) {
-                            Gdx.app.log("Missão", "Veículos sobrepostos");
-                            jogo.explosao.setVisible(true);
-                        }
+        DebugMode.mostrarLog("Missão", "Iniciando veículos da missão 1");
+        Vehicle taxi = jogo.vehicles.get("taxi");
+        Vehicle basicCar = jogo.vehicles.get("basic-car");
+        Vehicle onibus = jogo.vehicles.get("onibus");
 
-                        missaoConcluida = false;
+        // Verifica qual dialogo está sendo exibido
+        // e exibe os veículos
+        if (npc != null) {
+            if (jogo.controller.mostrarDialogo) {
+                if (npc.nome.equals("maria")) {
+                    DebugMode.mostrarLog("Missão", "Missão 1: Exibindo desafio de Maria");
+                    basicCar.setVisible(true);
+                    onibus.setVisible(true);
+                    basicCar.animacaoAtivada = true;
+                    onibus.animacaoAtivada = true;
+
+                    MissionComponents componentesMissao = jogo.missionComponents.get("missao0");
+                    componentesMissao.titulo
+                            .setText("Missão " + (jogo.controller.MISSAO) + ": "
+                                    + "Ajuda para Maria atravessar a rua [Artigo/Regra: 70]");
+                    jogo.controller.gameScreen.missaoModalBox.missionComponents = componentesMissao;
+                }
+
+                if (npc.nome.equals("juliana")) {
+                    taxi.setVisible(true);
+                    taxi.animacaoAtivada = true;
+                    missaoConcluida = false;
+                }
+            } else {
+                basicCar.setVisible(false);
+                basicCar.animacaoAtivada = false;
+
+                onibus.setVisible(false);
+                onibus.animacaoAtivada = false;
+
+                taxi.setVisible(false);
+                taxi.animacaoAtivada = false;
+
+                if (npc.nome.equals("maria")) {
+                    // Verifica se a animação de Maria já foi exibida e se o diálogo já foi lido,
+                    // pois deverá exibir a caixa da missão
+                    if (npc.statusAlertaMissao == 2 && !missaoConcluida) {
+                        jogo.controller.mostrarCaixaMissao = true;
                     }
-                } else {
-                    basicVehicle2.setVisible(false);
-                    basicVehicle2.animacaoAtivada = false;
 
-                    basicVehicle3.setVisible(false);
-                    basicVehicle3.animacaoAtivada = false;
+                    // Mostra a faixa de pedestroe, ativa uma animação de maria atravessando a pista
+                    // e libera o personagem para atravessar
+                    if (npc.statusAlertaMissao == 2 && missaoConcluida) {
+                        // Para as animações dos veículos
+                        onibus.pararAnimacao();
+                        basicCar.pararAnimacao();
+
+                        jogo.objetoChao.setVisible(false);
+                        npc.setRoteiro(List.of("D-6*32", "B-3*32"));
+                        npc.repeteAnimacao = false;
+                        npc.animacaoAtivada = true;
+                        npc.statusAlertaMissao = 0;
+                    }
                 }
             }
 
-            if (!basicVehicle2.isVisible() && npc != null && npc.nome.equals("antonio")) {
+            // Verifica se o taxi está visível e se o diálogo de Juliana foi exibido
+            // para exibir a caixa da missão ou se a missão foi concluída
+            if (!taxi.isVisible() && npc != null && npc.nome.equals("juliana")) {
                 if (npc.statusAlertaMissao == 2 && !missaoConcluida) {
-                    DebugMode.mostrarLog("Missão", "Missão 2: Exibindo desafio de Antônio");
+                    DebugMode.mostrarLog("Missão", "Missão 1: Exibindo desafio de Juliana");
                     missaoConcluida = false;
-                    basicVehicle2.pararAnimacao();
-                    basicVehicle3.pararAnimacao();
+                    taxi.pararAnimacao();
 
-                    MissionComponents componentesMissao = jogo.missionComponents.get("missao2");
+                    MissionComponents componentesMissao = jogo.missionComponents.get("missao1");
                     componentesMissao.titulo
                             .setText("Missão " + (jogo.controller.MISSAO) + ": " + missao.getDescricao());
                     jogo.controller.gameScreen.missaoModalBox.missionComponents = componentesMissao;
                     jogo.objetoMissao.setVisible(true);
                 }
                 if (missaoConcluida) {
-                    DebugMode.mostrarLog("Missão", "Missão 2 finalizada, exibindo placa");
+                    DebugMode.mostrarLog("Missão", "Missão 1 finalizada, exibindo placa");
                     jogo.objetoMissao.setVisible(false);
-                    jogo.objetoPlaca2.setVisible(true);
+                    jogo.objetoPlaca1.setVisible(true);
 
                     // Atualiza a missão
-                    // atualizarMissao(3, "juliana");
-                    // controlaTrocaMissao = true; // TODO: Verificar se a missão 3 está funcionando
-                    // para habilitar
+                    atualizarMissao(2, "juliana");
+                    controlaTrocaMissao = true;
+                    jogo.objetoMissao.setPosition(1700, 1450);
                 }
+            }
+        }
+    }
+
+    private void logicaMissao2(Npc npc) {
+        DebugMode.mostrarLog("Missão", "Início da missão 2");
+        trocaMissao();
+
+        DebugMode.mostrarLog("Missão", "Iniciando veículos da missão 2");
+        Vehicle basicVehicle2 = jogo.vehicles.get("basic-car-2");
+        Vehicle basicVehicle3 = jogo.vehicles.get("basic-car-3");
+        basicVehicle2.setLimiteRetangulo();
+        basicVehicle3.setLimiteRetangulo();
+        // Verifica qual dialogo está sendo exibido
+        // e exibe os veículos
+        if (npc != null) {
+            if (jogo.controller.mostrarDialogo) {
+                if (npc.nome.equals("antonio")) {
+                    basicVehicle2.setVisible(true);
+                    basicVehicle2.animacaoAtivada = true;
+
+                    basicVehicle3.setVisible(true);
+                    basicVehicle3.animacaoAtivada = true;
+
+                    if (basicVehicle2.sobrepoe(basicVehicle3)) {
+                        jogo.explosao.setVisible(true);
+                    } else {
+                        jogo.explosao.setVisible(false);
+                    }
+
+                    missaoConcluida = false;
+                }
+            } else {
+                basicVehicle2.setVisible(false);
+                basicVehicle2.animacaoAtivada = false;
+
+                basicVehicle3.setVisible(false);
+                basicVehicle3.animacaoAtivada = false;
+            }
+        }
+
+        if (!basicVehicle2.isVisible() && npc != null && npc.nome.equals("antonio")) {
+            if (npc.statusAlertaMissao == 2 && !missaoConcluida) {
+                DebugMode.mostrarLog("Missão", "Missão 2: Exibindo desafio de Antônio");
+                missaoConcluida = false;
+                basicVehicle2.pararAnimacao();
+                basicVehicle3.pararAnimacao();
+
+                MissionComponents componentesMissao = jogo.missionComponents.get("missao2");
+                componentesMissao.titulo
+                        .setText("Missão " + (jogo.controller.MISSAO) + ": " + missao.getDescricao());
+                jogo.controller.gameScreen.missaoModalBox.missionComponents = componentesMissao;
+                jogo.objetoMissao.setVisible(true);
+            }
+            if (missaoConcluida) {
+                DebugMode.mostrarLog("Missão", "Missão 2 finalizada, exibindo placa");
+                jogo.objetoMissao.setVisible(false);
+                jogo.objetoPlaca2.setVisible(true);
+
+                // Atualiza a missão
+                atualizarMissao(3, "antonio");
+                controlaTrocaMissao = true;
+                jogo.objetoMissao.setPosition(380, 1450);
+            }
+        }
+    }
+
+    private void logicaMissao3(Npc npc) {
+        DebugMode.mostrarLog("Missão", "Início da missão 3");
+        trocaMissao();
+
+        DebugMode.mostrarLog("Missão", "Iniciando veículos da missão 3");
+        Vehicle compactCar = jogo.vehicles.get("compact-car");
+        compactCar.setVisible(true);
+        compactCar.animacaoAtivada = true;
+
+        Vehicle sportBlueCar = jogo.vehicles.get("sport-blue-car");
+        sportBlueCar.setVisible(true);
+        sportBlueCar.animacaoAtivada = true;
+
+        if (npc != null && jogo.controller.mostrarDialogo) {
+            if (npc.nome.equals("jose")) {
+                missaoConcluida = false;
+            }
+        }
+
+        if (npc != null && npc.nome.equals("jose")) {
+            if (npc.statusAlertaMissao == 2 && !missaoConcluida) {
+                DebugMode.mostrarLog("Missão", "Missão 3: Exibindo desafio de José");
+                missaoConcluida = false;
+                compactCar.pararAnimacao();
+                sportBlueCar.pararAnimacao();
+
+                MissionComponents componentesMissao = jogo.missionComponents.get("missao3");
+                componentesMissao.titulo
+                        .setText("Missão " + (jogo.controller.MISSAO) + ": " + missao.getDescricao());
+                jogo.controller.gameScreen.missaoModalBox.missionComponents = componentesMissao;
+                jogo.objetoMissao.setVisible(true);
+            }
+            if (missaoConcluida) {
+                DebugMode.mostrarLog("Missão", "Missão 3 finalizada, exibindo placa");
+                jogo.objetoMissao.setVisible(false);
+                jogo.objetoPlaca3.setVisible(true);
+
+                compactCar.setVisible(false);
+                compactCar.animacaoAtivada = false;
+                compactCar.pararAnimacao();
+
+                sportBlueCar.setVisible(false);
+                sportBlueCar.animacaoAtivada = false;
+                sportBlueCar.pararAnimacao();
+
+                // Atualiza a missão
+                // atualizarMissao(3, "juliana");
+                // controlaTrocaMissao = true; // TODO: Verificar se a missão 3 está funcionando
+                // para habilitar
             }
         }
     }

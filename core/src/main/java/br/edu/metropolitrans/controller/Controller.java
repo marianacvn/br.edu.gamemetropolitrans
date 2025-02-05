@@ -1,7 +1,6 @@
 package br.edu.metropolitrans.controller;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -19,7 +18,6 @@ import br.edu.metropolitrans.model.PersonagemDirecao;
 import br.edu.metropolitrans.model.actors.Npc;
 import br.edu.metropolitrans.model.actors.ObjetoInterativo;
 import br.edu.metropolitrans.model.actors.Personagem;
-import br.edu.metropolitrans.model.actors.Vehicle;
 import br.edu.metropolitrans.model.dao.DialogDAO;
 import br.edu.metropolitrans.model.maps.Mapas;
 import br.edu.metropolitrans.model.utils.DebugMode;
@@ -303,7 +301,7 @@ public class Controller {
      * Controle de diálogos
      */
     public void controleDialogos() {
-        if (Gdx.input.isKeyJustPressed(Input.Keys.ENTER)) {
+        if (Gdx.input.isKeyJustPressed(Input.Keys.ENTER) && mostrarDialogo) {
             mostrarDialogo = false;
             if (personagem.tipoInfracao != null) {
                 atualizaInfracao();

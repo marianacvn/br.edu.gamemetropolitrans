@@ -27,7 +27,10 @@ public class Vehicle extends ActorAnimation {
     public Vehicle(String nome, float x, float y, int velocidade, String nomeArquivo, Stage stage,
             List<String> roteiro, boolean temAnimacao) {
         super(nome, x, y, stage, velocidade, nomeArquivo, "files/vehicles/", roteiro, temAnimacao, 4, 6, true);
-        margemAltura = -15;
+        // Ajusta as margens para centralizar o personagem na colisão
+        margemAltura = -30;
+        margemLargura = -30;
+        margemX = 15;
         setVisible(false);
         boundingRectangle = new Rectangle(x, y, getWidth(), getHeight());
     }

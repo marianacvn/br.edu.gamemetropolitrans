@@ -4,8 +4,6 @@ import br.edu.metropolitrans.model.CourseData;
 import br.edu.metropolitrans.model.connection.DataSource;
 import br.edu.metropolitrans.model.utils.DebugMode;
 
-import com.badlogic.gdx.Gdx;
-
 import br.edu.metropolitrans.model.Course;
 import br.edu.metropolitrans.model.Status;
 
