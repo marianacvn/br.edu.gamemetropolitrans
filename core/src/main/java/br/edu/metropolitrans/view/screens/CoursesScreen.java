@@ -15,6 +15,7 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import br.edu.metropolitrans.MetropoliTrans;
 import br.edu.metropolitrans.model.Course;
 import br.edu.metropolitrans.model.dao.CourseDAO;
+import br.edu.metropolitrans.model.utils.DebugMode;
 import br.edu.metropolitrans.view.components.buttons.TextButtonBase;
 import br.edu.metropolitrans.view.components.buttons.TextButtonSecond;
 import br.edu.metropolitrans.view.font.FontBase;
@@ -27,6 +28,7 @@ public class CoursesScreen implements Screen {
     public Label titulo;
     public Screen telaAnterior;
     public TextButtonSecond botao1, botao2, botao3, botao4, botao5, botao6, botao7, botao8, botao9;
+    
 
     public CoursesScreen(final MetropoliTrans jogo, Screen telaAnterior) {
         this.jogo = jogo;
@@ -42,6 +44,7 @@ public class CoursesScreen implements Screen {
         skin = new Skin();
         skin.add("default", jogo.fonte);
 
+        // Carrega a fonte para o título
         BitmapFont fonteTitulo = FontBase.getInstancia().getFonte(80, FontBase.Fontes.PADRAO);
 
         // Cria o título
@@ -65,7 +68,7 @@ public class CoursesScreen implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 Course course = CourseDAO.carregarDadosModulo(1);
-                Gdx.app.log("CoursesScreen", "Dados do Módulo 1 carregados: " + course.getNome());
+                DebugMode.mostrarLog("CoursesScreen", "Dados do Módulo 1 carregados: " + course.getNome());
                 jogo.setScreen(new CoursePageScreen(jogo, CoursesScreen.this, course));
             }
         });
@@ -76,7 +79,7 @@ public class CoursesScreen implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 Course course = CourseDAO.carregarDadosModulo(2);
-                Gdx.app.log("CoursesScreen", "Dados do Módulo 2 carregados: " + course.getNome());
+                DebugMode.mostrarLog("CoursesScreen", "Dados do Módulo 2 carregados: " + course.getNome());
                 jogo.setScreen(new CoursePageScreen(jogo, CoursesScreen.this, course));
             }
         });
@@ -87,7 +90,7 @@ public class CoursesScreen implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 Course course = CourseDAO.carregarDadosModulo(3);
-                Gdx.app.log("CoursesScreen", "Dados do Módulo 33 carregados: " + course.getNome());
+                DebugMode.mostrarLog("CoursesScreen", "Dados do Módulo 33 carregados: " + course.getNome());
                 jogo.setScreen(new CoursePageScreen(jogo, CoursesScreen.this, course));
             }
         });
@@ -98,7 +101,7 @@ public class CoursesScreen implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 Course course = CourseDAO.carregarDadosModulo(4);
-                Gdx.app.log("CoursesScreen", "Dados do Módulo 4 carregados: " + course.getNome());
+                DebugMode.mostrarLog("CoursesScreen", "Dados do Módulo 4 carregados: " + course.getNome());
                 jogo.setScreen(new CoursePageScreen(jogo, CoursesScreen.this, course));
             }
         });
@@ -109,7 +112,7 @@ public class CoursesScreen implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 Course course = CourseDAO.carregarDadosModulo(5);
-                Gdx.app.log("CoursesScreen", "Dados do Módulo 5 carregados: " + course.getNome());
+                DebugMode.mostrarLog("CoursesScreen", "Dados do Módulo 5 carregados: " + course.getNome());
                 jogo.setScreen(new CoursePageScreen(jogo, CoursesScreen.this, course));
             }
         });
@@ -120,7 +123,7 @@ public class CoursesScreen implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 Course course = CourseDAO.carregarDadosModulo(6);
-                Gdx.app.log("CoursesScreen", "Dados do Módulo 6 carregados: " + course.getNome());
+                DebugMode.mostrarLog("CoursesScreen", "Dados do Módulo 6 carregados: " + course.getNome());
                 jogo.setScreen(new CoursePageScreen(jogo, CoursesScreen.this, course));
             }
         });
@@ -131,7 +134,7 @@ public class CoursesScreen implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 Course course = CourseDAO.carregarDadosModulo(7);
-                Gdx.app.log("CoursesScreen", "Dados do Módulo 7 carregados: " + course.getNome());
+                DebugMode.mostrarLog("CoursesScreen", "Dados do Módulo 7 carregados: " + course.getNome());
                 jogo.setScreen(new CoursePageScreen(jogo, CoursesScreen.this, course));
             }
         });
@@ -142,7 +145,7 @@ public class CoursesScreen implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 Course course = CourseDAO.carregarDadosModulo(8);
-                Gdx.app.log("CoursesScreen", "Dados do Módulo 8 carregados: " + course.getNome());
+                DebugMode.mostrarLog("CoursesScreen", "Dados do Módulo 8 carregados: " + course.getNome());
                 jogo.setScreen(new CoursePageScreen(jogo, CoursesScreen.this, course));
             }
         });
@@ -153,7 +156,7 @@ public class CoursesScreen implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 Course course = CourseDAO.carregarDadosModulo(9);
-                Gdx.app.log("CoursesScreen", "Dados do Módulo 9 carregados: " + course.getNome());
+                DebugMode.mostrarLog("CoursesScreen", "Dados do Módulo 9 carregados: " + course.getNome());
                 jogo.setScreen(new CoursePageScreen(jogo, CoursesScreen.this, course));
             }
         });
@@ -211,6 +214,8 @@ public class CoursesScreen implements Screen {
     public void render(float delta) {
         // Limpa a tela com uma cor preta
         ScreenUtils.clear(Color.WHITE);
+
+        
 
         // Desenha o fundo
         jogo.batch.begin();

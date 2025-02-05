@@ -47,7 +47,7 @@ public class MenuScreen implements Screen {
     public MenuScreen(final MetropoliTrans jogo) {
         this.jogo = jogo;
         // Carrega a textura de fundo
-        background = new Texture(Gdx.files.internal("files/backgrounds/background-light.png"));
+        background = new Texture(Gdx.files.internal("files/backgrounds/background-principal-4.png"));
 
         // Cria o Viewport e o Stage
         viewport = new ScreenViewport(); // Usa ScreenViewport para ajustar automaticamente ao tamanho da janela
@@ -93,7 +93,8 @@ public class MenuScreen implements Screen {
         // Cria o título
         Label.LabelStyle labelStyle = new Label.LabelStyle();
         labelStyle.font = fonteTitulo;
-        labelStyle.fontColor = Color.valueOf("4c4869");
+        // labelStyle.fontColor = Color.valueOf("36334c");
+        labelStyle.fontColor = Color.WHITE;
         titulo = new Label("MetropoliTrans", labelStyle);
         titulo.setPosition(Gdx.graphics.getWidth() / 2 - titulo.getWidth() / 2, Gdx.graphics.getHeight() - 190);
 

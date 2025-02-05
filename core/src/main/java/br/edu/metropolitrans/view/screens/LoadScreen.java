@@ -24,7 +24,7 @@ public class LoadScreen implements Screen {
         this.jogo = jogo;
 
         // Carrega a textura de fundo
-        background = new Texture(Gdx.files.internal("files/backgrounds/background-light.png"));
+        background = new Texture(Gdx.files.internal("files/backgrounds/background-principal-4.png"));
 
         // Cria o Stage e o Skin
         stage = new Stage();
@@ -38,7 +38,8 @@ public class LoadScreen implements Screen {
         // Cria o título
         Label.LabelStyle labelStyle = new Label.LabelStyle();
         labelStyle.font = fonteTitulo;
-        labelStyle.fontColor = Color.valueOf("4c4869");
+        // labelStyle.fontColor = Color.valueOf("36334c");
+        labelStyle.fontColor = Color.WHITE;
         titulo = new Label("Carregando...", labelStyle);
 
         // Centraliza o título na tela

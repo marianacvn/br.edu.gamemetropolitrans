@@ -16,11 +16,13 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Array;
 import br.edu.metropolitrans.controller.Controller;
+import br.edu.metropolitrans.model.actors.ExplosionAnimation;
 import br.edu.metropolitrans.model.actors.Npc;
 import br.edu.metropolitrans.model.actors.ObjetoInterativo;
 import br.edu.metropolitrans.model.actors.Personagem;
 import br.edu.metropolitrans.model.actors.Vehicle;
 import br.edu.metropolitrans.model.maps.Mapas;
+import br.edu.metropolitrans.model.utils.DebugMode;
 import br.edu.metropolitrans.view.components.mission_modal.MissionComponents;
 import br.edu.metropolitrans.view.font.FontBase;
 import br.edu.metropolitrans.view.screens.GameScreen;
@@ -76,7 +78,8 @@ public class MetropoliTrans extends Game {
     /**
      * Objetos interativos
      */
-    public ObjetoInterativo objeto, objetoChao, objetoSairSala, objetoMissao, objetoPlaca1, objetoPc;
+    public ObjetoInterativo objeto, objetoChao, objetoSairSala, objetoMissao, objetoPlaca1, objetoPlaca2, objetoPlaca3,
+            objetoPc;
 
     /**
      * Mapas do jogo
@@ -109,10 +112,13 @@ public class MetropoliTrans extends Game {
 
     public HashMap<String, MissionComponents> missionComponents = new HashMap<>();
 
+    public ExplosionAnimation explosao;
+
     @Override
     public void create() {
         // Inicia a tela de loading do game
         this.setScreen(new LoadingScreen(this));
+
     }
 
     public void inicializarJogo() {
@@ -138,9 +144,15 @@ public class MetropoliTrans extends Game {
         // Carrega o objeto do chão
         objetoChao = new ObjetoInterativo("chao", 320, 1210, "asphalt-obj.png", estagioPrincipal);
 
-        // Carrega o objeto interativo da placa da primeira missão
+        // Carrega o objeto interativo da placa das missões
         objetoPlaca1 = new ObjetoInterativo("placa", 1290, 1245, "mission1-result.png", estagioPrincipal);
         objetoPlaca1.setVisible(false);
+
+        objetoPlaca2 = new ObjetoInterativo("placa2", 1700, 1450, "mission2-result.png", estagioPrincipal);
+        objetoPlaca2.setVisible(false);
+
+        objetoPlaca3 = new ObjetoInterativo("placa3", 380, 1450, "mission3-result.png", estagioPrincipal);
+        objetoPlaca3.setVisible(false);
 
         // Carrega o objeto interativo do PC no mapa room
         objetoPc = new ObjetoInterativo("pc", 1020, 1470, "background-transparent.png", estagioPrincipal);
@@ -158,7 +170,7 @@ public class MetropoliTrans extends Game {
         npcs.add(new Npc("maria", 280, 1220, "maria/sprite.png", estagioPrincipal, true));
         npcs.add(new Npc("betania", 264, 200, "betania/sprite.png", estagioPrincipal, false));
         npcs.add(new Npc("bruna", 1190, 200, "bruna/sprite.png", estagioPrincipal, false));
-        npcs.add(new Npc("antonio", 1500, 1000, "antonio/sprite.png", estagioPrincipal, false));
+        npcs.add(new Npc("antonio", 1485, 1130, "antonio/sprite.png", estagioPrincipal, false));
         npcs.add(new Npc("heberto", 25, 650, "heberto/sprite.png", estagioPrincipal, 1, false));
         npcs.add(new Npc("jose", 90, 1450, "jose/sprite.png", estagioPrincipal, false));
         npcs.add(new Npc("josinaldo", 2090, 150, "josinaldo/sprite.png", estagioPrincipal, false));
@@ -181,13 +193,37 @@ public class MetropoliTrans extends Game {
                 "onibus",
                 new Vehicle("onibus", 0, 1260, 50, "bus-sprite.png", estagioPrincipal,
                         List.of("D-9*32", "B-18*32"), true));
-
-        // um veiculo com a rota vazia e sem animacao
         vehicles.put(
                 "basic-car-2",
-                new Vehicle("basic-car-2", 300, 600, 50, "sedan-gray-sprite.png", estagioPrincipal,
-                        List.of("C-1*32"), true));
-        vehicles.get("basic-car-2").setVisible(true); // TODO: Verificar porque não está aparecendo
+                new Vehicle("basic-car-2", 2086, 1340, 100, "sedan-gray-sprite.png", estagioPrincipal,
+                        List.of("E-24*32"), true));
+        vehicles.put(
+                "basic-car-3",
+                new Vehicle("basic-car-2", 1300, 582, 100, "coupe-midnight-sprite.png", estagioPrincipal,
+                        List.of("C-24*32"), true));
+        vehicles.put(
+                "compact-car",
+                new Vehicle("compact-car", 380, 1335, 0, "compact-red-sprite.png", estagioPrincipal,
+                        List.of("E-1*32"), true));
+        vehicles.put(
+            "sport-blue-car",
+            new Vehicle("sport-blue-car", 385, 1500, 20, "sport-blue-sprite.png", estagioPrincipal,
+                    List.of("B-2*16"), true));
+            
+        // Instância animação de explosão
+        explosao = new ExplosionAnimation(1350, 1350, estagioPrincipal);
+        String[] nomeArquivos = {
+                "files/animation/explosion/4.png",
+                "files/animation/explosion/5.png",
+                "files/animation/explosion/6.png",
+                "files/animation/explosion/7.png",
+                "files/animation/explosion/8.png",
+                "files/animation/explosion/9.png",
+                "files/animation/explosion/10.png"
+        };
+        explosao.carregaAnimacaoDeArquivos(
+                nomeArquivos, 0.1f, true);
+        explosao.setVisible(false);
 
         // Carrega os objetos interativos
         objeto = new ObjetoInterativo("entradaPrefeitura", 100, 760, "background-transparent.png",
@@ -203,25 +239,25 @@ public class MetropoliTrans extends Game {
     public void reiniciarJogo() {
 
         setPausado(true);
-        Gdx.app.log("MetropoliTrans", "Parando o jogo e voltando para o Menu...");
+        DebugMode.mostrarLog("MetropoliTrans", "Parando o jogo e voltando para o Menu...");
 
         // Troca a tela voltando para a tela de início
         trocarTela("menu");
 
         // Reinicia os valores Padrões
-        Gdx.app.log("MetropoliTrans", "Reiniciando os valores padrões.");
+        DebugMode.mostrarLog("MetropoliTrans", "Reiniciando os valores padrões.");
         controller.MISSAO = 0;
 
         // Limpa todas as telas
-        Gdx.app.log("MetropoliTrans", "Excluindo todas as telas...");
+        DebugMode.mostrarLog("MetropoliTrans", "Excluindo todas as telas...");
         telas.clear();
 
         // Retoma o jogo
         setPausado(false);
-        Gdx.app.log("MetropoliTrans", "Retomando o jogo...");
+        DebugMode.mostrarLog("MetropoliTrans", "Retomando o jogo...");
 
         // Inicializa o jogo novamente
-        Gdx.app.log("MetropoliTrans", "Inicializando o jogo novamente...");
+        DebugMode.mostrarLog("MetropoliTrans", "Inicializando o jogo novamente...");
         inicializarJogo();
     }
 
@@ -243,7 +279,7 @@ public class MetropoliTrans extends Game {
         missao1.adicionarTituloMissao("Missão " + controller.MISSAO + ": ", baseX + 15, baseY);
         missao1.adicionarOpcaoImagem("mission1-option1", "mission1-option1_reduced.png", false, baseX + 15,
                 baseY + 265, true);
-        missao1.adicionarOpcaoImagem("mission2-option2", "mission1-option2_reduced.png", false, baseX + 15,
+        missao1.adicionarOpcaoImagem("mission1-option2", "mission1-option2_reduced.png", false, baseX + 15,
                 baseY + 265 - 50 - 15, true);
         missao1.adicionarOpcaoImagem("mission1-option3", "mission1-option3_reduced.png", true, baseX + 15,
                 baseY + 200 - 50 - 15, true);
@@ -253,6 +289,36 @@ public class MetropoliTrans extends Game {
                 baseY + 70 - 50 - 15, true);
         missao1.adicionarImagemCena("mission1-scene.png", baseX + 150, baseY + 15);
         missionComponents.put("missao1", missao1);
+
+        MissionComponents missao2 = new MissionComponents(2, this);
+        missao2.adicionarTituloMissao("Missão " + controller.MISSAO + ": ", baseX + 15, baseY);
+        missao2.adicionarOpcaoImagem("mission2-option1", "mission2-option1.png", false, baseX + 15,
+                baseY + 265, true);
+        missao2.adicionarOpcaoImagem("mission2-option2", "mission2-option2.png", false, baseX + 15,
+                baseY + 265 - 50 - 15, true);
+        missao2.adicionarOpcaoImagem("mission2-option3", "mission2-option3.png", false, baseX + 15,
+                baseY + 200 - 50 - 15, true);
+        missao2.adicionarOpcaoImagem("mission2-option4", "mission2-option4.png", true, baseX + 15,
+                baseY + 135 - 50 - 15, true);
+        missao2.adicionarOpcaoImagem("mission2-option5", "mission2-option5.png", false, baseX + 15,
+                baseY + 70 - 50 - 15, true);
+        missao2.adicionarImagemCena("mission2-scene.png", baseX + 150, baseY + 15);
+        missionComponents.put("missao2", missao2);
+
+        MissionComponents missao3 = new MissionComponents(3, this);
+        missao3.adicionarTituloMissao("Missão " + controller.MISSAO + ": ", baseX + 15, baseY);
+        missao3.adicionarOpcaoImagem("mission3-option1", "mission3-option1.png", false, baseX + 15,
+                baseY + 265, true);
+        missao3.adicionarOpcaoImagem("mission3-option2", "mission3-option2.png", false, baseX + 15,
+                baseY + 265 - 50 - 15, true);
+        missao3.adicionarOpcaoImagem("mission3-option3", "mission3-option3.png", false, baseX + 15,
+                baseY + 200 - 50 - 15, true);
+        missao3.adicionarOpcaoImagem("mission3-option4", "mission3-option4.png", false, baseX + 15,
+                baseY + 135 - 50 - 15, true);
+        missao3.adicionarOpcaoImagem("mission3-option5", "mission3-option5.png", true, baseX + 15,
+                baseY + 70 - 50 - 15, true);
+        missao3.adicionarImagemCena("mission3-scene.png", baseX + 150, baseY + 15);
+        missionComponents.put("missao3", missao3);
     }
 
     public void trocarTela(String tela) {
@@ -274,7 +340,8 @@ public class MetropoliTrans extends Game {
 
     @Override
     public void dispose() {
-        // OBS.: É necessário entender se o dispose náo está impedindo o funcionamento do jogo
+        // OBS.: É necessário entender se o dispose náo está impedindo o funcionamento
+        // do jogo
         // Descarte de telas
         for (Screen screen : telas.values()) {
             if (screen != null) {

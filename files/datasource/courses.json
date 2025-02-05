@@ -18,19 +18,19 @@
       },
         {
             "id": 3,
-            "nome": "Módulo 3",
-            "descricao": "Descrição do Módulo 3",
+            "nome": "Placa Vire à Direita [Art. 207]",
+            "descricao": "Indica ao condutor do veículo o movimento permitido de virar à direita,nas situações em que houver necessidade\r\n de reforçar a mensagem dos sinais de movimento de circulação proibidos,por problemas de visibilidade desses \r\nsinais.",
             "status": "BLOQUEADO",
-            "imagemPath": "files/itens/estrela-pintada.png",
-            "videoUrl": "https://www.youtube.com/watch?v=example3"
+            "imagemPath": "files/itens/vireadireita.png",
+            "videoUrl": "https://youtu.be/qkJEOrWweIw?si=cbyl0n0coXfNWzOj"
         },
         {
             "id": 4,
-            "nome": "Módulo 4",
-            "descricao": "Descrição do Módulo 4",
+            "nome": "Placa de Proibido Parar e Estacionar [Art. 181]",
+            "descricao": "Utilizado em locais onde,por motivos de segurança e/ou fluidez do tráfego,é necessário que se impeça a parada \r\ne o estacionamento de veículos.",
             "status": "BLOQUEADO",
-            "imagemPath": "files/itens/estrela-pintada.png",
-            "videoUrl": "https://www.youtube.com/watch?v=example4"
+            "imagemPath": "files/itens/proibidoparareestacionar.png",
+            "videoUrl": "https://www.youtube.com/watch?v=6ZmypZmH6pA"
         },
         {
             "id": 5,

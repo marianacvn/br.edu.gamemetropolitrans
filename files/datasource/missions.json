@@ -25,6 +25,30 @@
                 "maria",
                 "juliana"
             ]
+        },
+        {
+            "id": 2,
+            "nome": "Sentido único",
+            "descricao": "Qual placa poderia evitar o\r\nproblema apresentado? [Artigo/Regra: 208]",
+            "recompensaMoedas": 100,
+            "experiencia": 10,
+            "valorErro": 20,
+            "finalizouMissao": false,
+            "personagens": [
+                "antonio"
+            ]
+        },
+        {
+            "id": 3,
+            "nome": "Proibido parar e estacionar",
+            "descricao": "Qual placa poderia resolver o\r\nproblema apresentado? [Artigo/Regra: 47]",
+            "recompensaMoedas": 100,
+            "experiencia": 10,
+            "valorErro": 20,
+            "finalizouMissao": false,
+            "personagens": [
+                "jose"
+            ]
         }
     ]
 }
