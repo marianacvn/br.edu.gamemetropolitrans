@@ -23,7 +23,6 @@ import br.edu.metropolitrans.view.components.buttons.TextButtonBase;
 import br.edu.metropolitrans.view.font.FontBase;
 
 public class CharacterSelectionScreen implements Screen {
-    private MetropoliTrans jogo;
     private Image characterImage;
     private Label titulo;
     private Texture maleTexture;
@@ -37,7 +36,6 @@ public class CharacterSelectionScreen implements Screen {
     public Viewport viewport;
 
     public CharacterSelectionScreen(MetropoliTrans jogo) {
-        this.jogo = jogo;
 
         // Cria o Stage e o Skin
         viewport = new ScreenViewport();

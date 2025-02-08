@@ -5,7 +5,6 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import br.edu.metropolitrans.MetropoliTrans;
-import br.edu.metropolitrans.model.actors.Npc;
 import br.edu.metropolitrans.model.actors.Personagem;
 import br.edu.metropolitrans.model.maps.Mapas;
 
@@ -56,7 +55,7 @@ public class Minimap {
                     tamanhoPersonagem, tamanhoPersonagem);
 
             // Posiciona os NPCS no minimapa
-            for (Npc npc : personagem.npcs) {
+            personagem.npcs.forEach((nome, npc) -> {
                 if (npc.minimapaPonto != null && npc.statusAlertaMissao == 1) {
                     float npcX = npc.getX();
                     float npcY = npc.getY();
@@ -65,7 +64,7 @@ public class Minimap {
                     batch.draw(npc.minimapaPonto, minimapaNpcX - tamanhoPersonagem / 2,
                             minimapaNpcY - tamanhoPersonagem / 2, tamanhoPersonagem, tamanhoPersonagem);
                 }
-            }
+            });
 
             batch.end();
         }

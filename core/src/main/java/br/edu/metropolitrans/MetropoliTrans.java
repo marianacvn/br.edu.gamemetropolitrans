@@ -1,6 +1,5 @@
 package br.edu.metropolitrans;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -16,7 +15,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Array;
 import br.edu.metropolitrans.controller.Controller;
-import br.edu.metropolitrans.model.actors.ExplosionAnimation;
+import br.edu.metropolitrans.model.actors.BasicAnimation;
 import br.edu.metropolitrans.model.actors.Npc;
 import br.edu.metropolitrans.model.actors.ObjetoInterativo;
 import br.edu.metropolitrans.model.actors.Personagem;
@@ -25,7 +24,6 @@ import br.edu.metropolitrans.model.maps.Mapas;
 import br.edu.metropolitrans.model.utils.DebugMode;
 import br.edu.metropolitrans.view.components.mission_modal.MissionComponents;
 import br.edu.metropolitrans.view.font.FontBase;
-import br.edu.metropolitrans.view.screens.GameScreen;
 import br.edu.metropolitrans.view.screens.LoadingScreen;
 
 public class MetropoliTrans extends Game {
@@ -68,7 +66,7 @@ public class MetropoliTrans extends Game {
     /**
      * Lista de NPCs do jogo
      */
-    public ArrayList<Npc> npcs;
+    public HashMap<String, Npc> npcs;
 
     /**
      * Map de Veículos do jogo
@@ -112,7 +110,7 @@ public class MetropoliTrans extends Game {
 
     public HashMap<String, MissionComponents> missionComponents = new HashMap<>();
 
-    public ExplosionAnimation explosao;
+    public BasicAnimation explosao, bike;
 
     @Override
     public void create() {
@@ -164,18 +162,18 @@ public class MetropoliTrans extends Game {
 
         // Carrega os NPCs
         // Adiciona os npcs em um array
-        npcs = new ArrayList<Npc>();
+        npcs = new HashMap<>();
 
         // Carrega os Npcs
-        npcs.add(new Npc("maria", 280, 1220, "maria/sprite.png", estagioPrincipal, true));
-        npcs.add(new Npc("betania", 264, 200, "betania/sprite.png", estagioPrincipal, false));
-        npcs.add(new Npc("bruna", 1190, 200, "bruna/sprite.png", estagioPrincipal, false));
-        npcs.add(new Npc("antonio", 1485, 1130, "antonio/sprite.png", estagioPrincipal, false));
-        npcs.add(new Npc("heberto", 25, 650, "heberto/sprite.png", estagioPrincipal, 1, false));
-        npcs.add(new Npc("jose", 90, 1450, "jose/sprite.png", estagioPrincipal, false));
-        npcs.add(new Npc("josinaldo", 2090, 150, "josinaldo/sprite.png", estagioPrincipal, false));
-        npcs.add(new Npc("paulo", 1500, 100, "paulo/sprite.png", estagioPrincipal, false));
-        npcs.add(new Npc("juliana", 1200, 1130, "juliana/sprite.png", estagioPrincipal, false));
+        npcs.put("maria", new Npc("maria", 280, 1220, "maria/sprite.png", estagioPrincipal, true));
+        npcs.put("betania", new Npc("betania", 264, 200, "betania/sprite.png", estagioPrincipal, false));
+        npcs.put("bruna", new Npc("bruna", 1185, 1850, "bruna/sprite.png", estagioPrincipal, false));
+        npcs.put("antonio", new Npc("antonio", 1485, 1130, "antonio/sprite.png", estagioPrincipal, false));
+        npcs.put("heberto", new Npc("heberto", 25, 650, "heberto/sprite.png", estagioPrincipal, 1, false));
+        npcs.put("jose", new Npc("jose", 90, 1450, "jose/sprite.png", estagioPrincipal, false));
+        npcs.put("josinaldo", new Npc("josinaldo", 2090, 150, "josinaldo/sprite.png", estagioPrincipal, false));
+        npcs.put("paulo", new Npc("paulo", 1500, 100, "paulo/sprite.png", estagioPrincipal, false));
+        npcs.put("juliana", new Npc("juliana", 1185, 1130, "juliana/sprite.png", estagioPrincipal, false));
 
         // Adiciona os npcs no array de colisão
         personagem.npcs = npcs;
@@ -206,12 +204,12 @@ public class MetropoliTrans extends Game {
                 new Vehicle("compact-car", 380, 1335, 0, "compact-red-sprite.png", estagioPrincipal,
                         List.of("E-1*32"), true));
         vehicles.put(
-            "sport-blue-car",
-            new Vehicle("sport-blue-car", 385, 1500, 20, "sport-blue-sprite.png", estagioPrincipal,
-                    List.of("B-2*16"), true));
-            
+                "sport-blue-car",
+                new Vehicle("sport-blue-car", 385, 1500, 20, "sport-blue-sprite.png", estagioPrincipal,
+                        List.of("B-2*16"), true));
+
         // Instância animação de explosão
-        explosao = new ExplosionAnimation(1350, 1350, estagioPrincipal);
+        explosao = new BasicAnimation(1350, 1350, estagioPrincipal);
         String[] nomeArquivos = {
                 "files/animation/explosion/4.png",
                 "files/animation/explosion/5.png",
@@ -261,66 +259,6 @@ public class MetropoliTrans extends Game {
         inicializarJogo();
     }
 
-    public void inicializarComponentesMissao() {
-        float baseX = ((GameScreen.TELA_LARGURA - 530) / 2);
-        float baseY = (GameScreen.TELA_ALTURA - 400) / 2;
-
-        MissionComponents missao0 = new MissionComponents(0, this);
-        missao0.adicionarTituloMissao("Missão " + controller.MISSAO + ": ", baseX + 15, baseY);
-        missionComponents.put("missao0", missao0);
-        missao0.adicionarOpcaoImagem("mission0-option1", "mission0-option1.png", true, baseX + 5,
-                baseY + 230, false);
-        missao0.adicionarOpcaoImagem("mission0-option2", "mission0-option2.png", false, baseX + 65,
-                baseY + 35, false);
-        missao0.adicionarImagemCena("mission0-scene.png", baseX + 180, baseY + 15);
-        missionComponents.put("missao0", missao0);
-
-        MissionComponents missao1 = new MissionComponents(1, this);
-        missao1.adicionarTituloMissao("Missão " + controller.MISSAO + ": ", baseX + 15, baseY);
-        missao1.adicionarOpcaoImagem("mission1-option1", "mission1-option1_reduced.png", false, baseX + 15,
-                baseY + 265, true);
-        missao1.adicionarOpcaoImagem("mission1-option2", "mission1-option2_reduced.png", false, baseX + 15,
-                baseY + 265 - 50 - 15, true);
-        missao1.adicionarOpcaoImagem("mission1-option3", "mission1-option3_reduced.png", true, baseX + 15,
-                baseY + 200 - 50 - 15, true);
-        missao1.adicionarOpcaoImagem("mission1-option4", "mission1-option4_reduced.png", false, baseX + 15,
-                baseY + 135 - 50 - 15, true);
-        missao1.adicionarOpcaoImagem("mission1-option5", "mission1-option5_reduced.png", false, baseX + 15,
-                baseY + 70 - 50 - 15, true);
-        missao1.adicionarImagemCena("mission1-scene.png", baseX + 150, baseY + 15);
-        missionComponents.put("missao1", missao1);
-
-        MissionComponents missao2 = new MissionComponents(2, this);
-        missao2.adicionarTituloMissao("Missão " + controller.MISSAO + ": ", baseX + 15, baseY);
-        missao2.adicionarOpcaoImagem("mission2-option1", "mission2-option1.png", false, baseX + 15,
-                baseY + 265, true);
-        missao2.adicionarOpcaoImagem("mission2-option2", "mission2-option2.png", false, baseX + 15,
-                baseY + 265 - 50 - 15, true);
-        missao2.adicionarOpcaoImagem("mission2-option3", "mission2-option3.png", false, baseX + 15,
-                baseY + 200 - 50 - 15, true);
-        missao2.adicionarOpcaoImagem("mission2-option4", "mission2-option4.png", true, baseX + 15,
-                baseY + 135 - 50 - 15, true);
-        missao2.adicionarOpcaoImagem("mission2-option5", "mission2-option5.png", false, baseX + 15,
-                baseY + 70 - 50 - 15, true);
-        missao2.adicionarImagemCena("mission2-scene.png", baseX + 150, baseY + 15);
-        missionComponents.put("missao2", missao2);
-
-        MissionComponents missao3 = new MissionComponents(3, this);
-        missao3.adicionarTituloMissao("Missão " + controller.MISSAO + ": ", baseX + 15, baseY);
-        missao3.adicionarOpcaoImagem("mission3-option1", "mission3-option1.png", false, baseX + 15,
-                baseY + 265, true);
-        missao3.adicionarOpcaoImagem("mission3-option2", "mission3-option2.png", false, baseX + 15,
-                baseY + 265 - 50 - 15, true);
-        missao3.adicionarOpcaoImagem("mission3-option3", "mission3-option3.png", false, baseX + 15,
-                baseY + 200 - 50 - 15, true);
-        missao3.adicionarOpcaoImagem("mission3-option4", "mission3-option4.png", false, baseX + 15,
-                baseY + 135 - 50 - 15, true);
-        missao3.adicionarOpcaoImagem("mission3-option5", "mission3-option5.png", true, baseX + 15,
-                baseY + 70 - 50 - 15, true);
-        missao3.adicionarImagemCena("mission3-scene.png", baseX + 150, baseY + 15);
-        missionComponents.put("missao3", missao3);
-    }
-
     public void trocarTela(String tela) {
         this.setScreen(telas.get(tela));
     }
@@ -354,10 +292,10 @@ public class MetropoliTrans extends Game {
         if (personagem != null)
             personagem.dispose();
 
-        for (Npc npc : npcs) {
+        npcs.forEach((nome, npc) -> {
             if (npc != null)
                 npc.dispose();
-        }
+        });
         npcs.clear();
 
         for (Vehicle vehicle : vehicles.values()) {

@@ -1,6 +1,6 @@
 package br.edu.metropolitrans.controller;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -57,7 +57,7 @@ public class Controller {
     /**
      * Lista de NPCs do jogo
      */
-    public ArrayList<Npc> npcs;
+    public HashMap<String, Npc> npcs;
 
     /**
      * Objetos interativos
@@ -218,9 +218,9 @@ public class Controller {
      */
     public void controleInteracao() {
         if (objeto != null && Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
-            for (Npc npc : npcs) {
+            npcs.forEach((nome, npc) -> {
                 interacaoComNpc(npc);
-            }
+            });
         }
 
         if (objeto != null && objetoMissao != null && personagem.interagiu(objetoMissao)
@@ -232,10 +232,9 @@ public class Controller {
             // Remove o objeto da missão da sala e minimapa
             objetoMissao.setVisible(false);
             gameScreen.minimapa.isVisible = false;
-            // Remove os NPCs do mapa
-            for (Npc npc : npcs) {
+            npcs.forEach((nome, npc) -> {
                 npc.remove();
-            }
+            });
 
             // Muda o mapa para room.tmx
             jogo.mapaRenderizador.dispose();
@@ -252,7 +251,7 @@ public class Controller {
             montarCamadaPista(true);
 
             // Renova os retângulos de colisão
-            personagem.npcs = new ArrayList<Npc>();
+            personagem.npcs = new HashMap<>();
             personagem.setRetangulosColisao(jogo.retangulosColisao);
             personagem.setRetangulosPista(jogo.retangulosPista);
         } else if (objetoSairSala != null && personagem.interagiu(objetoSairSala)
@@ -262,9 +261,9 @@ public class Controller {
             gameScreen.minimapa.isVisible = true;
             // Adiciona os NPCs no array
             personagem.npcs = npcs;
-            for (Npc npc : npcs) {
+            npcs.forEach((nome, npc) -> {
                 npc.adicionarNoEstagio(jogo.estagioPrincipal);
-            }
+            });
 
             // Muda o mapa para map.tmx
             jogo.mapaRenderizador.dispose();
@@ -306,9 +305,9 @@ public class Controller {
             if (personagem.tipoInfracao != null) {
                 atualizaInfracao();
             } else {
-                for (Npc npc : npcs) {
+                npcs.forEach((nome, npc) -> {
                     atualizaStatusAlertaMissaoNpc(npc);
-                }
+                });
             }
         }
     }

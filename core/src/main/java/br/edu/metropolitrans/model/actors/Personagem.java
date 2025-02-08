@@ -2,7 +2,7 @@ package br.edu.metropolitrans.model.actors;
 
 import com.badlogic.gdx.scenes.scene2d.Stage;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
@@ -38,7 +38,7 @@ public class Personagem extends BaseActor {
 
     private Array<Rectangle> retangulosColisao, retangulosPista;
 
-    public ArrayList<Npc> npcs;
+    public HashMap<String, Npc> npcs;
 
     public Texture minimapaPonto;
 
@@ -243,15 +243,14 @@ public class Personagem extends BaseActor {
         }
 
         // Verifica colisões com o NPC
-        for (Npc npc : npcs) {
+        npcs.forEach((nome, npc) -> {
             if (sobrepoe(npc)) {
                 // Ajusta a posição do personagem para evitar a colisão
                 // Isso pode ser feito de várias maneiras, dependendo da lógica do seu jogo
                 // Por exemplo, você pode mover o personagem de volta para a posição anterior
                 setPosition(getX() - getVelocidadeVetor().x * delta, getY() - getVelocidadeVetor().y * delta);
-                break;
             }
-        }
+        });
 
         // Verifica colisões com a pista
         if (DebugMode.INFRACOES_ATIVAS) {

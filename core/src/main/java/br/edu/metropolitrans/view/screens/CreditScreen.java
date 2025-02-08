@@ -5,7 +5,6 @@ import br.edu.metropolitrans.MetropoliTrans;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import br.edu.metropolitrans.view.font.FontBase;
@@ -15,8 +14,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
-import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.Gdx;
 
 public class CreditScreen implements Screen {
@@ -32,12 +29,6 @@ public class CreditScreen implements Screen {
     CreditScreen(final MetropoliTrans jogo, Screen telaAnterior) {
         this.jogo = jogo;
         this.telaAnterior = telaAnterior;
-
-        // Carrega a textura de fundo e outras
-        Texture background = new Texture(Gdx.files.internal("files/backgrounds/background-light.png"));
-
-        // Carrega a imagem do background
-        Drawable backgroundDrawable = new TextureRegionDrawable(new TextureRegion(background));
 
         // Cria o Stage e o Skin
         stage = new Stage();

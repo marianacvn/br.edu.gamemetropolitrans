@@ -22,7 +22,6 @@ import br.edu.metropolitrans.MetropoliTrans;
 import br.edu.metropolitrans.view.components.buttons.ImageButtonBase;
 import br.edu.metropolitrans.view.components.buttons.TextButtonBase;
 import br.edu.metropolitrans.view.font.FontBase;
-import br.edu.metropolitrans.view.screens.CreditScreen;
 
 public class MenuScreen implements Screen {
 
