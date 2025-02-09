@@ -6,13 +6,12 @@ import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Rectangle;
 
 import br.edu.metropolitrans.MetropoliTrans;
-import br.edu.metropolitrans.model.actors.Npc;
 import br.edu.metropolitrans.model.actors.Vehicle;
 import br.edu.metropolitrans.view.screens.GameScreen;
 
 public class DebugMode {
     private static final TipoDebug DEBUG_MODE = TipoDebug.NENHUM;
-    public static final boolean INFRACOES_ATIVAS = false;
+    public static final boolean INFRACOES_ATIVAS = false; // TODO: Mudar ao finalizar o desenvolvimento
 
     private enum TipoDebug {
         LOG, UI, COMPLETO, NENHUM
@@ -55,10 +54,10 @@ public class DebugMode {
 
             // Desenha polígonos de colisão dos NPCs
             if (jogo.personagem.npcs != null) {
-                for (Npc npc : jogo.personagem.npcs) {
+                jogo.personagem.npcs.forEach((nome, npc) -> {
                     Polygon npcPoligono = npc.getLimitePoligono();
                     gameScreen.renderizadorForma.polygon(npcPoligono.getTransformedVertices());
-                }
+                });
             }
 
             // Desenha polígonos de colisão dos veículos

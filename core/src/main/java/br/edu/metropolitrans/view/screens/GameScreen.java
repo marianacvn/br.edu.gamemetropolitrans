@@ -7,7 +7,6 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.MathUtils;
 import br.edu.metropolitrans.MetropoliTrans;
-import br.edu.metropolitrans.model.actors.Npc;
 import br.edu.metropolitrans.model.actors.Personagem;
 import br.edu.metropolitrans.model.utils.DebugMode;
 import br.edu.metropolitrans.view.components.dialog.DialogBox;
@@ -178,11 +177,17 @@ public class GameScreen implements Screen {
         // Obs.: Caso as camadas mudem no tiled, deve-se alterar aqui também
         int[] camadas = null;
         if (jogo.controller.objeto != null) {
-            camadas = new int[] { 0, 1, 2, 3, 4 };
+            camadas = new int[] { 0, 1, 2, 3, 4, 5 };
         } else {
             camadas = new int[] { 0, 1, 2 };
         }
         jogo.mapaRenderizador.render(camadas);
+
+        // A camada 1 é um sobrepiso da missão 4, por padrão ela é ouculta,
+        // mas quando a missão é finalizada, ela é exibida
+        if (jogo.controller.MISSAO >= 4 && jogo.controller.controleMissao.ativaCamadaMissao4) {
+            jogo.mapaRenderizador.getMap().getLayers().get(1).setVisible(true);
+        }
 
         // Inicia o batch de desenho
         jogo.batch.begin();
@@ -201,7 +206,7 @@ public class GameScreen implements Screen {
 
         // Renderiza a camada de Topo
         if (jogo.controller.objeto != null) {
-            jogo.mapaRenderizador.render(new int[] { 5 }); // Topo
+            jogo.mapaRenderizador.render(new int[] { 6 }); // Topo
         } else {
             jogo.mapaRenderizador.render(new int[] { 3 }); // Topo
         }
@@ -235,12 +240,12 @@ public class GameScreen implements Screen {
 
         // Desenha o alerta de missão acima da posição do NPC
         if (jogo.personagem.npcs != null) {
-            for (Npc npc : jogo.personagem.npcs) {
+            jogo.personagem.npcs.forEach((nome, npc) -> {
                 alertaMissao.x = npc.getX();
                 alertaMissao.y = npc.getY();
                 alertaMissao.status = npc.statusAlertaMissao;
                 alertaMissao.render();
-            }
+            });
         }
 
         // Atualiza a posição da caixa modal de missão para acompanhar a câmera

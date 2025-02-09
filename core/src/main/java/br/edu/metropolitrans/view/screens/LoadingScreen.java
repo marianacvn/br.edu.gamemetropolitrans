@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.Color;
 
 import br.edu.metropolitrans.MetropoliTrans;
+import br.edu.metropolitrans.view.components.MissionInit;
 import br.edu.metropolitrans.view.font.FontBase;
 
 public class LoadingScreen implements Screen {
@@ -31,7 +32,7 @@ public class LoadingScreen implements Screen {
         batch = new SpriteBatch();
 
         // Carrega a textura de fundo
-        background = new Texture(Gdx.files.internal("files/backgrounds/background-principal-4.png"));
+        background = new Texture(Gdx.files.internal("files/backgrounds/background-principal-2.png"));
 
         // Carregar a fonte
         font = FontBase.getInstancia().getFonte(50, new Color(0xffffffff), FontBase.Fontes.MONOGRAM);
@@ -68,7 +69,7 @@ public class LoadingScreen implements Screen {
             displayTime -= delta;
             if (displayTime <= 0) {
                 jogo.inicializarJogo();
-                jogo.inicializarComponentesMissao();
+                MissionInit.inicializarComponentesMissao(jogo.missionComponents, jogo);
 
                 jogo.telas.put("menu", new MenuScreen(jogo));
                 jogo.setScreen(jogo.telas.get("menu"));

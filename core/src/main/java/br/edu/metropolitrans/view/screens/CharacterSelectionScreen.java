@@ -23,9 +23,6 @@ import br.edu.metropolitrans.view.components.buttons.TextButtonBase;
 import br.edu.metropolitrans.view.font.FontBase;
 
 public class CharacterSelectionScreen implements Screen {
-    private MetropoliTrans jogo;
-    /* Background da tela */
-    public Texture background;
     private Image characterImage;
     private Label titulo;
     private Texture maleTexture;
@@ -39,10 +36,6 @@ public class CharacterSelectionScreen implements Screen {
     public Viewport viewport;
 
     public CharacterSelectionScreen(MetropoliTrans jogo) {
-        this.jogo = jogo;
-
-        // Carrega a textura de fundo
-        background = new Texture(Gdx.files.internal("files/backgrounds/background-light.png"));
 
         // Cria o Stage e o Skin
         viewport = new ScreenViewport();
@@ -67,6 +60,17 @@ public class CharacterSelectionScreen implements Screen {
         float tituloY = Gdx.graphics.getHeight() - tituloHeight - 50;
         titulo.setPosition(tituloX, tituloY);
 
+        // Carrega a textura do background
+        Texture characterBackgroundTexture = new Texture(
+                Gdx.files.internal("files/backgrounds/characterBackground.png"));
+
+        // Cria uma Image para o background
+        Image characterBackground = new Image(characterBackgroundTexture);
+
+        
+
+        // Adiciona a Image do background ao Stage
+        stage.addActor(characterBackground);
 
         maleTexture = new Texture(Gdx.files.internal("files/characters/mainCharacter/male.png"));
         femaleTexture = new Texture(Gdx.files.internal("files/characters/mainCharacter/female.png"));
@@ -76,6 +80,10 @@ public class CharacterSelectionScreen implements Screen {
         characterImage.setPosition(Gdx.graphics.getWidth() / 2 - characterImage.getWidth() / 2,
                 Gdx.graphics.getHeight() / 2);
         stage.addActor(characterImage);
+
+        // Posiciona a Image do background pra ficar mais pro meio da tela e subir mais um pouco 
+        characterBackground.setPosition(Gdx.graphics.getWidth() / 2 - characterBackground.getWidth() / 2,
+                Gdx.graphics.getHeight() / 2 - characterBackground.getHeight() / 2 + 50);
 
         // Botão para a seta esquerda
         ImageButton leftArrowButton = new ImageButton(new TextureRegionDrawable(
@@ -90,6 +98,7 @@ public class CharacterSelectionScreen implements Screen {
                 }
             }
         });
+
         stage.addActor(leftArrowButton);
 
         // Botão para a seta direita
@@ -134,15 +143,10 @@ public class CharacterSelectionScreen implements Screen {
     @Override
     public void render(float delta) {
         // Limpa a tela com uma cor preta
-        ScreenUtils.clear(0, 0, 0, 1);
+        ScreenUtils.clear(Color.WHITE);
 
         // Atualiza o viewport
         viewport.apply();
-
-        // Desenha o fundo
-        jogo.batch.begin();
-        jogo.batch.draw(background, 0, 0, viewport.getWorldWidth(), viewport.getWorldHeight());
-        jogo.batch.end();
 
         // Atualiza e desenha o Stage
         stage.act(delta);
@@ -154,8 +158,6 @@ public class CharacterSelectionScreen implements Screen {
     public void resize(int width, int height) {
         stage.getViewport().update(width, height, true);
     }
-
-    
 
     @Override
     public void pause() {
@@ -173,10 +175,8 @@ public class CharacterSelectionScreen implements Screen {
     public void dispose() {
         stage.dispose();
         skin.dispose();
-        background.dispose();
         maleTexture.dispose();
         femaleTexture.dispose();
-        background.dispose();
 
     }
 
