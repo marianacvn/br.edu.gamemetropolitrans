@@ -335,6 +335,8 @@ public class MissionController {
 
         DebugMode.mostrarLog("Missão", "Iniciando veículos da missão 5");
         Vehicle blackViperCar = jogo.vehicles.get("black-viper-car");
+        Npc maria = jogo.npcs.get("maria");
+        maria.setPosition(1732, 556);
 
         if (npc != null) {
             if (jogo.controller.mostrarDialogo) {
@@ -365,6 +367,12 @@ public class MissionController {
                 DebugMode.mostrarLog("Missão", "Missão 5 finalizada, exibindo placa");
                 jogo.objetoMissao.setVisible(false);
                 jogo.objetoPlaca5.setVisible(true);
+                
+                maria.valoresDefault(100);
+                maria.setRoteiro(List.of("D-6*32", "C-3*32", "D-3*32"));
+                maria.repeteAnimacao = false;
+                maria.animacaoAtivada = true;
+                // maria.statusAlertaMissao = 0;
 
                 // Atualiza a missão
                 atualizarMissao(6, "josinaldo");
