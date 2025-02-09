@@ -3,7 +3,6 @@ package br.edu.metropolitrans.view.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -23,7 +22,6 @@ import br.edu.metropolitrans.view.font.FontBase;
 public class CoursesScreen implements Screen {
     public final MetropoliTrans jogo;
     public Stage stage;
-    public Texture background;
     public Skin skin;
     public Label titulo;
     public Screen telaAnterior;
@@ -33,9 +31,6 @@ public class CoursesScreen implements Screen {
     public CoursesScreen(final MetropoliTrans jogo, Screen telaAnterior) {
         this.jogo = jogo;
         this.telaAnterior = telaAnterior;
-
-        // Carrega a textura de fundo e outras
-        background = new Texture(Gdx.files.internal("files/backgrounds/background-light.png"));
 
         // Cria o Stage e o Skin
         stage = new Stage();
@@ -215,13 +210,6 @@ public class CoursesScreen implements Screen {
         // Limpa a tela com uma cor preta
         ScreenUtils.clear(Color.WHITE);
 
-        
-
-        // Desenha o fundo
-        jogo.batch.begin();
-        jogo.batch.draw(background, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        jogo.batch.end();
-
         // Atualiza e desenha o Stage
         stage.act(delta);
         stage.draw();
@@ -234,7 +222,6 @@ public class CoursesScreen implements Screen {
 
     @Override
     public void dispose() {
-        background.dispose();
         stage.dispose();
         skin.dispose();
     }

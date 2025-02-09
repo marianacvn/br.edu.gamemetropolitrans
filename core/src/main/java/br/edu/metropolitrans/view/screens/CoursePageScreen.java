@@ -23,7 +23,6 @@ public class CoursePageScreen implements Screen {
     public final MetropoliTrans jogo;
     public Stage stage;
     public Skin skin;
-    public Texture background;
     private final Label titulo;
     private final Label texto;
     private final Image imagem;
@@ -33,9 +32,6 @@ public class CoursePageScreen implements Screen {
     public CoursePageScreen(final MetropoliTrans jogo, CoursesScreen coursesScreen, Course course) {
         this.jogo = jogo;
         this.course = course;
-
-        // Carrega a textura de fundo e outras
-        background = new Texture(Gdx.files.internal("files/backgrounds/background-light.png"));
 
         // Cria o Stage e o Skin
         stage = new Stage();
@@ -124,11 +120,6 @@ public class CoursePageScreen implements Screen {
         // Limpa a tela com uma cor preta
         ScreenUtils.clear(Color.WHITE);
 
-        // Desenha o fundo
-        jogo.batch.begin();
-        jogo.batch.draw(background, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        jogo.batch.end();
-
         // Atualiza e desenha o Stage
         stage.act(delta);
         stage.draw();
@@ -157,8 +148,6 @@ public class CoursePageScreen implements Screen {
     public void dispose() {
         stage.dispose();
         skin.dispose();
-        background.dispose();
-
     }
 
 }
