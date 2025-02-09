@@ -77,6 +77,7 @@ public class MetropoliTrans extends Game {
      * Objetos interativos
      */
     public ObjetoInterativo objeto, objetoChao, objetoSairSala, objetoMissao, objetoPlaca1, objetoPlaca2, objetoPlaca3,
+            objetoPlaca5,
             objetoPc;
 
     /**
@@ -152,6 +153,9 @@ public class MetropoliTrans extends Game {
         objetoPlaca3 = new ObjetoInterativo("placa3", 380, 1450, "mission3-result.png", estagioPrincipal);
         objetoPlaca3.setVisible(false);
 
+        objetoPlaca5 = new ObjetoInterativo("placa5", 1956, 512, "mission5-result.png", estagioPrincipal);
+        objetoPlaca5.setVisible(false);
+
         // Carrega o objeto interativo do PC no mapa room
         objetoPc = new ObjetoInterativo("pc", 1020, 1470, "background-transparent.png", estagioPrincipal);
         // objetoPc.setVisible(false);
@@ -205,8 +209,12 @@ public class MetropoliTrans extends Game {
                         List.of("E-1*32"), true));
         vehicles.put(
                 "sport-blue-car",
-                new Vehicle("sport-blue-car", 385, 1500, 20, "sport-blue-sprite.png", estagioPrincipal,
+                new Vehicle("sport-blue-car", 385, 1515, 20, "sport-blue-sprite.png", estagioPrincipal,
                         List.of("B-2*16"), true));
+        vehicles.put(
+                "black-viper-car",
+                new Vehicle("black-viper-car", 1840, 50, 150, "black-viper-sprite.png", estagioPrincipal,
+                        List.of("C-20*32"), true));
 
         // Instância animação de explosão
         explosao = new BasicAnimation(1350, 1350, estagioPrincipal);

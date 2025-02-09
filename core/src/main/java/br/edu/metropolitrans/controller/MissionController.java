@@ -61,6 +61,9 @@ public class MissionController {
             case 4:
                 logicaMissao4(npc);
                 break;
+            case 5:
+                logicaMissao5(npc);
+                break;
             default:
                 break;
         }
@@ -160,7 +163,7 @@ public class MissionController {
                     // Atualiza a missão
                     atualizarMissao(2, "juliana");
                     controlaTrocaMissao = true;
-                    jogo.objetoMissao.setPosition(1700, 1450);
+                    jogo.objetoMissao.setPosition(jogo.objetoPlaca2.x, jogo.objetoPlaca2.y);
                 }
             }
         }
@@ -224,7 +227,7 @@ public class MissionController {
                 // Atualiza a missão
                 atualizarMissao(3, "antonio");
                 controlaTrocaMissao = true;
-                jogo.objetoMissao.setPosition(380, 1450);
+                jogo.objetoMissao.setPosition(jogo.objetoPlaca3.x, jogo.objetoPlaca3.y);
             }
         }
     }
@@ -312,14 +315,58 @@ public class MissionController {
                         DebugMode.mostrarLog("Missão", "Missão 4: Exibindo desafio de Bruna, exibindo ciclofaixa");
                         // Exibe a ciclofaixa no mapa prinxipal
                         ativaCamadaMissao4 = true;
-                        npc.statusAlertaMissao = 0;
-
-                        // // Atualiza a missão
-                        // atualizarMissao(5, "proximo");
-                        // controlaTrocaMissao = true; // TODO: descomentar assim que a missão 5 for
-                        // criada
+                        
+                        // Atualiza a missão
+                        atualizarMissao(5, "bruna");
+                        controlaTrocaMissao = true;
+                        jogo.objetoMissao.setPosition(jogo.objetoPlaca5.x, jogo.objetoPlaca5.y);
                     }
                 }
+            }
+        }
+    }
+
+    private void logicaMissao5(Npc npc) {
+        DebugMode.mostrarLog("Missão", "Início da missão 5");
+        trocaMissao();
+
+        DebugMode.mostrarLog("Missão", "Iniciando veículos da missão 5");
+        Vehicle blackViperCar = jogo.vehicles.get("black-viper-car");
+        
+        if (npc != null) {
+            if (jogo.controller.mostrarDialogo) {
+                if (npc.nome.equals("josinaldo")) {
+                    blackViperCar.setVisible(true);
+                    blackViperCar.animacaoAtivada = true;
+                    missaoConcluida = false;
+                }
+            } else {
+                blackViperCar.setVisible(false);
+                blackViperCar.animacaoAtivada = false;
+            }
+        }
+
+        if (!blackViperCar.isVisible() && npc != null && npc.nome.equals("josinaldo")) {
+            if (npc.statusAlertaMissao == 2 && !missaoConcluida) {
+                DebugMode.mostrarLog("Missão", "Missão 5: Exibindo desafio de Antônio");
+                missaoConcluida = false;
+                blackViperCar.pararAnimacao();
+
+                MissionComponents componentesMissao = jogo.missionComponents.get("missao5");
+                componentesMissao.titulo
+                        .setText("Missão " + (jogo.controller.MISSAO) + ": " + missao.getDescricao());
+                jogo.controller.gameScreen.missaoModalBox.missionComponents = componentesMissao;
+                jogo.objetoMissao.setVisible(true);
+            }
+            if (missaoConcluida) {
+                DebugMode.mostrarLog("Missão", "Missão 5 finalizada, exibindo placa");
+                jogo.objetoMissao.setVisible(false);
+                jogo.objetoPlaca5.setVisible(true);
+
+                // Atualiza a missão
+                //atualizarMissao(6, "josinaldo");
+                //controlaTrocaMissao = true;
+                //jogo.objetoMissao.setPosition(jogo.objetoPlaca6.x, jogo.objetoPlaca6.y);
             }
         }
     }

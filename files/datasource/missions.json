@@ -61,6 +61,18 @@
             "personagens": [
                 "bruna"
             ]
+        },
+        {
+            "id": 5,
+            "nome": "Placas de velocidade da via",
+            "descricao": "Para uma via local, qual seria a\r\nplaca ideal para este problema? [Artigo/Regra: 61]",
+            "recompensaMoedas": 100,
+            "experiencia": 10,
+            "valorErro": 20,
+            "finalizouMissao": false,
+            "personagens": [
+                "josinaldo"
+            ]
         }
     ]
 }

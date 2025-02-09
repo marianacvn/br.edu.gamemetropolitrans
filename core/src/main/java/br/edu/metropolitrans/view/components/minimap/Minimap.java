@@ -2,25 +2,24 @@ package br.edu.metropolitrans.view.components.minimap;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import br.edu.metropolitrans.MetropoliTrans;
 import br.edu.metropolitrans.model.actors.Personagem;
 import br.edu.metropolitrans.model.maps.Mapas;
 
 public class Minimap {
-    public Texture background;
+    public Texture background, background2;
     public Texture personagemTexture;
     // private Texture toggleButtonTexture;
     private float x, y;
-    private SpriteBatch batch;
+    private MetropoliTrans jogo;
     private float minimapaLargura = 200;
     private float minimapaAltura = 200;
     public boolean isVisible;
     // private Rectangle toggleButtonBounds;
 
     public Minimap(float x, float y, MetropoliTrans jogo) {
-        this.batch = jogo.batch;
+        this.jogo = jogo;
         this.personagemTexture = jogo.personagem.minimapaPonto;
         // this.toggleButtonTexture = new
         // Texture(Gdx.files.internal("files/itens/seta.png"));
@@ -30,14 +29,19 @@ public class Minimap {
         // this.toggleButtonBounds = new Rectangle(Gdx.graphics.getWidth() - 34, 10, 24,
         // 24); // necessário
         background = new Texture(Gdx.files.internal("files/others/map.png"));
+        background2 = new Texture(Gdx.files.internal("files/others/map2.png"));
     }
 
     public void render(Personagem personagem) {
         // Se o minimapa estiver visível, desenha o minimapa
         if (isVisible) {
-            batch.begin();
+            jogo.batch.begin();
 
-            batch.draw(background, x, y, minimapaLargura, minimapaAltura);
+            if (jogo.controller.controleMissao.ativaCamadaMissao4) {
+                jogo.batch.draw(background2, x, y, minimapaLargura, minimapaAltura);
+            } else {
+                jogo.batch.draw(background, x, y, minimapaLargura, minimapaAltura);
+            }
 
             // Obter as coordenadas do personagem no mapa grande
             float personagemX = personagem.getX();
@@ -51,7 +55,7 @@ public class Minimap {
             float tamanhoPersonagem = 24; // Tamanho da imagem do personagem
 
             // Desenha o personagem no minimapa
-            batch.draw(personagemTexture, minimapaX - tamanhoPersonagem / 2, minimapaY - tamanhoPersonagem / 2,
+            jogo.batch.draw(personagemTexture, minimapaX - tamanhoPersonagem / 2, minimapaY - tamanhoPersonagem / 2,
                     tamanhoPersonagem, tamanhoPersonagem);
 
             // Posiciona os NPCS no minimapa
@@ -61,12 +65,12 @@ public class Minimap {
                     float npcY = npc.getY();
                     float minimapaNpcX = x + (npcX / Mapas.MAPA_LARGURA) * minimapaLargura;
                     float minimapaNpcY = y + (npcY / Mapas.MAPA_ALTURA) * minimapaAltura;
-                    batch.draw(npc.minimapaPonto, minimapaNpcX - tamanhoPersonagem / 2,
+                    jogo.batch.draw(npc.minimapaPonto, minimapaNpcX - tamanhoPersonagem / 2,
                             minimapaNpcY - tamanhoPersonagem / 2, tamanhoPersonagem, tamanhoPersonagem);
                 }
             });
 
-            batch.end();
+            jogo.batch.end();
         }
     }
 
