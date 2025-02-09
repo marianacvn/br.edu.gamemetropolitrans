@@ -67,6 +67,9 @@ public class MissionController {
             case 6:
                 logicaMissao6(npc);
                 break;
+            case 7:
+                logicaMissao7(npc);
+                break;
             default:
                 break;
         }
@@ -367,7 +370,7 @@ public class MissionController {
                 DebugMode.mostrarLog("Missão", "Missão 5 finalizada, exibindo placa");
                 jogo.objetoMissao.setVisible(false);
                 jogo.objetoPlaca5.setVisible(true);
-                
+
                 maria.valoresDefault(100);
                 maria.setRoteiro(List.of("D-6*32", "C-3*32", "D-3*32"));
                 maria.repeteAnimacao = false;
@@ -432,8 +435,42 @@ public class MissionController {
                 jogo.efeitoBuzina.dispose();
 
                 // Atualiza a missão
-                // atualizarMissao(7, "jose");
+                atualizarMissao(7, "paulo");
+                controlaTrocaMissao = true;
+                jogo.objetoMissao.setPosition(jogo.objetoPlaca7.x, jogo.objetoPlaca7.y);
+            }
+        }
+    }
+
+    private void logicaMissao7(Npc npc) {
+        DebugMode.mostrarLog("Missão", "Início da missão 7");
+        trocaMissao();
+
+        DebugMode.mostrarLog("Missão", "Iniciando veículos da missão 7");
+        if (npc != null && jogo.controller.mostrarDialogo && npc.nome.equals("betania")) {
+            missaoConcluida = false;
+        }
+
+        if (npc != null && npc.nome.equals("betania")) {
+            if (npc.statusAlertaMissao == 2 && !missaoConcluida) {
+                DebugMode.mostrarLog("Missão", "Missão 5: Exibindo desafio de Antônio");
+                missaoConcluida = false;
+
+                MissionComponents componentesMissao = jogo.missionComponents.get("missao7");
+                componentesMissao.titulo
+                        .setText("Missão " + (jogo.controller.MISSAO) + ": " + missao.getDescricao());
+                jogo.controller.gameScreen.missaoModalBox.missionComponents = componentesMissao;
+                jogo.objetoMissao.setVisible(true);
+            }
+            if (missaoConcluida) {
+                DebugMode.mostrarLog("Missão", "Missão 7 finalizada, exibindo placa");
+                jogo.objetoMissao.setVisible(false);
+                jogo.objetoPlaca7.setVisible(true);
+
+                // Atualiza a missão
+                // atualizarMissao(6, "josinaldo");
                 // controlaTrocaMissao = true;
+                // jogo.objetoMissao.setPosition(jogo.objetoPlaca6.x, jogo.objetoPlaca6.y);
             }
         }
     }

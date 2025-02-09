@@ -82,8 +82,7 @@ public class MetropoliTrans extends Game {
      * Objetos interativos
      */
     public ObjetoInterativo objeto, objetoChao, objetoSairSala, objetoMissao, objetoPlaca1, objetoPlaca2, objetoPlaca3,
-            objetoPlaca5, objetoPlaca6,
-            objetoPc;
+            objetoPlaca5, objetoPlaca6, objetoPlaca7, objetoPc;
 
     /**
      * Mapas do jogo
@@ -167,6 +166,9 @@ public class MetropoliTrans extends Game {
 
         objetoPlaca6 = new ObjetoInterativo("placa6", 1480, 256, "mission6-result.png", estagioPrincipal);
         objetoPlaca6.setVisible(false);
+
+        objetoPlaca7 = new ObjetoInterativo("placa7", 488, 200, "mission7-result.png", estagioPrincipal);
+        objetoPlaca7.setVisible(false);
 
         // Carrega o objeto interativo do PC no mapa room
         objetoPc = new ObjetoInterativo("pc", 1020, 1470, "background-transparent.png", estagioPrincipal);

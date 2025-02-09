@@ -85,6 +85,18 @@
             "personagens": [
                 "paulo"
             ]
+        },
+        {
+            "id": 7,
+            "nome": "Área escolar sem sinalização",
+            "descricao": "Qual placa representa uma solução\r\npara o problema apresentado? [Artigo/Regra: Sinal A-33b]",
+            "recompensaMoedas": 100,
+            "experiencia": 10,
+            "valorErro": 20,
+            "finalizouMissao": false,
+            "personagens": [
+                "betania"
+            ]
         }
     ]
 }
