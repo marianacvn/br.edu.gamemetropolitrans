@@ -111,7 +111,7 @@ public class GameScreen implements Screen {
 
     @Override
     public void show() {
-        jogo.MusicaMenu.stop();
+        jogo.musicaMenu.stop();
     }
 
     @Override

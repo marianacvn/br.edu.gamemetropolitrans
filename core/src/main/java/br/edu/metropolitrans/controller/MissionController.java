@@ -64,6 +64,9 @@ public class MissionController {
             case 5:
                 logicaMissao5(npc);
                 break;
+            case 6:
+                logicaMissao6(npc);
+                break;
             default:
                 break;
         }
@@ -315,7 +318,7 @@ public class MissionController {
                         DebugMode.mostrarLog("Missão", "Missão 4: Exibindo desafio de Bruna, exibindo ciclofaixa");
                         // Exibe a ciclofaixa no mapa prinxipal
                         ativaCamadaMissao4 = true;
-                        
+
                         // Atualiza a missão
                         atualizarMissao(5, "bruna");
                         controlaTrocaMissao = true;
@@ -332,7 +335,7 @@ public class MissionController {
 
         DebugMode.mostrarLog("Missão", "Iniciando veículos da missão 5");
         Vehicle blackViperCar = jogo.vehicles.get("black-viper-car");
-        
+
         if (npc != null) {
             if (jogo.controller.mostrarDialogo) {
                 if (npc.nome.equals("josinaldo")) {
@@ -364,9 +367,65 @@ public class MissionController {
                 jogo.objetoPlaca5.setVisible(true);
 
                 // Atualiza a missão
-                //atualizarMissao(6, "josinaldo");
-                //controlaTrocaMissao = true;
-                //jogo.objetoMissao.setPosition(jogo.objetoPlaca6.x, jogo.objetoPlaca6.y);
+                atualizarMissao(6, "josinaldo");
+                controlaTrocaMissao = true;
+                jogo.objetoMissao.setPosition(jogo.objetoPlaca6.x, jogo.objetoPlaca6.y);
+            }
+        }
+    }
+
+    private void logicaMissao6(Npc npc) {
+        DebugMode.mostrarLog("Missão", "Início da missão 6");
+        trocaMissao();
+
+        DebugMode.mostrarLog("Missão", "Iniciando veículos da missão 6");
+        Vehicle compactCar = jogo.vehicles.get("compact-car");
+        compactCar.setPosition(1382, 256);
+        compactCar.setRoteiro(List.of("C-1*32"));
+        compactCar.setVisible(true);
+        compactCar.animacaoAtivada = true;
+
+        if (npc != null && jogo.controller.mostrarDialogo) {
+            if (npc.nome.equals("paulo")) {
+                missaoConcluida = false;
+            }
+        }
+
+        if (npc != null && npc.nome.equals("paulo")) {
+            // Verifica se o personage está próximo do NPC
+            // Se tiver aciona a buzina
+            if (jogo.personagem.estaDentroDaDistancia(400, npc)) {
+                jogo.efeitoBuzina.play();
+            } else {
+                jogo.efeitoBuzina.stop();
+            }
+
+            if (npc.statusAlertaMissao == 2 && !missaoConcluida) {
+                DebugMode.mostrarLog("Missão", "Missão 6: Exibindo desafio de Paulo");
+                missaoConcluida = false;
+                compactCar.pararAnimacao();
+
+                MissionComponents componentesMissao = jogo.missionComponents.get("missao6");
+                componentesMissao.titulo
+                        .setText("Missão " + (jogo.controller.MISSAO) + ": " + missao.getDescricao());
+                jogo.controller.gameScreen.missaoModalBox.missionComponents = componentesMissao;
+                jogo.objetoMissao.setVisible(true);
+            }
+            if (missaoConcluida) {
+                DebugMode.mostrarLog("Missão", "Missão 6 finalizada, exibindo placa");
+                jogo.objetoMissao.setVisible(false);
+                jogo.objetoPlaca6.setVisible(true);
+
+                compactCar.setVisible(false);
+                compactCar.animacaoAtivada = false;
+                compactCar.pararAnimacao();
+
+                jogo.efeitoBuzina.stop();
+                jogo.efeitoBuzina.dispose();
+
+                // Atualiza a missão
+                // atualizarMissao(7, "jose");
+                // controlaTrocaMissao = true;
             }
         }
     }

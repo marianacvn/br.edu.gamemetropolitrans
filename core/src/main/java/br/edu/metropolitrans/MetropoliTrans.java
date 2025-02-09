@@ -51,7 +51,12 @@ public class MetropoliTrans extends Game {
     /**
      * Música do menu
      */
-    public Music MusicaMenu;
+    public Music musicaMenu;
+
+    /**
+     * Efeito sonoro de buzina
+     */
+    public Music efeitoBuzina;
 
     /**
      * Map de telas do jogo
@@ -77,7 +82,7 @@ public class MetropoliTrans extends Game {
      * Objetos interativos
      */
     public ObjetoInterativo objeto, objetoChao, objetoSairSala, objetoMissao, objetoPlaca1, objetoPlaca2, objetoPlaca3,
-            objetoPlaca5,
+            objetoPlaca5, objetoPlaca6,
             objetoPc;
 
     /**
@@ -127,9 +132,13 @@ public class MetropoliTrans extends Game {
         fonte = FontBase.getInstancia().getFonte(30, FontBase.Fontes.PADRAO);
 
         // Carrega a música do menu
-        MusicaMenu = Gdx.audio.newMusic(Gdx.files.internal("files/songs/lofi-ambient.mp3"));
-        MusicaMenu.setLooping(true);
-        MusicaMenu.setVolume(0.5f);
+        musicaMenu = Gdx.audio.newMusic(Gdx.files.internal("files/songs/lofi-ambient.mp3"));
+        musicaMenu.setLooping(true);
+        musicaMenu.setVolume(0.5f);
+
+        efeitoBuzina = Gdx.audio.newMusic(Gdx.files.internal("files/songs/buzina.mp3"));
+        efeitoBuzina.setLooping(true);
+        efeitoBuzina.setVolume(0.5f);
 
         // Carrega o mapa
         mapas = new Mapas();// Carrega o mapa
@@ -155,6 +164,9 @@ public class MetropoliTrans extends Game {
 
         objetoPlaca5 = new ObjetoInterativo("placa5", 1956, 512, "mission5-result.png", estagioPrincipal);
         objetoPlaca5.setVisible(false);
+
+        objetoPlaca6 = new ObjetoInterativo("placa6", 1480, 256, "mission6-result.png", estagioPrincipal);
+        objetoPlaca6.setVisible(false);
 
         // Carrega o objeto interativo do PC no mapa room
         objetoPc = new ObjetoInterativo("pc", 1020, 1470, "background-transparent.png", estagioPrincipal);
@@ -236,7 +248,7 @@ public class MetropoliTrans extends Game {
                 estagioPrincipal);
 
         // Inicia a reprodução da música do menu
-        MusicaMenu.play();
+        musicaMenu.play();
 
         // Cria o controle do jogo
         controller = new Controller(this);
@@ -344,8 +356,8 @@ public class MetropoliTrans extends Game {
         if (fonte != null) {
             fonte.dispose();
         }
-        if (MusicaMenu != null) {
-            MusicaMenu.dispose();
+        if (musicaMenu != null) {
+            musicaMenu.dispose();
         }
         if (estagioPrincipal != null) {
             estagioPrincipal.dispose();

@@ -94,7 +94,7 @@ public class ConfigScreen implements Screen {
         sliderStyle.background = sliderBackgroundDrawable; // Use diretamente o Drawable
         sliderStyle.knob = sliderKnobDrawable; // Use diretamente o Drawable
         sliderVolume = new Slider(0, 1, 0.1f, false, sliderStyle);
-        sliderVolume.setValue(jogo.MusicaMenu.getVolume());
+        sliderVolume.setValue(jogo.musicaMenu.getVolume());
         sliderVolume.setPosition(Gdx.graphics.getWidth() / 2 - 100, titulo.getY() - 60);
 
         Label.LabelStyle labelStyle2 = new Label.LabelStyle();
@@ -106,7 +106,7 @@ public class ConfigScreen implements Screen {
         sliderVolume.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                jogo.MusicaMenu.setVolume(sliderVolume.getValue());
+                jogo.musicaMenu.setVolume(sliderVolume.getValue());
                 volumeLabel.setText("Volume: " + (int) (sliderVolume.getValue() * 100) + "%");
             }
         });

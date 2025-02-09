@@ -80,9 +80,9 @@ public class MenuScreen implements Screen {
             public void clicked(InputEvent event, float x, float y) {
                 isMuted = !isMuted;
                 if (isMuted) {
-                    jogo.MusicaMenu.pause();
+                    jogo.musicaMenu.pause();
                 } else {
-                    jogo.MusicaMenu.play();
+                    jogo.musicaMenu.play();
                 }
             }
         });

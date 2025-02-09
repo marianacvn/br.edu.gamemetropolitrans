@@ -112,6 +112,25 @@ public class MissionInit {
 		
         // endregion
 
+        // region missao 6
+
+        MissionComponents missao6 = new MissionComponents(2, jogo);
+        missao6.adicionarTituloMissao("Missão 6: ", baseX + 15, baseY);
+        missao6.adicionarOpcaoImagem("mission6-option1", "mission2-option1.png", false, baseX + 15,
+                baseY + 265, true);
+        missao6.adicionarOpcaoImagem("mission6-option2", "mission2-option2.png", false, baseX + 15,
+                baseY + 265 - 50 - 15, true);
+        missao6.adicionarOpcaoImagem("mission6-option3", "mission2-option3.png", false, baseX + 15,
+                baseY + 200 - 50 - 15, true);
+        missao6.adicionarOpcaoImagem("mission6-option4", "mission2-option4.png", false, baseX + 15,
+                baseY + 135 - 50 - 15, true);
+        missao6.adicionarOpcaoImagem("mission6-option5", "mission2-option5.png", true, baseX + 15,
+                baseY + 70 - 50 - 15, true);
+        missao6.adicionarImagemCena("mission2-scene.png", baseX + 150, baseY + 15); // TODO: trocar imagem
+        missionComponents.put("missao6", missao6);
+
+        // endregion
+
     }
 
 }
