@@ -17,6 +17,7 @@ public class MissionController {
     private boolean controlaTrocaMissao;
     // private Npc npcAtualMissao;
     public boolean missaoConcluida;
+    public boolean ativaCamadaMissao4 = false;
 
     public MissionController(MetropoliTrans jogo) {
         this.jogo = jogo;
@@ -44,18 +45,31 @@ public class MissionController {
          * com o prefeito já foi exibido, se sim,
          * deve setar missao atual para 1
          */
-        if (missaoId == 0) {
-            logicaIniciakl();
-        } else if (missaoId == 1) {
-            logicaMissao1(npc);
-        } else if (missaoId == 2) {
-            logicaMissao2(npc);
-        } else if (missaoId == 3) {
-            logicaMissao3(npc);
+        switch (missaoId) {
+            case 0:
+                logicaInicial();
+                break;
+            case 1:
+                logicaMissao1(npc);
+                break;
+            case 2:
+                logicaMissao2(npc);
+                break;
+            case 3:
+                logicaMissao3(npc);
+                break;
+            case 4:
+                logicaMissao4(npc);
+                break;
+            case 5:
+                logicaMissao5(npc);
+                break;
+            default:
+                break;
         }
     }
 
-    private void logicaIniciakl() {
+    private void logicaInicial() {
         DebugMode.mostrarLog("Missão", "Início do jogo");
         atualizarMissao(1, "heberto");
         controlaTrocaMissao = true;
@@ -85,7 +99,7 @@ public class MissionController {
                     MissionComponents componentesMissao = jogo.missionComponents.get("missao0");
                     componentesMissao.titulo
                             .setText("Missão " + (jogo.controller.MISSAO) + ": "
-                                    + "Ajuda para Maria atravessar a rua [Artigo/Regra: 70]");
+                                    + "Ajuda para Maria atravessar a rua\r\n[Artigo/Regra: 70]");
                     jogo.controller.gameScreen.missaoModalBox.missionComponents = componentesMissao;
                 }
 
@@ -149,7 +163,7 @@ public class MissionController {
                     // Atualiza a missão
                     atualizarMissao(2, "juliana");
                     controlaTrocaMissao = true;
-                    jogo.objetoMissao.setPosition(1700, 1450);
+                    jogo.objetoMissao.setPosition(jogo.objetoPlaca2.x, jogo.objetoPlaca2.y);
                 }
             }
         }
@@ -213,7 +227,7 @@ public class MissionController {
                 // Atualiza a missão
                 atualizarMissao(3, "antonio");
                 controlaTrocaMissao = true;
-                jogo.objetoMissao.setPosition(380, 1450);
+                jogo.objetoMissao.setPosition(jogo.objetoPlaca3.x, jogo.objetoPlaca3.y);
             }
         }
     }
@@ -264,9 +278,95 @@ public class MissionController {
                 sportBlueCar.pararAnimacao();
 
                 // Atualiza a missão
-                // atualizarMissao(3, "juliana");
-                // controlaTrocaMissao = true; // TODO: Verificar se a missão 3 está funcionando
-                // para habilitar
+                atualizarMissao(4, "jose");
+                controlaTrocaMissao = true;
+            }
+        }
+    }
+
+    private void logicaMissao4(Npc npc) {
+        DebugMode.mostrarLog("Missão", "Início da missão 4");
+        trocaMissao();
+
+        if (npc != null) {
+            if (jogo.controller.mostrarDialogo) {
+                if (npc.nome.equals("bruna")) {
+                    missaoConcluida = false;
+
+                    MissionComponents componentesMissao = jogo.missionComponents.get("missao4");
+                    componentesMissao.titulo
+                            .setText("Missão " + (jogo.controller.MISSAO) + ": "
+                                    + "Quais os componentes utilizados em\r\nciclofaixas? [Artigo/Regra: 58]");
+                    jogo.controller.gameScreen.missaoModalBox.missionComponents = componentesMissao;
+                }
+            } else {
+                if (npc.nome.equals("bruna")) {
+                    // Verifica se a animação de Bruna já foi exibida e se o diálogo já foi lido,
+                    // pois deverá exibir a caixa da missão
+                    if (npc.statusAlertaMissao == 2 && !missaoConcluida) {
+                        DebugMode.mostrarLog("Missão",
+                                "Missão 4: Exibindo desafio de Bruna, entrando na caixa de missão");
+                        jogo.controller.mostrarCaixaMissao = true;
+                    }
+
+                    // Mostra a faixa de pedestroe, ativa uma animação de Bruna atravessando a pista
+                    // e libera o personagem para atravessar
+                    if (npc.statusAlertaMissao == 2 && missaoConcluida) {
+                        DebugMode.mostrarLog("Missão", "Missão 4: Exibindo desafio de Bruna, exibindo ciclofaixa");
+                        // Exibe a ciclofaixa no mapa prinxipal
+                        ativaCamadaMissao4 = true;
+                        
+                        // Atualiza a missão
+                        atualizarMissao(5, "bruna");
+                        controlaTrocaMissao = true;
+                        jogo.objetoMissao.setPosition(jogo.objetoPlaca5.x, jogo.objetoPlaca5.y);
+                    }
+                }
+            }
+        }
+    }
+
+    private void logicaMissao5(Npc npc) {
+        DebugMode.mostrarLog("Missão", "Início da missão 5");
+        trocaMissao();
+
+        DebugMode.mostrarLog("Missão", "Iniciando veículos da missão 5");
+        Vehicle blackViperCar = jogo.vehicles.get("black-viper-car");
+        
+        if (npc != null) {
+            if (jogo.controller.mostrarDialogo) {
+                if (npc.nome.equals("josinaldo")) {
+                    blackViperCar.setVisible(true);
+                    blackViperCar.animacaoAtivada = true;
+                    missaoConcluida = false;
+                }
+            } else {
+                blackViperCar.setVisible(false);
+                blackViperCar.animacaoAtivada = false;
+            }
+        }
+
+        if (!blackViperCar.isVisible() && npc != null && npc.nome.equals("josinaldo")) {
+            if (npc.statusAlertaMissao == 2 && !missaoConcluida) {
+                DebugMode.mostrarLog("Missão", "Missão 5: Exibindo desafio de Antônio");
+                missaoConcluida = false;
+                blackViperCar.pararAnimacao();
+
+                MissionComponents componentesMissao = jogo.missionComponents.get("missao5");
+                componentesMissao.titulo
+                        .setText("Missão " + (jogo.controller.MISSAO) + ": " + missao.getDescricao());
+                jogo.controller.gameScreen.missaoModalBox.missionComponents = componentesMissao;
+                jogo.objetoMissao.setVisible(true);
+            }
+            if (missaoConcluida) {
+                DebugMode.mostrarLog("Missão", "Missão 5 finalizada, exibindo placa");
+                jogo.objetoMissao.setVisible(false);
+                jogo.objetoPlaca5.setVisible(true);
+
+                // Atualiza a missão
+                //atualizarMissao(6, "josinaldo");
+                //controlaTrocaMissao = true;
+                //jogo.objetoMissao.setPosition(jogo.objetoPlaca6.x, jogo.objetoPlaca6.y);
             }
         }
     }
@@ -299,10 +399,7 @@ public class MissionController {
      * @return NPC
      */
     private Npc buscaNpcPorNome(String nomeNpc) {
-        return jogo.npcs.stream()
-                .filter(npc -> npc.nome.equals(nomeNpc))
-                .findFirst()
-                .orElse(null);
+        return jogo.npcs.get(nomeNpc);
     }
 
     /**
@@ -326,7 +423,7 @@ public class MissionController {
      */
     private void atualizarAlertas() {
         DebugMode.mostrarLog("Missão", "Atualizando alertas da missão");
-        jogo.npcs.stream().forEach(npc -> {
+        jogo.npcs.forEach((nome, npc) -> {
             if (npcEstaNaMisao(npc.nome) != null) {
                 npc.statusAlertaMissao = 1;
             } else {

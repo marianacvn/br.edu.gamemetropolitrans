@@ -24,17 +24,15 @@ public class CoursePageScreen implements Screen {
     public Stage stage;
     public Skin skin;
     public Texture background;
-    private final CoursesScreen coursesScreen;
     private final Label titulo;
     private final Label texto;
     private final Image imagem;
     private final TextButton linkVideo;
-    private final int courseId;
+    private final Course course;
 
     public CoursePageScreen(final MetropoliTrans jogo, CoursesScreen coursesScreen, Course course) {
         this.jogo = jogo;
-        this.coursesScreen = coursesScreen;
-        this.courseId = course.getId();
+        this.course = course;
 
         // Carrega a textura de fundo e outras
         background = new Texture(Gdx.files.internal("files/backgrounds/background-light.png"));
