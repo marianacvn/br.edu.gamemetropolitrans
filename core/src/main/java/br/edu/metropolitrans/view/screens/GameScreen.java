@@ -237,10 +237,6 @@ public class GameScreen implements Screen {
         if (!jogo.controller.mostrarDialogo)
             minimapa.render(jogo.personagem);
 
-        phone.setPosition(CAMERA.position.x - CAMERA.viewportWidth / 2 + 591,
-                CAMERA.position.y - CAMERA.viewportHeight / 2 + 220);
-        phone.render();
-
         // Desenha o alerta de missão acima da posição do NPC
         if (jogo.personagem.npcs != null) {
             jogo.personagem.npcs.forEach((nome, npc) -> {
@@ -250,6 +246,11 @@ public class GameScreen implements Screen {
                 alertaMissao.render();
             });
         }
+
+        // Atualiza a posição do telefone para acompanhar a câmera
+        phone.setPosition(CAMERA.position.x - CAMERA.viewportWidth / 2 + 591,
+                CAMERA.position.y - CAMERA.viewportHeight / 2 + 220);
+        phone.render();
 
         // Atualiza a posição da caixa modal de missão para acompanhar a câmera
         missaoModalBox.setPosition(CAMERA.position.x - CAMERA.viewportWidth / 2,
