@@ -69,18 +69,17 @@ public class CourseDAO {
     public static List<Course> listarCursosPorMissaoId(int id) {
         CourseData courseData = carregarDadosCursos();
         if (courseData == null) {
-            Gdx.app.log("CourseDAO", "CourseData está nulo.");
             DebugMode.mostrarLog("CourseDAO", "CourseData está nulo.");
             return List.of();
         }
-        Gdx.app.log("CourseDAO", "CourseData quantidade de cursos: " + courseData.getCursos().size());
+
         List<Course> cursos = new ArrayList<>();
         for (Course course : courseData.getCursos()) {
             if (course.getMissaoId() == id) {
                 cursos.add(course);
             }
         }
-        Gdx.app.log("CourseDAO", "Cursos encontrados para a missão: " + cursos.size());
+        
         return cursos;
     }
 

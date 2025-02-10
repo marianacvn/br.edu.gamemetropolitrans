@@ -102,6 +102,7 @@ public class CoursePageScreen implements Screen {
         botaoVoltar.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                coursesScreen.atualizarBotoesStatus();
                 jogo.setScreen(coursesScreen);
                 DebugMode.mostrarLog("CoursePageScreen", "Voltando para a tela de cursos.");
             }
@@ -111,13 +112,6 @@ public class CoursePageScreen implements Screen {
         stage.addActor(this.texto);
         stage.addActor(this.linkVideo);
         stage.addActor(botaoVoltar);
-
-        // Atualiza o status do curso para concluido e desconta 50 moedas
-        if (course.getStatus() == Status.LIBERADO) {
-            jogo.personagem.moedas -= 50;
-            CourseDAO.atualizaStatusCurso(course.getId(), Status.CONCLUIDO);
-            coursesScreen.atualizarBotoesStatus();
-        }
     }
 
     @Override

@@ -13,7 +13,7 @@
             "id": 2,
             "nome": "Placa de Proibido Retornar à esquerda [Art. 204]",
             "descricao": "A placa adverte ao motorista a proibição de efetuar o retorno à esquerda,é utilizada em vias de duplo sentido\r\n que tenham mais de duas pistas,proibindo o retorno em situações de riscos de segurança ou em casos \r\nque possam afetar a fluidez do trânsito.",
-            "status": "BLOQUEADO",
+            "status": "LIBERADO",
             "missaoId": 1,
             "imagemPath": "files/itens/proibidoretornaraesquerda.png",
             "videoUrl": "https://www.youtube.com/watch?v=3wGR4V_xLVU"

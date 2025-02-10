@@ -347,24 +347,11 @@ public class Controller {
      */
     public void controleCursos() {
         if (MISSAO != 0) {
-            Gdx.app.log("Controller", "Moedas: " + personagem.moedas);
-            List<Course> cursos = CourseDAO.listarCursosPorMissaoId(MISSAO);
-            Gdx.app.log("Controller", "Cursos: " + cursos.size());
-            Gdx.app.log("Controller", "Missao: " + MISSAO);
-            if (MISSAO == 1) {
-                // Verifica se o primeiro módulo foi concluído e libera o segundo
-                if (cursos.get(0).getStatus() == Status.CONCLUIDO) {
-                    Gdx.app.log("Controller", "Liberando o segundo módulo...");
-                    CourseDAO.atualizaStatusCurso(2, Status.LIBERADO);
-                    ((CoursesScreen) jogo.telas.get("courses")).atualizarBotoesStatus();
-                }
-            } else {
-                // Verifica se o módulo anterior foi concluído e libera o próximo
-                if (MissionDataDAO.buscaMissaoPorId(MISSAO - 1).isFinalizouMissao()) {
-                    Gdx.app.log("Controller", "Liberando o próximo módulo...");
-                    CourseDAO.atualizaStatusCurso(cursos.get(0).getId(), Status.LIBERADO);
-                    // ((CoursesScreen) jogo.telas.get("courses")).atualizarBotoesStatus();
-                }
+            // Verifica se o módulo anterior foi concluído e libera o próximo
+            if (MissionDataDAO.buscaMissaoPorId(MISSAO - 1).isFinalizouMissao()) {
+                List<Course> cursos = CourseDAO.listarCursosPorMissaoId(MISSAO);
+                CourseDAO.atualizaStatusCurso(cursos.get(0).getId(), Status.LIBERADO);
+                ((CoursesScreen) jogo.telas.get("courses")).atualizarBotoesStatus();
             }
         }
     }
@@ -442,9 +429,7 @@ public class Controller {
      * @return
      */
     private boolean verificarExibicaoDialogoMissaoComCurso() {
-        Gdx.app.log("Controller", "Nro Misao " + MISSAO);
         List<Course> cursos = CourseDAO.listarCursosPorMissaoId(MISSAO);
-        Gdx.app.log("Controller", "Quantidade de cursos: " + cursos.size() + " | JSON: " + cursos);
         for (Course curso : cursos) {
             if (curso.getStatus() != Status.CONCLUIDO) {
                 return false;
