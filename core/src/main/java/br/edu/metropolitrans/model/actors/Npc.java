@@ -11,6 +11,7 @@ import br.edu.metropolitrans.model.utils.DebugMode;
 public class Npc extends ActorAnimation {
 
     public static String DIALOGO_INICIAL = "Olá, senhor(a) estágiario(a) da secretária de trânsito, seja bem-vindo a cidade de Metropolitrans. O(a) senhor(a) precisa falar com o prefeito da cidade para ele lhe repassar os detalhes sobre o seu novo trabalho.";
+    public static String DIALOGO_GUARDA_MISSAO_BLOQUEADA = "Para iniciar a missão, é necessário assistir o módulo referente a ela, dirija-se a prefeitura e veja o módulo liberado no computador.";
 
     public String nomeArquivo;
     public int statusAlertaMissao;

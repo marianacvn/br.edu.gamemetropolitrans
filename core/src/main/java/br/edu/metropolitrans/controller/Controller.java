@@ -1,6 +1,7 @@
 package br.edu.metropolitrans.controller;
 
 import java.util.HashMap;
+import java.util.List;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -13,12 +14,16 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Timer;
 
 import br.edu.metropolitrans.MetropoliTrans;
+import br.edu.metropolitrans.model.Course;
 import br.edu.metropolitrans.model.Dialog;
 import br.edu.metropolitrans.model.PersonagemDirecao;
+import br.edu.metropolitrans.model.Status;
 import br.edu.metropolitrans.model.actors.Npc;
 import br.edu.metropolitrans.model.actors.ObjetoInterativo;
 import br.edu.metropolitrans.model.actors.Personagem;
+import br.edu.metropolitrans.model.dao.CourseDAO;
 import br.edu.metropolitrans.model.dao.DialogDAO;
+import br.edu.metropolitrans.model.dao.MissionDataDAO;
 import br.edu.metropolitrans.model.maps.Mapas;
 import br.edu.metropolitrans.model.utils.DebugMode;
 import br.edu.metropolitrans.view.screens.ConfigScreen;
@@ -327,6 +332,44 @@ public class Controller {
     }
 
     /**
+     * Controle de compra e liberação de cursos
+     * 
+     * Regras: - O personagem só pode comprar um módulo se tiver moedas suficientes
+     * (min 50 por módulo)
+     * - O primeiro módulo é liberado automaticamente, quando personagem conclui,
+     * desconta 50 moedas
+     * - O segundo módulo é liberado assim que o primeiro for concluído, desconta 50
+     * moedas
+     * - A partir do terceiro módulo, só será liberado quando a missão anterior a
+     * referente a ele for concluída
+     * - O personagem só pode liberar um novo módulo se tiver assistido o módulo
+     * anterior e a missão referente ao módulo anterior
+     */
+    public void controleCursos() {
+        if (MISSAO != 0) {
+            Gdx.app.log("Controller", "Moedas: " + personagem.moedas);
+            List<Course> cursos = CourseDAO.listarCursosPorMissaoId(MISSAO);
+            Gdx.app.log("Controller", "Cursos: " + cursos.size());
+            Gdx.app.log("Controller", "Missao: " + MISSAO);
+            if (MISSAO == 1) {
+                // Verifica se o primeiro módulo foi concluído e libera o segundo
+                if (cursos.get(0).getStatus() == Status.CONCLUIDO) {
+                    Gdx.app.log("Controller", "Liberando o segundo módulo...");
+                    CourseDAO.atualizaStatusCurso(2, Status.LIBERADO);
+                    ((CoursesScreen) jogo.telas.get("courses")).atualizarBotoesStatus();
+                }
+            } else {
+                // Verifica se o módulo anterior foi concluído e libera o próximo
+                if (MissionDataDAO.buscaMissaoPorId(MISSAO - 1).isFinalizouMissao()) {
+                    Gdx.app.log("Controller", "Liberando o próximo módulo...");
+                    CourseDAO.atualizaStatusCurso(cursos.get(0).getId(), Status.LIBERADO);
+                    // ((CoursesScreen) jogo.telas.get("courses")).atualizarBotoesStatus();
+                }
+            }
+        }
+    }
+
+    /**
      * Controle de infrações do personagem
      */
     public void controleInfracao() {
@@ -374,14 +417,40 @@ public class Controller {
         if (jogo.telas.get("game") != null) {
             // GameScreen gameScreen = (GameScreen) jogo.telas.get("game");
             if (personagem.estaDentroDaDistancia(15, npc)) {
-                // Carrega os diálogos do NPC
-                gameScreen.caixaDialogo.npc = npc;
-                gameScreen.caixaDialogo.setTextoDialogo(carregaDialogos(npc));
-                gameScreen.caixaDialogo.defineTexturaNpc();
-                mostrarDialogo = true;
-                return;
+                // Verifica se o diálogo do NPC por ser exibido, pois é necessário assistir o
+                // módulo referente a missão
+                if (verificarExibicaoDialogoMissaoComCurso()) {
+                    // Carrega os diálogos do NPC
+                    gameScreen.caixaDialogo.npc = npc;
+                    gameScreen.caixaDialogo.setTextoDialogo(carregaDialogos(npc));
+                    gameScreen.caixaDialogo.defineTexturaNpc();
+                    mostrarDialogo = true;
+                } else {
+                    gameScreen.caixaDialogo.npc = guarda;
+                    gameScreen.caixaDialogo.setTextoDialogo(Npc.DIALOGO_GUARDA_MISSAO_BLOQUEADA);
+                    gameScreen.caixaDialogo.defineTexturaNpc();
+                    mostrarDialogo = true;
+                }
             }
         }
+    }
+
+    /**
+     * Verifica se o diálogo do NPC por ser exibido, pois é necessário assistir o
+     * módulo do curso antes de iniciar a missão
+     * 
+     * @return
+     */
+    private boolean verificarExibicaoDialogoMissaoComCurso() {
+        Gdx.app.log("Controller", "Nro Misao " + MISSAO);
+        List<Course> cursos = CourseDAO.listarCursosPorMissaoId(MISSAO);
+        Gdx.app.log("Controller", "Quantidade de cursos: " + cursos.size() + " | JSON: " + cursos);
+        for (Course curso : cursos) {
+            if (curso.getStatus() != Status.CONCLUIDO) {
+                return false;
+            }
+        }
+        return true;
     }
 
     /**
@@ -397,7 +466,8 @@ public class Controller {
              */
             if (personagem.estaDentroDaDistancia(15, npc) &&
                     controleMissao.npcEstaNaMisao(npc.nome) != null &&
-                    npc.statusAlertaMissao == 1) {
+                    npc.statusAlertaMissao == 1 &&
+                    verificarExibicaoDialogoMissaoComCurso()) {
                 npc.statusAlertaMissao = 2;
             }
         }
@@ -491,20 +561,5 @@ public class Controller {
             personagem.setRetangulosPista(jogo.retangulosPista);
         }
     }
-
-    // public void verificarColisaoCarros() {
-    //     List<Vehicle> vehicles = jogo.vehicles.values().stream().toList();
-    //     for (int i = 0; i < vehicles.size(); i++) {
-    //         for (int j = i + 1; j < vehicles.size(); j++) {
-    //             Vehicle vehicle1 = vehicles.get(i);
-    //             Vehicle vehicle2 = vehicles.get(j);
-    //             if (vehicle1.getBoundingRectangle().overlaps(vehicle2.getBoundingRectangle())) {
-    //                 DebugMode.mostrarLog("Controller",
-    //                         "Colisão detectada entre os veiculos");
-
-    //             }
-    //         }
-    //     }
-    // }
 
 }

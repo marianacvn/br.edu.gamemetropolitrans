@@ -47,7 +47,7 @@ public class MissionController {
          */
         switch (missaoId) {
             case 0:
-                logicaInicial();
+                logicaInicial(npc);
                 break;
             case 1:
                 logicaMissao1(npc);
@@ -75,10 +75,16 @@ public class MissionController {
         }
     }
 
-    private void logicaInicial() {
+    private void logicaInicial(Npc npc) {
         DebugMode.mostrarLog("Missão", "Início do jogo");
-        atualizarMissao(1, "heberto");
-        controlaTrocaMissao = true;
+        // Antes de trocar a missão, assim que falar com o Heberto, precisa falar
+        // primeiro com a betania
+        // para que a missão 1 seja ativada
+        if (npc != null && npc.nome.equals("betania") && npc.statusAlertaMissao == 2) {
+            atualizarMissao(1, "heberto");
+            controlaTrocaMissao = true;
+        }
+
     }
 
     private void logicaMissao1(Npc npc) {
@@ -166,6 +172,9 @@ public class MissionController {
                     jogo.objetoMissao.setVisible(false);
                     jogo.objetoPlaca1.setVisible(true);
 
+                    // Conclui a missão
+                    concluirMissao(missao);
+
                     // Atualiza a missão
                     atualizarMissao(2, "juliana");
                     controlaTrocaMissao = true;
@@ -230,6 +239,9 @@ public class MissionController {
                 jogo.objetoMissao.setVisible(false);
                 jogo.objetoPlaca2.setVisible(true);
 
+                // Conclui a missão
+                concluirMissao(missao);
+
                 // Atualiza a missão
                 atualizarMissao(3, "antonio");
                 controlaTrocaMissao = true;
@@ -283,6 +295,9 @@ public class MissionController {
                 sportBlueCar.animacaoAtivada = false;
                 sportBlueCar.pararAnimacao();
 
+                // Conclui a missão
+                concluirMissao(missao);
+
                 // Atualiza a missão
                 atualizarMissao(4, "jose");
                 controlaTrocaMissao = true;
@@ -321,6 +336,9 @@ public class MissionController {
                         DebugMode.mostrarLog("Missão", "Missão 4: Exibindo desafio de Bruna, exibindo ciclofaixa");
                         // Exibe a ciclofaixa no mapa prinxipal
                         ativaCamadaMissao4 = true;
+
+                        // Conclui a missão
+                        concluirMissao(missao);
 
                         // Atualiza a missão
                         atualizarMissao(5, "bruna");
@@ -376,6 +394,9 @@ public class MissionController {
                 maria.repeteAnimacao = false;
                 maria.animacaoAtivada = true;
                 // maria.statusAlertaMissao = 0;
+
+                // Conclui a missão
+                concluirMissao(missao);
 
                 // Atualiza a missão
                 atualizarMissao(6, "josinaldo");
@@ -434,6 +455,9 @@ public class MissionController {
                 jogo.efeitoBuzina.stop();
                 jogo.efeitoBuzina.dispose();
 
+                // Conclui a missão
+                concluirMissao(missao);
+
                 // Atualiza a missão
                 atualizarMissao(7, "paulo");
                 controlaTrocaMissao = true;
@@ -467,12 +491,26 @@ public class MissionController {
                 jogo.objetoMissao.setVisible(false);
                 jogo.objetoPlaca7.setVisible(true);
 
+                // Conclui a missão
+                concluirMissao(missao);
+
                 // Atualiza a missão
                 // atualizarMissao(6, "josinaldo");
                 // controlaTrocaMissao = true;
                 // jogo.objetoMissao.setPosition(jogo.objetoPlaca6.x, jogo.objetoPlaca6.y);
             }
         }
+    }
+
+    /**
+     * Conclui a missão e atualiza o status da missão no banco de dados
+     * 
+     * @param missao Missão
+     */
+    private void concluirMissao(Mission missao) {
+        // Atualiza o status da missão no banco de dados
+        missao.setFinalizouMissao(true);
+        MissionDataDAO.atualizarMissao(missao);
     }
 
     public void trocaMissao() {

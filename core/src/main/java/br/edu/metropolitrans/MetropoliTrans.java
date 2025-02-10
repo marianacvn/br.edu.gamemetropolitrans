@@ -184,7 +184,7 @@ public class MetropoliTrans extends Game {
 
         // Carrega os Npcs
         npcs.put("maria", new Npc("maria", 280, 1220, "maria/sprite.png", estagioPrincipal, true));
-        npcs.put("betania", new Npc("betania", 264, 200, "betania/sprite.png", estagioPrincipal, false));
+        npcs.put("betania", new Npc("betania", 264, 200, "betania/sprite.png", estagioPrincipal, 1, false));
         npcs.put("bruna", new Npc("bruna", 1185, 1850, "bruna/sprite.png", estagioPrincipal, false));
         npcs.put("antonio", new Npc("antonio", 1485, 1130, "antonio/sprite.png", estagioPrincipal, false));
         npcs.put("heberto", new Npc("heberto", 25, 650, "heberto/sprite.png", estagioPrincipal, 1, false));

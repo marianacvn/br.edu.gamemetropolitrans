@@ -23,4 +23,10 @@ public class TextButtonSecond extends TextButton {
 
         return textButtonStyle;
     }
+
+    public void setNewImageButton(String texturePath) {
+        Texture buttonTexture = new Texture(texturePath);
+        Drawable buttonDrawable = new TextureRegionDrawable(buttonTexture);
+        getStyle().up = buttonDrawable;
+    }
 }

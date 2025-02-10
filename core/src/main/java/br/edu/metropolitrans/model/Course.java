@@ -5,17 +5,20 @@ public class Course {
     private String nome;
     private String descricao;
     private Status status;
+    private int missaoId;
     private String imagemPath;
     private String videoUrl;
 
     public Course() {
     }
 
-    public Course(int id, String nome, String descricao, Status status, String imagemPath, String videoUrl) {
+    public Course(int id, String nome, String descricao, Status status, int missaoId, String imagemPath,
+            String videoUrl) {
         this.id = id;
         this.nome = nome;
         this.descricao = descricao;
         this.status = status;
+        this.missaoId = missaoId;
         this.imagemPath = imagemPath;
         this.videoUrl = videoUrl;
     }
@@ -52,6 +55,14 @@ public class Course {
         this.status = status;
     }
 
+    public int getMissaoId() {
+        return missaoId;
+    }
+
+    public void setMissaoId(int missaoId) {
+        this.missaoId = missaoId;
+    }
+
     public String getImagemPath() {
         return imagemPath;
     }
@@ -67,6 +78,11 @@ public class Course {
     public void setVideoUrl(String videoUrl) {
         this.videoUrl = videoUrl;
     }
-    
+
+    @Override
+    public String toString() {
+        return "Course{" + "id=" + id + ", status=" + status
+                + ", missaoId=" + missaoId + "}";
+    }
 
 }

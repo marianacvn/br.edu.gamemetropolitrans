@@ -145,6 +145,9 @@ public class GameScreen implements Screen {
         // Controle de missões
         jogo.controller.controleMissao.controle(jogo.controller.MISSAO);
 
+        // // Controle de cursos
+        // jogo.controller.controleCursos();
+
         // Verifica se a caixa de diálogo deve ser exibida
         // Se sim, exibe a caixa de diálogo, caso contrário permite
         // o controle do personagem continuando o jogo

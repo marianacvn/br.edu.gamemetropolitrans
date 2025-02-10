@@ -14,23 +14,27 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.ScreenUtils;
 import br.edu.metropolitrans.model.Course;
+import br.edu.metropolitrans.model.Status;
+import br.edu.metropolitrans.model.dao.CourseDAO;
 import br.edu.metropolitrans.model.utils.DebugMode;
 import br.edu.metropolitrans.MetropoliTrans;
 import br.edu.metropolitrans.view.components.buttons.TextButtonBase;
 import br.edu.metropolitrans.view.font.FontBase;
 
 public class CoursePageScreen implements Screen {
-    public final MetropoliTrans jogo;
+    public MetropoliTrans jogo;
     public Stage stage;
     public Skin skin;
-    private final Label titulo;
-    private final Label texto;
-    private final Image imagem;
-    private final TextButton linkVideo;
-    private final Course course;
+    private Label titulo;
+    private Label texto;
+    private Image imagem;
+    private TextButton linkVideo;
+    private Course course;
+    private CoursesScreen coursesScreen;
 
-    public CoursePageScreen(final MetropoliTrans jogo, CoursesScreen coursesScreen, Course course) {
+    public CoursePageScreen(MetropoliTrans jogo, CoursesScreen coursesScreen, Course course) {
         this.jogo = jogo;
+        this.coursesScreen = coursesScreen;
         this.course = course;
 
         // Cria o Stage e o Skin
@@ -80,10 +84,10 @@ public class CoursePageScreen implements Screen {
 
         // Cria o link para o vídeo
         this.linkVideo = new TextButton("Assista ao vídeo", skin);
-        // setar o link do video para abaixo da imagem 
+        // setar o link do video para abaixo da imagem
         this.linkVideo.setPosition(Gdx.graphics.getWidth() / 2 - this.linkVideo.getWidth() / 2,
                 this.imagem.getY() - this.linkVideo.getHeight() - 10);
-        
+
         this.linkVideo.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -107,12 +111,18 @@ public class CoursePageScreen implements Screen {
         stage.addActor(this.texto);
         stage.addActor(this.linkVideo);
         stage.addActor(botaoVoltar);
+
+        // Atualiza o status do curso para concluido e desconta 50 moedas
+        if (course.getStatus() == Status.LIBERADO) {
+            jogo.personagem.moedas -= 50;
+            CourseDAO.atualizaStatusCurso(course.getId(), Status.CONCLUIDO);
+            coursesScreen.atualizarBotoesStatus();
+        }
     }
 
     @Override
     public void show() {
         Gdx.input.setInputProcessor(stage);
-
     }
 
     @Override
@@ -129,7 +139,6 @@ public class CoursePageScreen implements Screen {
     @Override
     public void resize(int width, int height) {
         stage.getViewport().update(width, height, true);
-
     }
 
     @Override
