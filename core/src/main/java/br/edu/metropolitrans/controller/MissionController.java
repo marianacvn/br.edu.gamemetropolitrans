@@ -178,7 +178,7 @@ public class MissionController {
                     // Atualiza a missão
                     atualizarMissao(2, "juliana");
                     controlaTrocaMissao = true;
-                    jogo.objetoMissao.setPosition(jogo.objetoPlaca2.x, jogo.objetoPlaca2.y);
+                    jogo.objetoMissao.setPosition(1700, 1450);
                 }
             }
         }
@@ -233,11 +233,13 @@ public class MissionController {
                         .setText("Missão " + (jogo.controller.MISSAO) + ": " + missao.getDescricao());
                 jogo.controller.gameScreen.missaoModalBox.missionComponents = componentesMissao;
                 jogo.objetoMissao.setVisible(true);
+                jogo.objetoMissaoHorizontal.setVisible(true);
             }
             if (missaoConcluida) {
                 DebugMode.mostrarLog("Missão", "Missão 2 finalizada, exibindo placa");
                 jogo.objetoMissao.setVisible(false);
-                jogo.objetoPlaca2.setVisible(true);
+                jogo.objetoMissaoHorizontal.setVisible(false);
+                jogo.objetoHorizontal2.setVisible(true);
 
                 // Conclui a missão
                 concluirMissao(missao);
@@ -316,8 +318,7 @@ public class MissionController {
 
                     MissionComponents componentesMissao = jogo.missionComponents.get("missao4");
                     componentesMissao.titulo
-                            .setText("Missão " + (jogo.controller.MISSAO) + ": "
-                                    + "Quais os componentes utilizados em\r\nciclofaixas? [Artigo/Regra: 58]");
+                            .setText("Missão " + (jogo.controller.MISSAO) + ": " + missao.getDescricao());
                     jogo.controller.gameScreen.missaoModalBox.missionComponents = componentesMissao;
                 }
             } else {

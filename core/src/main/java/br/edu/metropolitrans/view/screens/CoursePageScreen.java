@@ -76,18 +76,21 @@ public class CoursePageScreen implements Screen {
             this.imagem = null;
         }
 
-        // Cria o link para o vídeo
-        this.linkVideo = new TextButton("Assista ao vídeo", skin);
-        // setar o link do video para abaixo da imagem
-        this.linkVideo.setPosition(Gdx.graphics.getWidth() / 2 - this.linkVideo.getWidth() / 2,
-                this.imagem.getY() - this.linkVideo.getHeight() - 10);
+        // Verifica se tem video para o curso
+        if (course.getVideoUrl() != null && !course.getVideoUrl().isEmpty()) {
+            // Cria o link para o vídeo
+            this.linkVideo = new TextButton("Assista ao vídeo", skin);
+            // setar o link do video para abaixo da imagem
+            this.linkVideo.setPosition(Gdx.graphics.getWidth() / 2 - this.linkVideo.getWidth() / 2,
+                    this.imagem.getY() - this.linkVideo.getHeight() - 10);
 
-        this.linkVideo.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                Gdx.net.openURI(course.getVideoUrl());
-            }
-        });
+            this.linkVideo.addListener(new ClickListener() {
+                @Override
+                public void clicked(InputEvent event, float x, float y) {
+                    Gdx.net.openURI(course.getVideoUrl());
+                }
+            });
+        }
 
         // Cria um botão para voltar à tela anterior
         TextButtonBase botaoVoltar = new TextButtonBase("Voltar", "files/buttons/botao-dark2.png", skin);
@@ -104,7 +107,9 @@ public class CoursePageScreen implements Screen {
 
         stage.addActor(this.titulo);
         stage.addActor(this.texto);
-        stage.addActor(this.linkVideo);
+        if (course.getVideoUrl() != null && !course.getVideoUrl().isEmpty()) {
+            stage.addActor(this.linkVideo);
+        }
         stage.addActor(botaoVoltar);
     }
 

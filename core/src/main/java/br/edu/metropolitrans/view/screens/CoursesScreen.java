@@ -26,7 +26,7 @@ public class CoursesScreen implements Screen {
     public Skin skin;
     public Label titulo;
     public Screen telaAnterior;
-    public TextButtonSecond botao1, botao2, botao3, botao4, botao5, botao6, botao7, botao8, botao9;
+    public TextButtonSecond botao1, botao2, botao3, botao4, botao5, botao6, botao7, botao8;
 
     public CoursesScreen(final MetropoliTrans jogo, Screen telaAnterior) {
         this.jogo = jogo;
@@ -72,8 +72,7 @@ public class CoursesScreen implements Screen {
                 CourseDAO.carregarDadosModulo(7).getStatus());
         botao8 = criarBotaoModulo(8, botao1.getX() + botao1.getWidth() + 20, botao4.getY() - 150,
                 CourseDAO.carregarDadosModulo(8).getStatus());
-        botao9 = criarBotaoModulo(9, botao2.getX() + botao2.getWidth() + 20, botao5.getY() - 150,
-                CourseDAO.carregarDadosModulo(9).getStatus());
+        
 
         // Cria um botão para fechar a tela e voltar para a anterior
         TextButtonBase botaoFechar = new TextButtonBase("X", "files/buttons/botao-dark2.png", skin);
@@ -100,7 +99,6 @@ public class CoursesScreen implements Screen {
         stage.addActor(botao6);
         stage.addActor(botao7);
         stage.addActor(botao8);
-        stage.addActor(botao9);
     }
 
     private TextButtonSecond criarBotaoModulo(int modulo, float x, float y, Status status) {
@@ -117,7 +115,7 @@ public class CoursesScreen implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 Course course = CourseDAO.carregarDadosModulo(modulo);
-                Gdx.app.log("CoursesScreen", "Botão " + modulo + " clicado, curso:" + course);
+                DebugMode.mostrarLog("CoursesScreen", "Botão " + modulo + " clicado, curso:" + course);
 
                 // Atualiza o status do curso para concluido e desconta 50 moedas
                 if (course.getStatus() == Status.LIBERADO) {
@@ -127,10 +125,10 @@ public class CoursesScreen implements Screen {
 
                 // Recarrega os dados do curso
                 course = CourseDAO.carregarDadosModulo(modulo);
-                Gdx.app.log("CoursesScreen", "Modulo " + modulo + "recarrado, curso:" + course);
+                DebugMode.mostrarLog("CoursesScreen", "Modulo " + modulo + " recarregado, curso:" + course);
 
                 if (validaCursoLiberado(course)) {
-                    Gdx.app.log("CoursesScreen", "Curso liberado, carregando CoursePageScreen");
+                    DebugMode.mostrarLog("CoursesScreen", "Curso liberado, carregando CoursePageScreen");
                     DebugMode.mostrarLog("CoursesScreen",
                             "Dados do Módulo " + modulo + " carregados: " + course.getNome());
                     jogo.setScreen(new CoursePageScreen(jogo, CoursesScreen.this, course));
@@ -172,7 +170,6 @@ public class CoursesScreen implements Screen {
         atualizarBotaoStatus(botao6, 6);
         atualizarBotaoStatus(botao7, 7);
         atualizarBotaoStatus(botao8, 8);
-        atualizarBotaoStatus(botao9, 9);
     }
 
     /**

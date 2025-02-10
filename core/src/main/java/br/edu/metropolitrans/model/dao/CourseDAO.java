@@ -7,8 +7,6 @@ import br.edu.metropolitrans.model.utils.DebugMode;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.badlogic.gdx.Gdx;
-
 import br.edu.metropolitrans.model.Course;
 import br.edu.metropolitrans.model.Status;
 

@@ -85,7 +85,7 @@ public class Personagem extends BaseActor {
 
         // Configuracao do personagem
         moedas = 200;
-        xp = 10;
+        xp = 0;
         tipoInfracao = null;
         infracoes = 0;
         setAceleracao(800);

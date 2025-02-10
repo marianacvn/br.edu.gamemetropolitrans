@@ -160,7 +160,7 @@ public class MenuScreen implements Screen {
         botaoJogar.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                jogo.setScreen(new CharacterSelectionScreen(jogo));
+                jogo.setScreen(new SaveGameScreen(jogo));
             }
         });
 

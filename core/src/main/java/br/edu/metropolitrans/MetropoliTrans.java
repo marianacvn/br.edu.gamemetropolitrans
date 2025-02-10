@@ -7,6 +7,8 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.graphics.Cursor;
+import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.MapObjects;
@@ -81,8 +83,8 @@ public class MetropoliTrans extends Game {
     /**
      * Objetos interativos
      */
-    public ObjetoInterativo objeto, objetoChao, objetoSairSala, objetoMissao, objetoPlaca1, objetoPlaca2, objetoPlaca3,
-            objetoPlaca5, objetoPlaca6, objetoPlaca7, objetoPc;
+    public ObjetoInterativo objeto, objetoChao, objetoSairSala, objetoMissao, objetoMissaoHorizontal, objetoPlaca1,
+            objetoHorizontal2, objetoPlaca3, objetoPlaca5, objetoPlaca6, objetoPlaca7, objetoPc;
 
     /**
      * Mapas do jogo
@@ -117,13 +119,6 @@ public class MetropoliTrans extends Game {
 
     public BasicAnimation explosao, bike;
 
-    @Override
-    public void create() {
-        // Inicia a tela de loading do game
-        this.setScreen(new LoadingScreen(this));
-
-    }
-
     public void inicializarJogo() {
         estagioPrincipal = new Stage();
         batch = new SpriteBatch();
@@ -148,6 +143,10 @@ public class MetropoliTrans extends Game {
                 estagioPrincipal);
         objetoMissao.setVisible(false);
 
+        objetoMissaoHorizontal = new ObjetoInterativo("alertaHorizontal", 1705, 1388, "mission-alert-horizontal.png",
+                estagioPrincipal);
+        objetoMissaoHorizontal.setVisible(false);
+
         // Carrega o objeto do chão
         objetoChao = new ObjetoInterativo("chao", 320, 1210, "asphalt-obj.png", estagioPrincipal);
 
@@ -155,8 +154,9 @@ public class MetropoliTrans extends Game {
         objetoPlaca1 = new ObjetoInterativo("placa", 1290, 1245, "mission1-result.png", estagioPrincipal);
         objetoPlaca1.setVisible(false);
 
-        objetoPlaca2 = new ObjetoInterativo("placa2", 1700, 1450, "mission2-result.png", estagioPrincipal);
-        objetoPlaca2.setVisible(false);
+        objetoHorizontal2 = new ObjetoInterativo("horizontal2", objetoMissaoHorizontal.x, objetoMissaoHorizontal.y,
+                "mission2-result.png", estagioPrincipal);
+        objetoHorizontal2.setVisible(false);
 
         objetoPlaca3 = new ObjetoInterativo("placa3", 380, 1450, "mission3-result.png", estagioPrincipal);
         objetoPlaca3.setVisible(false);
@@ -296,6 +296,18 @@ public class MetropoliTrans extends Game {
     @Override
     public void render() {
         super.render();
+    }
+
+    @Override
+    public void create() {
+        // Inicia a tela de loading do game
+        this.setScreen(new LoadingScreen(this));
+
+        // Define o cursor personalizado
+        Pixmap pixmap = new Pixmap(Gdx.files.internal("files/mouse/mouse.png"));
+        Cursor cursor = Gdx.graphics.newCursor(pixmap, 0, 0);
+        Gdx.graphics.setCursor(cursor);
+        pixmap.dispose();
     }
 
     @Override
