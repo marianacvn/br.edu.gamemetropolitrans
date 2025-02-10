@@ -14,8 +14,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.ScreenUtils;
 import br.edu.metropolitrans.model.Course;
-import br.edu.metropolitrans.model.Status;
-import br.edu.metropolitrans.model.dao.CourseDAO;
 import br.edu.metropolitrans.model.utils.DebugMode;
 import br.edu.metropolitrans.MetropoliTrans;
 import br.edu.metropolitrans.view.components.buttons.TextButtonBase;
@@ -29,13 +27,9 @@ public class CoursePageScreen implements Screen {
     private Label texto;
     private Image imagem;
     private TextButton linkVideo;
-    private Course course;
-    private CoursesScreen coursesScreen;
 
     public CoursePageScreen(MetropoliTrans jogo, CoursesScreen coursesScreen, Course course) {
         this.jogo = jogo;
-        this.coursesScreen = coursesScreen;
-        this.course = course;
 
         // Cria o Stage e o Skin
         stage = new Stage();

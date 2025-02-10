@@ -117,13 +117,20 @@ public class CoursesScreen implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 Course course = CourseDAO.carregarDadosModulo(modulo);
+                Gdx.app.log("CoursesScreen", "Botão " + modulo + " clicado, curso:" + course);
+
                 // Atualiza o status do curso para concluido e desconta 50 moedas
                 if (course.getStatus() == Status.LIBERADO) {
                     jogo.personagem.moedas -= 50;
                     CourseDAO.atualizaStatusCurso(course.getId(), Status.CONCLUIDO);
                 }
 
+                // Recarrega os dados do curso
+                course = CourseDAO.carregarDadosModulo(modulo);
+                Gdx.app.log("CoursesScreen", "Modulo " + modulo + "recarrado, curso:" + course);
+
                 if (validaCursoLiberado(course)) {
+                    Gdx.app.log("CoursesScreen", "Curso liberado, carregando CoursePageScreen");
                     DebugMode.mostrarLog("CoursesScreen",
                             "Dados do Módulo " + modulo + " carregados: " + course.getNome());
                     jogo.setScreen(new CoursePageScreen(jogo, CoursesScreen.this, course));

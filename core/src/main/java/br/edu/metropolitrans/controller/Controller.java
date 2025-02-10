@@ -346,10 +346,11 @@ public class Controller {
      * anterior e a missão referente ao módulo anterior
      */
     public void controleCursos() {
-        if (MISSAO != 0) {
+        if (MISSAO > 1) {
             // Verifica se o módulo anterior foi concluído e libera o próximo
-            if (MissionDataDAO.buscaMissaoPorId(MISSAO - 1).isFinalizouMissao()) {
-                List<Course> cursos = CourseDAO.listarCursosPorMissaoId(MISSAO);
+            List<Course> cursos = CourseDAO.listarCursosPorMissaoId(MISSAO);
+            if (MissionDataDAO.buscaMissaoPorId(MISSAO - 1).isFinalizouMissao()
+                    && cursos.get(0).getStatus() == Status.BLOQUEADO) {
                 CourseDAO.atualizaStatusCurso(cursos.get(0).getId(), Status.LIBERADO);
                 ((CoursesScreen) jogo.telas.get("courses")).atualizarBotoesStatus();
             }
