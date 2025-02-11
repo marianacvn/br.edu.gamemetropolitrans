@@ -100,7 +100,7 @@ public class Controller {
     /**
      * NPC do guarda de trânsito
      */
-    private Npc guarda;
+    public Npc guarda;
 
     public Controller(MetropoliTrans jogo) {
         this.jogo = jogo;

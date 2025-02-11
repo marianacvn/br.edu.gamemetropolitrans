@@ -88,6 +88,14 @@ public class MissionController {
     }
 
     private void logicaMissao1(Npc npc) {
+        // Exibe o diálogo do guarda com instruções
+        if (controlaTrocaMissao) {
+            jogo.controller.gameScreen.caixaDialogo.npc = jogo.controller.guarda;
+            jogo.controller.gameScreen.caixaDialogo.setTextoDialogo(Npc.DIALOGO_GUARDA_TECLA_ESPACO);
+            jogo.controller.gameScreen.caixaDialogo.defineTexturaNpc();
+            jogo.controller.mostrarDialogo = true;
+        }
+        
         DebugMode.mostrarLog("Missão", "Início da missão 1");
         // Atualiza o status de alerta da missão dos NPCs que fazem parte da missão
         trocaMissao();
@@ -185,6 +193,14 @@ public class MissionController {
     }
 
     private void logicaMissao2(Npc npc) {
+        // Exibe o diálogo do guarda com instruções
+        if (controlaTrocaMissao) {
+            jogo.controller.gameScreen.caixaDialogo.npc = jogo.controller.guarda;
+            jogo.controller.gameScreen.caixaDialogo.setTextoDialogo(Npc.DIALOGO_GUARDA_TECLA_T);
+            jogo.controller.gameScreen.caixaDialogo.defineTexturaNpc();
+            jogo.controller.mostrarDialogo = true;
+        }
+
         DebugMode.mostrarLog("Missão", "Início da missão 2");
         trocaMissao();
 
@@ -247,7 +263,8 @@ public class MissionController {
                 // Atualiza a missão
                 atualizarMissao(3, "antonio");
                 controlaTrocaMissao = true;
-                jogo.objetosInterativos.get("objetoMissao").setPosition(jogo.objetosInterativos.get("objetoPlaca3").x, jogo.objetosInterativos.get("objetoPlaca3").y);
+                jogo.objetosInterativos.get("objetoMissao").setPosition(jogo.objetosInterativos.get("objetoPlaca3").x,
+                        jogo.objetosInterativos.get("objetoPlaca3").y);
             }
         }
     }
@@ -344,7 +361,9 @@ public class MissionController {
                         // Atualiza a missão
                         atualizarMissao(5, "bruna");
                         controlaTrocaMissao = true;
-                        jogo.objetosInterativos.get("objetoMissao").setPosition(jogo.objetosInterativos.get("objetoPlaca5").x, jogo.objetosInterativos.get("objetoPlaca5").y);
+                        jogo.objetosInterativos.get("objetoMissao").setPosition(
+                                jogo.objetosInterativos.get("objetoPlaca5").x,
+                                jogo.objetosInterativos.get("objetoPlaca5").y);
                     }
                 }
             }
@@ -402,7 +421,8 @@ public class MissionController {
                 // Atualiza a missão
                 atualizarMissao(6, "josinaldo");
                 controlaTrocaMissao = true;
-                jogo.objetosInterativos.get("objetoMissao").setPosition(jogo.objetosInterativos.get("objetoPlaca6").x, jogo.objetosInterativos.get("objetoPlaca6").y);
+                jogo.objetosInterativos.get("objetoMissao").setPosition(jogo.objetosInterativos.get("objetoPlaca6").x,
+                        jogo.objetosInterativos.get("objetoPlaca6").y);
             }
         }
     }
@@ -462,7 +482,8 @@ public class MissionController {
                 // Atualiza a missão
                 atualizarMissao(7, "paulo");
                 controlaTrocaMissao = true;
-                jogo.objetosInterativos.get("objetoMissao").setPosition(jogo.objetosInterativos.get("objetoPlaca7").x, jogo.objetosInterativos.get("objetoPlaca7").y);
+                jogo.objetosInterativos.get("objetoMissao").setPosition(jogo.objetosInterativos.get("objetoPlaca7").x,
+                        jogo.objetosInterativos.get("objetoPlaca7").y);
             }
         }
     }
@@ -498,7 +519,8 @@ public class MissionController {
                 // Atualiza a missão
                 // atualizarMissao(6, "josinaldo");
                 // controlaTrocaMissao = true;
-                // jogo.objetosInterativos.get("objetoMissao").setPosition(jogo.objetosInterativos.get("objetoPlaca6").x, jogo.objetosInterativos.get("objetoPlaca6").y);
+                // jogo.objetosInterativos.get("objetoMissao").setPosition(jogo.objetosInterativos.get("objetoPlaca6").x,
+                // jogo.objetosInterativos.get("objetoPlaca6").y);
             }
         }
     }
