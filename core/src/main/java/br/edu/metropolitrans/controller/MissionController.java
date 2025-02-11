@@ -75,6 +75,10 @@ public class MissionController {
         }
     }
 
+    private void salvarJogo() {
+        jogo.salvarJogo("jogo");
+    }
+
     private void logicaInicial(Npc npc) {
         DebugMode.mostrarLog("Missão", "Início do jogo");
         // Antes de trocar a missão, assim que falar com o Heberto, precisa falar
@@ -541,6 +545,7 @@ public class MissionController {
         if (controlaTrocaMissao) {
             atualizarAlertas();
             controlaTrocaMissao = false;
+            salvarJogo();
             DebugMode.mostrarLog("Missão", "Troca de missão realizada");
         }
     }

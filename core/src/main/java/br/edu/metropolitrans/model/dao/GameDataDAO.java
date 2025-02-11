@@ -30,19 +30,18 @@ public class GameDataDAO {
     }
 
     /**
-     * Atualiza os dados do jogo
+     * Salva os dados do jogo
      * 
-     * @param id     Id do jogo
-     * @param status Novo status do jogo
+     * @param status Novo save do jogo
      **/
 
-    public static void atualizaDadosJogo(int id, GameData gameData) {
+    public static void salvarDadosJogo(GameData gameData, String tipo) {
         if (gameData == null) {
             DebugMode.mostrarLog("GameDataDAO", "GameData está nulo.");
             return;
         }
         DataSource ds = DataSource.getInstancia();
-        ds.desconectar(gameData, "jogo");
+        ds.desconectar(gameData, tipo);
     }
 
     /**

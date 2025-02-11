@@ -112,6 +112,7 @@ public class SaveGameScreen implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 if (quantidadeSaves > 0) {
+                    //jogo.atualizarJogoPorSaveGameData("jogo");
                     jogo.setScreen(new LoadScreen(jogo, config.getSaveInfo().getSaves().get(0)));
                 } else {
                     jogo.setScreen(new LoadScreen(jogo, new ConfigSave(1)));
@@ -123,6 +124,7 @@ public class SaveGameScreen implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 if (quantidadeSaves > 1) {
+                    //jogo.atualizarJogoPorSaveGameData("jogo");
                     jogo.setScreen(new LoadScreen(jogo, config.getSaveInfo().getSaves().get(1)));
                 } else {
                     jogo.setScreen(new LoadScreen(jogo, new ConfigSave(2)));
@@ -134,6 +136,7 @@ public class SaveGameScreen implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 if (quantidadeSaves > 2) {
+                    //jogo.atualizarJogoPorSaveGameData("jogo");
                     jogo.setScreen(new LoadScreen(jogo, config.getSaveInfo().getSaves().get(2)));
                 } else {
                     jogo.setScreen(new LoadScreen(jogo, new ConfigSave(3)));
@@ -145,6 +148,7 @@ public class SaveGameScreen implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 if (quantidadeSaves > 3) {
+                    //jogo.atualizarJogoPorSaveGameData("jogo");
                     jogo.setScreen(new LoadScreen(jogo, config.getSaveInfo().getSaves().get(3)));
                 } else {
                     jogo.setScreen(new LoadScreen(jogo, new ConfigSave(4)));
@@ -156,6 +160,7 @@ public class SaveGameScreen implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 if (quantidadeSaves > 4) {
+                    //jogo.atualizarJogoPorSaveGameData("jogo");
                     jogo.setScreen(new LoadScreen(jogo, config.getSaveInfo().getSaves().get(4)));
                 } else {
                     jogo.setScreen(new LoadScreen(jogo, new ConfigSave(5)));

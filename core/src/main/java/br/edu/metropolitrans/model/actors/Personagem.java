@@ -70,8 +70,12 @@ public class Personagem extends BaseActor {
 
     private float margemInfracao = -30.0f;
 
+    public String selectedCharacter;
+
     public Personagem(float x, float y, Stage s) {
         super(x, y, s);
+
+        selectedCharacter = "male";
 
         // Ajusta as margens para centralizar o personagem na colisão
         margemAltura = -10;
@@ -118,6 +122,8 @@ public class Personagem extends BaseActor {
     }
 
     public void atualizarSpritePersonagem(String selectedCharacter) {
+        this.selectedCharacter = selectedCharacter;
+        
         String nomeArquivo = "files/characters/mainCharacter/character-" + selectedCharacter + "_spritesheet.png";
         int linhas = 4;
         int colunas = 11;

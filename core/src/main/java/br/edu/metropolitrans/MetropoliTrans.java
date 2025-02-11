@@ -1,5 +1,6 @@
 package br.edu.metropolitrans;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -20,6 +21,7 @@ import br.edu.metropolitrans.controller.Controller;
 import br.edu.metropolitrans.model.ConfigData;
 import br.edu.metropolitrans.model.GameData;
 import br.edu.metropolitrans.model.GameDataNpc;
+import br.edu.metropolitrans.model.GameDataPersonagem;
 import br.edu.metropolitrans.model.actors.BasicAnimation;
 import br.edu.metropolitrans.model.actors.Npc;
 import br.edu.metropolitrans.model.actors.ObjetoInterativo;
@@ -197,15 +199,24 @@ public class MetropoliTrans extends Game {
         npcs = new HashMap<>();
 
         // Carrega os Npcs
-        // npcs.put("maria", new Npc("maria", 280, 1220, "maria/sprite.png", estagioPrincipal, true));
-        // npcs.put("betania", new Npc("betania", 264, 200, "betania/sprite.png", estagioPrincipal, 1, false));
-        // npcs.put("bruna", new Npc("bruna", 1185, 1850, "bruna/sprite.png", estagioPrincipal, false));
-        // npcs.put("antonio", new Npc("antonio", 1485, 1130, "antonio/sprite.png", estagioPrincipal, false));
-        // npcs.put("heberto", new Npc("heberto", 25, 650, "heberto/sprite.png", estagioPrincipal, 1, false));
-        // npcs.put("jose", new Npc("jose", 90, 1450, "jose/sprite.png", estagioPrincipal, false));
-        // npcs.put("josinaldo", new Npc("josinaldo", 2090, 150, "josinaldo/sprite.png", estagioPrincipal, false));
-        // npcs.put("paulo", new Npc("paulo", 1500, 100, "paulo/sprite.png", estagioPrincipal, false));
-        // npcs.put("juliana", new Npc("juliana", 1185, 1130, "juliana/sprite.png", estagioPrincipal, false));
+        // npcs.put("maria", new Npc("maria", 280, 1220, "maria/sprite.png",
+        // estagioPrincipal, true));
+        // npcs.put("betania", new Npc("betania", 264, 200, "betania/sprite.png",
+        // estagioPrincipal, 1, false));
+        // npcs.put("bruna", new Npc("bruna", 1185, 1850, "bruna/sprite.png",
+        // estagioPrincipal, false));
+        // npcs.put("antonio", new Npc("antonio", 1485, 1130, "antonio/sprite.png",
+        // estagioPrincipal, false));
+        // npcs.put("heberto", new Npc("heberto", 25, 650, "heberto/sprite.png",
+        // estagioPrincipal, 1, false));
+        // npcs.put("jose", new Npc("jose", 90, 1450, "jose/sprite.png",
+        // estagioPrincipal, false));
+        // npcs.put("josinaldo", new Npc("josinaldo", 2090, 150, "josinaldo/sprite.png",
+        // estagioPrincipal, false));
+        // npcs.put("paulo", new Npc("paulo", 1500, 100, "paulo/sprite.png",
+        // estagioPrincipal, false));
+        // npcs.put("juliana", new Npc("juliana", 1185, 1130, "juliana/sprite.png",
+        // estagioPrincipal, false));
 
         // Adiciona os npcs no array de colisão
         // personagem.npcs = npcs;
@@ -301,7 +312,8 @@ public class MetropoliTrans extends Game {
 
         // Atualiza os NPCs
         for (GameDataNpc npc : gameData.getNpcs()) {
-            npcs.put(npc.getKey(), new Npc(npc.getKey(), npc.getX(), npc.getY(), npc.getKey() + "/sprite.png", estagioPrincipal, npc.getStatusAlertaMissao(), npc.isTemAnimacao()));
+            npcs.put(npc.getKey(), new Npc(npc.getKey(), npc.getX(), npc.getY(), npc.getKey() + "/sprite.png",
+                    estagioPrincipal, npc.getStatusAlertaMissao(), npc.isTemAnimacao()));
         }
 
         // Atualiza o personagem
@@ -309,13 +321,46 @@ public class MetropoliTrans extends Game {
         personagem.setPosition(gameData.getPersonagem().getX(), gameData.getPersonagem().getY());
         personagem.moedas = gameData.getPersonagem().getMoedas();
         personagem.xp = gameData.getPersonagem().getXp();
-        personagem.tipoInfracao = gameData.getPersonagem().getTipoInfracao() != null ? Personagem.TipoInfracao.valueOf(gameData.getPersonagem().getTipoInfracao()) : null;
+        personagem.tipoInfracao = gameData.getPersonagem().getTipoInfracao() != null
+                ? Personagem.TipoInfracao.valueOf(gameData.getPersonagem().getTipoInfracao())
+                : null;
         personagem.infracoes = gameData.getPersonagem().getInfracoes();
         personagem.atualizarSpritePersonagem(gameData.getPersonagem().getSprite());
         personagem.npcs = npcs;
 
         if (controller != null)
             controller.MISSAO = gameData.getMissaoAtual();
+    }
+
+    public void salvarJogo(String tipo) {
+        // Salva os NPCs
+        List<GameDataNpc> dataNpcs = new ArrayList<>();
+        for (Npc npc : npcs.values()) {
+            GameDataNpc gameDataNpc = new GameDataNpc();
+            gameDataNpc.setKey(npc.nome);
+            gameDataNpc.setX((int) npc.getX());
+            gameDataNpc.setY((int) npc.getY());
+            gameDataNpc.setStatusAlertaMissao(npc.statusAlertaMissao);
+            gameDataNpc.setTemAnimacao(npc.nome.equals("maria") ? true : false);
+            dataNpcs.add(gameDataNpc);
+        }
+
+        // Salva o personagem
+        GameDataPersonagem dataPersonagem = new GameDataPersonagem();
+        dataPersonagem.setX((int) personagem.getX());
+        dataPersonagem.setY((int) personagem.getY());
+        dataPersonagem.setMoedas(personagem.moedas);
+        dataPersonagem.setXp(personagem.xp);
+        dataPersonagem.setTipoInfracao(personagem.tipoInfracao != null ? personagem.tipoInfracao.toString() : null);
+        dataPersonagem.setInfracoes(personagem.infracoes);
+        dataPersonagem.setSprite(personagem.selectedCharacter);
+
+        GameData gameData = new GameData(
+                controller.MISSAO,
+                dataPersonagem,
+                dataNpcs);
+
+        GameDataDAO.salvarDadosJogo(gameData, tipo);
     }
 
     public void trocarTela(String tela) {
