@@ -78,13 +78,15 @@ public class LoadScreen implements Screen {
                             jogo.telas.put("game", new GameScreen(jogo));
 
                         // Verifica se existe um save
-                        if (save == null) {
-                            SaveManager.criarNovoSave(SaveManager.verificaQualProximoSaveDis());
-                        } else if (save != null && save.getName() != null) {
-                            SaveManager.definirSaveAtual(save.getId());
-                        } else {
-                            SaveManager.criarNovoSave(save.getId());
-                        }
+                        // DESATIVADO - Não é mais necessário
+                        // if (save == null) {
+                        //     SaveManager.criarNovoSave(SaveManager.verificaQualProximoSaveDis());
+                        // } else if (save != null && save.getName() != null) {
+                        //     SaveManager.definirSaveAtual(save.getId());
+                        // } else {
+                        //     SaveManager.criarNovoSave(save.getId());
+                        // }
+                            SaveManager.criarNovoSave(1);
 
                         jogo.controller.inicializiar();
                         jogo.setScreen(jogo.telas.get("game"));
