@@ -83,8 +83,11 @@ public class MetropoliTrans extends Game {
     /**
      * Objetos interativos
      */
-    public ObjetoInterativo objeto, objetoChao, objetoSairSala, objetoMissao, objetoMissaoHorizontal, objetoPlaca1,
-            objetoHorizontal2, objetoPlaca3, objetoPlaca5, objetoPlaca6, objetoPlaca7, objetoPc;
+    // public ObjetoInterativo objeto, objetoChao, objetoSairSala, objetoMissao,
+    // objetoMissaoHorizontal, objetoPlaca1,
+    // objetoHorizontal2, objetoPlaca3, objetoPlaca5, objetoPlaca6, objetoPlaca7,
+    // objetoPc;
+    public HashMap<String, ObjetoInterativo> objetosInterativos = new HashMap<>();
 
     /**
      * Mapas do jogo
@@ -139,40 +142,41 @@ public class MetropoliTrans extends Game {
         mapaRenderizador = new OrthogonalTiledMapRenderer(mapas.mapa, 1, batch);
 
         // Carrega o objeto interativo das missões
-        objetoMissao = new ObjetoInterativo("alertaMissao", 1290, 1245, "mission-alert.png",
-                estagioPrincipal);
-        objetoMissao.setVisible(false);
+        objetosInterativos.put("objetoMissao", new ObjetoInterativo("alertaMissao", 1290, 1245, "mission-alert.png",
+                estagioPrincipal, false));
 
-        objetoMissaoHorizontal = new ObjetoInterativo("alertaHorizontal", 1705, 1388, "mission-alert-horizontal.png",
-                estagioPrincipal);
-        objetoMissaoHorizontal.setVisible(false);
+        int horizontalObjX = 1705;
+        int horizontalObjY = 1388;
+        objetosInterativos.put("objetoMissaoHorizontal",
+                new ObjetoInterativo("alertaHorizontal", horizontalObjX, horizontalObjY, "mission-alert-horizontal.png",
+                        estagioPrincipal, false));
 
         // Carrega o objeto do chão
-        objetoChao = new ObjetoInterativo("chao", 320, 1210, "asphalt-obj.png", estagioPrincipal);
+        objetosInterativos.put("objetoChao",
+                new ObjetoInterativo("chao", 320, 1210, "asphalt-obj.png", estagioPrincipal));
 
         // Carrega o objeto interativo da placa das missões
-        objetoPlaca1 = new ObjetoInterativo("placa", 1290, 1245, "mission1-result.png", estagioPrincipal);
-        objetoPlaca1.setVisible(false);
+        objetosInterativos.put("objetoPlaca1",
+                new ObjetoInterativo("placa", 1290, 1245, "mission1-result.png", estagioPrincipal, false));
 
-        objetoHorizontal2 = new ObjetoInterativo("horizontal2", objetoMissaoHorizontal.x, objetoMissaoHorizontal.y,
-                "mission2-result.png", estagioPrincipal);
-        objetoHorizontal2.setVisible(false);
+        objetosInterativos.put("objetoHorizontal2", new ObjetoInterativo("horizontal2", horizontalObjX, horizontalObjY,
+                "mission2-result.png", estagioPrincipal, false));
 
-        objetoPlaca3 = new ObjetoInterativo("placa3", 380, 1450, "mission3-result.png", estagioPrincipal);
-        objetoPlaca3.setVisible(false);
+        objetosInterativos.put("objetoPlaca3",
+                new ObjetoInterativo("placa3", 380, 1450, "mission3-result.png", estagioPrincipal, false));
 
-        objetoPlaca5 = new ObjetoInterativo("placa5", 1956, 512, "mission5-result.png", estagioPrincipal);
-        objetoPlaca5.setVisible(false);
+        objetosInterativos.put("objetoPlaca5",
+                new ObjetoInterativo("placa5", 1956, 512, "mission5-result.png", estagioPrincipal, false));
 
-        objetoPlaca6 = new ObjetoInterativo("placa6", 1480, 256, "mission6-result.png", estagioPrincipal);
-        objetoPlaca6.setVisible(false);
+        objetosInterativos.put("objetoPlaca6",
+                new ObjetoInterativo("placa6", 1480, 256, "mission6-result.png", estagioPrincipal, false));
 
-        objetoPlaca7 = new ObjetoInterativo("placa7", 488, 200, "mission7-result.png", estagioPrincipal);
-        objetoPlaca7.setVisible(false);
+        objetosInterativos.put("objetoPlaca7",
+                new ObjetoInterativo("placa7", 488, 200, "mission7-result.png", estagioPrincipal, false));
 
         // Carrega o objeto interativo do PC no mapa room
-        objetoPc = new ObjetoInterativo("pc", 1020, 1470, "background-transparent.png", estagioPrincipal);
-        // objetoPc.setVisible(false);
+        objetosInterativos.put("objetoPc",
+                new ObjetoInterativo("pc", 1020, 1470, "background-transparent.png", estagioPrincipal));
 
         // Carrega o personagem
         personagem = new Personagem(250, 860, estagioPrincipal);
@@ -246,8 +250,8 @@ public class MetropoliTrans extends Game {
         explosao.setVisible(false);
 
         // Carrega os objetos interativos
-        objeto = new ObjetoInterativo("entradaPrefeitura", 100, 760, "background-transparent.png",
-                estagioPrincipal);
+        objetosInterativos.put("objeto",
+                new ObjetoInterativo("entradaPrefeitura", 100, 760, "background-transparent.png", estagioPrincipal));
 
         // Inicia a reprodução da música do menu
         musicaMenu.play();
@@ -339,18 +343,18 @@ public class MetropoliTrans extends Game {
         vehicles.clear();
 
         // Descarte de objetos interativos
-        if (objeto != null)
-            objeto.dispose();
-        if (objetoChao != null)
-            objetoChao.dispose();
-        if (objetoSairSala != null)
-            objetoSairSala.dispose();
-        if (objetoMissao != null)
-            objetoMissao.dispose();
-        if (objetoPlaca1 != null)
-            objetoPlaca1.dispose();
-        if (objetoPc != null)
-            objetoPc.dispose();
+        if (objetosInterativos.get("objeto") != null)
+            objetosInterativos.get("objeto").dispose();
+        if (objetosInterativos.get("objetoChao") != null)
+            objetosInterativos.get("objetoChao").dispose();
+        if (objetosInterativos.get("objetoSairSala") != null)
+            objetosInterativos.get("objetoSairSala").dispose();
+        if (objetosInterativos.get("objetoMissao") != null)
+            objetosInterativos.get("objetoMissao").dispose();
+        if (objetosInterativos.get("objetoPlaca1") != null)
+            objetosInterativos.get("objetoPlaca1").dispose();
+        if (objetosInterativos.get("objetoPc") != null)
+            objetosInterativos.get("objetoPc").dispose();
 
         // Descarte de mapas
         if (mapas != null && mapas.mapa != null)

@@ -107,10 +107,10 @@ public class Controller {
         this.mapas = jogo.mapas;
         this.personagem = jogo.personagem;
         this.npcs = jogo.npcs;
-        this.objeto = jogo.objeto;
-        this.objetoSairSala = jogo.objetoSairSala;
-        this.objetoMissao = jogo.objetoMissao;
-        this.objetoPc = jogo.objetoPc;
+        this.objeto = jogo.objetosInterativos.get("objeto");
+        this.objetoSairSala = jogo.objetosInterativos.get("objetoSairSala");
+        this.objetoMissao = jogo.objetosInterativos.get("objetoMissao");
+        this.objetoPc = jogo.objetosInterativos.get("objetoPc");
 
         // Carrega os objetos de colisão
         montarColisao(mapas.mapa);
