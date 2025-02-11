@@ -11,18 +11,21 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.ScreenUtils;
 
 import br.edu.metropolitrans.MetropoliTrans;
+import br.edu.metropolitrans.model.ConfigSave;
 import br.edu.metropolitrans.model.connection.SaveManager;
 import br.edu.metropolitrans.view.font.FontBase;
 
 public class LoadScreen implements Screen {
     public final MetropoliTrans jogo;
+    public final ConfigSave save;
     public Stage stage;
     public Skin skin;
     public Label titulo;
     public Texture background;
 
-    public LoadScreen(final MetropoliTrans jogo) {
+    public LoadScreen(MetropoliTrans jogo, ConfigSave save) {
         this.jogo = jogo;
+        this.save = save;
 
         // Carrega a textura de fundo
         background = new Texture(Gdx.files.internal("files/backgrounds/background-principal-2.png"));
@@ -73,7 +76,16 @@ public class LoadScreen implements Screen {
                     public void run() {
                         if (jogo.telas.get("game") == null)
                             jogo.telas.put("game", new GameScreen(jogo));
-                        SaveManager.criarNovoSave();
+
+                        // Verifica se existe um save
+                        if (save == null) {
+                            SaveManager.criarNovoSave(SaveManager.verificaQualProximoSaveDis());
+                        } else if (save != null && save.getName() != null) {
+                            SaveManager.definirSaveAtual(save.getId());
+                        } else {
+                            SaveManager.criarNovoSave(save.getId());
+                        }
+
                         jogo.controller.inicializiar();
                         jogo.setScreen(jogo.telas.get("game"));
                     }

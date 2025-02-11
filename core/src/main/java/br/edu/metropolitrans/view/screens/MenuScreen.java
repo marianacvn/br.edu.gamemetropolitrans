@@ -19,6 +19,8 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 import br.edu.metropolitrans.MetropoliTrans;
+import br.edu.metropolitrans.model.ConfigData;
+import br.edu.metropolitrans.model.dao.ConfigDAO;
 import br.edu.metropolitrans.view.components.buttons.ImageButtonBase;
 import br.edu.metropolitrans.view.components.buttons.TextButtonBase;
 import br.edu.metropolitrans.view.font.FontBase;
@@ -38,7 +40,7 @@ public class MenuScreen implements Screen {
     /**
      * Define se o som está mutado ou não
      */
-    public boolean isMuted = false;
+    public boolean isMuted;
     /**
      * Viewport da tela
      */
@@ -48,6 +50,8 @@ public class MenuScreen implements Screen {
         this.jogo = jogo;
         // Carrega a textura de fundo
         background = new Texture(Gdx.files.internal("files/backgrounds/background-principal-2.png"));
+
+        isMuted = ConfigDAO.carregarConfig().isMute();
 
         // Cria o Viewport e o Stage
         viewport = new ScreenViewport(); // Usa ScreenViewport para ajustar automaticamente ao tamanho da janela
@@ -79,8 +83,14 @@ public class MenuScreen implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 isMuted = !isMuted;
+                
+                ConfigData config = ConfigDAO.carregarConfig();
+                config.setMute(isMuted);
+                ConfigDAO.salvarConfig(config);
+
                 if (isMuted) {
                     jogo.musicaMenu.pause();
+                    
                 } else {
                     jogo.musicaMenu.play();
                 }

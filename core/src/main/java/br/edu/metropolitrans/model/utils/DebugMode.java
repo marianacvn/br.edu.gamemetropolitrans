@@ -10,10 +10,10 @@ import br.edu.metropolitrans.model.actors.Vehicle;
 import br.edu.metropolitrans.view.screens.GameScreen;
 
 public class DebugMode {
-    private static final TipoDebug DEBUG_MODE = TipoDebug.NENHUM;
-    public static final boolean INFRACOES_ATIVAS = false; // TODO: Mudar ao finalizar o desenvolvimento
+    public static TipoDebug DEBUG_MODE = TipoDebug.NENHUM;
+    public static boolean INFRACOES_ATIVAS = false; // TODO: Mudar ao finalizar o desenvolvimento
 
-    private enum TipoDebug {
+    public enum TipoDebug {
         LOG, UI, COMPLETO, NENHUM
     }
 
