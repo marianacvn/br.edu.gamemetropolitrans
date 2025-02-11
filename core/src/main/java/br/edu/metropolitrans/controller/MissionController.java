@@ -38,7 +38,7 @@ public class MissionController {
 
         // Carrega a missão referente ao id
         missao = MissionDataDAO.buscaMissaoPorId(missaoId);
-        Npc npc = jogo.controller.gameScreen.caixaDialogo.npc;
+        Npc npc = jogo.controller.gameScreen != null ? jogo.controller.gameScreen.caixaDialogo.npc : null;
 
         /**
          * Primeira missão, verifica se o dialógo
@@ -70,6 +70,9 @@ public class MissionController {
             case 7:
                 logicaMissao7(npc);
                 break;
+            case 8:
+                logicaFinal(npc);
+                break;
             default:
                 break;
         }
@@ -99,7 +102,7 @@ public class MissionController {
             jogo.controller.gameScreen.caixaDialogo.defineTexturaNpc();
             jogo.controller.mostrarDialogo = true;
         }
-        
+
         DebugMode.mostrarLog("Missão", "Início da missão 1");
         // Atualiza o status de alerta da missão dos NPCs que fazem parte da missão
         trocaMissao();
@@ -520,13 +523,29 @@ public class MissionController {
                 // Conclui a missão
                 concluirMissao(missao);
 
-                // TODO: implementar fim do jogo
                 // Atualiza a missão
-                // atualizarMissao(6, "josinaldo");
-                // controlaTrocaMissao = true;
-                // jogo.objetosInterativos.get("objetoMissao").setPosition(jogo.objetosInterativos.get("objetoPlaca6").x,
-                // jogo.objetosInterativos.get("objetoPlaca6").y);
+                atualizarMissao(8, "betania");
+                controlaTrocaMissao = true;
+
+                // Reposiciona os npcs em frente a prefeitura
+                jogo.npcs.get("betania").setPosition(25, 566);
+                jogo.npcs.get("maria").setPosition(25, 482);
+                jogo.npcs.get("bruna").setPosition(217, 650);
+                jogo.npcs.get("antonio").setPosition(217, 482);
+                jogo.npcs.get("jose").setPosition(25, 398);
+                jogo.npcs.get("paulo").setPosition(217, 398);
             }
+        }
+    }
+
+    private void logicaFinal(Npc npc) {
+        DebugMode.mostrarLog("Missão", "Final do jogo");
+        trocaMissao();
+
+        // Verifica se o dialogo final foi exibido e finaliza o jogo
+        if (npc != null && npc.nome.equals("heberto") && npc.statusAlertaMissao == 2) {
+            DebugMode.mostrarLog("Missão", "Finalizando o jogo");
+            jogo.reiniciarJogo();
         }
     }
 

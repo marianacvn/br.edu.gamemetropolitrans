@@ -133,6 +133,10 @@ public class MetropoliTrans extends Game {
         estagioPrincipal = new Stage();
         batch = new SpriteBatch();
 
+        // Carrega os NPCs
+        npcs = new HashMap<>();
+        atualizarJogoPorSaveGameData("game-data.json");
+
         fonte = FontBase.getInstancia().getFonte(30, FontBase.Fontes.PADRAO);
 
         // Carrega a configuração do jogo
@@ -193,34 +197,6 @@ public class MetropoliTrans extends Game {
         // Carrega o personagem
         // personagem = new Personagem(250, 860, estagioPrincipal);
         Personagem.setLimitacaoMundo(Mapas.MAPA_LARGURA, Mapas.MAPA_ALTURA);
-
-        // Carrega os NPCs
-        // Adiciona os npcs em um array
-        npcs = new HashMap<>();
-
-        // Carrega os Npcs
-        // npcs.put("maria", new Npc("maria", 280, 1220, "maria/sprite.png",
-        // estagioPrincipal, true));
-        // npcs.put("betania", new Npc("betania", 264, 200, "betania/sprite.png",
-        // estagioPrincipal, 1, false));
-        // npcs.put("bruna", new Npc("bruna", 1185, 1850, "bruna/sprite.png",
-        // estagioPrincipal, false));
-        // npcs.put("antonio", new Npc("antonio", 1485, 1130, "antonio/sprite.png",
-        // estagioPrincipal, false));
-        // npcs.put("heberto", new Npc("heberto", 25, 650, "heberto/sprite.png",
-        // estagioPrincipal, 1, false));
-        // npcs.put("jose", new Npc("jose", 90, 1450, "jose/sprite.png",
-        // estagioPrincipal, false));
-        // npcs.put("josinaldo", new Npc("josinaldo", 2090, 150, "josinaldo/sprite.png",
-        // estagioPrincipal, false));
-        // npcs.put("paulo", new Npc("paulo", 1500, 100, "paulo/sprite.png",
-        // estagioPrincipal, false));
-        // npcs.put("juliana", new Npc("juliana", 1185, 1130, "juliana/sprite.png",
-        // estagioPrincipal, false));
-
-        // Adiciona os npcs no array de colisão
-        // personagem.npcs = npcs;
-        atualizarJogoPorSaveGameData("game-data.json");
 
         // Carrega os veículos
         vehicles.put(
@@ -283,27 +259,32 @@ public class MetropoliTrans extends Game {
     }
 
     public void reiniciarJogo() {
-
-        setPausado(true);
-        DebugMode.mostrarLog("MetropoliTrans", "Parando o jogo e voltando para o Menu...");
+        // Realiza o dispose da tela de jogo
+        DebugMode.mostrarLog("MetropoliTrans", "Descartando a tela de jogo...");
+        Gdx.app.log("MetropoliTrans", "Descartando a tela de jogo..."); 
+        this.getScreen().dispose();
 
         // Troca a tela voltando para a tela de início
+        Gdx.app.log("MetropoliTrans", "Mudando para a tela de início..."); 
         trocarTela("menu");
 
         // Reinicia os valores Padrões
         DebugMode.mostrarLog("MetropoliTrans", "Reiniciando os valores padrões.");
+        Gdx.app.log("MetropoliTrans", "Mudando para a tela de início..."); 
         controller.MISSAO = 0;
 
         // Limpa todas as telas
-        DebugMode.mostrarLog("MetropoliTrans", "Excluindo todas as telas...");
+        // DebugMode.mostrarLog("MetropoliTrans", "Excluindo todas as telas...");
+        Gdx.app.log("MetropoliTrans", "Mudando para a tela de início..."); 
         telas.clear();
 
         // Retoma o jogo
-        setPausado(false);
         DebugMode.mostrarLog("MetropoliTrans", "Retomando o jogo...");
+        Gdx.app.log("MetropoliTrans", "Mudando para a tela de início..."); 
 
         // Inicializa o jogo novamente
         DebugMode.mostrarLog("MetropoliTrans", "Inicializando o jogo novamente...");
+        Gdx.app.log("MetropoliTrans", "Mudando para a tela de início..."); 
         inicializarJogo();
     }
 

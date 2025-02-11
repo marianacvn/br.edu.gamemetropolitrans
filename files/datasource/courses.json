@@ -71,6 +71,15 @@
             "missaoId": 7,
             "imagemPath": "files/itens/escolar.png",
             "videoUrl": null
+        },
+        {
+            "id": 9,
+            "nome": "Fim do jogo",
+            "descricao": "Sem descrição",
+            "status": "CONCLUIDO",
+            "missaoId": 8,
+            "imagemPath": "files/itens/escolar.png",
+            "videoUrl": null
         }
     ]
 }

@@ -97,6 +97,18 @@
             "personagens": [
                 "betania"
             ]
+        },
+        {
+            "id": 8,
+            "nome": "Fim do jogo",
+            "descricao": "Diálogo final com o prefeito.",
+            "recompensaMoedas": 0,
+            "experiencia": 0,
+            "valorErro": 0,
+            "finalizouMissao": false,
+            "personagens": [
+                "heberto"
+            ]
         }
     ]
 }

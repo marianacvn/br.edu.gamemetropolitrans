@@ -31,7 +31,7 @@ public class SaveManager {
         ConfigData configData = ConfigDAO.carregarConfig();
         int quantidadeSaves = configData.getSaveInfo().getSaves().size();
 
-        if (quantidadeSaves <= MAX_SAVES) {
+        // if (quantidadeSaves <= MAX_SAVES) {
             // Realiza a criação dos arquivos de save
             CourseDAO.criarNovoSave(saveId);
             MissionDataDAO.criarNovoSave(saveId);
@@ -45,9 +45,9 @@ public class SaveManager {
 
             configData.getSaveInfo().getSaves().add(configSave);
             ConfigDAO.salvarConfig(configData);
-        } else {
-            System.out.println("Número máximo de saves atingido.");
-        }
+        // } else {
+        //     System.out.println("Número máximo de saves atingido.");
+        // }
     }
 
     public static void definirSaveAtual(int saveId) {
@@ -62,13 +62,13 @@ public class SaveManager {
 
     public static void removeArquivoSave(int saveId) {
         try {
-            if (saveId > 0 && saveId <= MAX_SAVES) {
+            // if (saveId > 0 && saveId <= MAX_SAVES) {
                 Gdx.files.local("files/datasource/save" + saveId + "-courses.json").delete();
                 Gdx.files.local("files/datasource/save" + saveId + "-missions.json").delete();
                 Gdx.files.local("files/datasource/save" + saveId + "-game-data.json").delete();
-            } else {
-                System.out.println("Save inválido.");
-            }
+            // } else {
+            //     System.out.println("Save inválido.");
+            // }
         } catch (Exception e) {
             System.out.println("Erro ao remover arquivo de save.");
         }

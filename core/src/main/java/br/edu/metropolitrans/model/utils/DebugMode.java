@@ -11,7 +11,7 @@ import br.edu.metropolitrans.view.screens.GameScreen;
 
 public class DebugMode {
     public static TipoDebug DEBUG_MODE = TipoDebug.NENHUM;
-    public static boolean INFRACOES_ATIVAS = false; // TODO: Mudar ao finalizar o desenvolvimento
+    public static boolean INFRACOES_ATIVAS = false;
 
     public enum TipoDebug {
         LOG, UI, COMPLETO, NENHUM
