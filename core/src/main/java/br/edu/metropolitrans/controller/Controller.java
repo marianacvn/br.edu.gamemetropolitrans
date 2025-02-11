@@ -236,6 +236,12 @@ public class Controller {
         if (objeto != null && personagem.interagiu(objeto) && Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
             // Remove o objeto da missão da sala e minimapa
             objetoMissao.setVisible(false);
+
+            // Ajusta para remover o objeto da missão 1 da sala
+            if (MISSAO >= 1) {
+                jogo.objetosInterativos.get("objetoPlaca1").setVisible(false);
+            }
+
             gameScreen.minimapa.isVisible = false;
             npcs.forEach((nome, npc) -> {
                 npc.remove();
@@ -263,6 +269,12 @@ public class Controller {
                 && Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
             // coloca o objeto da missão ao sair da sala e minimapa
             objetoMissao.setVisible(true);
+
+            // Ajusta para remover o objeto da missão 1 da sala
+            if (MISSAO >= 1) {
+                jogo.objetosInterativos.get("objetoPlaca1").setVisible(true);
+            }
+
             gameScreen.minimapa.isVisible = true;
             // Adiciona os NPCs no array
             personagem.npcs = npcs;

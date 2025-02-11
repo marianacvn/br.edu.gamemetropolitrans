@@ -343,18 +343,11 @@ public class MetropoliTrans extends Game {
         vehicles.clear();
 
         // Descarte de objetos interativos
-        if (objetosInterativos.get("objeto") != null)
-            objetosInterativos.get("objeto").dispose();
-        if (objetosInterativos.get("objetoChao") != null)
-            objetosInterativos.get("objetoChao").dispose();
-        if (objetosInterativos.get("objetoSairSala") != null)
-            objetosInterativos.get("objetoSairSala").dispose();
-        if (objetosInterativos.get("objetoMissao") != null)
-            objetosInterativos.get("objetoMissao").dispose();
-        if (objetosInterativos.get("objetoPlaca1") != null)
-            objetosInterativos.get("objetoPlaca1").dispose();
-        if (objetosInterativos.get("objetoPc") != null)
-            objetosInterativos.get("objetoPc").dispose();
+        objetosInterativos.forEach((nome, objeto) -> {
+            if (objeto != null)
+                objeto.dispose();
+        });
+        objetosInterativos.clear();
 
         // Descarte de mapas
         if (mapas != null && mapas.mapa != null)
