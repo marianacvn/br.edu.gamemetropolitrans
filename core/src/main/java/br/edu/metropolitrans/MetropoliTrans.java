@@ -17,11 +17,16 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Array;
 import br.edu.metropolitrans.controller.Controller;
+import br.edu.metropolitrans.model.ConfigData;
+import br.edu.metropolitrans.model.GameData;
+import br.edu.metropolitrans.model.GameDataNpc;
 import br.edu.metropolitrans.model.actors.BasicAnimation;
 import br.edu.metropolitrans.model.actors.Npc;
 import br.edu.metropolitrans.model.actors.ObjetoInterativo;
 import br.edu.metropolitrans.model.actors.Personagem;
 import br.edu.metropolitrans.model.actors.Vehicle;
+import br.edu.metropolitrans.model.dao.ConfigDAO;
+import br.edu.metropolitrans.model.dao.GameDataDAO;
 import br.edu.metropolitrans.model.maps.Mapas;
 import br.edu.metropolitrans.model.utils.DebugMode;
 import br.edu.metropolitrans.view.components.mission_modal.MissionComponents;
@@ -128,14 +133,19 @@ public class MetropoliTrans extends Game {
 
         fonte = FontBase.getInstancia().getFonte(30, FontBase.Fontes.PADRAO);
 
+        // Carrega a configuração do jogo
+        ConfigData config = ConfigDAO.carregarConfig();
+        DebugMode.INFRACOES_ATIVAS = config.isTrafficViolations();
+        DebugMode.DEBUG_MODE = DebugMode.TipoDebug.valueOf(config.getTypeDebugMode());
+
         // Carrega a música do menu
         musicaMenu = Gdx.audio.newMusic(Gdx.files.internal("files/songs/lofi-ambient.mp3"));
         musicaMenu.setLooping(true);
-        musicaMenu.setVolume(0.5f);
+        musicaMenu.setVolume((float) config.getVolume());
 
         efeitoBuzina = Gdx.audio.newMusic(Gdx.files.internal("files/songs/buzina.mp3"));
         efeitoBuzina.setLooping(true);
-        efeitoBuzina.setVolume(0.5f);
+        efeitoBuzina.setVolume((float) config.getVolume());
 
         // Carrega o mapa
         mapas = new Mapas();// Carrega o mapa
@@ -179,7 +189,7 @@ public class MetropoliTrans extends Game {
                 new ObjetoInterativo("pc", 1020, 1470, "background-transparent.png", estagioPrincipal));
 
         // Carrega o personagem
-        personagem = new Personagem(250, 860, estagioPrincipal);
+        // personagem = new Personagem(250, 860, estagioPrincipal);
         Personagem.setLimitacaoMundo(Mapas.MAPA_LARGURA, Mapas.MAPA_ALTURA);
 
         // Carrega os NPCs
@@ -187,18 +197,19 @@ public class MetropoliTrans extends Game {
         npcs = new HashMap<>();
 
         // Carrega os Npcs
-        npcs.put("maria", new Npc("maria", 280, 1220, "maria/sprite.png", estagioPrincipal, true));
-        npcs.put("betania", new Npc("betania", 264, 200, "betania/sprite.png", estagioPrincipal, 1, false));
-        npcs.put("bruna", new Npc("bruna", 1185, 1850, "bruna/sprite.png", estagioPrincipal, false));
-        npcs.put("antonio", new Npc("antonio", 1485, 1130, "antonio/sprite.png", estagioPrincipal, false));
-        npcs.put("heberto", new Npc("heberto", 25, 650, "heberto/sprite.png", estagioPrincipal, 1, false));
-        npcs.put("jose", new Npc("jose", 90, 1450, "jose/sprite.png", estagioPrincipal, false));
-        npcs.put("josinaldo", new Npc("josinaldo", 2090, 150, "josinaldo/sprite.png", estagioPrincipal, false));
-        npcs.put("paulo", new Npc("paulo", 1500, 100, "paulo/sprite.png", estagioPrincipal, false));
-        npcs.put("juliana", new Npc("juliana", 1185, 1130, "juliana/sprite.png", estagioPrincipal, false));
+        // npcs.put("maria", new Npc("maria", 280, 1220, "maria/sprite.png", estagioPrincipal, true));
+        // npcs.put("betania", new Npc("betania", 264, 200, "betania/sprite.png", estagioPrincipal, 1, false));
+        // npcs.put("bruna", new Npc("bruna", 1185, 1850, "bruna/sprite.png", estagioPrincipal, false));
+        // npcs.put("antonio", new Npc("antonio", 1485, 1130, "antonio/sprite.png", estagioPrincipal, false));
+        // npcs.put("heberto", new Npc("heberto", 25, 650, "heberto/sprite.png", estagioPrincipal, 1, false));
+        // npcs.put("jose", new Npc("jose", 90, 1450, "jose/sprite.png", estagioPrincipal, false));
+        // npcs.put("josinaldo", new Npc("josinaldo", 2090, 150, "josinaldo/sprite.png", estagioPrincipal, false));
+        // npcs.put("paulo", new Npc("paulo", 1500, 100, "paulo/sprite.png", estagioPrincipal, false));
+        // npcs.put("juliana", new Npc("juliana", 1185, 1130, "juliana/sprite.png", estagioPrincipal, false));
 
         // Adiciona os npcs no array de colisão
-        personagem.npcs = npcs;
+        // personagem.npcs = npcs;
+        atualizarJogoPorSaveGameData("game-data.json");
 
         // Carrega os veículos
         vehicles.put(
@@ -283,6 +294,28 @@ public class MetropoliTrans extends Game {
         // Inicializa o jogo novamente
         DebugMode.mostrarLog("MetropoliTrans", "Inicializando o jogo novamente...");
         inicializarJogo();
+    }
+
+    public void atualizarJogoPorSaveGameData(String tipo) {
+        GameData gameData = GameDataDAO.carregarDadosJogo(tipo);
+
+        // Atualiza os NPCs
+        for (GameDataNpc npc : gameData.getNpcs()) {
+            npcs.put(npc.getKey(), new Npc(npc.getKey(), npc.getX(), npc.getY(), npc.getKey() + "/sprite.png", estagioPrincipal, npc.getStatusAlertaMissao(), npc.isTemAnimacao()));
+        }
+
+        // Atualiza o personagem
+        personagem = new Personagem(gameData.getPersonagem().getX(), gameData.getPersonagem().getY(), estagioPrincipal);
+        personagem.setPosition(gameData.getPersonagem().getX(), gameData.getPersonagem().getY());
+        personagem.moedas = gameData.getPersonagem().getMoedas();
+        personagem.xp = gameData.getPersonagem().getXp();
+        personagem.tipoInfracao = gameData.getPersonagem().getTipoInfracao() != null ? Personagem.TipoInfracao.valueOf(gameData.getPersonagem().getTipoInfracao()) : null;
+        personagem.infracoes = gameData.getPersonagem().getInfracoes();
+        personagem.atualizarSpritePersonagem(gameData.getPersonagem().getSprite());
+        personagem.npcs = npcs;
+
+        if (controller != null)
+            controller.MISSAO = gameData.getMissaoAtual();
     }
 
     public void trocarTela(String tela) {

@@ -125,7 +125,7 @@ public class CharacterSelectionScreen implements Screen {
             public void clicked(InputEvent event, float x, float y) {
                 if (selectedCharacter != null) {
                     jogo.controller.personagem.atualizarSpritePersonagem(selectedCharacter);
-                    jogo.setScreen(new LoadScreen(jogo));
+                    jogo.setScreen(new LoadScreen(jogo, null));
                 }
             }
         });

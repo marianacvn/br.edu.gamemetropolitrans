@@ -20,6 +20,8 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.ScreenUtils;
 
 import br.edu.metropolitrans.MetropoliTrans;
+import br.edu.metropolitrans.model.ConfigData;
+import br.edu.metropolitrans.model.dao.ConfigDAO;
 import br.edu.metropolitrans.view.components.buttons.ButtonBase;
 import br.edu.metropolitrans.view.components.buttons.TextButtonBase;
 import br.edu.metropolitrans.view.font.FontBase;
@@ -107,6 +109,11 @@ public class ConfigScreen implements Screen {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 jogo.musicaMenu.setVolume(sliderVolume.getValue());
+
+                ConfigData config = ConfigDAO.carregarConfig();
+                config.setVolume(sliderVolume.getValue());
+                ConfigDAO.salvarConfig(config);
+
                 volumeLabel.setText("Volume: " + (int) (sliderVolume.getValue() * 100) + "%");
             }
         });
