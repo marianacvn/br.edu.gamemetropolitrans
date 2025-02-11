@@ -70,14 +70,14 @@ public class DebugMode {
             }
 
             // Desenha o polígono de colisão do objeto interativo
-            if (jogo.objeto != null) {
-                Polygon objetoPoligono = jogo.objeto.getLimitePoligono();
+            if (jogo.objetosInterativos.get("objeto") != null) {
+                Polygon objetoPoligono = jogo.objetosInterativos.get("objeto").getLimitePoligono();
                 gameScreen.renderizadorForma.polygon(objetoPoligono.getTransformedVertices());
             }
 
             // Desenha o polígono de colisão do objeto interativo
-            if (jogo.objetoSairSala != null) {
-                Polygon objetoPoligono = jogo.objetoSairSala.getLimitePoligono();
+            if (jogo.objetosInterativos.get("objetoSairSala") != null) {
+                Polygon objetoPoligono = jogo.objetosInterativos.get("objetoSairSala").getLimitePoligono();
                 gameScreen.renderizadorForma.polygon(objetoPoligono.getTransformedVertices());
             }
             gameScreen.renderizadorForma.end();

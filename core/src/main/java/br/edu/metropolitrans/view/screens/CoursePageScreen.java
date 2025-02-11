@@ -20,22 +20,16 @@ import br.edu.metropolitrans.view.components.buttons.TextButtonBase;
 import br.edu.metropolitrans.view.font.FontBase;
 
 public class CoursePageScreen implements Screen {
-    public final MetropoliTrans jogo;
+    public MetropoliTrans jogo;
     public Stage stage;
     public Skin skin;
-    public Texture background;
-    private final Label titulo;
-    private final Label texto;
-    private final Image imagem;
-    private final TextButton linkVideo;
-    private final Course course;
+    private Label titulo;
+    private Label texto;
+    private Image imagem;
+    private TextButton linkVideo;
 
-    public CoursePageScreen(final MetropoliTrans jogo, CoursesScreen coursesScreen, Course course) {
+    public CoursePageScreen(MetropoliTrans jogo, CoursesScreen coursesScreen, Course course) {
         this.jogo = jogo;
-        this.course = course;
-
-        // Carrega a textura de fundo e outras
-        background = new Texture(Gdx.files.internal("files/backgrounds/background-light.png"));
 
         // Cria o Stage e o Skin
         stage = new Stage();
@@ -82,18 +76,21 @@ public class CoursePageScreen implements Screen {
             this.imagem = null;
         }
 
-        // Cria o link para o vídeo
-        this.linkVideo = new TextButton("Assista ao vídeo", skin);
-        // setar o link do video para abaixo da imagem 
-        this.linkVideo.setPosition(Gdx.graphics.getWidth() / 2 - this.linkVideo.getWidth() / 2,
-                this.imagem.getY() - this.linkVideo.getHeight() - 10);
-        
-        this.linkVideo.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                Gdx.net.openURI(course.getVideoUrl());
-            }
-        });
+        // Verifica se tem video para o curso
+        if (course.getVideoUrl() != null && !course.getVideoUrl().isEmpty()) {
+            // Cria o link para o vídeo
+            this.linkVideo = new TextButton("Assista ao vídeo", skin);
+            // setar o link do video para abaixo da imagem
+            this.linkVideo.setPosition(Gdx.graphics.getWidth() / 2 - this.linkVideo.getWidth() / 2,
+                    this.imagem.getY() - this.linkVideo.getHeight() - 10);
+
+            this.linkVideo.addListener(new ClickListener() {
+                @Override
+                public void clicked(InputEvent event, float x, float y) {
+                    Gdx.net.openURI(course.getVideoUrl());
+                }
+            });
+        }
 
         // Cria um botão para voltar à tela anterior
         TextButtonBase botaoVoltar = new TextButtonBase("Voltar", "files/buttons/botao-dark2.png", skin);
@@ -102,6 +99,7 @@ public class CoursePageScreen implements Screen {
         botaoVoltar.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                coursesScreen.atualizarBotoesStatus();
                 jogo.setScreen(coursesScreen);
                 DebugMode.mostrarLog("CoursePageScreen", "Voltando para a tela de cursos.");
             }
@@ -109,25 +107,21 @@ public class CoursePageScreen implements Screen {
 
         stage.addActor(this.titulo);
         stage.addActor(this.texto);
-        stage.addActor(this.linkVideo);
+        if (course.getVideoUrl() != null && !course.getVideoUrl().isEmpty()) {
+            stage.addActor(this.linkVideo);
+        }
         stage.addActor(botaoVoltar);
     }
 
     @Override
     public void show() {
         Gdx.input.setInputProcessor(stage);
-
     }
 
     @Override
     public void render(float delta) {
         // Limpa a tela com uma cor preta
         ScreenUtils.clear(Color.WHITE);
-
-        // Desenha o fundo
-        jogo.batch.begin();
-        jogo.batch.draw(background, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        jogo.batch.end();
 
         // Atualiza e desenha o Stage
         stage.act(delta);
@@ -138,7 +132,6 @@ public class CoursePageScreen implements Screen {
     @Override
     public void resize(int width, int height) {
         stage.getViewport().update(width, height, true);
-
     }
 
     @Override
@@ -157,8 +150,6 @@ public class CoursePageScreen implements Screen {
     public void dispose() {
         stage.dispose();
         skin.dispose();
-        background.dispose();
-
     }
 
 }

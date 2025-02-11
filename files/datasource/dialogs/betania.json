@@ -4,7 +4,7 @@
 	],
 	"dialogosMissao": [
 		{
-			"missao": 1,
+			"missao": 0,
 			"mensagem": "Olá, sou betânia, você deve ser o novo(a) estagiário(a)! Tenho que lhe desejar muita sorte. Bem, estou aqui para te receber na nossa escola municipal. Desculpe a confusão que o prefeito Heberto causou, não temos uma escola específica para trânsito, quem dera. Mas temos aqui na nossa prefeitura, uma sala de informática, ele solicitou a instalação de um curso que explica diversos assuntos sobre trânsito, é lá que você irá aprender o que precisar."
 		},
 		{
@@ -32,23 +32,23 @@
 			"mensagem": "O(a) Senhor(a) viu que aqui também precisa resolver uma situação? Bem, mas antes você precisa ver mais um módulo do curso."
 		},
 		{
-			"missao": 6,
-			"mensagem": "Aqui por ser uma escola, deveria ser respeitado e deveriam cumprir as leis, acredito que precise de mais alguma coisa para reduzir este problemas, consegue nos ajudar com esta situação?"
+			"missao": 7,
+			"mensagem": "Aqui por ser uma escola, deveria ter uma sinalização para que seja respeitada a passagem dos alunos, consegue nos ajudar com esta situação?"
 		},
 		{
-			"missao": 6,
+			"missao": 7,
 			"mensagem": "Agora sim podemos ficar mais tranquilos, já foi liberado mais um módulo para você, fique a vontade."
 		},
 		{
-			"missao": 7,
+			"missao": 8,
 			"mensagem": "O Heberto está super empolgado com a sua palestra, acredito que este seja um grande marco na história de MetropoliTrans!"
 		},
 		{
-			"missao": 7,
+			"missao": 8,
 			"mensagem": "Parabéns! Você já possui um novo módulo liberado, acredito que vamos ser uma das cidades com menos acidentes de trânsito, graças a você e o prefeito Heberto!"
 		},
 		{
-			"missao": 8,
+			"missao": 9,
 			"mensagem": "A Juliana me contou da sua ação no centro da cidade, parabéns, é de pessoas assim que precisamos nesta cidade! Bem agora falta apenas mais um módulo, para finalizar o curso de educação no trânsito, estou orgulhoso do seu trabalho. Com certeza outras pessoas desta cidade estão também!"
 		}
 	]

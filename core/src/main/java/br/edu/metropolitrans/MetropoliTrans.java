@@ -7,6 +7,8 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.graphics.Cursor;
+import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.MapObjects;
@@ -51,7 +53,12 @@ public class MetropoliTrans extends Game {
     /**
      * Música do menu
      */
-    public Music MusicaMenu;
+    public Music musicaMenu;
+
+    /**
+     * Efeito sonoro de buzina
+     */
+    public Music efeitoBuzina;
 
     /**
      * Map de telas do jogo
@@ -76,9 +83,11 @@ public class MetropoliTrans extends Game {
     /**
      * Objetos interativos
      */
-    public ObjetoInterativo objeto, objetoChao, objetoSairSala, objetoMissao, objetoPlaca1, objetoPlaca2, objetoPlaca3,
-            objetoPlaca5,
-            objetoPc;
+    // public ObjetoInterativo objeto, objetoChao, objetoSairSala, objetoMissao,
+    // objetoMissaoHorizontal, objetoPlaca1,
+    // objetoHorizontal2, objetoPlaca3, objetoPlaca5, objetoPlaca6, objetoPlaca7,
+    // objetoPc;
+    public HashMap<String, ObjetoInterativo> objetosInterativos = new HashMap<>();
 
     /**
      * Mapas do jogo
@@ -113,13 +122,6 @@ public class MetropoliTrans extends Game {
 
     public BasicAnimation explosao, bike;
 
-    @Override
-    public void create() {
-        // Inicia a tela de loading do game
-        this.setScreen(new LoadingScreen(this));
-
-    }
-
     public void inicializarJogo() {
         estagioPrincipal = new Stage();
         batch = new SpriteBatch();
@@ -127,38 +129,54 @@ public class MetropoliTrans extends Game {
         fonte = FontBase.getInstancia().getFonte(30, FontBase.Fontes.PADRAO);
 
         // Carrega a música do menu
-        MusicaMenu = Gdx.audio.newMusic(Gdx.files.internal("files/songs/lofi-ambient.mp3"));
-        MusicaMenu.setLooping(true);
-        MusicaMenu.setVolume(0.5f);
+        musicaMenu = Gdx.audio.newMusic(Gdx.files.internal("files/songs/lofi-ambient.mp3"));
+        musicaMenu.setLooping(true);
+        musicaMenu.setVolume(0.5f);
+
+        efeitoBuzina = Gdx.audio.newMusic(Gdx.files.internal("files/songs/buzina.mp3"));
+        efeitoBuzina.setLooping(true);
+        efeitoBuzina.setVolume(0.5f);
 
         // Carrega o mapa
         mapas = new Mapas();// Carrega o mapa
         mapaRenderizador = new OrthogonalTiledMapRenderer(mapas.mapa, 1, batch);
 
         // Carrega o objeto interativo das missões
-        objetoMissao = new ObjetoInterativo("alertaMissao", 1290, 1245, "mission-alert.png",
-                estagioPrincipal);
-        objetoMissao.setVisible(false);
+        objetosInterativos.put("objetoMissao", new ObjetoInterativo("alertaMissao", 1290, 1245, "mission-alert.png",
+                estagioPrincipal, false));
+
+        int horizontalObjX = 1705;
+        int horizontalObjY = 1388;
+        objetosInterativos.put("objetoMissaoHorizontal",
+                new ObjetoInterativo("alertaHorizontal", horizontalObjX, horizontalObjY, "mission-alert-horizontal.png",
+                        estagioPrincipal, false));
 
         // Carrega o objeto do chão
-        objetoChao = new ObjetoInterativo("chao", 320, 1210, "asphalt-obj.png", estagioPrincipal);
+        objetosInterativos.put("objetoChao",
+                new ObjetoInterativo("chao", 320, 1210, "asphalt-obj.png", estagioPrincipal));
 
         // Carrega o objeto interativo da placa das missões
-        objetoPlaca1 = new ObjetoInterativo("placa", 1290, 1245, "mission1-result.png", estagioPrincipal);
-        objetoPlaca1.setVisible(false);
+        objetosInterativos.put("objetoPlaca1",
+                new ObjetoInterativo("placa", 1290, 1245, "mission1-result.png", estagioPrincipal, false));
 
-        objetoPlaca2 = new ObjetoInterativo("placa2", 1700, 1450, "mission2-result.png", estagioPrincipal);
-        objetoPlaca2.setVisible(false);
+        objetosInterativos.put("objetoHorizontal2", new ObjetoInterativo("horizontal2", horizontalObjX, horizontalObjY,
+                "mission2-result.png", estagioPrincipal, false));
 
-        objetoPlaca3 = new ObjetoInterativo("placa3", 380, 1450, "mission3-result.png", estagioPrincipal);
-        objetoPlaca3.setVisible(false);
+        objetosInterativos.put("objetoPlaca3",
+                new ObjetoInterativo("placa3", 380, 1450, "mission3-result.png", estagioPrincipal, false));
 
-        objetoPlaca5 = new ObjetoInterativo("placa5", 1956, 512, "mission5-result.png", estagioPrincipal);
-        objetoPlaca5.setVisible(false);
+        objetosInterativos.put("objetoPlaca5",
+                new ObjetoInterativo("placa5", 1956, 512, "mission5-result.png", estagioPrincipal, false));
+
+        objetosInterativos.put("objetoPlaca6",
+                new ObjetoInterativo("placa6", 1480, 256, "mission6-result.png", estagioPrincipal, false));
+
+        objetosInterativos.put("objetoPlaca7",
+                new ObjetoInterativo("placa7", 488, 200, "mission7-result.png", estagioPrincipal, false));
 
         // Carrega o objeto interativo do PC no mapa room
-        objetoPc = new ObjetoInterativo("pc", 1020, 1470, "background-transparent.png", estagioPrincipal);
-        // objetoPc.setVisible(false);
+        objetosInterativos.put("objetoPc",
+                new ObjetoInterativo("pc", 1020, 1470, "background-transparent.png", estagioPrincipal));
 
         // Carrega o personagem
         personagem = new Personagem(250, 860, estagioPrincipal);
@@ -170,7 +188,7 @@ public class MetropoliTrans extends Game {
 
         // Carrega os Npcs
         npcs.put("maria", new Npc("maria", 280, 1220, "maria/sprite.png", estagioPrincipal, true));
-        npcs.put("betania", new Npc("betania", 264, 200, "betania/sprite.png", estagioPrincipal, false));
+        npcs.put("betania", new Npc("betania", 264, 200, "betania/sprite.png", estagioPrincipal, 1, false));
         npcs.put("bruna", new Npc("bruna", 1185, 1850, "bruna/sprite.png", estagioPrincipal, false));
         npcs.put("antonio", new Npc("antonio", 1485, 1130, "antonio/sprite.png", estagioPrincipal, false));
         npcs.put("heberto", new Npc("heberto", 25, 650, "heberto/sprite.png", estagioPrincipal, 1, false));
@@ -232,11 +250,11 @@ public class MetropoliTrans extends Game {
         explosao.setVisible(false);
 
         // Carrega os objetos interativos
-        objeto = new ObjetoInterativo("entradaPrefeitura", 100, 760, "background-transparent.png",
-                estagioPrincipal);
+        objetosInterativos.put("objeto",
+                new ObjetoInterativo("entradaPrefeitura", 100, 760, "background-transparent.png", estagioPrincipal));
 
         // Inicia a reprodução da música do menu
-        MusicaMenu.play();
+        musicaMenu.play();
 
         // Cria o controle do jogo
         controller = new Controller(this);
@@ -285,6 +303,18 @@ public class MetropoliTrans extends Game {
     }
 
     @Override
+    public void create() {
+        // Inicia a tela de loading do game
+        this.setScreen(new LoadingScreen(this));
+
+        // Define o cursor personalizado
+        Pixmap pixmap = new Pixmap(Gdx.files.internal("files/mouse/mouse.png"));
+        Cursor cursor = Gdx.graphics.newCursor(pixmap, 0, 0);
+        Gdx.graphics.setCursor(cursor);
+        pixmap.dispose();
+    }
+
+    @Override
     public void dispose() {
         // OBS.: É necessário entender se o dispose náo está impedindo o funcionamento
         // do jogo
@@ -313,18 +343,11 @@ public class MetropoliTrans extends Game {
         vehicles.clear();
 
         // Descarte de objetos interativos
-        if (objeto != null)
-            objeto.dispose();
-        if (objetoChao != null)
-            objetoChao.dispose();
-        if (objetoSairSala != null)
-            objetoSairSala.dispose();
-        if (objetoMissao != null)
-            objetoMissao.dispose();
-        if (objetoPlaca1 != null)
-            objetoPlaca1.dispose();
-        if (objetoPc != null)
-            objetoPc.dispose();
+        objetosInterativos.forEach((nome, objeto) -> {
+            if (objeto != null)
+                objeto.dispose();
+        });
+        objetosInterativos.clear();
 
         // Descarte de mapas
         if (mapas != null && mapas.mapa != null)
@@ -344,8 +367,8 @@ public class MetropoliTrans extends Game {
         if (fonte != null) {
             fonte.dispose();
         }
-        if (MusicaMenu != null) {
-            MusicaMenu.dispose();
+        if (musicaMenu != null) {
+            musicaMenu.dispose();
         }
         if (estagioPrincipal != null) {
             estagioPrincipal.dispose();

@@ -85,7 +85,7 @@ public class Personagem extends BaseActor {
 
         // Configuracao do personagem
         moedas = 200;
-        xp = 10;
+        xp = 0;
         tipoInfracao = null;
         infracoes = 0;
         setAceleracao(800);
@@ -115,8 +115,6 @@ public class Personagem extends BaseActor {
 
         // Alinha a câmera após atualizar a posição do personagem
         alinhamentoCamera();
-
-        //Gdx.app.log("", "Personagem: " + getX() + ", " + getY()); // TODO: Remover isto aqui
     }
 
     public void atualizarSpritePersonagem(String selectedCharacter) {

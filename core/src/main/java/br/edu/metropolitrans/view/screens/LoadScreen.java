@@ -11,6 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.ScreenUtils;
 
 import br.edu.metropolitrans.MetropoliTrans;
+import br.edu.metropolitrans.model.connection.SaveManager;
 import br.edu.metropolitrans.view.font.FontBase;
 
 public class LoadScreen implements Screen {
@@ -72,7 +73,7 @@ public class LoadScreen implements Screen {
                     public void run() {
                         if (jogo.telas.get("game") == null)
                             jogo.telas.put("game", new GameScreen(jogo));
-                        
+                        SaveManager.criarNovoSave();
                         jogo.controller.inicializiar();
                         jogo.setScreen(jogo.telas.get("game"));
                     }
