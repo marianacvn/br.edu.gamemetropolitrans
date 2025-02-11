@@ -67,8 +67,6 @@ public class CharacterSelectionScreen implements Screen {
         // Cria uma Image para o background
         Image characterBackground = new Image(characterBackgroundTexture);
 
-        
-
         // Adiciona a Image do background ao Stage
         stage.addActor(characterBackground);
 

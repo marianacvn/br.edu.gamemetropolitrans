@@ -1,0 +1,16 @@
+{
+	"dialogosGenericos": [
+		"Olá, tudo bem? Como posso te ajudar?"
+	
+	],
+	"dialogosMissao": [
+		{
+			"missao": 5,
+			"mensagem": "Olá, senhor(a), preciso da sua ajuda, os carros passam em alta velocidade por esta via, não respeitam os pedestres, é um perigo! Poderia fazer algo para resolver este problema?"
+		},
+		{
+			"missao": 5,
+			"mensagem": "Finalmente, com isto estes casos serão reduzidos drasticamente, muito obrigado."
+		}
+	]
+}

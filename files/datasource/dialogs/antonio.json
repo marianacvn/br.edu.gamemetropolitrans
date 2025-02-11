@@ -1,0 +1,15 @@
+{
+	"dialogosGenericos": [
+		"Olá, Senhor(a), tudo bem?"
+	],
+	"dialogosMissao": [
+		{
+			"missao": 2,
+			"mensagem": "Eu ouvi falar do(a) senhor(a) secretário(a), como vai? Se não for muito incomodo, eu tenho mais uma solicitação para fazer. Além dos acidentes já reportados, os carros sempre passam pelo cruzamento, acarretando acidentes e, com isto toda semana tenho que chamar os orgão responsáveis para ajudar alguém, eu acho que é de grande importância a resolução deste problema."
+		},
+		{
+			"missao": 2,
+			"mensagem": "Muito obrigado! Agora acredito que os casos de acidentes serão reduzidos!"
+		}
+	]
+}

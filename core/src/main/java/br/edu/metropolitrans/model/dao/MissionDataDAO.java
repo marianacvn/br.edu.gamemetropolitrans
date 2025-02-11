@@ -16,7 +16,7 @@ public class MissionDataDAO {
      */
     public static MissionData carregarDadosMissoes() {
         DataSource ds = DataSource.getInstancia();
-        return ds.conectar("missions.json", MissionData.class);
+        return ds.conectar(MissionData.class, "missoes");
     }
 
     /**
@@ -38,8 +38,7 @@ public class MissionDataDAO {
     /**
      * Atualiza a missão ou submissão
      * 
-     * @param mission     Missão
-     * @param isSubmissao Se é submissão
+     * @param mission Missão
      */
     public static void atualizarMissao(Mission mission) {
         MissionData missionData = carregarDadosMissoes();
@@ -49,7 +48,29 @@ public class MissionDataDAO {
             }
         }
         DataSource ds = DataSource.getInstancia();
-        ds.desconectar("missions.json", missionData);
+        ds.desconectar(missionData, "missoes");
     }
 
+    /**
+     * Cria um novo save
+     * 
+     * @param saveId Id do novo save
+     */
+    public static void criarNovoSave(int saveId) {
+        DataSource ds = DataSource.getInstancia();
+        String novoArquivo = "save" + saveId + "-missions.json";
+        ds.criarCopia(novoArquivo, "missoes");
+        ds.setArquivoAtualMissoes(novoArquivo);
+    }
+
+    /**
+     * Define o save atual
+     * 
+     * @param saveId Id do save
+     */
+    public static void definirSaveAtual(int saveId) {
+        DataSource ds = DataSource.getInstancia();
+        String arquivoAtual = "save" + saveId + "-missions.json";
+        ds.setArquivoAtualMissoes(arquivoAtual);
+    }
 }

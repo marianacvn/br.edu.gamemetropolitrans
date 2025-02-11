@@ -7,12 +7,11 @@ public class DialogDAO {
 
     public static Dialog carregarDialogos(String personagem) {
         DataSource ds = DataSource.getInstancia();
-        return ds.conectar(personagem + ".json", Dialog.class);
+        return ds.conectar(Dialog.class, "dialogs/" + personagem + ".json");
     }
 
     public static void salvarDialogos(String personagem, Dialog dialog) {
         DataSource ds = DataSource.getInstancia();
-        ds.desconectar(personagem + ".json", dialog);
+        ds.desconectar(dialog, "dialogs/" + personagem + ".json");
     }
-
 }

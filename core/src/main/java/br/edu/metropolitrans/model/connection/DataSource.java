@@ -1,7 +1,6 @@
 package br.edu.metropolitrans.model.connection;
 
 import com.google.gson.Gson;
-
 import br.edu.metropolitrans.model.utils.DebugMode;
 
 import java.io.FileInputStream;
@@ -19,9 +18,13 @@ public class DataSource {
     private static final String PASTA_DATASOURCE = "files/datasource/";
     private static DataSource instancia;
     private Gson gson;
+    private String arquivoAtualCursos;
+    private String arquivoAtualMissoes;
 
     private DataSource() {
         gson = new Gson();
+        arquivoAtualCursos = "courses.json"; // Arquivo padrão para cursos
+        arquivoAtualMissoes = "missions.json"; // Arquivo padrão para missões
     }
 
     /**
@@ -37,10 +40,37 @@ public class DataSource {
     }
 
     /**
+     * Define o arquivo de save atual para cursos
+     */
+    public void setArquivoAtualCursos(String nomeArquivo) {
+        this.arquivoAtualCursos = nomeArquivo;
+    }
+
+    /**
+     * Define o arquivo de save atual para missões
+     */
+    public void setArquivoAtualMissoes(String nomeArquivo) {
+        this.arquivoAtualMissoes = nomeArquivo;
+    }
+
+    private String selecionarArquivos(String tipo) {
+        if (tipo.equals("cursos")) {
+            return arquivoAtualCursos;
+        } else if (tipo.equals("missoes")) {
+            return arquivoAtualMissoes;
+        } else {
+            // Se não for nenhum dos dois, o tipo é o caminho do arquivo
+            return tipo;
+        }
+    }
+
+    /**
      * Busca o Json referente a entidade e converte para o objeto
      */
-    public <T> T conectar(String nomeArquivo, Class<T> clazz) {
-        try (InputStreamReader reader = new InputStreamReader(new FileInputStream(PASTA_DATASOURCE + nomeArquivo), StandardCharsets.UTF_8)) {
+    public <T> T conectar(Class<T> clazz, String tipo) {
+        try (InputStreamReader reader = new InputStreamReader(
+                new FileInputStream(PASTA_DATASOURCE + selecionarArquivos(tipo)),
+                StandardCharsets.UTF_8)) {
             return gson.fromJson(reader, clazz);
         } catch (IOException e) {
             DebugMode.mostrarLog("DataSource", "Erro ao carregar o arquivo JSON: " + e.getMessage());
@@ -52,11 +82,31 @@ public class DataSource {
     /**
      * Salva o objeto em um Json
      */
-    public void desconectar(String nomeArquivo, Object dados) {
-        try (OutputStreamWriter writer = new OutputStreamWriter(new FileOutputStream(PASTA_DATASOURCE + nomeArquivo), StandardCharsets.UTF_8)) {
+    public void desconectar(Object dados, String tipo) {
+        try (OutputStreamWriter writer = new OutputStreamWriter(
+                new FileOutputStream(PASTA_DATASOURCE + selecionarArquivos(tipo)),
+                StandardCharsets.UTF_8)) {
             gson.toJson(dados, writer);
         } catch (IOException e) {
             DebugMode.mostrarLog("DataSource", "Erro ao salvar o arquivo JSON: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Cria uma cópia do arquivo de save
+     */
+    public void criarCopia(String novoArquivo, String tipo) {
+        try (FileInputStream fis = new FileInputStream(PASTA_DATASOURCE + selecionarArquivos(tipo));
+                FileOutputStream fos = new FileOutputStream(PASTA_DATASOURCE + novoArquivo)) {
+            byte[] buffer = new byte[1024];
+            int length;
+            while ((length = fis.read(buffer)) > 0) {
+                fos.write(buffer, 0, length);
+            }
+            DebugMode.mostrarLog("DataSource", "Cópia do arquivo JSON criada: " + novoArquivo);
+        } catch (IOException e) {
+            DebugMode.mostrarLog("DataSource", "Erro ao criar a cópia do arquivo JSON: " + e.getMessage());
             e.printStackTrace();
         }
     }

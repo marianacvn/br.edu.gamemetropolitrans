@@ -3,7 +3,6 @@ package br.edu.metropolitrans.view.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -14,6 +13,7 @@ import com.badlogic.gdx.utils.ScreenUtils;
 
 import br.edu.metropolitrans.MetropoliTrans;
 import br.edu.metropolitrans.model.Course;
+import br.edu.metropolitrans.model.Status;
 import br.edu.metropolitrans.model.dao.CourseDAO;
 import br.edu.metropolitrans.model.utils.DebugMode;
 import br.edu.metropolitrans.view.components.buttons.TextButtonBase;
@@ -23,19 +23,14 @@ import br.edu.metropolitrans.view.font.FontBase;
 public class CoursesScreen implements Screen {
     public final MetropoliTrans jogo;
     public Stage stage;
-    public Texture background;
     public Skin skin;
     public Label titulo;
     public Screen telaAnterior;
-    public TextButtonSecond botao1, botao2, botao3, botao4, botao5, botao6, botao7, botao8, botao9;
-    
+    public TextButtonSecond botao1, botao2, botao3, botao4, botao5, botao6, botao7, botao8;
 
     public CoursesScreen(final MetropoliTrans jogo, Screen telaAnterior) {
         this.jogo = jogo;
         this.telaAnterior = telaAnterior;
-
-        // Carrega a textura de fundo e outras
-        background = new Texture(Gdx.files.internal("files/backgrounds/background-light.png"));
 
         // Cria o Stage e o Skin
         stage = new Stage();
@@ -62,104 +57,22 @@ public class CoursesScreen implements Screen {
         titulo.setPosition(tituloX, tituloY);
 
         // Cria os botões
-        botao1 = new TextButtonSecond("Módulo 1", "files/buttons/quadrado.png", skin);
-        botao1.setPosition(422, 426);
-        botao1.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                Course course = CourseDAO.carregarDadosModulo(1);
-                DebugMode.mostrarLog("CoursesScreen", "Dados do Módulo 1 carregados: " + course.getNome());
-                jogo.setScreen(new CoursePageScreen(jogo, CoursesScreen.this, course));
-            }
-        });
-
-        botao2 = new TextButtonSecond("Módulo 2", "files/buttons/quadrado.png", skin);
-        botao2.setPosition(botao1.getX() + botao1.getWidth() + 20, botao1.getY());
-        botao2.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                Course course = CourseDAO.carregarDadosModulo(2);
-                DebugMode.mostrarLog("CoursesScreen", "Dados do Módulo 2 carregados: " + course.getNome());
-                jogo.setScreen(new CoursePageScreen(jogo, CoursesScreen.this, course));
-            }
-        });
-
-        botao3 = new TextButtonSecond("Módulo 3", "files/buttons/quadrado.png", skin);
-        botao3.setPosition(botao2.getX() + botao2.getWidth() + 20, botao2.getY());
-        botao3.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                Course course = CourseDAO.carregarDadosModulo(3);
-                DebugMode.mostrarLog("CoursesScreen", "Dados do Módulo 33 carregados: " + course.getNome());
-                jogo.setScreen(new CoursePageScreen(jogo, CoursesScreen.this, course));
-            }
-        });
-
-        botao4 = new TextButtonSecond("Módulo 4", "files/buttons/quadrado.png", skin);
-        botao4.setPosition(botao1.getX(), botao1.getY() - botao1.getHeight() - 15);
-        botao4.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                Course course = CourseDAO.carregarDadosModulo(4);
-                DebugMode.mostrarLog("CoursesScreen", "Dados do Módulo 4 carregados: " + course.getNome());
-                jogo.setScreen(new CoursePageScreen(jogo, CoursesScreen.this, course));
-            }
-        });
-
-        botao5 = new TextButtonSecond("Módulo 5", "files/buttons/quadrado.png", skin);
-        botao5.setPosition(botao1.getX() + botao1.getWidth() + 20, botao4.getY());
-        botao5.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                Course course = CourseDAO.carregarDadosModulo(5);
-                DebugMode.mostrarLog("CoursesScreen", "Dados do Módulo 5 carregados: " + course.getNome());
-                jogo.setScreen(new CoursePageScreen(jogo, CoursesScreen.this, course));
-            }
-        });
-
-        botao6 = new TextButtonSecond("Módulo 6", "files/buttons/quadrado.png", skin);
-        botao6.setPosition(botao2.getX() + botao2.getWidth() + 20, botao5.getY());
-        botao6.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                Course course = CourseDAO.carregarDadosModulo(6);
-                DebugMode.mostrarLog("CoursesScreen", "Dados do Módulo 6 carregados: " + course.getNome());
-                jogo.setScreen(new CoursePageScreen(jogo, CoursesScreen.this, course));
-            }
-        });
-
-        botao7 = new TextButtonSecond("Módulo 7", "files/buttons/quadrado.png", skin);
-        botao7.setPosition(botao4.getX(), botao4.getY() - botao4.getHeight() - 15);
-        botao7.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                Course course = CourseDAO.carregarDadosModulo(7);
-                DebugMode.mostrarLog("CoursesScreen", "Dados do Módulo 7 carregados: " + course.getNome());
-                jogo.setScreen(new CoursePageScreen(jogo, CoursesScreen.this, course));
-            }
-        });
-
-        botao8 = new TextButtonSecond("Módulo 8", "files/buttons/quadrado.png", skin);
-        botao8.setPosition(botao1.getX() + botao1.getWidth() + 20, botao4.getY() - 150);
-        botao8.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                Course course = CourseDAO.carregarDadosModulo(8);
-                DebugMode.mostrarLog("CoursesScreen", "Dados do Módulo 8 carregados: " + course.getNome());
-                jogo.setScreen(new CoursePageScreen(jogo, CoursesScreen.this, course));
-            }
-        });
-
-        botao9 = new TextButtonSecond("Módulo 9", "files/buttons/quadrado.png", skin);
-        botao9.setPosition(botao2.getX() + botao2.getWidth() + 20, botao5.getY() - 150);
-        botao9.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                Course course = CourseDAO.carregarDadosModulo(9);
-                DebugMode.mostrarLog("CoursesScreen", "Dados do Módulo 9 carregados: " + course.getNome());
-                jogo.setScreen(new CoursePageScreen(jogo, CoursesScreen.this, course));
-            }
-        });
+        botao1 = criarBotaoModulo(1, 422, 426, CourseDAO.carregarDadosModulo(1).getStatus());
+        botao2 = criarBotaoModulo(2, botao1.getX() + botao1.getWidth() + 20, botao1.getY(),
+                CourseDAO.carregarDadosModulo(2).getStatus());
+        botao3 = criarBotaoModulo(3, botao2.getX() + botao2.getWidth() + 20, botao2.getY(),
+                CourseDAO.carregarDadosModulo(3).getStatus());
+        botao4 = criarBotaoModulo(4, botao1.getX(), botao1.getY() - botao1.getHeight() - 15,
+                CourseDAO.carregarDadosModulo(4).getStatus());
+        botao5 = criarBotaoModulo(5, botao1.getX() + botao1.getWidth() + 20, botao4.getY(),
+                CourseDAO.carregarDadosModulo(5).getStatus());
+        botao6 = criarBotaoModulo(6, botao2.getX() + botao2.getWidth() + 20, botao5.getY(),
+                CourseDAO.carregarDadosModulo(6).getStatus());
+        botao7 = criarBotaoModulo(7, botao4.getX(), botao4.getY() - botao4.getHeight() - 15,
+                CourseDAO.carregarDadosModulo(7).getStatus());
+        botao8 = criarBotaoModulo(8, botao1.getX() + botao1.getWidth() + 20, botao4.getY() - 150,
+                CourseDAO.carregarDadosModulo(8).getStatus());
+        
 
         // Cria um botão para fechar a tela e voltar para a anterior
         TextButtonBase botaoFechar = new TextButtonBase("X", "files/buttons/botao-dark2.png", skin);
@@ -186,8 +99,92 @@ public class CoursesScreen implements Screen {
         stage.addActor(botao6);
         stage.addActor(botao7);
         stage.addActor(botao8);
-        stage.addActor(botao9);
+    }
 
+    private TextButtonSecond criarBotaoModulo(int modulo, float x, float y, Status status) {
+        String imagemBotao = "files/buttons/quadrado-block.png";
+        String textoModulo = "";
+        if (status == Status.LIBERADO || status == Status.CONCLUIDO) {
+            imagemBotao = "files/buttons/quadrado.png";
+            textoModulo = "Módulo " + modulo;
+        }
+
+        TextButtonSecond botao = new TextButtonSecond(textoModulo, imagemBotao, skin);
+        botao.setPosition(x, y);
+        botao.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                Course course = CourseDAO.carregarDadosModulo(modulo);
+                DebugMode.mostrarLog("CoursesScreen", "Botão " + modulo + " clicado, curso:" + course);
+
+                // Atualiza o status do curso para concluido e desconta 50 moedas
+                if (course.getStatus() == Status.LIBERADO) {
+                    jogo.personagem.moedas -= 50;
+                    CourseDAO.atualizaStatusCurso(course.getId(), Status.CONCLUIDO);
+                }
+
+                // Recarrega os dados do curso
+                course = CourseDAO.carregarDadosModulo(modulo);
+                DebugMode.mostrarLog("CoursesScreen", "Modulo " + modulo + " recarregado, curso:" + course);
+
+                if (validaCursoLiberado(course)) {
+                    DebugMode.mostrarLog("CoursesScreen", "Curso liberado, carregando CoursePageScreen");
+                    DebugMode.mostrarLog("CoursesScreen",
+                            "Dados do Módulo " + modulo + " carregados: " + course.getNome());
+                    jogo.setScreen(new CoursePageScreen(jogo, CoursesScreen.this, course));
+                }
+            }
+        });
+        return botao;
+    }
+
+    /**
+     * Atualiza o status do botão
+     * 
+     * @param botao  Botão a ser atualizado
+     * @param modulo Id do Módulo
+     */
+    private void atualizarBotaoStatus(TextButtonSecond botao, int modulo) {
+        Course course = CourseDAO.buscaCursoPorId(modulo);
+        if (course != null) {
+            String imagemBotao = validaCursoLiberado(course)
+                    ? "files/buttons/quadrado.png"
+                    : "files/buttons/quadrado-block.png";
+            String textoModulo = validaCursoLiberado(course)
+                    ? "Módulo " + modulo
+                    : "";
+            botao.setText(textoModulo);
+            botao.setNewImageButton(imagemBotao);
+        }
+    }
+
+    /**
+     * Atualiza o status dos botões
+     */
+    public void atualizarBotoesStatus() {
+        atualizarBotaoStatus(botao1, 1);
+        atualizarBotaoStatus(botao2, 2);
+        atualizarBotaoStatus(botao3, 3);
+        atualizarBotaoStatus(botao4, 4);
+        atualizarBotaoStatus(botao5, 5);
+        atualizarBotaoStatus(botao6, 6);
+        atualizarBotaoStatus(botao7, 7);
+        atualizarBotaoStatus(botao8, 8);
+    }
+
+    /**
+     * Valida se o curso está liberado
+     * 
+     * @param curso Curso
+     * @return true se o curso estiver liberado, false caso contrário
+     */
+    private boolean validaCursoLiberado(Course curso) {
+        if (curso != null
+                && (curso.getStatus() == Status.LIBERADO || curso.getStatus() == Status.CONCLUIDO)) {
+            DebugMode.mostrarLog("CoursesScreen", "Módulo " + curso.getId() + " bloqueado: " + curso.getNome());
+            return true;
+        }
+        return false;
     }
 
     @Override
@@ -215,13 +212,6 @@ public class CoursesScreen implements Screen {
         // Limpa a tela com uma cor preta
         ScreenUtils.clear(Color.WHITE);
 
-        
-
-        // Desenha o fundo
-        jogo.batch.begin();
-        jogo.batch.draw(background, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        jogo.batch.end();
-
         // Atualiza e desenha o Stage
         stage.act(delta);
         stage.draw();
@@ -234,7 +224,6 @@ public class CoursesScreen implements Screen {
 
     @Override
     public void dispose() {
-        background.dispose();
         stage.dispose();
         skin.dispose();
     }

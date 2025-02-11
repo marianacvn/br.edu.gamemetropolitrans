@@ -22,9 +22,9 @@ public abstract class ActorAnimation extends BaseActor {
     private Animation<TextureRegion> animacaoBaixo;
     private Animation<TextureRegion> animacaoDireita;
 
-    private int etapaMissao;
+    public int etapaMissao;
     private List<String> roteiro;
-    private float distanciaPercorrida;
+    public float distanciaPercorrida;
     private boolean temAnimacao;
     private int linhas, colunas;
 
@@ -112,6 +112,12 @@ public abstract class ActorAnimation extends BaseActor {
             animacaoAtivada = false;
             setAnimacaoPausada(true);
         }
+    }
+
+    public void valoresDefault(int velocidade) {
+        this.velocidade = velocidade;
+        etapaMissao = 0;
+        distanciaPercorrida = 0;
     }
 
     @Override

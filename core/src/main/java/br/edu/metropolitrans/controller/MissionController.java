@@ -47,7 +47,7 @@ public class MissionController {
          */
         switch (missaoId) {
             case 0:
-                logicaInicial();
+                logicaInicial(npc);
                 break;
             case 1:
                 logicaMissao1(npc);
@@ -64,18 +64,38 @@ public class MissionController {
             case 5:
                 logicaMissao5(npc);
                 break;
+            case 6:
+                logicaMissao6(npc);
+                break;
+            case 7:
+                logicaMissao7(npc);
+                break;
             default:
                 break;
         }
     }
 
-    private void logicaInicial() {
+    private void logicaInicial(Npc npc) {
         DebugMode.mostrarLog("Missão", "Início do jogo");
-        atualizarMissao(1, "heberto");
-        controlaTrocaMissao = true;
+        // Antes de trocar a missão, assim que falar com o Heberto, precisa falar
+        // primeiro com a betania
+        // para que a missão 1 seja ativada
+        if (npc != null && npc.nome.equals("betania") && npc.statusAlertaMissao == 2) {
+            atualizarMissao(1, "heberto");
+            controlaTrocaMissao = true;
+        }
+
     }
 
     private void logicaMissao1(Npc npc) {
+        // Exibe o diálogo do guarda com instruções
+        if (controlaTrocaMissao) {
+            jogo.controller.gameScreen.caixaDialogo.npc = jogo.controller.guarda;
+            jogo.controller.gameScreen.caixaDialogo.setTextoDialogo(Npc.DIALOGO_GUARDA_TECLA_ESPACO);
+            jogo.controller.gameScreen.caixaDialogo.defineTexturaNpc();
+            jogo.controller.mostrarDialogo = true;
+        }
+        
         DebugMode.mostrarLog("Missão", "Início da missão 1");
         // Atualiza o status de alerta da missão dos NPCs que fazem parte da missão
         trocaMissao();
@@ -132,7 +152,7 @@ public class MissionController {
                         onibus.pararAnimacao();
                         basicCar.pararAnimacao();
 
-                        jogo.objetoChao.setVisible(false);
+                        jogo.objetosInterativos.get("objetoChao").setVisible(false);
                         npc.setRoteiro(List.of("D-6*32", "B-3*32"));
                         npc.repeteAnimacao = false;
                         npc.animacaoAtivada = true;
@@ -153,23 +173,34 @@ public class MissionController {
                     componentesMissao.titulo
                             .setText("Missão " + (jogo.controller.MISSAO) + ": " + missao.getDescricao());
                     jogo.controller.gameScreen.missaoModalBox.missionComponents = componentesMissao;
-                    jogo.objetoMissao.setVisible(true);
+                    jogo.objetosInterativos.get("objetoMissao").setVisible(true);
                 }
                 if (missaoConcluida) {
                     DebugMode.mostrarLog("Missão", "Missão 1 finalizada, exibindo placa");
-                    jogo.objetoMissao.setVisible(false);
-                    jogo.objetoPlaca1.setVisible(true);
+                    jogo.objetosInterativos.get("objetoMissao").setVisible(false);
+                    jogo.objetosInterativos.get("objetoPlaca1").setVisible(true);
+
+                    // Conclui a missão
+                    concluirMissao(missao);
 
                     // Atualiza a missão
                     atualizarMissao(2, "juliana");
                     controlaTrocaMissao = true;
-                    jogo.objetoMissao.setPosition(jogo.objetoPlaca2.x, jogo.objetoPlaca2.y);
+                    jogo.objetosInterativos.get("objetoMissao").setPosition(1700, 1450);
                 }
             }
         }
     }
 
     private void logicaMissao2(Npc npc) {
+        // Exibe o diálogo do guarda com instruções
+        if (controlaTrocaMissao) {
+            jogo.controller.gameScreen.caixaDialogo.npc = jogo.controller.guarda;
+            jogo.controller.gameScreen.caixaDialogo.setTextoDialogo(Npc.DIALOGO_GUARDA_TECLA_T);
+            jogo.controller.gameScreen.caixaDialogo.defineTexturaNpc();
+            jogo.controller.mostrarDialogo = true;
+        }
+
         DebugMode.mostrarLog("Missão", "Início da missão 2");
         trocaMissao();
 
@@ -217,17 +248,23 @@ public class MissionController {
                 componentesMissao.titulo
                         .setText("Missão " + (jogo.controller.MISSAO) + ": " + missao.getDescricao());
                 jogo.controller.gameScreen.missaoModalBox.missionComponents = componentesMissao;
-                jogo.objetoMissao.setVisible(true);
+                jogo.objetosInterativos.get("objetoMissao").setVisible(true);
+                jogo.objetosInterativos.get("objetoMissaoHorizontal").setVisible(true);
             }
             if (missaoConcluida) {
                 DebugMode.mostrarLog("Missão", "Missão 2 finalizada, exibindo placa");
-                jogo.objetoMissao.setVisible(false);
-                jogo.objetoPlaca2.setVisible(true);
+                jogo.objetosInterativos.get("objetoMissao").setVisible(false);
+                jogo.objetosInterativos.get("objetoMissaoHorizontal").setVisible(false);
+                jogo.objetosInterativos.get("objetoHorizontal2").setVisible(true);
+
+                // Conclui a missão
+                concluirMissao(missao);
 
                 // Atualiza a missão
                 atualizarMissao(3, "antonio");
                 controlaTrocaMissao = true;
-                jogo.objetoMissao.setPosition(jogo.objetoPlaca3.x, jogo.objetoPlaca3.y);
+                jogo.objetosInterativos.get("objetoMissao").setPosition(jogo.objetosInterativos.get("objetoPlaca3").x,
+                        jogo.objetosInterativos.get("objetoPlaca3").y);
             }
         }
     }
@@ -262,12 +299,12 @@ public class MissionController {
                 componentesMissao.titulo
                         .setText("Missão " + (jogo.controller.MISSAO) + ": " + missao.getDescricao());
                 jogo.controller.gameScreen.missaoModalBox.missionComponents = componentesMissao;
-                jogo.objetoMissao.setVisible(true);
+                jogo.objetosInterativos.get("objetoMissao").setVisible(true);
             }
             if (missaoConcluida) {
                 DebugMode.mostrarLog("Missão", "Missão 3 finalizada, exibindo placa");
-                jogo.objetoMissao.setVisible(false);
-                jogo.objetoPlaca3.setVisible(true);
+                jogo.objetosInterativos.get("objetoMissao").setVisible(false);
+                jogo.objetosInterativos.get("objetoPlaca3").setVisible(true);
 
                 compactCar.setVisible(false);
                 compactCar.animacaoAtivada = false;
@@ -276,6 +313,9 @@ public class MissionController {
                 sportBlueCar.setVisible(false);
                 sportBlueCar.animacaoAtivada = false;
                 sportBlueCar.pararAnimacao();
+
+                // Conclui a missão
+                concluirMissao(missao);
 
                 // Atualiza a missão
                 atualizarMissao(4, "jose");
@@ -295,8 +335,7 @@ public class MissionController {
 
                     MissionComponents componentesMissao = jogo.missionComponents.get("missao4");
                     componentesMissao.titulo
-                            .setText("Missão " + (jogo.controller.MISSAO) + ": "
-                                    + "Quais os componentes utilizados em\r\nciclofaixas? [Artigo/Regra: 58]");
+                            .setText("Missão " + (jogo.controller.MISSAO) + ": " + missao.getDescricao());
                     jogo.controller.gameScreen.missaoModalBox.missionComponents = componentesMissao;
                 }
             } else {
@@ -315,11 +354,16 @@ public class MissionController {
                         DebugMode.mostrarLog("Missão", "Missão 4: Exibindo desafio de Bruna, exibindo ciclofaixa");
                         // Exibe a ciclofaixa no mapa prinxipal
                         ativaCamadaMissao4 = true;
-                        
+
+                        // Conclui a missão
+                        concluirMissao(missao);
+
                         // Atualiza a missão
                         atualizarMissao(5, "bruna");
                         controlaTrocaMissao = true;
-                        jogo.objetoMissao.setPosition(jogo.objetoPlaca5.x, jogo.objetoPlaca5.y);
+                        jogo.objetosInterativos.get("objetoMissao").setPosition(
+                                jogo.objetosInterativos.get("objetoPlaca5").x,
+                                jogo.objetosInterativos.get("objetoPlaca5").y);
                     }
                 }
             }
@@ -332,7 +376,9 @@ public class MissionController {
 
         DebugMode.mostrarLog("Missão", "Iniciando veículos da missão 5");
         Vehicle blackViperCar = jogo.vehicles.get("black-viper-car");
-        
+        Npc maria = jogo.npcs.get("maria");
+        maria.setPosition(1732, 556);
+
         if (npc != null) {
             if (jogo.controller.mostrarDialogo) {
                 if (npc.nome.equals("josinaldo")) {
@@ -356,19 +402,138 @@ public class MissionController {
                 componentesMissao.titulo
                         .setText("Missão " + (jogo.controller.MISSAO) + ": " + missao.getDescricao());
                 jogo.controller.gameScreen.missaoModalBox.missionComponents = componentesMissao;
-                jogo.objetoMissao.setVisible(true);
+                jogo.objetosInterativos.get("objetoMissao").setVisible(true);
             }
             if (missaoConcluida) {
                 DebugMode.mostrarLog("Missão", "Missão 5 finalizada, exibindo placa");
-                jogo.objetoMissao.setVisible(false);
-                jogo.objetoPlaca5.setVisible(true);
+                jogo.objetosInterativos.get("objetoMissao").setVisible(false);
+                jogo.objetosInterativos.get("objetoPlaca5").setVisible(true);
+
+                maria.valoresDefault(100);
+                maria.setRoteiro(List.of("D-6*32", "C-3*32", "D-3*32"));
+                maria.repeteAnimacao = false;
+                maria.animacaoAtivada = true;
+                // maria.statusAlertaMissao = 0;
+
+                // Conclui a missão
+                concluirMissao(missao);
 
                 // Atualiza a missão
-                //atualizarMissao(6, "josinaldo");
-                //controlaTrocaMissao = true;
-                //jogo.objetoMissao.setPosition(jogo.objetoPlaca6.x, jogo.objetoPlaca6.y);
+                atualizarMissao(6, "josinaldo");
+                controlaTrocaMissao = true;
+                jogo.objetosInterativos.get("objetoMissao").setPosition(jogo.objetosInterativos.get("objetoPlaca6").x,
+                        jogo.objetosInterativos.get("objetoPlaca6").y);
             }
         }
+    }
+
+    private void logicaMissao6(Npc npc) {
+        DebugMode.mostrarLog("Missão", "Início da missão 6");
+        trocaMissao();
+
+        DebugMode.mostrarLog("Missão", "Iniciando veículos da missão 6");
+        Vehicle compactCar = jogo.vehicles.get("compact-car");
+        compactCar.setPosition(1382, 256);
+        compactCar.setRoteiro(List.of("C-1*32"));
+        compactCar.setVisible(true);
+        compactCar.animacaoAtivada = true;
+
+        if (npc != null && jogo.controller.mostrarDialogo) {
+            if (npc.nome.equals("paulo")) {
+                missaoConcluida = false;
+            }
+        }
+
+        if (npc != null && npc.nome.equals("paulo")) {
+            // Verifica se o personage está próximo do NPC
+            // Se tiver aciona a buzina
+            if (jogo.personagem.estaDentroDaDistancia(400, npc)) {
+                jogo.efeitoBuzina.play();
+            } else {
+                jogo.efeitoBuzina.stop();
+            }
+
+            if (npc.statusAlertaMissao == 2 && !missaoConcluida) {
+                DebugMode.mostrarLog("Missão", "Missão 6: Exibindo desafio de Paulo");
+                missaoConcluida = false;
+                compactCar.pararAnimacao();
+
+                MissionComponents componentesMissao = jogo.missionComponents.get("missao6");
+                componentesMissao.titulo
+                        .setText("Missão " + (jogo.controller.MISSAO) + ": " + missao.getDescricao());
+                jogo.controller.gameScreen.missaoModalBox.missionComponents = componentesMissao;
+                jogo.objetosInterativos.get("objetoMissao").setVisible(true);
+            }
+            if (missaoConcluida) {
+                DebugMode.mostrarLog("Missão", "Missão 6 finalizada, exibindo placa");
+                jogo.objetosInterativos.get("objetoMissao").setVisible(false);
+                jogo.objetosInterativos.get("objetoPlaca6").setVisible(true);
+
+                compactCar.setVisible(false);
+                compactCar.animacaoAtivada = false;
+                compactCar.pararAnimacao();
+
+                jogo.efeitoBuzina.stop();
+                jogo.efeitoBuzina.dispose();
+
+                // Conclui a missão
+                concluirMissao(missao);
+
+                // Atualiza a missão
+                atualizarMissao(7, "paulo");
+                controlaTrocaMissao = true;
+                jogo.objetosInterativos.get("objetoMissao").setPosition(jogo.objetosInterativos.get("objetoPlaca7").x,
+                        jogo.objetosInterativos.get("objetoPlaca7").y);
+            }
+        }
+    }
+
+    private void logicaMissao7(Npc npc) {
+        DebugMode.mostrarLog("Missão", "Início da missão 7");
+        trocaMissao();
+
+        DebugMode.mostrarLog("Missão", "Iniciando veículos da missão 7");
+        if (npc != null && jogo.controller.mostrarDialogo && npc.nome.equals("betania")) {
+            missaoConcluida = false;
+        }
+
+        if (npc != null && npc.nome.equals("betania")) {
+            if (npc.statusAlertaMissao == 2 && !missaoConcluida) {
+                DebugMode.mostrarLog("Missão", "Missão 5: Exibindo desafio de Antônio");
+                missaoConcluida = false;
+
+                MissionComponents componentesMissao = jogo.missionComponents.get("missao7");
+                componentesMissao.titulo
+                        .setText("Missão " + (jogo.controller.MISSAO) + ": " + missao.getDescricao());
+                jogo.controller.gameScreen.missaoModalBox.missionComponents = componentesMissao;
+                jogo.objetosInterativos.get("objetoMissao").setVisible(true);
+            }
+            if (missaoConcluida) {
+                DebugMode.mostrarLog("Missão", "Missão 7 finalizada, exibindo placa");
+                jogo.objetosInterativos.get("objetoMissao").setVisible(false);
+                jogo.objetosInterativos.get("objetoPlaca7").setVisible(true);
+
+                // Conclui a missão
+                concluirMissao(missao);
+
+                // Atualiza a missão
+                // atualizarMissao(6, "josinaldo");
+                // controlaTrocaMissao = true;
+                // jogo.objetosInterativos.get("objetoMissao").setPosition(jogo.objetosInterativos.get("objetoPlaca6").x,
+                // jogo.objetosInterativos.get("objetoPlaca6").y);
+            }
+        }
+    }
+
+    /**
+     * Conclui a missão e atualiza o status da missão no banco de dados
+     * 
+     * @param missao Missão
+     */
+    private void concluirMissao(Mission missao) {
+        // Atualiza o status da missão no banco de dados
+        missao.setFinalizouMissao(true);
+        MissionDataDAO.atualizarMissao(missao);
     }
 
     public void trocaMissao() {
