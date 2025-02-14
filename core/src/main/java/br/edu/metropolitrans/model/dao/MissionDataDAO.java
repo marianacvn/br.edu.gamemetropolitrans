@@ -27,11 +27,15 @@ public class MissionDataDAO {
      */
     public static Mission buscaMissaoPorId(int id) {
         MissionData missionData = carregarDadosMissoes();
-        for (Mission mission : missionData.getMissoes()) {
-            if (mission.getId() == id) {
-                return mission;
+
+        if (missionData != null) {
+            for (Mission mission : missionData.getMissoes()) {
+                if (mission.getId() == id) {
+                    return mission;
+                }
             }
         }
+        
         return null;
     }
 

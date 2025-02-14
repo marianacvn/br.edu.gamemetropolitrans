@@ -5,7 +5,7 @@
 	"dialogosMissao": [
 		{
 			"missao": 0,
-			"mensagem": "Olá, me chamo Heberto, sou o prefeito da cidade de Metropolitrans. Hoje começa seu trabalho como estagiário da secretária de trânsito. Mas primeiro, será necessário que se locomova até a escola de trânsito da cidade e aprenda o primeiro módulo dos cursos, para que possa iniciar os serviços. Boa sorte, esta cidade precisa de muitas melhorias!"
+			"mensagem": "Olá, me chamo Heberto, sou o prefeito da cidade de Metropolitrans. Hoje começa seu trabalho como estagiário da Secretária de Trânsito. Mas primeiro, será necessário que se você vá falar com a Betânia na Escola abaixo."
 		},
 		{
 			"missao": 2,
@@ -21,7 +21,7 @@
 		},
 		{
 			"missao": 7,
-			"mensagem": "Mas é claro que podemos atender esta demanda, hoje mesmo vou solicitar a divulgação desta palestra! E claro, quem seria melhor para apresentar esta palestra, se não o meu querido(a) secretário(a)? Aguardo você na escola municipal!"
+			"mensagem": "Mas é claro que podemos atender esta demanda, hoje mesmo vou solicitar a divulgação desta palestra! E claro, quem seria melhor para apresentar esta palestra, se não o meu querido(a) Secretário(a)? Aguardo você na Escola Municipal!"
 		},
 		{
 			"missao": 7,

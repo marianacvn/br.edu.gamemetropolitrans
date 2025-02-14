@@ -5,15 +5,15 @@
 	"dialogosMissao": [
 		{
 			"missao": 0,
-			"mensagem": "Olá, sou betânia, você deve ser o novo(a) estagiário(a)! Tenho que lhe desejar muita sorte. Bem, estou aqui para te receber na nossa escola municipal. Desculpe a confusão que o prefeito Heberto causou, não temos uma escola específica para trânsito, quem dera. Mas temos aqui na nossa prefeitura, uma sala de informática, ele solicitou a instalação de um curso que explica diversos assuntos sobre trânsito, é lá que você irá aprender o que precisar."
+			"mensagem": "Olá, sou Betânia, você deve ser o novo(a) estagiário(a)! Tenho que lhe desejar muita sorte. Bem, estou aqui para te receber na nossa Escola Municipal. Desculpe a confusão que o prefeito Heberto causou, não temos uma escola específica para trânsito, quem dera. Mas temos aqui na nossa Prefeitura, uma sala de informática, é na sala que há um curso na qual explica diversos assuntos sobre trânsito, é lá que você irá aprender o que precisa."
 		},
 		{
 			"missao": 1,
-			"mensagem": "Olha só, fiquei sabendo que você já anda resolvendo problemas por ai, todo mundo já está sabendo! Muito bem, Heberto passou aqui mais cedo perguntando se você veio aqui, disse a ele que você já ta melhorando a cidade no seu primeiro dia! Bem, agora você pode ver mais um módulo do curso."
+			"mensagem": "Olá, senhor(a), fiquei sabendo que você já anda resolvendo muitos problemas por ai, todo mundo já está sabendo! Muito bem, Heberto passou aqui mais cedo perguntando se você veio aqui, disse a ele que você já ta melhorando a cidade no seu primeiro dia! Bem, agora você pode ver mais um módulo do curso."
 		},
 		{
 			"missao": 2,
-			"mensagem": "Meus parabéns, o Heberto deve tá por ai falando de você para todo mundo, com certeza ele deve reconhecer o seu trabalho. Mas enfim, um novo módulo foi liberado, fique a vontade."
+			"mensagem": "Meus parabéns, o Heberto deve está por ai falando de você para todo mundo, com certeza ele deve reconhecer o seu trabalho. Mas enfim, um novo módulo foi liberado, fique a vontade."
 		},
 		{
 			"missao": 3,
@@ -21,11 +21,11 @@
 		},
 		{
 			"missao": 4,
-			"mensagem": "Nossa, você viu que a Bruna conseguiu um monte de assinaturas de cicilstas pedindo uma ciclofaixa? Já falei para o Heberto, mas antes disto, você precisa ver o novo módulo que está liberado."
+			"mensagem": "Nossa, o senhor(a) viu que a Bruna conseguiu um monte de assinaturas de cicilstas pedindo uma ciclofaixa? Já falei para o Heberto, mas antes disto, você precisa ver o novo módulo que está liberado."
 		},
 		{
 			"missao": 4,
-			"mensagem": "Olá, você não imagina a felicidade que a Bruna saiu daqui, esta é uma grande conquista para os ciclistas da cidade de MetropoliTrans! Bem, um novo módulo está liberado, fique a vontade."
+			"mensagem": "Olá, senhor(a), você não imagina a felicidade que a Bruna saiu daqui, esta é uma grande conquista para os ciclistas da cidade de MetropoliTrans! Bem, um novo módulo está liberado, fique a vontade."
 		},
 		{
 			"missao": 5,
@@ -33,7 +33,7 @@
 		},
 		{
 			"missao": 7,
-			"mensagem": "Aqui por ser uma escola, deveria ter uma sinalização para que seja respeitada a passagem dos alunos, consegue nos ajudar com esta situação?"
+			"mensagem": "Olá, senhor(a), aqui por ser uma escola, deveria ter uma sinalização para que seja respeitada a passagem dos alunos, porfavor, solucione este problema."
 		},
 		{
 			"missao": 7,

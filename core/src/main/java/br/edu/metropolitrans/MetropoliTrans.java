@@ -258,34 +258,23 @@ public class MetropoliTrans extends Game {
         controller = new Controller(this);
     }
 
+    /**
+     * Realiza a reinicialização do jogo
+     */
     public void reiniciarJogo() {
-        // Realiza o dispose da tela de jogo
-        DebugMode.mostrarLog("MetropoliTrans", "Descartando a tela de jogo...");
-        Gdx.app.log("MetropoliTrans", "Descartando a tela de jogo..."); 
-        this.getScreen().dispose();
+        DebugMode.mostrarLog("MetropoliTrans", "Reposicionando componentes do jogo e carregando dados padrões...");
+        // TODO: reposicionar o jogo, posicoes, moedas, etc
+    }
 
-        // Troca a tela voltando para a tela de início
-        Gdx.app.log("MetropoliTrans", "Mudando para a tela de início..."); 
-        trocarTela("menu");
-
-        // Reinicia os valores Padrões
-        DebugMode.mostrarLog("MetropoliTrans", "Reiniciando os valores padrões.");
-        Gdx.app.log("MetropoliTrans", "Mudando para a tela de início..."); 
-        controller.MISSAO = 0;
-
-        // Limpa todas as telas
-        // DebugMode.mostrarLog("MetropoliTrans", "Excluindo todas as telas...");
-        Gdx.app.log("MetropoliTrans", "Mudando para a tela de início..."); 
+    private void liberarRecursos() {
+        // Descarte de telas
+        for (Screen screen : telas.values()) {
+            if (screen != null) {
+                screen.dispose();
+                screen = null;
+            }
+        }
         telas.clear();
-
-        // Retoma o jogo
-        DebugMode.mostrarLog("MetropoliTrans", "Retomando o jogo...");
-        Gdx.app.log("MetropoliTrans", "Mudando para a tela de início..."); 
-
-        // Inicializa o jogo novamente
-        DebugMode.mostrarLog("MetropoliTrans", "Inicializando o jogo novamente...");
-        Gdx.app.log("MetropoliTrans", "Mudando para a tela de início..."); 
-        inicializarJogo();
     }
 
     public void atualizarJogoPorSaveGameData(String tipo) {

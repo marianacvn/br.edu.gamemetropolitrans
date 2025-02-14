@@ -29,7 +29,7 @@
         },
         {
             "id": 4,
-            "nome": "Placas de Estacionamento",
+            "nome": "Placas de Estacionamento [Art. 181]",
             "descricao": "As placas de proibido estacionar, geralmente de cor vermelha e branca,\r\n indicam explicitamente onde não é permitido ou não deixar o veículo",
             "status": "BLOQUEADO",
             "missaoId": 3,
@@ -65,7 +65,7 @@
         },
         {
             "id": 8,
-            "nome": "Placas de  Passagem Sinalizada",
+            "nome": "Placas de  Passagem Sinalizada [Art. 70]",
             "descricao": "São usadas para identificar locais onde há passagem sinalizada de pedestres (ou faixa de pedestres).",
             "status": "BLOQUEADO",
             "missaoId": 7,

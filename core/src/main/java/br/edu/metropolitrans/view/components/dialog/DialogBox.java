@@ -82,7 +82,7 @@ public class DialogBox {
         }
 
         // deixar esta mensagem centralizada
-        fonte.draw(batch, "Pressione ENTER para pular diálogo.", x + 20, y + 30, largura - 100, Align.center, true);
+        fonte.draw(batch, "Pressione ENTER para continuar diálogo.", x + 20, y + 30, largura - 100, Align.center, true);
 
         fonte.setColor(Color.BLACK);
         TEXTO_X = x + 20;

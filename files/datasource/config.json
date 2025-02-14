@@ -1,39 +1,14 @@
 {
-  "volume": 0.5,
+  "volume": 0.0,
   "mute": false,
   "typeDebugMode": "NENHUM",
-  "trafficViolations": true,
+  "trafficViolations": false,
   "saveInfo": {
     "saves": [
       {
         "id": 1,
         "name": "save1",
-        "date": "Tue Feb 11 13:50:52 BRT 2025"
-      },
-      {
-        "id": 1,
-        "name": "save1",
-        "date": "Tue Feb 11 13:52:47 BRT 2025"
-      },
-      {
-        "id": 1,
-        "name": "save1",
-        "date": "Tue Feb 11 13:53:13 BRT 2025"
-      },
-      {
-        "id": 1,
-        "name": "save1",
-        "date": "Tue Feb 11 13:55:27 BRT 2025"
-      },
-      {
-        "id": 1,
-        "name": "save1",
-        "date": "Tue Feb 11 13:58:00 BRT 2025"
-      },
-      {
-        "id": 1,
-        "name": "save1",
-        "date": "Tue Feb 11 13:58:12 BRT 2025"
+        "date": "Fri Feb 14 13:45:32 BRT 2025"
       }
     ]
   }

@@ -375,6 +375,7 @@ public class Controller {
     public void controleInfracao() {
         // Se as infrações forem maiores ou iguais a 4, perde o jogo
         if (personagem.infracoes > 4) {
+            gameScreen.missaoDialogoResultado.ativarAcao("gameover", "Desculpe, você\r\nperdeu o jogo!\r\nDeseja jogar novamente?");
             perdeuJogo = true;
         }
 

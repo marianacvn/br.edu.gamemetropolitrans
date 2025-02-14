@@ -22,7 +22,7 @@ public class CreditScreen implements Screen {
     public Texture background;
     public Stage stage;
     public Skin skin;
-    public Label titulo, text1, text2, text3, text4;
+    public Label titulo,titulo2, text1, text2, text3, text4;
     public Screen telaAnterior;
     public TextButtonBase botaoVoltar;
 
@@ -48,17 +48,25 @@ public class CreditScreen implements Screen {
         titulo = new Label("Créditos", labelStyle);
         titulo.setPosition(Gdx.graphics.getWidth() / 2 - titulo.getWidth() / 2, Gdx.graphics.getHeight() - 100);
 
+        // cria o titulo 2 
+        Label.LabelStyle labelStyle6 = new Label.LabelStyle();
+        labelStyle6.font = fonteTitulo;
+        labelStyle6.fontColor = Color.valueOf("4c4869");
+        titulo2 = new Label("Autores:", labelStyle);
+        // abaixo do título com um espaçamento de 5px
+        titulo2.setPosition(Gdx.graphics.getWidth() / 2 - titulo2.getWidth() / 2, titulo.getY() - titulo.getHeight() - 5);
+
         Label.LabelStyle labelStyle2 = new Label.LabelStyle();
         labelStyle2.font = fonteCorpo;
         labelStyle.fontColor = Color.valueOf("4c4869");
-        text1 = new Label("Aluna: Mariana de Carvalho Nunes", labelStyle);
+        text1 = new Label("Mariana de Carvalho Nunes (UFRPE-UAST)", labelStyle);
         // abaixo do título com um espaçamento de 5px
-        text1.setPosition(Gdx.graphics.getWidth() / 2 - text1.getWidth() / 2, titulo.getY() - titulo.getHeight() - 5);
+        text1.setPosition(Gdx.graphics.getWidth() / 2 - text1.getWidth() / 2, titulo2.getY() - titulo2.getHeight() - 5);
 
         Label.LabelStyle labelStyle3 = new Label.LabelStyle();
         labelStyle3.font = fonteCorpo;
         labelStyle.fontColor = Color.valueOf("4c4869");
-        text2 = new Label("Orientador: Prof. Dr. Richarlyson A. D'Emery", labelStyle);
+        text2 = new Label("Prof. Dr. Richarlyson A. D'Emery (UFRPE-UAST)", labelStyle);
         // abaixo do text1
         text2.setPosition(Gdx.graphics.getWidth() / 2 - text2.getWidth() / 2, text1.getY() - text1.getHeight() - 5);
 
@@ -89,6 +97,7 @@ public class CreditScreen implements Screen {
         });
         stage.addActor(botaoVoltar);
         stage.addActor(titulo);
+        stage.addActor(titulo2);
         stage.addActor(text1);
         stage.addActor(text2);
         stage.addActor(text3);

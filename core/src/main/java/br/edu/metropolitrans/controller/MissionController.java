@@ -545,7 +545,8 @@ public class MissionController {
         // Verifica se o dialogo final foi exibido e finaliza o jogo
         if (npc != null && npc.nome.equals("heberto") && npc.statusAlertaMissao == 2) {
             DebugMode.mostrarLog("Missão", "Finalizando o jogo");
-            jogo.reiniciarJogo();
+            jogo.controller.gameScreen.missaoDialogoResultado.ativarAcao("wingame", "Parabéms, você\r\nganhou o jogo!\r\nDeseja jogar novamente?");
+            // jogo.reiniciarJogo();
         }
     }
 
@@ -576,6 +577,10 @@ public class MissionController {
      * @return true se o NPC está na missão
      */
     public Npc npcEstaNaMisao(String nomeNpc) {
+        if (missao == null) {
+            missao = MissionDataDAO.buscaMissaoPorId(jogo.controller.MISSAO);
+        }
+
         if (missao.getPersonagens().contains(nomeNpc)) {
             return buscaNpcPorNome(nomeNpc);
         }
