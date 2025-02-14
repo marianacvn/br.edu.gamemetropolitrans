@@ -1,6 +1,6 @@
 {
   "volume": 0.0,
-  "mute": false,
+  "mute": true,
   "typeDebugMode": "NENHUM",
   "trafficViolations": false,
   "saveInfo": {
@@ -8,7 +8,7 @@
       {
         "id": 1,
         "name": "save1",
-        "date": "Fri Feb 14 13:45:32 BRT 2025"
+        "date": "Fri Feb 14 17:13:00 BRT 2025"
       }
     ]
   }

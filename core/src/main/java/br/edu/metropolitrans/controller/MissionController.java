@@ -125,8 +125,8 @@ public class MissionController {
 
                     MissionComponents componentesMissao = jogo.missionComponents.get("missao0");
                     componentesMissao.titulo
-                            .setText("Missão " + (jogo.controller.MISSAO) + ": "
-                                    + "Ajudar a Maria atravessar a rua\r\n[Art.70]");
+                            .setText("Missão 1: "
+                                    + "Selecione a opção que melhor representa uma \r\nsolução para ajudar a Maria atravessar a rua\r\n[Art.70]:");
                     jogo.controller.gameScreen.missaoModalBox.missionComponents = componentesMissao;
                 }
 
@@ -178,7 +178,7 @@ public class MissionController {
 
                     MissionComponents componentesMissao = jogo.missionComponents.get("missao1");
                     componentesMissao.titulo
-                            .setText("Missão " + (jogo.controller.MISSAO) + ": " + missao.getDescricao());
+                            .setText("Missão 2: " + missao.getDescricao());
                     jogo.controller.gameScreen.missaoModalBox.missionComponents = componentesMissao;
                     jogo.objetosInterativos.get("objetoMissao").setVisible(true);
                 }
@@ -253,7 +253,7 @@ public class MissionController {
 
                 MissionComponents componentesMissao = jogo.missionComponents.get("missao2");
                 componentesMissao.titulo
-                        .setText("Missão " + (jogo.controller.MISSAO) + ": " + missao.getDescricao());
+                        .setText("Missão 3: "  + missao.getDescricao());
                 jogo.controller.gameScreen.missaoModalBox.missionComponents = componentesMissao;
                 jogo.objetosInterativos.get("objetoMissao").setVisible(true);
                 jogo.objetosInterativos.get("objetoMissaoHorizontal").setVisible(true);
@@ -304,7 +304,7 @@ public class MissionController {
 
                 MissionComponents componentesMissao = jogo.missionComponents.get("missao3");
                 componentesMissao.titulo
-                        .setText("Missão " + (jogo.controller.MISSAO) + ": " + missao.getDescricao());
+                        .setText("Missão 4: " + missao.getDescricao());
                 jogo.controller.gameScreen.missaoModalBox.missionComponents = componentesMissao;
                 jogo.objetosInterativos.get("objetoMissao").setVisible(true);
             }
@@ -342,7 +342,7 @@ public class MissionController {
 
                     MissionComponents componentesMissao = jogo.missionComponents.get("missao4");
                     componentesMissao.titulo
-                            .setText("Missão " + (jogo.controller.MISSAO) + ": " + missao.getDescricao());
+                            .setText("Missão 5: "+ missao.getDescricao());
                     jogo.controller.gameScreen.missaoModalBox.missionComponents = componentesMissao;
                 }
             } else {
@@ -407,7 +407,7 @@ public class MissionController {
 
                 MissionComponents componentesMissao = jogo.missionComponents.get("missao5");
                 componentesMissao.titulo
-                        .setText("Missão " + (jogo.controller.MISSAO) + ": " + missao.getDescricao());
+                        .setText("Missão 6: "+ missao.getDescricao());
                 jogo.controller.gameScreen.missaoModalBox.missionComponents = componentesMissao;
                 jogo.objetosInterativos.get("objetoMissao").setVisible(true);
             }
@@ -467,7 +467,7 @@ public class MissionController {
 
                 MissionComponents componentesMissao = jogo.missionComponents.get("missao6");
                 componentesMissao.titulo
-                        .setText("Missão " + (jogo.controller.MISSAO) + ": " + missao.getDescricao());
+                        .setText("Missão 7: "+ missao.getDescricao());
                 jogo.controller.gameScreen.missaoModalBox.missionComponents = componentesMissao;
                 jogo.objetosInterativos.get("objetoMissao").setVisible(true);
             }
@@ -511,7 +511,7 @@ public class MissionController {
 
                 MissionComponents componentesMissao = jogo.missionComponents.get("missao7");
                 componentesMissao.titulo
-                        .setText("Missão " + (jogo.controller.MISSAO) + ": " + missao.getDescricao());
+                        .setText("Missão 8: "+ missao.getDescricao());
                 jogo.controller.gameScreen.missaoModalBox.missionComponents = componentesMissao;
                 jogo.objetosInterativos.get("objetoMissao").setVisible(true);
             }
