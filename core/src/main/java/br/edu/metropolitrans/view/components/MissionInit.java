@@ -25,7 +25,7 @@ public class MissionInit {
 		missionComponents.put("missao0", missao0);
 
 		MissionComponents missao1 = new MissionComponents(1, jogo);
-		missao1.adicionarTituloMissao("Missão 1: ", baseX + 15, baseY);
+		missao1.adicionarTituloMissao("Missão 2: ", baseX + 15, baseY);
 		missao1.adicionarOpcaoImagem("mission1-option1", "mission1-option1_reduced.png", false, baseX + 15,
 				baseY + 265, true);
 		missao1.adicionarOpcaoImagem("mission1-option2", "mission1-option2_reduced.png", false, baseX + 15,
@@ -44,7 +44,7 @@ public class MissionInit {
 		// region missao 2
 
 		MissionComponents missao2 = new MissionComponents(2, jogo);
-		missao2.adicionarTituloMissao("Missão 2: ", baseX + 15, baseY);
+		missao2.adicionarTituloMissao("Missão 3: ", baseX + 15, baseY);
 		missao2.adicionarOpcaoImagem("mission2-option1", "mission2-option1.png", false, baseX + 15,
 				baseY + 265, true);
 		missao2.adicionarOpcaoImagem("mission2-option2", "mission2-option2.png", false, baseX + 15,
@@ -63,7 +63,7 @@ public class MissionInit {
 		// region missao 3
 
 		MissionComponents missao3 = new MissionComponents(3, jogo);
-		missao3.adicionarTituloMissao("Missão 3: ", baseX + 15, baseY);
+		missao3.adicionarTituloMissao("Missão 4: ", baseX + 15, baseY);
 		missao3.adicionarOpcaoImagem("mission3-option1", "mission3-option1.png", false, baseX + 15,
 				baseY + 265, true);
 		missao3.adicionarOpcaoImagem("mission3-option2", "mission3-option2.png", false, baseX + 15,
@@ -82,7 +82,7 @@ public class MissionInit {
 		// region missao 4
 
 		MissionComponents missao4 = new MissionComponents(4, jogo);
-		missao4.adicionarTituloMissao("Missão 4: ", baseX + 15, baseY);
+		missao4.adicionarTituloMissao("Missão 5: ", baseX + 15, baseY);
 		missao4.adicionarOpcaoImagem("mission4-option1", "mission4-option1.png", true, baseX + 15,
 				baseY + 220, true);
 		missao4.adicionarOpcaoImagem("mission4-option2", "mission4-option2.png", false, baseX + 15,
@@ -96,7 +96,7 @@ public class MissionInit {
 
 		// region missao 5
 		MissionComponents missao5 = new MissionComponents(5, jogo);
-		missao5.adicionarTituloMissao("Missão 5: ", baseX + 15, baseY);
+		missao5.adicionarTituloMissao("Missão 6: ", baseX + 15, baseY);
 		missao5.adicionarOpcaoImagem("mission5-option1", "mission5-option1.png", false, baseX + 15,
 				baseY + 265, true);
 		missao5.adicionarOpcaoImagem("mission5-option2", "mission5-option2.png", false, baseX + 15,
@@ -115,7 +115,7 @@ public class MissionInit {
 		// region missao 6
 
 		MissionComponents missao6 = new MissionComponents(6, jogo);
-		missao6.adicionarTituloMissao("Missão 6: ", baseX + 15, baseY);
+		missao6.adicionarTituloMissao("Missão 7: ", baseX + 15, baseY);
 		missao6.adicionarOpcaoImagem("mission6-option1", "mission6-option1.png", false, baseX + 15,
 				baseY + 265, true);
 		missao6.adicionarOpcaoImagem("mission6-option2", "mission6-option2.png", false, baseX + 15,
@@ -134,7 +134,7 @@ public class MissionInit {
 		// region missao 7
 
 		MissionComponents missao7 = new MissionComponents(7, jogo);
-		missao7.adicionarTituloMissao("Missão 7: ", baseX + 15, baseY);
+		missao7.adicionarTituloMissao("Missão 8: ", baseX + 15, baseY);
 		missao7.adicionarOpcaoImagem("mission7-option1", "mission7-option1.png", false, baseX + 15,
 				baseY + 265, true);
 		missao7.adicionarOpcaoImagem("mission7-option2", "mission7-option2.png", false, baseX + 15,

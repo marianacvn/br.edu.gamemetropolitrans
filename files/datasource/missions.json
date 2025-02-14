@@ -3,7 +3,7 @@
         {
             "id": 0,
             "nome": "Inicio do jogo",
-            "descricao": "Apenas uma introdução para o jogador. [Diálogo com o prefeito]",
+            "descricao": "Apenas uma introdução para o jogador. [Diálogo com o Prefeito]",
             "recompensaMoedas": 200,
             "experiencia": 0,
             "valorErro": 0,
@@ -16,7 +16,7 @@
         {
             "id": 1,
             "nome": "Retorno proibido",
-            "descricao": "Qual placa representa uma solução\r\npara o problema apresentado [Art. 206]?",
+            "descricao": "Qual opção melhor representa uma solução\r\npara o problema apresentado [Art. 206]?",
             "recompensaMoedas": 100,
             "experiencia": 10,
             "valorErro": 20,
@@ -41,7 +41,7 @@
         {
             "id": 3,
             "nome": "Proibido parar e estacionar",
-            "descricao": "Qual placa poderia solucionar o\r\nproblema apresentado [Art. ]?",
+            "descricao": "Qual opção melhor representa uma solução para o\r\nproblema apresentado [Art. ]?",
             "recompensaMoedas": 100,
             "experiencia": 10,
             "valorErro": 20,
@@ -53,7 +53,7 @@
         {
             "id": 4,
             "nome": "Necessidade dos ciclistas",
-            "descricao": "Qual o componente que deve ser utilizado para solucionar este problema com\r\n a ciclofaixa [Art. 58]?",
+            "descricao": "Qual o opção melhor representa uma solução para este problema\r\n[Art. 58]?",
             "recompensaMoedas": 100,
             "experiencia": 10,
             "valorErro": 20,
@@ -65,7 +65,7 @@
         {
             "id": 5,
             "nome": "Placas de velocidade da via",
-            "descricao": "Para uma VIA LOCAL, qual seria a\r\nplaca ideal para solucionar este problema [Art. 71]? ",
+            "descricao": "Para uma via local, qual seria a\r\n opção ideal para solucionar este problema [Art. 71]? ",
             "recompensaMoedas": 100,
             "experiencia": 10,
             "valorErro": 20,
@@ -77,7 +77,7 @@
         {
             "id": 6,
             "nome": "Placa proibido acionar buzina ou sinal sonoro",
-            "descricao": "Qual placa representa uma solução\r\npara o problema apresentado [Art. 227]? ",
+            "descricao": "Qual opção melhor representa uma solução\r\npara o problema apresentado [Art. 227]? ",
             "recompensaMoedas": 100,
             "experiencia": 10,
             "valorErro": 20,
@@ -89,7 +89,7 @@
         {
             "id": 7,
             "nome": "Área escolar sem sinalização",
-            "descricao": "Qual placa representa uma solução\r\npara o problema apresentado?",
+            "descricao": "Qual opção melhor representa uma solução\r\npara o problema apresentado [Art.]?",
             "recompensaMoedas": 100,
             "experiencia": 10,
             "valorErro": 20,

@@ -126,7 +126,7 @@ public class MissionController {
                     MissionComponents componentesMissao = jogo.missionComponents.get("missao0");
                     componentesMissao.titulo
                             .setText("Missão " + (jogo.controller.MISSAO) + ": "
-                                    + "Ajuda para Maria atravessar a rua\r\n[Artigo/Regra: 70]");
+                                    + "Ajudar a Maria atravessar a rua\r\n[Art.70]");
                     jogo.controller.gameScreen.missaoModalBox.missionComponents = componentesMissao;
                 }
 
@@ -545,7 +545,7 @@ public class MissionController {
         // Verifica se o dialogo final foi exibido e finaliza o jogo
         if (npc != null && npc.nome.equals("heberto") && npc.statusAlertaMissao == 2) {
             DebugMode.mostrarLog("Missão", "Finalizando o jogo");
-            jogo.controller.gameScreen.missaoDialogoResultado.ativarAcao("wingame", "Parabéms, você\r\nganhou o jogo!\r\nDeseja jogar novamente?");
+            jogo.controller.gameScreen.missaoDialogoResultado.ativarAcao("wingame", "Parabéns, você\r\nganhou o jogo!\r\nDeseja jogar novamente?");
             // jogo.reiniciarJogo();
         }
     }

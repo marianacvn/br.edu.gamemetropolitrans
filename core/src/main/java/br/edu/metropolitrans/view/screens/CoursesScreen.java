@@ -46,7 +46,7 @@ public class CoursesScreen implements Screen {
         Label.LabelStyle labelStyle = new Label.LabelStyle();
         labelStyle.font = fonteTitulo;
         labelStyle.fontColor = Color.valueOf("4c4869");
-        titulo = new Label("Sistema de cursos", labelStyle);
+        titulo = new Label("Sistema de Cursos", labelStyle);
 
         // Centraliza o título na tela
         float tituloWidth = titulo.getWidth();
