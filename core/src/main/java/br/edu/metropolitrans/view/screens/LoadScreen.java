@@ -58,11 +58,11 @@ public class LoadScreen implements Screen {
         // Verifica se existe um save
         // DESATIVADO - Não é mais necessário
         // if (save == null) {
-        //     SaveManager.criarNovoSave(SaveManager.verificaQualProximoSaveDis());
+        // SaveManager.criarNovoSave(SaveManager.verificaQualProximoSaveDis());
         // } else if (save != null && save.getName() != null) {
-        //     SaveManager.definirSaveAtual(save.getId());
+        // SaveManager.definirSaveAtual(save.getId());
         // } else {
-        //     SaveManager.criarNovoSave(save.getId());
+        // SaveManager.criarNovoSave(save.getId());
         // }
 
         SaveManager.criarNovoSave(1);
@@ -90,7 +90,7 @@ public class LoadScreen implements Screen {
                             Gdx.app.log("LoadScreen", "GameScreen criada");
                         }
 
-                        jogo.controller.inicializiar();
+                        jogo.controller.inicializar();
 
                         jogo.setScreen(jogo.telas.get("game"));
                     }

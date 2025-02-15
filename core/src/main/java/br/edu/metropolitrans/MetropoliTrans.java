@@ -68,6 +68,11 @@ public class MetropoliTrans extends Game {
     public Music efeitoBuzina;
 
     /**
+     * Efeitos sonoros de status
+     */
+    public Music efeitoAcerto, efeitoErro, efeitoNotificacao, efeitoCancelar, efeitoConfirmar;
+
+    /**
      * Map de telas do jogo
      */
     public HashMap<String, Screen> telas = new HashMap<>();
@@ -90,10 +95,6 @@ public class MetropoliTrans extends Game {
     /**
      * Objetos interativos
      */
-    // public ObjetoInterativo objeto, objetoChao, objetoSairSala, objetoMissao,
-    // objetoMissaoHorizontal, objetoPlaca1,
-    // objetoHorizontal2, objetoPlaca3, objetoPlaca5, objetoPlaca6, objetoPlaca7,
-    // objetoPc;
     public HashMap<String, ObjetoInterativo> objetosInterativos = new HashMap<>();
 
     /**
@@ -127,7 +128,7 @@ public class MetropoliTrans extends Game {
 
     public HashMap<String, MissionComponents> missionComponents = new HashMap<>();
 
-    public BasicAnimation explosao, bike;
+    public BasicAnimation explosao, bike, notificacao;
 
     public void inicializarJogo() {
         estagioPrincipal = new Stage();
@@ -152,6 +153,27 @@ public class MetropoliTrans extends Game {
         efeitoBuzina = Gdx.audio.newMusic(Gdx.files.internal("files/songs/buzina.mp3"));
         efeitoBuzina.setLooping(true);
         efeitoBuzina.setVolume((float) config.getVolume());
+
+        // Carrega os efeitos sonoros
+        efeitoAcerto = Gdx.audio.newMusic(Gdx.files.internal("files/songs/acerto.mp3"));
+        efeitoAcerto.setLooping(false);
+        efeitoAcerto.setVolume((float) config.getVolume());
+
+        efeitoErro = Gdx.audio.newMusic(Gdx.files.internal("files/songs/perder.mp3"));
+        efeitoErro.setLooping(false);
+        efeitoErro.setVolume((float) config.getVolume());
+
+        efeitoNotificacao = Gdx.audio.newMusic(Gdx.files.internal("files/songs/notificar.mp3"));
+        efeitoNotificacao.setLooping(false);
+        efeitoNotificacao.setVolume((float) config.getVolume());
+
+        efeitoCancelar = Gdx.audio.newMusic(Gdx.files.internal("files/songs/cancelar.mp3"));
+        efeitoCancelar.setLooping(false);
+        efeitoCancelar.setVolume((float) config.getVolume());
+
+        efeitoConfirmar = Gdx.audio.newMusic(Gdx.files.internal("files/songs/confirmar.mp3"));
+        efeitoConfirmar.setLooping(false);
+        efeitoConfirmar.setVolume((float) config.getVolume());
 
         // Carrega o mapa
         mapas = new Mapas();// Carrega o mapa
@@ -246,6 +268,22 @@ public class MetropoliTrans extends Game {
         explosao.carregaAnimacaoDeArquivos(
                 nomeArquivos, 0.1f, true);
         explosao.setVisible(false);
+
+        // Intancia animação da notificação
+        notificacao = new BasicAnimation(0, 0, estagioPrincipal);
+        String[] nomeArquivosNotificacao = {
+                "files/animation/book-animation/frame_00.png",
+                "files/animation/book-animation/frame_01.png",
+                "files/animation/book-animation/frame_02.png",
+                "files/animation/book-animation/frame_03.png",
+                "files/animation/book-animation/frame_04.png",
+                "files/animation/book-animation/frame_05.png",
+                "files/animation/book-animation/frame_06.png",
+                "files/animation/book-animation/frame_07.png"
+        };
+        notificacao.carregaAnimacaoDeArquivos(
+                nomeArquivosNotificacao, 0.1f, true);
+        notificacao.setVisible(false);
 
         // Carrega os objetos interativos
         objetosInterativos.put("objeto",
@@ -343,6 +381,27 @@ public class MetropoliTrans extends Game {
         } else {
             Gdx.app.postRunnable(() -> Gdx.graphics.setContinuousRendering(true));
         }
+    }
+
+    /**
+     * Notifica a liberação de um módulo, possui um timer de 3 segundos e depois
+     * oculta a notificação e reposiciona o componente
+     * 
+     * @param x posicao x do componente
+     * @param y posicao y do componente
+     */
+    public void notificarLiberacaoModulo(float x, float y) {
+        notificacao.setPosition(x, y);
+        notificacao.setVisible(true);
+
+        new Thread(() -> {
+            try {
+                Thread.sleep(3000);
+                notificacao.setVisible(false);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }).start();
     }
 
     @Override

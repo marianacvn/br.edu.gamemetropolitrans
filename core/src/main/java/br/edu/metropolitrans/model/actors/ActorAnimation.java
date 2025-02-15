@@ -14,6 +14,7 @@ public abstract class ActorAnimation extends BaseActor {
     public int statusAlertaMissao;
     public boolean animacaoAtivada;
     public boolean repeteAnimacao;
+    public boolean finalizouAnimacao;
     private float xInicial;
     private float yInicial;
 
@@ -67,6 +68,7 @@ public abstract class ActorAnimation extends BaseActor {
         this.linhas = linhas;
         this.colunas = colunas;
         this.repeteAnimacao = repeteAnimacao;
+        this.finalizouAnimacao = false;
 
         etapaMissao = 0;
         distanciaPercorrida = 0;
@@ -105,11 +107,13 @@ public abstract class ActorAnimation extends BaseActor {
         if (repeteAnimacao) {
             etapaMissao = 0;
             distanciaPercorrida = 0;
+            finalizouAnimacao = false;
             setPosition(xInicial, yInicial);
         } else {
             setVelocidade(0);
             roteiro = List.of();
             animacaoAtivada = false;
+            finalizouAnimacao = true;
             setAnimacaoPausada(true);
         }
     }

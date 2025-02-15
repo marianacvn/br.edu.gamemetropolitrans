@@ -82,6 +82,8 @@ public class MenuScreen implements Screen {
         botaoMute.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                jogo.efeitoConfirmar.play();
+
                 isMuted = !isMuted;
 
                 ConfigData config = ConfigDAO.carregarConfig();
@@ -130,6 +132,8 @@ public class MenuScreen implements Screen {
         botaoConfig.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                jogo.efeitoConfirmar.play();
+
                 if (jogo.telas.get("config") == null)
                     jogo.telas.put("config", new ConfigScreen(jogo, MenuScreen.this));
                 jogo.setScreen(jogo.telas.get("config"));
@@ -140,6 +144,8 @@ public class MenuScreen implements Screen {
         botaoCreditos.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                jogo.efeitoConfirmar.play();
+
                 if (jogo.telas.get("credit") == null)
                     jogo.telas.put("credit", new CreditScreen(jogo, MenuScreen.this));
                 jogo.setScreen(jogo.telas.get("credit"));
@@ -150,6 +156,7 @@ public class MenuScreen implements Screen {
         botaoNovoJogo.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                jogo.efeitoConfirmar.play();
                 jogo.setScreen(new CharacterSelectionScreen(jogo));
             }
         });
@@ -158,6 +165,7 @@ public class MenuScreen implements Screen {
         botaoSair.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                jogo.efeitoConfirmar.play();
                 Gdx.app.exit();
             }
         });

@@ -1,8 +1,8 @@
 {
   "missaoAtual": 8,
   "personagem": {
-    "x": 457,
-    "y": 195,
+    "x": 461,
+    "y": 168,
     "moedas": 600,
     "xp": 70,
     "infracoes": 0,
@@ -67,9 +67,17 @@
     },
     {
       "key": "heberto",
-      "x": 25,
-      "y": 650,
+      "x": 89,
+      "y": 800,
       "statusAlertaMissao": 1,
+      "dialogoAtual": 0,
+      "temAnimacao": false
+    },
+    {
+      "key": "guarda",
+      "x": 217,
+      "y": 650,
+      "statusAlertaMissao": 0,
       "dialogoAtual": 0,
       "temAnimacao": false
     },

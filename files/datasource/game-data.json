@@ -20,11 +20,11 @@
         },
         {
             "key": "betania",
-            "x": 264,
+            "x": 274,
             "y": 200,
             "statusAlertaMissao": 1,
             "dialogoAtual": 0,
-            "temAnimacao": false
+            "temAnimacao": true
         },
         {
             "key": "bruna",
@@ -48,7 +48,7 @@
             "y": 650,
             "statusAlertaMissao": 1,
             "dialogoAtual": 0,
-            "temAnimacao": false
+            "temAnimacao": true
         },
         {
             "key": "jose",
@@ -81,6 +81,14 @@
             "statusAlertaMissao": 0,
             "dialogoAtual": 0,
             "temAnimacao": false
+        },
+        {
+            "key": "guarda",
+            "x": 274,
+            "y": 944,
+            "statusAlertaMissao": 0,
+            "dialogoAtual": 0,
+            "temAnimacao": true
         }
     ]
 }

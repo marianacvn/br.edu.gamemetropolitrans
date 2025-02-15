@@ -15,6 +15,7 @@ public class MissionController {
     private MetropoliTrans jogo;
     private Mission missao;
     private boolean controlaTrocaMissao;
+    public boolean missao1GuardaAparece;
     // private Npc npcAtualMissao;
     public boolean missaoConcluida;
     public boolean ativaCamadaMissao4 = false;
@@ -23,6 +24,7 @@ public class MissionController {
         this.jogo = jogo;
         missao = null;
         controlaTrocaMissao = false;
+        missao1GuardaAparece = false;
         missaoConcluida = false;
     }
 
@@ -39,6 +41,9 @@ public class MissionController {
         // Carrega a missão referente ao id
         missao = MissionDataDAO.buscaMissaoPorId(missaoId);
         Npc npc = jogo.controller.gameScreen != null ? jogo.controller.gameScreen.caixaDialogo.npc : null;
+
+        // Verifica se saiu da sala de aula e exibe o diálogo do guarda
+        verificarExibicaoDialogoGuardaMissao1();
 
         /**
          * Primeira missão, verifica se o dialógo
@@ -84,12 +89,35 @@ public class MissionController {
 
     private void logicaInicial(Npc npc) {
         DebugMode.mostrarLog("Missão", "Início do jogo");
+        // Verifica se o diálogo com o prefeito foi exibido, se sim, ativa a animação
+        // dele para que entre na prefeitura e suma depois
+
+        if (npc != null && npc.nome.equals("heberto")) {
+            if (npc.finalizouAnimacao) {
+                npc.setPosition(npc.getX(), 800);
+                npc.setVisible(false);
+            }
+
+            if (npc.statusAlertaMissao == 2) {
+                npc.setRoteiro(List.of("D-2*32", "C-2*32"));
+                npc.repeteAnimacao = false;
+                npc.animacaoAtivada = true;
+                npc.statusAlertaMissao = 0;
+            }
+        }
+
         // Antes de trocar a missão, assim que falar com o Heberto, precisa falar
         // primeiro com a betania
         // para que a missão 1 seja ativada
         if (npc != null && npc.nome.equals("betania") && npc.statusAlertaMissao == 2) {
             atualizarMissao(1, "heberto");
             controlaTrocaMissao = true;
+            jogo.efeitoNotificacao.play();
+            jogo.notificarLiberacaoModulo(
+                    (jogo.controller.gameScreen.CAMERA.position.x - jogo.controller.gameScreen.CAMERA.viewportWidth / 2)
+                            + 1170,
+                    (jogo.controller.gameScreen.CAMERA.position.y
+                            - jogo.controller.gameScreen.CAMERA.viewportHeight / 2) + 550);
         }
 
     }
@@ -253,7 +281,7 @@ public class MissionController {
 
                 MissionComponents componentesMissao = jogo.missionComponents.get("missao2");
                 componentesMissao.titulo
-                        .setText("Missão 3: "  + missao.getDescricao());
+                        .setText("Missão 3: " + missao.getDescricao());
                 jogo.controller.gameScreen.missaoModalBox.missionComponents = componentesMissao;
                 jogo.objetosInterativos.get("objetoMissao").setVisible(true);
                 jogo.objetosInterativos.get("objetoMissaoHorizontal").setVisible(true);
@@ -342,7 +370,7 @@ public class MissionController {
 
                     MissionComponents componentesMissao = jogo.missionComponents.get("missao4");
                     componentesMissao.titulo
-                            .setText("Missão 5: "+ missao.getDescricao());
+                            .setText("Missão 5: " + missao.getDescricao());
                     jogo.controller.gameScreen.missaoModalBox.missionComponents = componentesMissao;
                 }
             } else {
@@ -407,7 +435,7 @@ public class MissionController {
 
                 MissionComponents componentesMissao = jogo.missionComponents.get("missao5");
                 componentesMissao.titulo
-                        .setText("Missão 6: "+ missao.getDescricao());
+                        .setText("Missão 6: " + missao.getDescricao());
                 jogo.controller.gameScreen.missaoModalBox.missionComponents = componentesMissao;
                 jogo.objetosInterativos.get("objetoMissao").setVisible(true);
             }
@@ -467,7 +495,7 @@ public class MissionController {
 
                 MissionComponents componentesMissao = jogo.missionComponents.get("missao6");
                 componentesMissao.titulo
-                        .setText("Missão 7: "+ missao.getDescricao());
+                        .setText("Missão 7: " + missao.getDescricao());
                 jogo.controller.gameScreen.missaoModalBox.missionComponents = componentesMissao;
                 jogo.objetosInterativos.get("objetoMissao").setVisible(true);
             }
@@ -511,7 +539,7 @@ public class MissionController {
 
                 MissionComponents componentesMissao = jogo.missionComponents.get("missao7");
                 componentesMissao.titulo
-                        .setText("Missão 8: "+ missao.getDescricao());
+                        .setText("Missão 8: " + missao.getDescricao());
                 jogo.controller.gameScreen.missaoModalBox.missionComponents = componentesMissao;
                 jogo.objetosInterativos.get("objetoMissao").setVisible(true);
             }
@@ -545,7 +573,9 @@ public class MissionController {
         // Verifica se o dialogo final foi exibido e finaliza o jogo
         if (npc != null && npc.nome.equals("heberto") && npc.statusAlertaMissao == 2) {
             DebugMode.mostrarLog("Missão", "Finalizando o jogo");
-            jogo.controller.gameScreen.missaoDialogoResultado.ativarAcao("wingame", "Parabéns, você\r\nganhou o jogo!\r\nDeseja jogar novamente?");
+            jogo.efeitoAcerto.play();
+            jogo.controller.gameScreen.missaoDialogoResultado.ativarAcao("wingame",
+                    "Parabéns, você\r\nganhou o jogo!\r\nDeseja jogar novamente?");
             // jogo.reiniciarJogo();
         }
     }
@@ -567,6 +597,27 @@ public class MissionController {
             controlaTrocaMissao = false;
             salvarJogo();
             DebugMode.mostrarLog("Missão", "Troca de missão realizada");
+        }
+    }
+
+    public void verificarExibicaoDialogoGuardaMissao1() {
+        if (missao1GuardaAparece && jogo.controller.verificarExibicaoDialogoMissaoComCurso(1) && jogo.controller.MISSAO == 1) {
+            // Coloca o guarda na porta da prefeitura
+            jogo.npcs.get("guarda").setPosition(217, 650);
+            jogo.controller.gameScreen.caixaDialogo.npc = jogo.controller.guarda;
+            jogo.controller.gameScreen.caixaDialogo.setTextoDialogo(Npc.DIALOGO_GUARDA_INDICA_CAMINHO);
+            jogo.controller.gameScreen.caixaDialogo.defineTexturaNpc();
+
+            new Thread(() -> {
+                try {
+                    Thread.sleep(1000);
+                    jogo.controller.mostrarDialogo = true;
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }).start();
+
+            missao1GuardaAparece = false;
         }
     }
 
@@ -605,6 +656,14 @@ public class MissionController {
      */
     private void atualizarMissao(int missaoId, String nomeNpc) {
         Npc npc = npcEstaNaMisao(nomeNpc);
+
+        // No caso do primeiro diálogo com o Heberto, é necessário que mesmo com status
+        // zero ele altere a missão
+        if (npc != null && nomeNpc.equals("heberto") && npc.statusAlertaMissao == 0) {
+            jogo.controller.MISSAO = missaoId;
+            DebugMode.mostrarLog("Missão", "Ativanado missão " + missaoId);
+        }
+
         if (npc != null && npc.statusAlertaMissao == 2) {
             jogo.controller.MISSAO = missaoId;
             DebugMode.mostrarLog("Missão", "Ativanado missão " + missaoId);

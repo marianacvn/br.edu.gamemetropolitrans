@@ -99,6 +99,7 @@ public class CoursePageScreen implements Screen {
         botaoVoltar.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                jogo.efeitoConfirmar.play();
                 coursesScreen.atualizarBotoesStatus();
                 jogo.setScreen(coursesScreen);
                 DebugMode.mostrarLog("CoursePageScreen", "Voltando para a tela de cursos.");

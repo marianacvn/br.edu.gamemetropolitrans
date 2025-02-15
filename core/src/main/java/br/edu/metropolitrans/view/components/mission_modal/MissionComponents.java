@@ -77,6 +77,8 @@ public class MissionComponents {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 if (correta) {
+                    jogo.efeitoAcerto.play();
+
                     // Lógica para resposta correta
                     jogo.controller.resultadoRespostaMissao = 1;
                     jogo.personagem.moedas += jogo.controller.controleMissao.getRecompensaMoedasMissao();
@@ -86,6 +88,8 @@ public class MissionComponents {
 
                     jogo.controller.objetoMissao.setVisible(false);
                 } else {
+                    jogo.efeitoErro.play();
+                    
                     // Lógica para resposta incorreta
                     jogo.controller.resultadoRespostaMissao = 2;
                     jogo.personagem.moedas -= jogo.controller.controleMissao.getValorErroMissao();

@@ -151,7 +151,7 @@ public class GameScreen implements Screen {
         // Verifica se a caixa de diálogo deve ser exibida
         // Se sim, exibe a caixa de diálogo, caso contrário permite
         // o controle do personagem continuando o jogo
-        if (!jogo.controller.mostrarDialogo && !jogo.controller.mostrarCaixaMissao) {
+        if (!jogo.controller.mostrarDialogo && !jogo.controller.mostrarCaixaMissao && !validaAnimacaoNpcAtiva()) {
             // Controle do personagem Setas ou WASD
             jogo.controller.controlePersonagemSetas();
             jogo.controller.controlePersonagemWASD();
@@ -303,6 +303,13 @@ public class GameScreen implements Screen {
 
         // Atualiza a câmera
         CAMERA.update();
+    }
+
+    public boolean validaAnimacaoNpcAtiva() {
+        if (caixaDialogo.npc != null && caixaDialogo.npc.animacaoAtivada) {
+            return true;
+        }
+        return false;
     }
 
     @Override

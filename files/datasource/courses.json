@@ -60,7 +60,7 @@
             "descricao": "Adverte ao motorista a proibição de acionar a buzina ou qualquer outro efeito sonoro na região.",
             "status": "BLOQUEADO",
             "missaoId": 6,
-            "imagemPath": "files/itens/proibidobuzinarousinalsonoro.png",
+            "imagemPath": "files/itens/proibidoacionar.png",
             "videoUrl": null
         },
         {

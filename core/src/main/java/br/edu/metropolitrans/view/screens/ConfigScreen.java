@@ -88,6 +88,7 @@ public class ConfigScreen implements Screen {
         botaoVoltar.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                jogo.efeitoConfirmar.play();
                 jogo.setScreen(telaAnterior);
             }
         });

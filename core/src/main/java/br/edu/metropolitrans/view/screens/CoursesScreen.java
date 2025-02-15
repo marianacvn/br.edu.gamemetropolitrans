@@ -85,6 +85,7 @@ public class CoursesScreen implements Screen {
         botaoFechar.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                jogo.efeitoConfirmar.play();
                 jogo.setScreen(telaAnterior);
             }
         });
@@ -114,6 +115,8 @@ public class CoursesScreen implements Screen {
         botao.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                jogo.efeitoConfirmar.play();
+                
                 Course course = CourseDAO.carregarDadosModulo(modulo);
                 DebugMode.mostrarLog("CoursesScreen", "Botão " + modulo + " clicado, curso:" + course);
 

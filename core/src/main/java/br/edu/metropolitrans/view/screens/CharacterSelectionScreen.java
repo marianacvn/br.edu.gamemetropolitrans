@@ -90,6 +90,7 @@ public class CharacterSelectionScreen implements Screen {
         leftArrowButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                jogo.efeitoConfirmar.play();
                 if (selectedCharacter.equals("female")) {
                     selectedCharacter = "male";
                     characterImage.setDrawable(new TextureRegionDrawable(new TextureRegion(maleTexture)));
@@ -106,6 +107,7 @@ public class CharacterSelectionScreen implements Screen {
         rightArrowButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                jogo.efeitoConfirmar.play();
                 if (selectedCharacter.equals("male")) {
                     selectedCharacter = "female";
                     characterImage.setDrawable(new TextureRegionDrawable(new TextureRegion(femaleTexture)));
@@ -124,6 +126,7 @@ public class CharacterSelectionScreen implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 if (selectedCharacter != null) {
+                    jogo.efeitoConfirmar.play();
                     jogo.controller.personagem.atualizarSpritePersonagem(selectedCharacter);
                     jogo.setScreen(new LoadScreen(jogo, null));
                 }

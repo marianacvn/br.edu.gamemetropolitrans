@@ -96,11 +96,12 @@ public class Controller {
      * Flag para perdeu o jogo
      */
     public boolean perdeuJogo;
+    public int qtdEntrouPrefeiura;
 
     /**
      * NPC do guarda de trânsito
      */
-    public Npc guarda;
+    public Npc guarda, betania;
 
     public Controller(MetropoliTrans jogo) {
         this.jogo = jogo;
@@ -120,14 +121,26 @@ public class Controller {
         controleMissao = new MissionController(jogo);
     }
 
-    public void inicializiar() {
+    public void inicializar() {
+        qtdEntrouPrefeiura = 0;
+
         guarda = new Npc("guarda", jogo.estagioPrincipal);
+        betania = new Npc("betania", jogo.estagioPrincipal);
         gameScreen = (GameScreen) jogo.telas.get("game");
 
+        // Inicializa o diálogo do guarda no início do jogo
         gameScreen.caixaDialogo.npc = guarda;
         gameScreen.caixaDialogo.setTextoDialogo(Npc.DIALOGO_INICIAL);
         gameScreen.caixaDialogo.defineTexturaNpc();
-        mostrarDialogo = true;
+
+        new Thread(() -> {
+            try {
+                Thread.sleep(1000);
+                jogo.controller.mostrarDialogo = true;
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }).start();
     }
 
     /**
@@ -269,6 +282,13 @@ public class Controller {
                 && Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
             // coloca o objeto da missão ao sair da sala e minimapa
             objetoMissao.setVisible(true);
+            qtdEntrouPrefeiura++;
+            Gdx.app.log("Controller", "QtdEntrouPrefeiura: " + qtdEntrouPrefeiura);
+
+            // Avisa para o mission controller que o guarda pode aparecer em frente a prefeitura
+            if (MISSAO == 1 && qtdEntrouPrefeiura == 1) {
+                controleMissao.missao1GuardaAparece = true;
+            }
 
             // Ajusta para remover o objeto da missão 1 da sala
             if (MISSAO >= 1) {
@@ -359,13 +379,24 @@ public class Controller {
      */
     public void controleCursos() {
         if (MISSAO > 1) {
-            // Verifica se o módulo anterior foi concluído e libera o próximo
+            // Verifica se o módulo anterior foi concluído e libera 2 Módulos
             List<Course> cursos = CourseDAO.listarCursosPorMissaoId(MISSAO);
+            List<Course> cursosProximaMissao = CourseDAO.listarCursosPorMissaoId(MISSAO + 1);
             if (MissionDataDAO.buscaMissaoPorId(MISSAO - 1).isFinalizouMissao()
                     && cursos.get(0).getStatus() == Status.BLOQUEADO) {
+                jogo.efeitoNotificacao.play();
+                jogo.notificarLiberacaoModulo(
+                        (gameScreen.CAMERA.position.x - gameScreen.CAMERA.viewportWidth / 2) + 1170,
+                        (gameScreen.CAMERA.position.y - gameScreen.CAMERA.viewportHeight / 2) + 550);
+
                 CourseDAO.atualizaStatusCurso(cursos.get(0).getId(), Status.LIBERADO);
+                if (cursosProximaMissao != null) {
+                    CourseDAO.atualizaStatusCurso(cursosProximaMissao.get(0).getId(), Status.LIBERADO);
+                }
+
                 ((CoursesScreen) jogo.telas.get("courses")).atualizarBotoesStatus();
             }
+
         }
     }
 
@@ -375,12 +406,17 @@ public class Controller {
     public void controleInfracao() {
         // Se as infrações forem maiores ou iguais a 4, perde o jogo
         if (personagem.infracoes > 4) {
-            gameScreen.missaoDialogoResultado.ativarAcao("gameover", "Desculpe, você\r\nperdeu o jogo!\r\nDeseja jogar novamente?");
+            jogo.efeitoErro.play();
+            gameScreen.missaoDialogoResultado.ativarAcao("gameover",
+                    "Desculpe, você\r\nperdeu o jogo!\r\nDeseja jogar novamente?");
             perdeuJogo = true;
         }
 
         // Verifica se o personagem saiu da pista e mostra a caixa de diálogo
         if (personagem.tipoInfracao != null) {
+            if (!mostrarDialogo)
+                jogo.efeitoErro.play();
+
             gameScreen.caixaDialogo.npc = guarda;
             gameScreen.caixaDialogo.setTextoDialogo(carregaDialogos(guarda, 0));
             gameScreen.caixaDialogo.defineTexturaNpc();
@@ -427,8 +463,8 @@ public class Controller {
                     gameScreen.caixaDialogo.defineTexturaNpc();
                     mostrarDialogo = true;
                 } else {
-                    gameScreen.caixaDialogo.npc = guarda;
-                    gameScreen.caixaDialogo.setTextoDialogo(Npc.DIALOGO_GUARDA_MISSAO_BLOQUEADA);
+                    gameScreen.caixaDialogo.npc = betania;
+                    gameScreen.caixaDialogo.setTextoDialogo(Npc.DIALOGO_BETANIA_MISSAO_BLOQUEADA);
                     gameScreen.caixaDialogo.defineTexturaNpc();
                     mostrarDialogo = true;
                 }
@@ -442,8 +478,19 @@ public class Controller {
      * 
      * @return
      */
-    private boolean verificarExibicaoDialogoMissaoComCurso() {
-        List<Course> cursos = CourseDAO.listarCursosPorMissaoId(MISSAO);
+    public boolean verificarExibicaoDialogoMissaoComCurso() {
+        return verificarExibicaoDialogoMissaoComCurso(MISSAO);
+    }
+
+    /**
+     * Verifica se o diálogo do NPC por ser exibido, pois é necessário assistir o
+     * módulo do curso antes de iniciar a missão
+     * 
+     * @param missao int
+     * @return
+     */
+    public boolean verificarExibicaoDialogoMissaoComCurso(int missao) {
+        List<Course> cursos = CourseDAO.listarCursosPorMissaoId(missao);
         for (Course curso : cursos) {
             if (curso.getStatus() != Status.CONCLUIDO) {
                 return false;

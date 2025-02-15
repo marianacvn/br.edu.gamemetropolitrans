@@ -1,14 +1,14 @@
 {
-  "volume": 0.0,
+  "volume": 1.0,
   "mute": true,
   "typeDebugMode": "NENHUM",
-  "trafficViolations": false,
+  "trafficViolations": true,
   "saveInfo": {
     "saves": [
       {
         "id": 1,
         "name": "save1",
-        "date": "Fri Feb 14 17:13:00 BRT 2025"
+        "date": "Sat Feb 15 18:19:00 BRT 2025"
       }
     ]
   }

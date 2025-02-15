@@ -70,6 +70,8 @@ public class MissionResultDialog {
         botaoConfirmar.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                jogo.efeitoConfirmar.play();
+
                 if (tipoModal.equals("default")) {
                     if (jogo.personagem.moedas == 0) {
                         jogo.controller.perdeuJogo = true;
@@ -94,6 +96,7 @@ public class MissionResultDialog {
         botaoCancelar.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                jogo.efeitoCancelar.play();
                 //jogo.controller.mostrarCaixaMissao = false;
             }
         });

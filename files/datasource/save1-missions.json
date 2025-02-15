@@ -89,7 +89,7 @@
     {
       "id": 7,
       "nome": "Área escolar sem sinalização",
-      "descricao": "Qual opção melhor representa uma solução\r\npara o problema apresentado [Resolução Contran nº 243/2007]:",
+      "descricao": "Qual opção melhor representa uma solução\r\npara o problema apresentado [Resolução Contran\r\nnº 243/2007]:",
       "recompensaMoedas": 100,
       "experiencia": 10,
       "valorErro": 20,
