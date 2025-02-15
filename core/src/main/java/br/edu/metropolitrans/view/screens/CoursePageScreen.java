@@ -27,9 +27,11 @@ public class CoursePageScreen implements Screen {
     private Label texto;
     private Image imagem;
     private TextButton linkVideo;
+    private int numeroPagina;
 
     public CoursePageScreen(MetropoliTrans jogo, CoursesScreen coursesScreen, Course course) {
         this.jogo = jogo;
+        numeroPagina = 1;
 
         // Cria o Stage e o Skin
         stage = new Stage();
@@ -92,6 +94,24 @@ public class CoursePageScreen implements Screen {
             });
         }
 
+        // Cria o botão de finalizar curso, este atualiza e volta para tela do jogo
+        TextButtonBase botaoFinalizar = new TextButtonBase("Finalizar", "files/buttons/botao-dark2.png", skin);
+        botaoFinalizar.setSize(100, 50);
+        botaoFinalizar.setPosition(Gdx.graphics.getWidth() - botaoFinalizar.getWidth() - 10,
+                Gdx.graphics.getHeight() - botaoFinalizar.getHeight() - 10);
+        botaoFinalizar.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                jogo.efeitoConfirmar.play();
+                coursesScreen.atualizarBotoesStatus();
+
+                // Muda para a tela de jogo
+                jogo.setScreen(jogo.telas.get("game"));
+
+                DebugMode.mostrarLog("CoursePageScreen", "Voltando para a tela do jogo.");
+            }
+        });
+
         // Cria um botão para voltar à tela anterior
         TextButtonBase botaoVoltar = new TextButtonBase("Voltar", "files/buttons/botao-dark2.png", skin);
         botaoVoltar.setSize(100, 50);
@@ -100,9 +120,32 @@ public class CoursePageScreen implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 jogo.efeitoConfirmar.play();
-                coursesScreen.atualizarBotoesStatus();
-                jogo.setScreen(coursesScreen);
-                DebugMode.mostrarLog("CoursePageScreen", "Voltando para a tela de cursos.");
+
+                if (course.getDescricaoPagInicial() != null && numeroPagina == 2) {
+                    numeroPagina = 1;
+                    titulo.setVisible(false);
+                    imagem.setVisible(false);
+                    if (linkVideo != null) {
+                        linkVideo.setVisible(false);
+                    }
+                    botaoFinalizar.setVisible(false);
+
+                    // Tenta acessar o botão de avançar curso, se não existir, não faz nada
+                    try {
+                        // Acessa o botão de finalizar curso
+                        stage.getActors().get(7).setVisible(false);
+                    } catch (Exception e) {
+                        // Não faz nada
+                    }
+
+                    // Insere o texto da página inicial
+                    texto.setText(course.getDescricaoPagInicial());
+                } else {
+                    if (course.getDescricaoPagInicial() == null)
+                        coursesScreen.atualizarBotoesStatus();
+                    jogo.setScreen(coursesScreen);
+                    DebugMode.mostrarLog("CoursePageScreen", "Voltando para a tela de cursos.");
+                }
             }
         });
 
@@ -112,6 +155,49 @@ public class CoursePageScreen implements Screen {
             stage.addActor(this.linkVideo);
         }
         stage.addActor(botaoVoltar);
+        stage.addActor(botaoFinalizar);
+
+        // No primeiro curso, existe um botão para ir para a segunda página do curso
+        if (course.getDescricaoPagInicial() != null) {
+            // Oculta as coisas da tela posterior
+            titulo.setVisible(false);
+            imagem.setVisible(false);
+            if (linkVideo != null) {
+                linkVideo.setVisible(false);
+            }
+            botaoFinalizar.setVisible(false);
+
+            // Insere o texto da página inicial
+            texto.setText(course.getDescricaoPagInicial());
+
+            TextButtonBase botaoAvancar = new TextButtonBase("Avançar", "files/buttons/botao-dark2.png", skin);
+            botaoAvancar.setSize(100, 50);
+            botaoAvancar.setPosition(Gdx.graphics.getWidth() - botaoAvancar.getWidth() - 10,
+                    Gdx.graphics.getHeight() - botaoAvancar.getHeight() - 10);
+            botaoAvancar.addListener(new ClickListener() {
+                @Override
+                public void clicked(InputEvent event, float x, float y) {
+                    coursesScreen.atualizarBotoesStatus();
+
+                    numeroPagina = 2;
+                    jogo.efeitoConfirmar.play();
+
+                    // Mostra as coisas da tela posterior
+                    titulo.setVisible(true);
+                    imagem.setVisible(true);
+                    if (linkVideo != null) {
+                        linkVideo.setVisible(true);
+                    }
+                    botaoFinalizar.setVisible(true);
+                    botaoAvancar.setVisible(false);
+
+                    texto.setText(course.getDescricao());
+                    DebugMode.mostrarLog("CoursePageScreen", "Passando para a segunda página do curso.");
+                }
+            });
+
+            stage.addActor(botaoAvancar);
+        }
     }
 
     @Override

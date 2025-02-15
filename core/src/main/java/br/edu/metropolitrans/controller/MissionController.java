@@ -99,7 +99,7 @@ public class MissionController {
             }
 
             if (npc.statusAlertaMissao == 2) {
-                npc.setRoteiro(List.of("D-2*32", "C-2*32"));
+                npc.setRoteiro(List.of("C-2*32", "D-2*32", "C-2*32"));
                 npc.repeteAnimacao = false;
                 npc.animacaoAtivada = true;
                 npc.statusAlertaMissao = 0;
