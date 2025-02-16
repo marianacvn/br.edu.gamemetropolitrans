@@ -12,9 +12,11 @@ public class Npc extends ActorAnimation {
 
     public static String DIALOGO_INICIAL = "Olá, senhor(a) estágiario(a) da Secretária de Trânsito, seja bem-vindo a cidade de Metropolitrans. O(a) senhor(a) precisa falar com o Prefeito da cidade na Prefeitura para ele lhe repassar os detalhes sobre o seu novo trabalho.";
     public static String DIALOGO_BETANIA_MISSAO_BLOQUEADA = "Para iniciar a missão, é necessário assistir o módulo referente a ela, dirija-se a Prefeitura e veja o módulo liberado no computador.";
-    public static String DIALOGO_GUARDA_TECLA_T = "Ah, agora você pode acessar os módulos do curso a partir do seu celular, basta pressionar a tecla \"T\".";
+    public static String DIALOGO_BETANIA_APLICAR_PRATICA = "Olá, estágiario(a), agora que você já assistiu os módulos referentes a essa missão, volte para a cidade e coloque em prática o conteúdo que aprendeu.";
+    public static String DIALOGO_GUARDA_TECLA_T = "Ah, agora você pode acessar os módulos do curso a partir do seu celular, basta pressionar a tecla \"T\". Ah, você pode se orientar pelo minimapa. O personagem com quem você deve falar aparecerá nele.";
     public static String DIALOGO_GUARDA_TECLA_ESPACO = "Para acessar a Prefeitura, você deve pressionar a tecla \"Espaço\" próximo a entrada, da mesma forma para sair da sala (próximo a entrada) e interagir com o computador.";
-    public static String DIALOGO_GUARDA_INDICA_CAMINHO = "Ei você, estágiario(a), para iniciar a primeira missão vá até Maria, pela calçada acima da prefeitura. Boa sorte.";
+    public static String DIALOGO_GUARDA_INDICA_CAMINHO = "Olá, estágiario(a), para iniciar a primeira missão vá até Maria e converse com ela, pela calçada acima da prefeitura. Boa sorte.";
+    public static String DIALOGO_GUARDA_GENERICO = "Olá, estágiario(a), como está indo o novo trabalho?";
 
     public String nomeArquivo;
     public int statusAlertaMissao;

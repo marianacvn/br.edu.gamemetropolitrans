@@ -123,6 +123,11 @@ public class MissionController {
     }
 
     private void logicaMissao1(Npc npc) {
+        // Reposiona betania na posição inicial, pois ao entrar na prefeitura ela vai
+        // para a sala de informática
+        if (jogo.controller.objeto != null)
+            jogo.npcs.get("betania").setPosition(274, 200);
+
         // Exibe o diálogo do guarda com instruções
         if (controlaTrocaMissao) {
             jogo.controller.gameScreen.caixaDialogo.npc = jogo.controller.guarda;
@@ -601,7 +606,8 @@ public class MissionController {
     }
 
     public void verificarExibicaoDialogoGuardaMissao1() {
-        if (missao1GuardaAparece && jogo.controller.verificarExibicaoDialogoMissaoComCurso(1) && jogo.controller.MISSAO == 1) {
+        if (missao1GuardaAparece && jogo.controller.verificarExibicaoDialogoMissaoComCurso(1)
+                && jogo.controller.MISSAO == 1) {
             // Coloca o guarda na porta da prefeitura
             jogo.npcs.get("guarda").setPosition(217, 650);
             jogo.controller.gameScreen.caixaDialogo.npc = jogo.controller.guarda;

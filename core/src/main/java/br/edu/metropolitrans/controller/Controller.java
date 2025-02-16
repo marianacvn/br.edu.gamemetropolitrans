@@ -97,6 +97,7 @@ public class Controller {
      */
     public boolean perdeuJogo;
     public int qtdEntrouPrefeiura;
+    public boolean interagiuComPc;
 
     /**
      * NPC do guarda de trânsito
@@ -257,6 +258,7 @@ public class Controller {
 
             gameScreen.minimapa.isVisible = false;
             npcs.forEach((nome, npc) -> {
+                // if (!npc.nome.equals("betania"))
                 npc.remove();
             });
 
@@ -285,13 +287,14 @@ public class Controller {
             qtdEntrouPrefeiura++;
             Gdx.app.log("Controller", "QtdEntrouPrefeiura: " + qtdEntrouPrefeiura);
 
-            // Avisa para o mission controller que o guarda pode aparecer em frente a prefeitura
+            // Avisa para o mission controller que o guarda pode aparecer em frente a
+            // prefeitura
             if (MISSAO == 1 && qtdEntrouPrefeiura == 1) {
                 controleMissao.missao1GuardaAparece = true;
             }
 
             // Ajusta para remover o objeto da missão 1 da sala
-            if (MISSAO >= 1) {
+            if (MISSAO > 1) {
                 jogo.objetosInterativos.get("objetoPlaca1").setVisible(true);
             }
 
@@ -325,6 +328,8 @@ public class Controller {
             personagem.setRetangulosPista(jogo.retangulosPista);
         } else if (objetoPc != null && personagem.interagiu(objetoPc) && Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
             DebugMode.mostrarLog("Controller", "Interagindo com o PC...");
+            interagiuComPc = true;
+
             // abre a tela de CoursesScreen
             if (jogo.telas.get("courses") == null)
                 jogo.telas.put("courses", new CoursesScreen(jogo, jogo.getScreen()));
@@ -378,6 +383,36 @@ public class Controller {
      * anterior e a missão referente ao módulo anterior
      */
     public void controleCursos() {
+        // Verifica se os dois
+        // primieros módulos foram concluídos, pois Betânia precisa aparecer na sala
+        if (interagiuComPc && MISSAO == 1
+                && CourseDAO.listarCursosPorMissaoId(MISSAO).get(0).getStatus() == Status.CONCLUIDO
+                && CourseDAO.listarCursosPorMissaoId(MISSAO).get(1).getStatus() == Status.CONCLUIDO) {
+            // Adiciona Betânia na sala
+            Gdx.app.log("Controller", "Módulos concluídos, Betânia aparece na sala...");
+            npcs.get("betania").setPosition(1146, 1438);
+            npcs.get("betania").adicionarNoEstagio(jogo.estagioPrincipal);
+            personagem.npcs.put("betania", npcs.get("betania"));
+
+            // Monta o diálogo de Betânia informando o personagem para colocar em prática o que aprendeu
+            gameScreen.caixaDialogo.npc = betania;
+            gameScreen.caixaDialogo.setTextoDialogo(Npc.DIALOGO_BETANIA_APLICAR_PRATICA);
+            gameScreen.caixaDialogo.defineTexturaNpc();
+            
+            // Aguara 1 segundo para mostrar o diálogo
+            new Thread(() -> {
+                try {
+                    Thread.sleep(1000);
+                    jogo.controller.mostrarDialogo = true;
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }).start();
+
+            interagiuComPc = false;
+        }
+
+        // Liberar módulos dos cursos
         if (MISSAO > 1) {
             // Verifica se o módulo anterior foi concluído e libera 2 Módulos
             List<Course> cursos = CourseDAO.listarCursosPorMissaoId(MISSAO);
@@ -457,11 +492,19 @@ public class Controller {
                 // Verifica se o diálogo do NPC por ser exibido, pois é necessário assistir o
                 // módulo referente a missão
                 if (verificarExibicaoDialogoMissaoComCurso()) {
-                    // Carrega os diálogos do NPC
-                    gameScreen.caixaDialogo.npc = npc;
-                    gameScreen.caixaDialogo.setTextoDialogo(carregaDialogos(npc));
-                    gameScreen.caixaDialogo.defineTexturaNpc();
-                    mostrarDialogo = true;
+                    // No inicio do jogo, o guarda não tem diálogo
+                    if (npc.nome.equals("guarda")) {
+                        gameScreen.caixaDialogo.npc = npc;
+                        gameScreen.caixaDialogo.setTextoDialogo(Npc.DIALOGO_GUARDA_GENERICO);
+                        gameScreen.caixaDialogo.defineTexturaNpc();
+                        mostrarDialogo = true;
+                    } else {
+                        // Carrega os diálogos do NPC
+                        gameScreen.caixaDialogo.npc = npc;
+                        gameScreen.caixaDialogo.setTextoDialogo(carregaDialogos(npc));
+                        gameScreen.caixaDialogo.defineTexturaNpc();
+                        mostrarDialogo = true;
+                    }
                 } else {
                     gameScreen.caixaDialogo.npc = betania;
                     gameScreen.caixaDialogo.setTextoDialogo(Npc.DIALOGO_BETANIA_MISSAO_BLOQUEADA);
