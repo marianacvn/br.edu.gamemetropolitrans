@@ -124,6 +124,7 @@ public class CoursesScreen implements Screen {
 
                 // Atualiza o status do curso para concluido e desconta 50 moedas
                 if (course.getStatus() == Status.LIBERADO) {
+                    jogo.efeitoMoeda.play();
                     jogo.personagem.moedas -= 50;
                     CourseDAO.atualizaStatusCurso(course.getId(), Status.CONCLUIDO);
                 }

@@ -14,11 +14,26 @@ public class TextButtonBase extends TextButton {
     }
 
     private static TextButtonStyle createTextButtonStyle(String texturePath, Skin skin) {
+        // Separa o .png do caminho da textura para verificar se existe um arquivo de
+        // textura pressionada
+        String texturePathPressed = texturePath;
+        try {
+            String texturePathOutExtension = texturePath.split(".png")[0];
+            texturePathPressed = texturePathOutExtension + "_pressed.png";
+        } catch (Exception e) {
+        }
+
+        // Carrega a textura do botão
         Texture buttonTexture = new Texture(texturePath);
         Drawable buttonDrawable = new TextureRegionDrawable(buttonTexture);
 
+        // Carrega a textura do botão pressionado
+        Texture buttonTexturePressed = new Texture(texturePathPressed);
+        Drawable buttonDrawablePressed = new TextureRegionDrawable(buttonTexturePressed);
+
         TextButtonStyle textButtonStyle = new TextButtonStyle();
         textButtonStyle.up = buttonDrawable;
+        textButtonStyle.down = buttonDrawablePressed;
         textButtonStyle.font = skin.getFont("default");
         textButtonStyle.fontColor = Color.WHITE;
 

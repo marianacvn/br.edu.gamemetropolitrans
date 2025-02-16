@@ -70,7 +70,7 @@ public class MetropoliTrans extends Game {
     /**
      * Efeitos sonoros de status
      */
-    public Music efeitoAcerto, efeitoErro, efeitoNotificacao, efeitoCancelar, efeitoConfirmar;
+    public Music efeitoAcerto, efeitoErro, efeitoNotificacao, efeitoCancelar, efeitoConfirmar, efeitoMoeda;
 
     /**
      * Map de telas do jogo
@@ -136,7 +136,6 @@ public class MetropoliTrans extends Game {
 
         // Carrega os NPCs
         npcs = new HashMap<>();
-        atualizarJogoPorSaveGameData("game-data.json");
 
         fonte = FontBase.getInstancia().getFonte(30, FontBase.Fontes.PADRAO);
 
@@ -174,6 +173,10 @@ public class MetropoliTrans extends Game {
         efeitoConfirmar = Gdx.audio.newMusic(Gdx.files.internal("files/songs/confirmar.mp3"));
         efeitoConfirmar.setLooping(false);
         efeitoConfirmar.setVolume((float) config.getVolume());
+
+        efeitoMoeda = Gdx.audio.newMusic(Gdx.files.internal("files/songs/moeda.mp3"));
+        efeitoMoeda.setLooping(false);
+        efeitoMoeda.setVolume((float) config.getVolume());
 
         // Carrega o mapa
         mapas = new Mapas();// Carrega o mapa
@@ -219,6 +222,7 @@ public class MetropoliTrans extends Game {
         // Carrega o personagem
         // personagem = new Personagem(250, 860, estagioPrincipal);
         Personagem.setLimitacaoMundo(Mapas.MAPA_LARGURA, Mapas.MAPA_ALTURA);
+        atualizarJogoPorSaveGameData("game-data.json");
 
         // Carrega os veículos
         vehicles.put(
@@ -476,6 +480,27 @@ public class MetropoliTrans extends Game {
         }
         if (musicaMenu != null) {
             musicaMenu.dispose();
+        }
+        if (efeitoBuzina != null) {
+            efeitoBuzina.dispose();
+        }
+        if (efeitoAcerto != null) {
+            efeitoAcerto.dispose();
+        }
+        if (efeitoErro != null) {
+            efeitoErro.dispose();
+        }
+        if (efeitoNotificacao != null) {
+            efeitoNotificacao.dispose();
+        }
+        if (efeitoCancelar != null) {
+            efeitoCancelar.dispose();
+        }
+        if (efeitoConfirmar != null) {
+            efeitoConfirmar.dispose();
+        }
+        if (efeitoMoeda != null) {
+            efeitoMoeda.dispose();
         }
         if (estagioPrincipal != null) {
             estagioPrincipal.dispose();

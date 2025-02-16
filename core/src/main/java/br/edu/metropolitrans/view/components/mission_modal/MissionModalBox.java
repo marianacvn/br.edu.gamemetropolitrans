@@ -10,8 +10,6 @@ public class MissionModalBox {
 
     private MetropoliTrans jogo;
 
-    //private BitmapFont fonte;
-    //private String texto;
     private float x, y, largura, altura;
     private Texture backgroundTexture;
     public MissionComponents missionComponents;
@@ -22,17 +20,9 @@ public class MissionModalBox {
         this.y = y;
         this.largura = largura;
         this.altura = altura;
-        //this.texto = "";
-
-        // Carrega a fonte a ser utilizada
-        //fonte = FontBase.getInstancia().getFonte(30, FontBase.Fontes.PADRAO);
 
         backgroundTexture = new Texture(Gdx.files.internal("files/backgrounds/background-light.png"));
     }
-
-    // public void setTextoMissao(String texto) {
-    //     this.texto = texto;
-    // }
 
     public void render(float delta) {
         jogo.batch.begin();

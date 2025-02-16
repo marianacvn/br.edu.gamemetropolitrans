@@ -21,7 +21,8 @@ public class MissionInit {
 				baseY + 230, false);
 		missao0.adicionarOpcaoImagem("mission0-option2", "mission0-option2.png", false, baseX + 65,
 				baseY + 35, false);
-		missao0.adicionarImagemCena("mission0-scene.png", baseX + 180, baseY + 15);
+		missao0.adicionarImagemCena("mission0-scene.png", baseX + 250, baseY + 75);
+		missao0.adicionarBotaoConfirmar(baseX + 250 + 50, baseY + 35, false);
 		missionComponents.put("missao0", missao0);
 
 		MissionComponents missao1 = new MissionComponents(1, jogo);
@@ -36,7 +37,8 @@ public class MissionInit {
 				baseY + 135 - 50 - 15, true);
 		missao1.adicionarOpcaoImagem("mission1-option5", "mission1-option5_reduced.png", false, baseX + 15,
 				baseY + 70 - 50 - 15, true);
-		missao1.adicionarImagemCena("mission1-scene.png", baseX + 150, baseY + 15);
+		missao1.adicionarImagemCena("mission1-scene.png", baseX + 250, baseY + 75);
+		missao1.adicionarBotaoConfirmar(baseX + 250 + 50, baseY + 35, true);
 		missionComponents.put("missao1", missao1);
 
 		// endregion
@@ -55,7 +57,8 @@ public class MissionInit {
 				baseY + 135 - 50 - 15, true);
 		missao2.adicionarOpcaoImagem("mission2-option5", "mission2-option5.png", false, baseX + 15,
 				baseY + 70 - 50 - 15, true);
-		missao2.adicionarImagemCena("mission2-scene.png", baseX + 150, baseY + 15);
+		missao2.adicionarImagemCena("mission2-scene.png", baseX + 250, baseY + 75);
+		missao2.adicionarBotaoConfirmar(baseX + 250 + 50, baseY + 35, true);
 		missionComponents.put("missao2", missao2);
 
 		// endregion
@@ -74,7 +77,8 @@ public class MissionInit {
 				baseY + 135 - 50 - 15, true);
 		missao3.adicionarOpcaoImagem("mission3-option5", "mission3-option5.png", true, baseX + 15,
 				baseY + 70 - 50 - 15, true);
-		missao3.adicionarImagemCena("mission3-scene.png", baseX + 150, baseY + 15);
+		missao3.adicionarImagemCena("mission3-scene.png", baseX + 250, baseY + 75);
+		missao3.adicionarBotaoConfirmar(baseX + 250 + 50, baseY + 35, true);
 		missionComponents.put("missao3", missao3);
 
 		// endregion
@@ -89,7 +93,8 @@ public class MissionInit {
 				baseY + 220 - 100 - 10, true);
 		missao4.adicionarOpcaoImagem("mission4-option3", "mission4-option3.png", false, baseX + 15,
 				baseY + 110 - 100 - 10, true);
-		missao4.adicionarImagemCena("mission4-scene.png", baseX + 150, baseY + 15);
+		missao4.adicionarImagemCena("mission4-scene.png", baseX + 250, baseY + 75);
+		missao4.adicionarBotaoConfirmar(baseX + 250 + 50, baseY + 35, true);
 		missionComponents.put("missao4", missao4);
 
 		// endregion
@@ -107,7 +112,8 @@ public class MissionInit {
 				baseY + 135 - 50 - 15, true);
 		missao5.adicionarOpcaoImagem("mission5-option5", "mission5-option5.png", false, baseX + 15,
 				baseY + 70 - 50 - 15, true);
-		missao5.adicionarImagemCena("mission5-scene.png", baseX + 150, baseY + 15);
+		missao5.adicionarImagemCena("mission5-scene.png", baseX + 250, baseY + 75);
+		missao5.adicionarBotaoConfirmar(baseX + 250 + 50, baseY + 35, true);
 		missionComponents.put("missao5", missao5);
 
 		// endregion
@@ -126,7 +132,8 @@ public class MissionInit {
 				baseY + 135 - 50 - 15, true);
 		missao6.adicionarOpcaoImagem("mission6-option5", "mission6-option5.png", true, baseX + 15,
 				baseY + 70 - 50 - 15, true);
-		missao6.adicionarImagemCena("mission6-scene.png", baseX + 150, baseY + 15);
+		missao6.adicionarImagemCena("mission6-scene.png", baseX + 250, baseY + 75);
+		missao6.adicionarBotaoConfirmar(baseX + 250 + 50, baseY + 35, true);
 		missionComponents.put("missao6", missao6);
 
 		// endregion
@@ -143,7 +150,8 @@ public class MissionInit {
 				baseY + 200 - 50 - 15, true);
 		missao7.adicionarOpcaoImagem("mission7-option4", "mission7-option4.png", true, baseX + 15,
 				baseY + 135 - 50 - 15, true);
-		missao7.adicionarImagemCena("mission7-scene.png", baseX + 150, baseY + 15);
+		missao7.adicionarImagemCena("mission7-scene.png", baseX + 250, baseY + 75);
+		missao7.adicionarBotaoConfirmar(baseX + 250 + 50, baseY + 35, true);
 		missionComponents.put("missao7", missao7);
 
 		// endregion
