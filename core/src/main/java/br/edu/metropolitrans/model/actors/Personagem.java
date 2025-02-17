@@ -72,6 +72,8 @@ public class Personagem extends BaseActor {
 
     public String selectedCharacter;
 
+    static int contadorChamadas = 0;
+
     public Personagem(float x, float y, Stage s) {
         super(x, y, s);
 
@@ -90,7 +92,7 @@ public class Personagem extends BaseActor {
         setAceleracao(800);
         setVelocidadeMaxima(200);
         setDesaceleracao(800);
-        // setZeraVelocidadeInstantaneamente(true);
+        setZeraVelocidadeInstantaneamente(true);
     }
 
     public boolean interagiu(ObjetoInterativo objetoInterativo) {
@@ -192,32 +194,41 @@ public class Personagem extends BaseActor {
                 angulo = 90;
                 setAnimacao(norte);
                 ultimaDirecao = PersonagemDirecao.NORTE;
+                DebugMode.mostrarLog("Personagem", "Direção calculada na animação: " + ultimaDirecao);
             } else if (angle > 135 && angle < 225) {
                 angulo = 180;
                 setAnimacao(oeste);
                 ultimaDirecao = PersonagemDirecao.OESTE;
+                DebugMode.mostrarLog("Personagem", "Direção calculada na animação: " + ultimaDirecao);
             } else if (angle >= 225 && angle <= 315) {
                 angulo = 270;
                 setAnimacao(sul);
                 ultimaDirecao = PersonagemDirecao.SUL;
+                DebugMode.mostrarLog("Personagem", "Direção calculada na animação: " + ultimaDirecao);
             } else {
                 angulo = 0;
                 setAnimacao(leste);
                 ultimaDirecao = PersonagemDirecao.LESTE;
+                DebugMode.mostrarLog("Personagem", "Direção calculada na animação: " + ultimaDirecao);
             }
         }
     }
 
-    /**
-     * Atualiza a posição do personagem relacionado a infração
-     */
     private void atualizaPosicaoInfracao() {
+
+        contadorChamadas++;
+        DebugMode.mostrarLog("Personagem", "Chamadas de infração: " + contadorChamadas);
+        
         float novaPosX = getX();
         float novaPosY = getY();
     
         DebugMode.mostrarLog("Personagem", String.format(
-                "Atualizando posição de infração. Direção: %s | Posição atual: X=%.2f, Y=%.2f | Margem: %.2f",
+                "Antes da infração -> Direção: %s | Posição atual: X=%.2f, Y=%.2f | Margem: %.2f",
                 ultimaDirecao, getX(), getY(), margemInfracao));
+    
+        if (margemInfracao > 100) { // Ajuste esse valor conforme necessário
+            DebugMode.mostrarLog("Personagem", "ATENÇÃO: Margem de infração muito alta!");
+        }
     
         switch (ultimaDirecao) {
             case NORTE:
@@ -237,13 +248,18 @@ public class Personagem extends BaseActor {
                 return;
         }
     
+        // Verifique se a posição final está dentro dos limites aceitáveis
+        if (Math.abs(novaPosX - getX()) > 100 || Math.abs(novaPosY - getY()) > 100) {
+            DebugMode.mostrarLog("Personagem", "ATENÇÃO: Ajuste de posição muito grande! Verifique a margemInfracao.");
+        }
+    
         setPosition(novaPosX, novaPosY);
     
-        // Adiciona log para depuração
         DebugMode.mostrarLog("Personagem", String.format(
-                "Infracao! Direção: %s | Posição final: X=%.2f, Y=%.2f",
+                "Após infração -> Direção: %s | Nova posição: X=%.2f, Y=%.2f",
                 ultimaDirecao, getX(), getY()));
     }
+    
 
     /**
      * Verifica se o personagem colidiu com algum objeto
