@@ -338,17 +338,6 @@ public class MetropoliTrans extends Game {
                 new ObjetoInterativo("entradaPrefeitura", 100, 760, "background-transparent.png", estagioPrincipal));
     }
 
-    private void liberarRecursos() {
-        // Descarte de telas
-        for (Screen screen : telas.values()) {
-            if (screen != null) {
-                screen.dispose();
-                screen = null;
-            }
-        }
-        telas.clear();
-    }
-
     public void atualizarJogoPorSaveGameData(String tipo) {
         GameData gameData = GameDataDAO.carregarDadosJogo(tipo);
 

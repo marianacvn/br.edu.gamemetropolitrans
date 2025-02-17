@@ -6,9 +6,6 @@ import br.edu.metropolitrans.model.utils.DebugMode;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import com.badlogic.gdx.Gdx;
-
 import br.edu.metropolitrans.model.Course;
 import br.edu.metropolitrans.model.Status;
 
@@ -55,7 +52,7 @@ public class CourseDAO {
                 DebugMode.mostrarLog("CourseDAO", "Curso encontrado: " + course.getNome());
                 return course;
             }
-            
+
         }
         DebugMode.mostrarLog("CourseDAO", "Curso não encontrado para o id: " + id);
         return null;

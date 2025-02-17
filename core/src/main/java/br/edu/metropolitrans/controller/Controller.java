@@ -26,7 +26,6 @@ import br.edu.metropolitrans.model.dao.MissionDataDAO;
 import br.edu.metropolitrans.model.utils.DebugMode;
 import br.edu.metropolitrans.view.screens.ConfigScreen;
 import br.edu.metropolitrans.view.screens.CoursesScreen;
-import br.edu.metropolitrans.view.screens.GameScreen;
 
 public class Controller {
 

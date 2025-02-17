@@ -212,8 +212,6 @@ public class Personagem extends BaseActor {
      * Atualiza a posição do personagem relacionado a infração
      */
     private void atualizaPosicaoInfracao() {
-        DebugMode.DEBUG_MODE = DebugMode.TipoDebug.LOG;  // TODO: Remover após a implementação do jogo
-
         float novaPosX = getX();
         float novaPosY = getY();
     
@@ -245,9 +243,6 @@ public class Personagem extends BaseActor {
         DebugMode.mostrarLog("Personagem", String.format(
                 "Infracao! Direção: %s | Posição final: X=%.2f, Y=%.2f",
                 ultimaDirecao, getX(), getY()));
-
-                
-        DebugMode.DEBUG_MODE = DebugMode.TipoDebug.NENHUM;  // TODO: Remover após a implementação do jogo
     }
 
     /**

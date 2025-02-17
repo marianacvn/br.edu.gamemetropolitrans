@@ -459,6 +459,7 @@ public abstract class BaseActor extends Actor {
      *
      * @param angulo do movimento (em graus)
      */
+    @SuppressWarnings("deprecation")
     public void setAnguloMovimento(float angulo) {
         velocidadeVetor.setAngle(angulo);
     }
@@ -472,6 +473,7 @@ public abstract class BaseActor extends Actor {
      *
      * @return ângulo do movimento (em graus)
      */
+    @SuppressWarnings("deprecation")
     public float getAnguloMovimento() {
         return velocidadeVetor.angle();
     }
@@ -485,6 +487,7 @@ public abstract class BaseActor extends Actor {
      * @see #aceleracao
      * @see #aplicarFisica
      */
+    @SuppressWarnings("deprecation")
     public void acelerarEmAngulo(float angulo) {
         aceleracaoVetor.add(new Vector2(aceleracao, 0).setAngle(angulo));
     }
@@ -859,6 +862,7 @@ public abstract class BaseActor extends Actor {
     public static ArrayList<BaseActor> getList(Stage estagio, String nomeClasse) {
         ArrayList<BaseActor> lista = new ArrayList<BaseActor>();
 
+        @SuppressWarnings("rawtypes")
         Class classe = null;
         try {
             classe = Class.forName(nomeClasse);
