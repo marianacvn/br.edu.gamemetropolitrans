@@ -82,14 +82,26 @@ java -jar lwjgl3/build/libs/my-game.jar
 Se quiser distribuir o jogo como `.exe`, o **Packr** é uma opção:
 
 ```sh
-./gradlew lwjgl3:pack
+./gradlew lwjgl3:packageWinX64
+```
+Para Linux:  
+```sh
+./gradlew lwjgl3:packageLinuxX64
+```
+Para macOS (Intel ou M1/M2):  
+```sh
+./gradlew lwjgl3:packageMacX64
+./gradlew lwjgl3:packageMacM1
 ```
 
-Isso gera um executável na pasta:
+Isso criará um executável na pasta:
 ```
 lwjgl3/build/packr/
 ```
 
----
+Caso queira um `.jar` compatível com qualquer sistema operacional, o caminho correto continua sendo:  
+```sh
+./gradlew lwjgl3:jar
+```
 
-Isso deve resolver! 🚀 Se der algum erro ou precisar de ajustes, me avise.
+Se ainda houver problemas, me avise! 🚀
