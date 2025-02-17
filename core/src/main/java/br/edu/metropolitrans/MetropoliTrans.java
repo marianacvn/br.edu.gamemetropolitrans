@@ -33,8 +33,10 @@ import br.edu.metropolitrans.model.dao.ConfigDAO;
 import br.edu.metropolitrans.model.dao.GameDataDAO;
 import br.edu.metropolitrans.model.maps.Mapas;
 import br.edu.metropolitrans.model.utils.DebugMode;
+import br.edu.metropolitrans.view.components.MissionInit;
 import br.edu.metropolitrans.view.components.mission_modal.MissionComponents;
 import br.edu.metropolitrans.view.font.FontBase;
+import br.edu.metropolitrans.view.screens.CoursesScreen;
 import br.edu.metropolitrans.view.screens.LoadingScreen;
 
 public class MetropoliTrans extends Game {
@@ -200,7 +202,7 @@ public class MetropoliTrans extends Game {
 
         // Cria o controle do jogo
         controller = new Controller(this);
-        
+
         // Inicia o controle de missão
         controleMissao = new MissionController(this);
     }
@@ -211,16 +213,31 @@ public class MetropoliTrans extends Game {
     public void reiniciarJogo() {
         SaveManager.voltarSaveParaEstadosIniciais(1);
 
+        missionComponents.clear();
+
+        MissionInit.inicializarComponentesMissao(missionComponents, this);
+
         DebugMode.mostrarLog("MetropoliTrans", "Reposicionando componentes do jogo e carregando dados padrões...");
         setValoresDafault();
 
         // Reposiciona o personagem para a posição inicial
-        GameData gameData = GameDataDAO.carregarDadosJogo("game-data.json");
+        GameData gameData = GameDataDAO.carregarDadosJogo("jogo");
+
+        // Remove os NPCs do estágio
+        npcs.forEach((nome, npc) -> {
+            if (npc != null)
+                npc.remove();
+        });
 
         // Atualiza os NPCs
         for (GameDataNpc npc : gameData.getNpcs()) {
             npcs.put(npc.getKey(), new Npc(npc.getKey(), npc.getX(), npc.getY(), npc.getKey() + "/sprite.png",
                     estagioPrincipal, npc.getStatusAlertaMissao(), npc.isTemAnimacao()));
+        }
+
+        // Remove o personagem do estágio
+        if (personagem != null) {
+            personagem.remove();
         }
 
         // Atualiza o personagem
@@ -231,6 +248,14 @@ public class MetropoliTrans extends Game {
         personagem.infracoes = gameData.getPersonagem().getInfracoes();
         personagem.npcs = npcs;
         personagem.setValoresDafault();
+        estagioPrincipal.addActor(personagem);
+
+        // Remove a camada da faixa de pedestres
+        // A camada 1 é um sobrepiso da missão 4, por padrão ela é ouculta,
+        // mas quando a missão é finalizada, ela é exibida
+        if (controller.MISSAO >= 4 && controleMissao.ativaCamadaMissao4) {
+            mapaRenderizador.getMap().getLayers().get(1).setVisible(false);
+        }
 
         // Atualiza o controller
         if (controller != null) {
@@ -240,9 +265,33 @@ public class MetropoliTrans extends Game {
 
         // Atualiza o MissionController
         controleMissao.setValoresDafault();
+
+        // Atualiza a tela de cursos
+        ((CoursesScreen) telas.get("courses")).atualizarBotoesStatus();
     }
 
     private void setValoresDafault() {
+        // Remove todos os objetos interativos do estágio
+        if (objetosInterativos != null && !objetosInterativos.isEmpty()) {
+            objetosInterativos.forEach((nome, objeto) -> {
+                if (objeto != null)
+                    objeto.remove();
+            });
+        }
+
+        // Remove todos os veículos do estágio
+        if (vehicles != null && !vehicles.isEmpty()) {
+            vehicles.forEach((nome, vehicle) -> {
+                if (vehicle != null)
+                    vehicle.remove();
+            });
+        }
+
+        // Remove a explosão do estágio
+        if (explosao != null) {
+            explosao.remove();
+        }
+
         // Carrega o objeto interativo das missões
         objetosInterativos.put("objetoMissao", new ObjetoInterativo("alertaMissao", 1290, 1245, "mission-alert.png",
                 estagioPrincipal, false));

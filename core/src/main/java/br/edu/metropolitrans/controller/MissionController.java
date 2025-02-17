@@ -3,9 +3,12 @@ package br.edu.metropolitrans.controller;
 import java.util.List;
 
 import br.edu.metropolitrans.MetropoliTrans;
+import br.edu.metropolitrans.model.GameData;
+import br.edu.metropolitrans.model.GameDataNpc;
 import br.edu.metropolitrans.model.Mission;
 import br.edu.metropolitrans.model.actors.Npc;
 import br.edu.metropolitrans.model.actors.Vehicle;
+import br.edu.metropolitrans.model.dao.GameDataDAO;
 import br.edu.metropolitrans.model.dao.MissionDataDAO;
 import br.edu.metropolitrans.model.utils.DebugMode;
 import br.edu.metropolitrans.view.components.mission_modal.MissionComponents;
@@ -31,16 +34,6 @@ public class MissionController {
     }
 
     public void setValoresDafault() {
-        // Reposiciona prefeito em frente a prefeitura
-        // Npc prefeito = jogo.npcs.get("heberto");
-        // prefeito.setPosition(25, 650);
-        // prefeito.setVisible(true);
-        // prefeito.animarParaBaixo();
-        // prefeito.valoresDefault(100);
-        // // Adiciona logs para verificar a posição
-        // Gdx.app.log("MissionController", "Prefeito posicionado em: " + prefeito.getX() + ", " + prefeito.getY());
-        // Gdx.app.log("MissionController", "Prefeito visível: " + prefeito.isVisible());
-
         missao = null;
         npcAtualMissao = null;
         controlaTrocaMissao = false;
@@ -422,13 +415,17 @@ public class MissionController {
     }
 
     private void logicaMissao5(Npc npc) {
+        if (controlaTrocaMissao) {
+            // Reposiciona o npc Maria
+            atualizarNpc("maria");
+            jogo.npcs.get("maria").setPosition(1732, 556);
+        }
+
         DebugMode.mostrarLog("Missão", "Início da missão 5");
         trocaMissao();
 
         DebugMode.mostrarLog("Missão", "Iniciando veículos da missão 5");
         Vehicle blackViperCar = jogo.vehicles.get("black-viper-car");
-        Npc maria = jogo.npcs.get("maria");
-        maria.setPosition(1732, 556);
 
         if (npc != null) {
             if (jogo.controller.mostrarDialogo) {
@@ -460,11 +457,12 @@ public class MissionController {
                 jogo.objetosInterativos.get("objetoMissao").setVisible(false);
                 jogo.objetosInterativos.get("objetoPlaca5").setVisible(true);
 
+                Npc maria = jogo.npcs.get("maria");
                 maria.valoresDefault(100);
                 maria.setRoteiro(List.of("D-6*32", "C-3*32", "D-3*32"));
                 maria.repeteAnimacao = false;
                 maria.animacaoAtivada = true;
-                // maria.statusAlertaMissao = 0;
+                maria.statusAlertaMissao = 0; // TODO: verificar se é necessário
 
                 // Conclui a missão
                 concluirMissao(missao);
@@ -572,8 +570,6 @@ public class MissionController {
                 controlaTrocaMissao = true;
 
                 // Reposiciona os npcs em frente a prefeitura
-                jogo.npcs.get("heberto").setPosition(25, 650);
-                jogo.npcs.get("heberto").setVisible(true);
                 jogo.npcs.get("maria").setPosition(25, 482);
                 jogo.npcs.get("bruna").setPosition(217, 650);
                 jogo.npcs.get("antonio").setPosition(217, 482);
@@ -586,6 +582,9 @@ public class MissionController {
     private void logicaFinal(Npc npc) {
         // Exibe o diálogo de betania parabenizando o jogador
         if (controlaTrocaMissao) {
+            atualizarNpc("heberto");
+            jogo.npcs.get("heberto").setPosition(25, 650);
+
             jogo.controller.atualizarDialogo(jogo.controller.betania, Npc.DIALOGO_BETANIA_PARABENEZANDO);
             jogo.controller.mostrarDialogo = true;
             jogo.npcs.get("betania").setPosition(25, 566);
@@ -710,6 +709,31 @@ public class MissionController {
                 npc.statusAlertaMissao = 0;
             }
         });
+    }
+
+    /**
+     * Atualiza o NPC no estágio
+     * OBS.: Este método só deve ser utiizado para executar apenas uma vez, se
+     * entrar em algum loop, o jogo pode travar
+     * 
+     * @param nomeNpc Nome do NPC
+     * @return NPC
+     */
+    private void atualizarNpc(String nomeNpc) {
+        // Verifica se existe e remove o npc do estágio
+        if (jogo.npcs.get(nomeNpc) != null) {
+            jogo.npcs.get(nomeNpc).remove();
+
+            // Atualiza o NPC do Heberto para um novo
+            GameDataNpc npcData = GameDataDAO.buscarNpcPorNome(nomeNpc);
+
+            // Adiciona o npc no estágio
+            if (npcData != null) {
+                jogo.npcs.put(npcData.getKey(),
+                        new Npc(npcData.getKey(), npcData.getX(), npcData.getY(), npcData.getKey() + "/sprite.png",
+                                jogo.estagioPrincipal, npcData.getStatusAlertaMissao(), npcData.isTemAnimacao()));
+            }
+        }
     }
 
     /**

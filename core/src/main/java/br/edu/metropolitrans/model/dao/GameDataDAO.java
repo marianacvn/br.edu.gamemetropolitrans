@@ -1,6 +1,7 @@
 package br.edu.metropolitrans.model.dao;
 
 import br.edu.metropolitrans.model.GameData;
+import br.edu.metropolitrans.model.GameDataNpc;
 import br.edu.metropolitrans.model.connection.DataSource;
 import br.edu.metropolitrans.model.utils.DebugMode;
 
@@ -27,6 +28,24 @@ public class GameDataDAO {
             DebugMode.mostrarLog("GameDataDAO", "Falha ao carregar os dados do jogo.");
         }
         return gameData;
+    }
+
+    /**
+     * Busca um NPC pelo nome
+     * 
+     * @param nome Nome do NPC
+     * @return NPC
+     */
+    public static GameDataNpc buscarNpcPorNome(String nome) {
+        GameData gameData = carregarDadosJogo("jogo");
+        if (gameData != null) {
+            for (GameDataNpc npc : gameData.getNpcs()) {
+                if (npc.getKey().equals(nome)) {
+                    return npc;
+                }
+            }
+        }
+        return null;
     }
 
     /**
@@ -69,6 +88,7 @@ public class GameDataDAO {
 
     /**
      * Volta os estados dos arquivos de save para os estados iniciais
+     * 
      * @param saveId ID do save
      */
     public static void voltarSaveParaEstadosIniciais(int saveId) {

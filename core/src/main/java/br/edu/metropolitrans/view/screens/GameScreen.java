@@ -152,8 +152,7 @@ public class GameScreen implements Screen {
         // o controle do personagem continuando o jogo
         if (!jogo.controller.mostrarDialogo && !jogo.controller.mostrarCaixaMissao && !validaAnimacaoNpcAtiva()
                 && !missaoDialogoResultado.exibeDialogo) {
-            // Controle do personagem Setas ou WASD
-            jogo.controller.controlePersonagemSetas();
+            // Controle do personagem WASD
             jogo.controller.controlePersonagemWASD();
             jogo.controller.controleTelefone();
         }

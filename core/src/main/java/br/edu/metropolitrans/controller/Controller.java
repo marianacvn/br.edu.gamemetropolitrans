@@ -16,6 +16,7 @@ import com.badlogic.gdx.utils.Timer;
 import br.edu.metropolitrans.MetropoliTrans;
 import br.edu.metropolitrans.model.Course;
 import br.edu.metropolitrans.model.Dialog;
+import br.edu.metropolitrans.model.PersonagemDirecao;
 import br.edu.metropolitrans.model.Status;
 import br.edu.metropolitrans.model.actors.Npc;
 import br.edu.metropolitrans.model.actors.ObjetoInterativo;
@@ -127,19 +128,6 @@ public class Controller {
     public void atualizarDialogo(Npc npc, String texto) {
         npcDialogoAtual = npc;
         textoDialogoAtual = texto;
-    }
-
-    /**
-     * Controle do personagem, movimenta de acordo com as teclas pressionadas
-     * (Setas)
-     */
-    public void controlePersonagemSetas() {
-        boolean up = Gdx.input.isKeyPressed(Input.Keys.UP);
-        boolean down = Gdx.input.isKeyPressed(Input.Keys.DOWN);
-        boolean left = Gdx.input.isKeyPressed(Input.Keys.LEFT);
-        boolean right = Gdx.input.isKeyPressed(Input.Keys.RIGHT);
-
-        controlePersonagem(up, down, left, right);
     }
 
     /**

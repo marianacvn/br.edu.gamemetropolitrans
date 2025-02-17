@@ -5,11 +5,6 @@
   "trafficViolations": true,
   "saveInfo": {
     "saves": [
-      {
-        "id": 1,
-        "name": "save1",
-        "date": "Mon Feb 17 02:47:00 BRT 2025"
-      }
     ]
   }
 }

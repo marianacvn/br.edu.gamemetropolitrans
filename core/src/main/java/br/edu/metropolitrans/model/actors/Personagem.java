@@ -29,7 +29,7 @@ public class Personagem extends BaseActor {
      */
     Animation<TextureRegion> norte, sul, leste, oeste;
 
-    private PersonagemDirecao ultimaDirecao;
+    public PersonagemDirecao ultimaDirecao;
 
     /**
      * Ângulo de rotação do personagem
