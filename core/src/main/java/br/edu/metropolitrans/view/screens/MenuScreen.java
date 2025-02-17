@@ -170,14 +170,6 @@ public class MenuScreen implements Screen {
             }
         });
 
-        // Adiciona uma ação ao botão Jogar
-        // botaoJogar.addListener(new ClickListener() {
-        //     @Override
-        //     public void clicked(InputEvent event, float x, float y) {
-        //         jogo.setScreen(new SaveGameScreen(jogo));
-        //     }
-        // });
-
         // Adiciona o botão ao Stage
         stage.addActor(titulo);
         stage.addActor(botaoNovoJogo);
@@ -191,7 +183,6 @@ public class MenuScreen implements Screen {
     @Override
     public void show() {
         Gdx.input.setInputProcessor(stage);
-
     }
 
     @Override
@@ -218,13 +209,13 @@ public class MenuScreen implements Screen {
         viewport.update(width, height, true);
 
         // Reposiciona os elementos da interface do usuário
-        botaoMute.setPosition(viewport.getWorldWidth() - botaoMute.getWidth() - 10,
-                viewport.getWorldHeight() - botaoMute.getHeight() - 10);
-        botaoNovoJogo.setPosition(botaoNovoJogo.getX(), botaoNovoJogo.getY() - botaoNovoJogo.getHeight());
-        botaoConfig.setPosition(botaoNovoJogo.getX(), botaoNovoJogo.getY() - botaoNovoJogo.getHeight());
-        botaoCreditos.setPosition(botaoNovoJogo.getX(), botaoConfig.getY() - botaoConfig.getHeight());
-        botaoSair.setPosition(botaoNovoJogo.getX(), botaoCreditos.getY() - botaoCreditos.getHeight());
-        titulo.setPosition(viewport.getWorldWidth() / 2 - titulo.getWidth() / 2, viewport.getWorldHeight() - 190);
+        // botaoMute.setPosition(viewport.getWorldWidth() - botaoMute.getWidth() - 10,
+        //         viewport.getWorldHeight() - botaoMute.getHeight() - 10);
+        // botaoNovoJogo.setPosition(botaoNovoJogo.getX(), botaoNovoJogo.getY() - botaoNovoJogo.getHeight());
+        // botaoConfig.setPosition(botaoNovoJogo.getX(), botaoNovoJogo.getY() - botaoNovoJogo.getHeight());
+        // botaoCreditos.setPosition(botaoNovoJogo.getX(), botaoConfig.getY() - botaoConfig.getHeight());
+        // botaoSair.setPosition(botaoNovoJogo.getX(), botaoCreditos.getY() - botaoCreditos.getHeight());
+        // titulo.setPosition(viewport.getWorldWidth() / 2 - titulo.getWidth() / 2, viewport.getWorldHeight() - 190);
     }
 
     @Override

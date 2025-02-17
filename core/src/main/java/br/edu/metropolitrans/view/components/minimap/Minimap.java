@@ -8,36 +8,28 @@ import br.edu.metropolitrans.model.actors.Personagem;
 import br.edu.metropolitrans.model.maps.Mapas;
 
 public class Minimap {
+    private MetropoliTrans jogo;
     public Texture background, background2;
     public Texture personagemTexture;
-    // private Texture toggleButtonTexture;
     private float x, y;
-    private MetropoliTrans jogo;
     private float minimapaLargura = 200;
     private float minimapaAltura = 200;
-    public boolean isVisible;
-    // private Rectangle toggleButtonBounds;
 
     public Minimap(float x, float y, MetropoliTrans jogo) {
         this.jogo = jogo;
         this.personagemTexture = jogo.personagem.minimapaPonto;
-        // this.toggleButtonTexture = new
-        // Texture(Gdx.files.internal("files/itens/seta.png"));
         this.x = x;
         this.y = y;
-        this.isVisible = true;
-        // this.toggleButtonBounds = new Rectangle(Gdx.graphics.getWidth() - 34, 10, 24,
-        // 24); // necessário
         background = new Texture(Gdx.files.internal("files/others/map.png"));
         background2 = new Texture(Gdx.files.internal("files/others/map2.png"));
     }
 
     public void render(Personagem personagem) {
         // Se o minimapa estiver visível, desenha o minimapa
-        if (isVisible) {
+        if (jogo.controller.minimapaIsVisible) {
             jogo.batch.begin();
 
-            if (jogo.controller.controleMissao.ativaCamadaMissao4) {
+            if (jogo.controleMissao.ativaCamadaMissao4) {
                 jogo.batch.draw(background2, x, y, minimapaLargura, minimapaAltura);
             } else {
                 jogo.batch.draw(background, x, y, minimapaLargura, minimapaAltura);

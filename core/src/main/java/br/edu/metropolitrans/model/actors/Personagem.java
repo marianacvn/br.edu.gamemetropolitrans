@@ -34,7 +34,7 @@ public class Personagem extends BaseActor {
     /**
      * Ângulo de rotação do personagem
      */
-    private float angulo;
+    public float angulo;
 
     private Array<Rectangle> retangulosColisao, retangulosPista;
 
@@ -87,18 +87,21 @@ public class Personagem extends BaseActor {
 
         angulo = 270;
 
-        // Configuracao do personagem
-        moedas = 200;
-        xp = 0;
-        tipoInfracao = null;
-        infracoes = 0;
         setAceleracao(800);
         setVelocidadeMaxima(200);
         setDesaceleracao(800);
+        // setZeraVelocidadeInstantaneamente(true);
     }
 
     public boolean interagiu(ObjetoInterativo objetoInterativo) {
         return this.sobrepoe(objetoInterativo);
+    }
+
+    public void setValoresDafault() {
+        angulo = 270;
+
+        // Inicia a animação com a direção SUL
+        setAnimacao(sul);
     }
 
     @Override
@@ -188,15 +191,19 @@ public class Personagem extends BaseActor {
             if (angle >= 45 && angle <= 135) {
                 angulo = 90;
                 setAnimacao(norte);
+                ultimaDirecao = PersonagemDirecao.NORTE;
             } else if (angle > 135 && angle < 225) {
                 angulo = 180;
                 setAnimacao(oeste);
+                ultimaDirecao = PersonagemDirecao.OESTE;
             } else if (angle >= 225 && angle <= 315) {
                 angulo = 270;
                 setAnimacao(sul);
+                ultimaDirecao = PersonagemDirecao.SUL;
             } else {
                 angulo = 0;
                 setAnimacao(leste);
+                ultimaDirecao = PersonagemDirecao.LESTE;
             }
         }
     }
@@ -205,28 +212,42 @@ public class Personagem extends BaseActor {
      * Atualiza a posição do personagem relacionado a infração
      */
     private void atualizaPosicaoInfracao() {
+        DebugMode.DEBUG_MODE = DebugMode.TipoDebug.LOG;  // TODO: Remover após a implementação do jogo
+
+        float novaPosX = getX();
+        float novaPosY = getY();
+    
+        DebugMode.mostrarLog("Personagem", String.format(
+                "Atualizando posição de infração. Direção: %s | Posição atual: X=%.2f, Y=%.2f | Margem: %.2f",
+                ultimaDirecao, getX(), getY(), margemInfracao));
+    
         switch (ultimaDirecao) {
             case NORTE:
-                setPosition(getX(), getY() + margemInfracao);
+                novaPosY += margemInfracao;
                 break;
             case SUL:
-                setPosition(getX(), getY() - margemInfracao);
+                novaPosY -= margemInfracao;
                 break;
             case LESTE:
-                setPosition(getX() + margemInfracao, getY());
+                novaPosX += margemInfracao;
                 break;
             case OESTE:
-                setPosition(getX() - margemInfracao, getY());
+                novaPosX -= margemInfracao;
                 break;
             default:
                 DebugMode.mostrarLog("Personagem", "Direção inválida durante o ajuste de infração!");
-                break;
+                return;
         }
-
+    
+        setPosition(novaPosX, novaPosY);
+    
         // Adiciona log para depuração
         DebugMode.mostrarLog("Personagem", String.format(
                 "Infracao! Direção: %s | Posição final: X=%.2f, Y=%.2f",
                 ultimaDirecao, getX(), getY()));
+
+                
+        DebugMode.DEBUG_MODE = DebugMode.TipoDebug.NENHUM;  // TODO: Remover após a implementação do jogo
     }
 
     /**
@@ -269,7 +290,7 @@ public class Personagem extends BaseActor {
                         tipoInfracao = Personagem.TipoInfracao.ALERTA;
                     }
                     atualizaPosicaoInfracao();
-                    break;
+                    return;
                 }
             }
         }
@@ -285,12 +306,6 @@ public class Personagem extends BaseActor {
 
     public void setRetangulosPista(Array<Rectangle> retangulosPista) {
         this.retangulosPista = retangulosPista;
-    }
-
-    public void setUltimaDirecao(PersonagemDirecao direcao) {
-        this.ultimaDirecao = direcao;
-        // DebugMode.mostrarLog("Personagem", "Última direção atualizada para: " +
-        // direcao);
     }
 
     @Override

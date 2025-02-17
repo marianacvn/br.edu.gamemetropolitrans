@@ -9,11 +9,16 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 
 public class TextButtonBase extends TextButton {
+
     public TextButtonBase(String text, String texturePath, Skin skin) {
-        super(text, createTextButtonStyle(texturePath, skin));
+        super(text, createTextButtonStyle(texturePath, skin, false));
     }
 
-    private static TextButtonStyle createTextButtonStyle(String texturePath, Skin skin) {
+    public TextButtonBase(String text, String texturePath, Skin skin, boolean smallText) {
+        super(text, createTextButtonStyle(texturePath, skin, smallText));
+    }
+
+    private static TextButtonStyle createTextButtonStyle(String texturePath, Skin skin, boolean smallText) {
         // Separa o .png do caminho da textura para verificar se existe um arquivo de
         // textura pressionada
         String texturePathPressed = texturePath;
@@ -34,7 +39,11 @@ public class TextButtonBase extends TextButton {
         TextButtonStyle textButtonStyle = new TextButtonStyle();
         textButtonStyle.up = buttonDrawable;
         textButtonStyle.down = buttonDrawablePressed;
-        textButtonStyle.font = skin.getFont("default");
+        if (smallText) {
+            textButtonStyle.font = skin.getFont("default_small");
+        } else {
+            textButtonStyle.font = skin.getFont("default");
+        }
         textButtonStyle.fontColor = Color.WHITE;
 
         return textButtonStyle;

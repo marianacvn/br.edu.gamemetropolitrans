@@ -12,7 +12,6 @@ public class MissionModalBox {
 
     private float x, y, largura, altura;
     private Texture backgroundTexture;
-    public MissionComponents missionComponents;
 
     public MissionModalBox(float x, float y, float largura, float altura, MetropoliTrans jogo) {
         this.jogo = jogo;
@@ -36,6 +35,7 @@ public class MissionModalBox {
 
         jogo.batch.end();
 
+        MissionComponents missionComponents = jogo.controleMissao.missionComponents;
         if (missionComponents != null) {
             Gdx.input.setInputProcessor(missionComponents.stage);
             missionComponents.stage.act(delta);

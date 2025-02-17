@@ -77,4 +77,15 @@ public class MissionDataDAO {
         String arquivoAtual = "save" + saveId + "-missions.json";
         ds.setArquivoAtualMissoes(arquivoAtual);
     }
+
+    /**
+     * Volta os estados dos arquivos de save para os estados iniciais
+     * @param saveId ID do save
+     */
+    public static void voltarSaveParaEstadosIniciais(int saveId) {
+        DataSource ds = DataSource.getInstancia();
+        String novoArquivo = "save" + saveId + "-missions.json";	
+        ds.criarCopia(novoArquivo, "missions.json");
+        ds.setArquivoAtualMissoes(novoArquivo);
+    }
 }

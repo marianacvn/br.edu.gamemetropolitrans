@@ -18,6 +18,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Array;
 import br.edu.metropolitrans.controller.Controller;
+import br.edu.metropolitrans.controller.MissionController;
 import br.edu.metropolitrans.model.ConfigData;
 import br.edu.metropolitrans.model.GameData;
 import br.edu.metropolitrans.model.GameDataNpc;
@@ -27,6 +28,7 @@ import br.edu.metropolitrans.model.actors.Npc;
 import br.edu.metropolitrans.model.actors.ObjetoInterativo;
 import br.edu.metropolitrans.model.actors.Personagem;
 import br.edu.metropolitrans.model.actors.Vehicle;
+import br.edu.metropolitrans.model.connection.SaveManager;
 import br.edu.metropolitrans.model.dao.ConfigDAO;
 import br.edu.metropolitrans.model.dao.GameDataDAO;
 import br.edu.metropolitrans.model.maps.Mapas;
@@ -126,9 +128,14 @@ public class MetropoliTrans extends Game {
      */
     public Controller controller;
 
+    /**
+     * Controle de missão
+     */
+    public MissionController controleMissao;
+
     public HashMap<String, MissionComponents> missionComponents = new HashMap<>();
 
-    public BasicAnimation explosao, bike, notificacao;
+    public BasicAnimation explosao, bike;
 
     public void inicializarJogo() {
         estagioPrincipal = new Stage();
@@ -182,6 +189,60 @@ public class MetropoliTrans extends Game {
         mapas = new Mapas();// Carrega o mapa
         mapaRenderizador = new OrthogonalTiledMapRenderer(mapas.mapa, 1, batch);
 
+        // Inicia a reprodução da música do menu
+        musicaMenu.play();
+
+        // Carrega os valores padrões do jogo
+        setValoresDafault();
+
+        // Carrega os dados do jogo
+        atualizarJogoPorSaveGameData("game-data.json");
+
+        // Cria o controle do jogo
+        controller = new Controller(this);
+        
+        // Inicia o controle de missão
+        controleMissao = new MissionController(this);
+    }
+
+    /**
+     * Realiza a reinicialização do jogo
+     */
+    public void reiniciarJogo() {
+        SaveManager.voltarSaveParaEstadosIniciais(1);
+
+        DebugMode.mostrarLog("MetropoliTrans", "Reposicionando componentes do jogo e carregando dados padrões...");
+        setValoresDafault();
+
+        // Reposiciona o personagem para a posição inicial
+        GameData gameData = GameDataDAO.carregarDadosJogo("game-data.json");
+
+        // Atualiza os NPCs
+        for (GameDataNpc npc : gameData.getNpcs()) {
+            npcs.put(npc.getKey(), new Npc(npc.getKey(), npc.getX(), npc.getY(), npc.getKey() + "/sprite.png",
+                    estagioPrincipal, npc.getStatusAlertaMissao(), npc.isTemAnimacao()));
+        }
+
+        // Atualiza o personagem
+        personagem.setPosition(gameData.getPersonagem().getX(), gameData.getPersonagem().getY());
+        personagem.moedas = gameData.getPersonagem().getMoedas();
+        personagem.xp = gameData.getPersonagem().getXp();
+        personagem.tipoInfracao = null;
+        personagem.infracoes = gameData.getPersonagem().getInfracoes();
+        personagem.npcs = npcs;
+        personagem.setValoresDafault();
+
+        // Atualiza o controller
+        if (controller != null) {
+            controller.MISSAO = gameData.getMissaoAtual();
+            controller.inicializar();
+        }
+
+        // Atualiza o MissionController
+        controleMissao.setValoresDafault();
+    }
+
+    private void setValoresDafault() {
         // Carrega o objeto interativo das missões
         objetosInterativos.put("objetoMissao", new ObjetoInterativo("alertaMissao", 1290, 1245, "mission-alert.png",
                 estagioPrincipal, false));
@@ -222,7 +283,6 @@ public class MetropoliTrans extends Game {
         // Carrega o personagem
         // personagem = new Personagem(250, 860, estagioPrincipal);
         Personagem.setLimitacaoMundo(Mapas.MAPA_LARGURA, Mapas.MAPA_ALTURA);
-        atualizarJogoPorSaveGameData("game-data.json");
 
         // Carrega os veículos
         vehicles.put(
@@ -273,39 +333,9 @@ public class MetropoliTrans extends Game {
                 nomeArquivos, 0.1f, true);
         explosao.setVisible(false);
 
-        // Intancia animação da notificação
-        notificacao = new BasicAnimation(0, 0, estagioPrincipal);
-        String[] nomeArquivosNotificacao = {
-                "files/animation/book-animation/frame_00.png",
-                "files/animation/book-animation/frame_01.png",
-                "files/animation/book-animation/frame_02.png",
-                "files/animation/book-animation/frame_03.png",
-                "files/animation/book-animation/frame_04.png",
-                "files/animation/book-animation/frame_05.png",
-                "files/animation/book-animation/frame_06.png",
-                "files/animation/book-animation/frame_07.png"
-        };
-        notificacao.carregaAnimacaoDeArquivos(
-                nomeArquivosNotificacao, 0.1f, true);
-        notificacao.setVisible(false);
-
         // Carrega os objetos interativos
         objetosInterativos.put("objeto",
                 new ObjetoInterativo("entradaPrefeitura", 100, 760, "background-transparent.png", estagioPrincipal));
-
-        // Inicia a reprodução da música do menu
-        musicaMenu.play();
-
-        // Cria o controle do jogo
-        controller = new Controller(this);
-    }
-
-    /**
-     * Realiza a reinicialização do jogo
-     */
-    public void reiniciarJogo() {
-        DebugMode.mostrarLog("MetropoliTrans", "Reposicionando componentes do jogo e carregando dados padrões...");
-        // TODO: reposicionar o jogo, posicoes, moedas, etc
     }
 
     private void liberarRecursos() {
@@ -385,27 +415,6 @@ public class MetropoliTrans extends Game {
         } else {
             Gdx.app.postRunnable(() -> Gdx.graphics.setContinuousRendering(true));
         }
-    }
-
-    /**
-     * Notifica a liberação de um módulo, possui um timer de 3 segundos e depois
-     * oculta a notificação e reposiciona o componente
-     * 
-     * @param x posicao x do componente
-     * @param y posicao y do componente
-     */
-    public void notificarLiberacaoModulo(float x, float y) {
-        notificacao.setPosition(x, y);
-        notificacao.setVisible(true);
-
-        new Thread(() -> {
-            try {
-                Thread.sleep(3000);
-                notificacao.setVisible(false);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }).start();
     }
 
     @Override

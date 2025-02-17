@@ -10,6 +10,7 @@ import br.edu.metropolitrans.model.dao.ConfigDAO;
 import br.edu.metropolitrans.model.dao.CourseDAO;
 import br.edu.metropolitrans.model.dao.GameDataDAO;
 import br.edu.metropolitrans.model.dao.MissionDataDAO;
+import br.edu.metropolitrans.model.utils.DebugMode;
 
 public class SaveManager {
 
@@ -33,7 +34,6 @@ public class SaveManager {
                 ? configData.getSaveInfo().getSaves().size()
                 : 0;
 
-        // if (quantidadeSaves <= MAX_SAVES) {
         // Realiza a criação dos arquivos de save
         CourseDAO.criarNovoSave(saveId);
         MissionDataDAO.criarNovoSave(saveId);
@@ -59,9 +59,6 @@ public class SaveManager {
 
 
         ConfigDAO.salvarConfig(configData);
-        // } else {
-        // System.out.println("Número máximo de saves atingido.");
-        // }
     }
 
     public static void definirSaveAtual(int saveId) {
@@ -70,21 +67,27 @@ public class SaveManager {
             MissionDataDAO.definirSaveAtual(saveId);
             GameDataDAO.definirSaveAtual(saveId);
         } else {
-            System.out.println("Save inválido.");
+            DebugMode.mostrarLog("SaveManager", "Save inválido.");
         }
+    }
+
+    /**
+     * Volta os estados dos arquivos de save para os estados iniciais
+     * @param saveId ID do save
+     */
+    public static void voltarSaveParaEstadosIniciais(int saveId) {
+        CourseDAO.voltarSaveParaEstadosIniciais(saveId);
+        MissionDataDAO.voltarSaveParaEstadosIniciais(saveId);
+        GameDataDAO.voltarSaveParaEstadosIniciais(saveId);
     }
 
     public static void removeArquivoSave(int saveId) {
         try {
-            // if (saveId > 0 && saveId <= MAX_SAVES) {
             Gdx.files.local("files/datasource/save" + saveId + "-courses.json").delete();
             Gdx.files.local("files/datasource/save" + saveId + "-missions.json").delete();
             Gdx.files.local("files/datasource/save" + saveId + "-game-data.json").delete();
-            // } else {
-            // System.out.println("Save inválido.");
-            // }
         } catch (Exception e) {
-            System.out.println("Erro ao remover arquivo de save.");
+            DebugMode.mostrarLog("SaveManager", "Erro ao remover arquivo de save.");
         }
     }
 }

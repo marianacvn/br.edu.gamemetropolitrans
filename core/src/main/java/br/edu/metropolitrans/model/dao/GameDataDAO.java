@@ -66,4 +66,15 @@ public class GameDataDAO {
         String arquivoAtual = "save" + saveId + "-game-data.json";
         ds.setArquivoAtualDadosJogo(arquivoAtual);
     }
+
+    /**
+     * Volta os estados dos arquivos de save para os estados iniciais
+     * @param saveId ID do save
+     */
+    public static void voltarSaveParaEstadosIniciais(int saveId) {
+        DataSource ds = DataSource.getInstancia();
+        String novoArquivo = "save" + saveId + "-game-data.json";
+        ds.criarCopia(novoArquivo, "game-data.json");
+        ds.setArquivoAtualDadosJogo(novoArquivo);
+    }
 }

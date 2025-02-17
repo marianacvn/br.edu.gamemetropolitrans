@@ -16,7 +16,6 @@ import com.badlogic.gdx.utils.Timer;
 import br.edu.metropolitrans.MetropoliTrans;
 import br.edu.metropolitrans.model.Course;
 import br.edu.metropolitrans.model.Dialog;
-import br.edu.metropolitrans.model.PersonagemDirecao;
 import br.edu.metropolitrans.model.Status;
 import br.edu.metropolitrans.model.actors.Npc;
 import br.edu.metropolitrans.model.actors.ObjetoInterativo;
@@ -24,7 +23,6 @@ import br.edu.metropolitrans.model.actors.Personagem;
 import br.edu.metropolitrans.model.dao.CourseDAO;
 import br.edu.metropolitrans.model.dao.DialogDAO;
 import br.edu.metropolitrans.model.dao.MissionDataDAO;
-import br.edu.metropolitrans.model.maps.Mapas;
 import br.edu.metropolitrans.model.utils.DebugMode;
 import br.edu.metropolitrans.view.screens.ConfigScreen;
 import br.edu.metropolitrans.view.screens.CoursesScreen;
@@ -37,37 +35,10 @@ public class Controller {
      */
     private MetropoliTrans jogo;
 
-    public MissionController controleMissao;
-
-    /**
-     * Tela principal do jogo
-     */
-    public GameScreen gameScreen;
-
-    /**
-     * Mapas do jogo
-     */
-    public Mapas mapas;
-
     /**
      * Informa ao renderizador quantos pixels correspondem a uma unidade do mundo
      */
     float unitScale = 1;
-
-    /**
-     * Personagem do jogo
-     */
-    public Personagem personagem;
-
-    /**
-     * Lista de NPCs do jogo
-     */
-    public HashMap<String, Npc> npcs;
-
-    /**
-     * Objetos interativos
-     */
-    public ObjetoInterativo objeto, objetoSairSala, objetoMissao, objetoPc;
 
     /**
      * Missão atual
@@ -96,43 +67,53 @@ public class Controller {
      * Flag para perdeu o jogo
      */
     public boolean perdeuJogo;
+
+    /**
+     * Flag para ganhou o jogo
+     */
+    public boolean ganhouJogo;
+
     public int qtdEntrouPrefeiura;
+
     public boolean interagiuComPc;
+
+    public boolean phoneIsVisible;
+
+    public boolean minimapaIsVisible;
+
+    public boolean notificarLiberacaoModulo;
 
     /**
      * NPC do guarda de trânsito
      */
-    public Npc guarda, betania;
+    public Npc guarda, betania, npcDialogoAtual;
+    public String textoDialogoAtual;
 
     public Controller(MetropoliTrans jogo) {
         this.jogo = jogo;
-        this.mapas = jogo.mapas;
-        this.personagem = jogo.personagem;
-        this.npcs = jogo.npcs;
-        this.objeto = jogo.objetosInterativos.get("objeto");
-        this.objetoSairSala = jogo.objetosInterativos.get("objetoSairSala");
-        this.objetoMissao = jogo.objetosInterativos.get("objetoMissao");
-        this.objetoPc = jogo.objetosInterativos.get("objetoPc");
 
         // Carrega os objetos de colisão
-        montarColisao(mapas.mapa);
+        montarColisao(jogo.mapas.mapa);
         montarCamadaPista(false);
-
-        // Inicia o controle de missão
-        controleMissao = new MissionController(jogo);
     }
 
     public void inicializar() {
+        mostrarDialogo = false;
+        mostrarCaixaMissao = false;
+        resultadoRespostaMissao = 0;
+        perdeuJogo = false;
+        ganhouJogo = false;
         qtdEntrouPrefeiura = 0;
+        interagiuComPc = false;
+        phoneIsVisible = false;
+        minimapaIsVisible = true;
+        notificarLiberacaoModulo = false;
 
         guarda = new Npc("guarda", jogo.estagioPrincipal);
         betania = new Npc("betania", jogo.estagioPrincipal);
-        gameScreen = (GameScreen) jogo.telas.get("game");
 
         // Inicializa o diálogo do guarda no início do jogo
-        gameScreen.caixaDialogo.npc = guarda;
-        gameScreen.caixaDialogo.setTextoDialogo(Npc.DIALOGO_INICIAL);
-        gameScreen.caixaDialogo.defineTexturaNpc();
+        atualizarDialogo(guarda, Npc.DIALOGO_INICIAL);
 
         new Thread(() -> {
             try {
@@ -142,6 +123,11 @@ public class Controller {
                 e.printStackTrace();
             }
         }).start();
+    }
+
+    public void atualizarDialogo(Npc npc, String texto) {
+        npcDialogoAtual = npc;
+        textoDialogoAtual = texto;
     }
 
     /**
@@ -189,30 +175,26 @@ public class Controller {
         }
 
         if (up) {
-            personagem.acelerarEmAngulo(90);
-            personagem.setUltimaDirecao(PersonagemDirecao.NORTE);
+            jogo.personagem.acelerarEmAngulo(90);
         } else if (down) {
-            personagem.acelerarEmAngulo(270);
-            personagem.setUltimaDirecao(PersonagemDirecao.SUL);
+            jogo.personagem.acelerarEmAngulo(270);
         } else if (left) {
-            personagem.acelerarEmAngulo(180);
-            personagem.setUltimaDirecao(PersonagemDirecao.OESTE);
+            jogo.personagem.acelerarEmAngulo(180);
         } else if (right) {
-            personagem.acelerarEmAngulo(0);
-            personagem.setUltimaDirecao(PersonagemDirecao.LESTE);
+            jogo.personagem.acelerarEmAngulo(0);
         }
     }
 
     public void controleTelefone() {
         if (Gdx.input.isKeyJustPressed(Input.Keys.T)) {
             // Informa que o celular está visível
-            gameScreen.phone.isVisible = true;
+            phoneIsVisible = true;
 
             // Agenda a transição para a tela CoursesScreen após 1 segundo
             Timer.schedule(new Timer.Task() {
                 @Override
                 public void run() {
-                    gameScreen.phone.isVisible = false;
+                    phoneIsVisible = false;
                     if (jogo.telas.get("courses") == null)
                         jogo.telas.put("courses", new CoursesScreen(jogo, jogo.getScreen()));
 
@@ -227,7 +209,7 @@ public class Controller {
      */
     public void controleTelaConfig() {
         if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
-            jogo.telas.put("config", new ConfigScreen(jogo, gameScreen));
+            jogo.telas.put("config", new ConfigScreen(jogo, jogo.telas.get("game")));
             jogo.setScreen(jogo.telas.get("config"));
         }
     }
@@ -236,61 +218,65 @@ public class Controller {
      * Verifica a interação do personagem com os objetos do mapa
      */
     public void controleInteracao() {
-        if (objeto != null && Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
-            npcs.forEach((nome, npc) -> {
+        if (jogo.objetosInterativos.get("objeto") != null && Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
+            jogo.npcs.forEach((nome, npc) -> {
                 interacaoComNpc(npc);
             });
         }
 
-        if (objeto != null && objetoMissao != null && personagem.interagiu(objetoMissao)
+        if (jogo.objetosInterativos.get("objeto") != null && jogo.objetosInterativos.get("objetoMissao") != null
+                && jogo.personagem.interagiu(jogo.objetosInterativos.get("objetoMissao"))
                 && Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
             mostrarCaixaMissao = true;
         }
 
-        if (objeto != null && personagem.interagiu(objeto) && Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
+        if (jogo.objetosInterativos.get("objeto") != null
+                && jogo.personagem.interagiu(jogo.objetosInterativos.get("objeto"))
+                && Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
             // Remove o objeto da missão da sala e minimapa
-            objetoMissao.setVisible(false);
+            jogo.objetosInterativos.get("objetoMissao").setVisible(false);
 
             // Ajusta para remover o objeto da missão 1 da sala
             if (MISSAO >= 1) {
                 jogo.objetosInterativos.get("objetoPlaca1").setVisible(false);
             }
 
-            gameScreen.minimapa.isVisible = false;
-            npcs.forEach((nome, npc) -> {
-                // if (!npc.nome.equals("betania"))
+            minimapaIsVisible = false;
+            jogo.npcs.forEach((nome, npc) -> {
                 npc.remove();
             });
 
             // Muda o mapa para room.tmx
             jogo.mapaRenderizador.dispose();
-            jogo.mapaRenderizador = new OrthogonalTiledMapRenderer(mapas.sala, unitScale, jogo.batch);
+            jogo.mapaRenderizador = new OrthogonalTiledMapRenderer(jogo.mapas.sala, unitScale, jogo.batch);
 
             // Salva a última posicao e seta posição do personagem para a entrada
-            personagem.setPosition(1248, 1000);
-            objetoSairSala = new ObjetoInterativo("sairSala", 1216, 964, "background-transparent.png",
-                    jogo.estagioPrincipal);
-            objeto = null;
+            jogo.personagem.setPosition(1248, 1000);
+            jogo.objetosInterativos.put("objetoSairSala",
+                    new ObjetoInterativo("sairSala", 1216, 964, "background-transparent.png",
+                            jogo.estagioPrincipal));
+            jogo.objetosInterativos.put("objeto", null);
 
             // Carrega os objetos de colisão
-            montarColisao(mapas.sala);
+            montarColisao(jogo.mapas.sala);
             montarCamadaPista(true);
 
             // Renova os retângulos de colisão
-            personagem.npcs = new HashMap<>();
-            personagem.setRetangulosColisao(jogo.retangulosColisao);
-            personagem.setRetangulosPista(jogo.retangulosPista);
-        } else if (objetoSairSala != null && personagem.interagiu(objetoSairSala)
+            jogo.personagem.npcs = new HashMap<>();
+            jogo.personagem.setRetangulosColisao(jogo.retangulosColisao);
+            jogo.personagem.setRetangulosPista(jogo.retangulosPista);
+        } else if (jogo.objetosInterativos.get("objetoSairSala") != null
+                && jogo.personagem.interagiu(jogo.objetosInterativos.get("objetoSairSala"))
                 && Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
             // coloca o objeto da missão ao sair da sala e minimapa
-            objetoMissao.setVisible(true);
+            jogo.objetosInterativos.get("objetoMissao").setVisible(true);
             qtdEntrouPrefeiura++;
-            Gdx.app.log("Controller", "QtdEntrouPrefeiura: " + qtdEntrouPrefeiura);
+            DebugMode.mostrarLog("Controller", "QtdEntrouPrefeiura: " + qtdEntrouPrefeiura);
 
             // Avisa para o mission controller que o guarda pode aparecer em frente a
             // prefeitura
             if (MISSAO == 1 && qtdEntrouPrefeiura == 1) {
-                controleMissao.missao1GuardaAparece = true;
+                jogo.controleMissao.missao1GuardaAparece = true;
             }
 
             // Ajusta para remover o objeto da missão 1 da sala
@@ -298,35 +284,38 @@ public class Controller {
                 jogo.objetosInterativos.get("objetoPlaca1").setVisible(true);
             }
 
-            gameScreen.minimapa.isVisible = true;
+            minimapaIsVisible = true;
             // Adiciona os NPCs no array
-            personagem.npcs = npcs;
-            npcs.forEach((nome, npc) -> {
+            jogo.personagem.npcs = jogo.npcs;
+            jogo.npcs.forEach((nome, npc) -> {
                 npc.adicionarNoEstagio(jogo.estagioPrincipal);
             });
 
             // Muda o mapa para map.tmx
             jogo.mapaRenderizador.dispose();
-            jogo.mapaRenderizador = new OrthogonalTiledMapRenderer(mapas.mapa, unitScale, jogo.batch);
+            jogo.mapaRenderizador = new OrthogonalTiledMapRenderer(jogo.mapas.mapa, unitScale, jogo.batch);
 
             // Ajusta para o personagem sair da sala mas longe do objeto de entrada da
             // prefeitura
 
             // setar posição do personagem para a entrada
-            personagem.setPosition(100, 690);
-            objeto = new ObjetoInterativo("entradaPrefeitura", 100, 760, "background-transparent.png",
-                    jogo.estagioPrincipal);
-            objetoSairSala = null;
+            jogo.personagem.setPosition(100, 690);
+            jogo.objetosInterativos.put("objeto",
+                    new ObjetoInterativo("entradaPrefeitura", 100, 760, "background-transparent.png",
+                            jogo.estagioPrincipal));
+            jogo.objetosInterativos.put("objetoSairSala", null);
 
             // Carrega os objetos de colisão
-            montarColisao(mapas.mapa);
+            montarColisao(jogo.mapas.mapa);
             montarCamadaPista(false);
 
             // Renova os retângulos de colisão e os npcs
-            personagem.npcs = npcs;
-            personagem.setRetangulosColisao(jogo.retangulosColisao);
-            personagem.setRetangulosPista(jogo.retangulosPista);
-        } else if (objetoPc != null && personagem.interagiu(objetoPc) && Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
+            jogo.personagem.npcs = jogo.npcs;
+            jogo.personagem.setRetangulosColisao(jogo.retangulosColisao);
+            jogo.personagem.setRetangulosPista(jogo.retangulosPista);
+        } else if (jogo.objetosInterativos.get("objetoPc") != null
+                && jogo.personagem.interagiu(jogo.objetosInterativos.get("objetoPc"))
+                && Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
             DebugMode.mostrarLog("Controller", "Interagindo com o PC...");
             interagiuComPc = true;
 
@@ -344,27 +333,13 @@ public class Controller {
     public void controleDialogos() {
         if (Gdx.input.isKeyJustPressed(Input.Keys.ENTER) && mostrarDialogo) {
             mostrarDialogo = false;
-            if (personagem.tipoInfracao != null) {
+            if (jogo.personagem.tipoInfracao != null) {
                 atualizaInfracao();
             } else {
-                npcs.forEach((nome, npc) -> {
+                jogo.npcs.forEach((nome, npc) -> {
                     atualizaStatusAlertaMissaoNpc(npc);
                 });
             }
-        }
-    }
-
-    /**
-     * Controle de lógica do jogo
-     */
-    public void controleLogicaJogo() {
-        // Verifica se o personagem zerou as moedas
-        // Se sim, volta para a tela de início pois perdeu o jogo
-        if (perdeuJogo) {
-            DebugMode.mostrarLog("Controller", "Perdeu o jogo!");
-            // Volta todas as informações do jogo para o início
-            DebugMode.mostrarLog("Controller", "Reiniciando o jogo...");
-            jogo.reiniciarJogo();
         }
     }
 
@@ -389,16 +364,15 @@ public class Controller {
                 && CourseDAO.listarCursosPorMissaoId(MISSAO).get(0).getStatus() == Status.CONCLUIDO
                 && CourseDAO.listarCursosPorMissaoId(MISSAO).get(1).getStatus() == Status.CONCLUIDO) {
             // Adiciona Betânia na sala
-            Gdx.app.log("Controller", "Módulos concluídos, Betânia aparece na sala...");
-            npcs.get("betania").setPosition(1146, 1438);
-            npcs.get("betania").adicionarNoEstagio(jogo.estagioPrincipal);
-            personagem.npcs.put("betania", npcs.get("betania"));
+            DebugMode.mostrarLog("Controller", "Módulos concluídos, Betânia aparece na sala...");
+            jogo.npcs.get("betania").setPosition(1146, 1438);
+            jogo.npcs.get("betania").adicionarNoEstagio(jogo.estagioPrincipal);
+            jogo.personagem.npcs.put("betania", jogo.npcs.get("betania"));
 
-            // Monta o diálogo de Betânia informando o personagem para colocar em prática o que aprendeu
-            gameScreen.caixaDialogo.npc = betania;
-            gameScreen.caixaDialogo.setTextoDialogo(Npc.DIALOGO_BETANIA_APLICAR_PRATICA);
-            gameScreen.caixaDialogo.defineTexturaNpc();
-            
+            // Monta o diálogo de Betânia informando o personagem para colocar em prática o
+            // que aprendeu
+            atualizarDialogo(betania, Npc.DIALOGO_BETANIA_APLICAR_PRATICA);
+
             // Aguara 1 segundo para mostrar o diálogo
             new Thread(() -> {
                 try {
@@ -419,10 +393,7 @@ public class Controller {
             List<Course> cursosProximaMissao = CourseDAO.listarCursosPorMissaoId(MISSAO + 1);
             if (MissionDataDAO.buscaMissaoPorId(MISSAO - 1).isFinalizouMissao()
                     && cursos.get(0).getStatus() == Status.BLOQUEADO) {
-                jogo.efeitoNotificacao.play();
-                jogo.notificarLiberacaoModulo(
-                        (gameScreen.CAMERA.position.x - gameScreen.CAMERA.viewportWidth / 2) + 1170,
-                        (gameScreen.CAMERA.position.y - gameScreen.CAMERA.viewportHeight / 2) + 550);
+                notificarLiberacaoModulo = true;
 
                 CourseDAO.atualizaStatusCurso(cursos.get(0).getId(), Status.LIBERADO);
                 if (cursosProximaMissao != null) {
@@ -440,21 +411,16 @@ public class Controller {
      */
     public void controleInfracao() {
         // Se as infrações forem maiores ou iguais a 4, perde o jogo
-        if (personagem.infracoes > 4) {
-            jogo.efeitoErro.play();
-            gameScreen.missaoDialogoResultado.ativarAcao("gameover",
-                    "Desculpe, você\r\nperdeu o jogo!\r\nDeseja jogar novamente?");
+        if (jogo.personagem.infracoes > 4) {
             perdeuJogo = true;
         }
 
         // Verifica se o personagem saiu da pista e mostra a caixa de diálogo
-        if (personagem.tipoInfracao != null) {
+        if (jogo.personagem.tipoInfracao != null) {
             if (!mostrarDialogo)
                 jogo.efeitoErro.play();
 
-            gameScreen.caixaDialogo.npc = guarda;
-            gameScreen.caixaDialogo.setTextoDialogo(carregaDialogos(guarda, 0));
-            gameScreen.caixaDialogo.defineTexturaNpc();
+            atualizarDialogo(guarda, carregaDialogos(guarda, 0));
             mostrarDialogo = true;
         }
     }
@@ -464,20 +430,20 @@ public class Controller {
         // está indo, desta forma ajustar -x valor que é a margem para sofrer a
         // infração.
         // personagem.setPosition()
-        if (personagem.tipoInfracao == Personagem.TipoInfracao.ALERTA) {
-            personagem.tipoInfracao = null;
+        if (jogo.personagem.tipoInfracao == Personagem.TipoInfracao.ALERTA) {
+            jogo.personagem.tipoInfracao = null;
             guarda.DIALOGO_ATUAL++;
-            personagem.dialogosGuarda++;
-        } else if (personagem.tipoInfracao == Personagem.TipoInfracao.MULTA) {
-            personagem.tipoInfracao = null;
+            jogo.personagem.dialogosGuarda++;
+        } else if (jogo.personagem.tipoInfracao == Personagem.TipoInfracao.MULTA) {
+            jogo.personagem.tipoInfracao = null;
             guarda.DIALOGO_ATUAL++;
-            personagem.dialogosGuarda++;
-            personagem.infracoes++;
+            jogo.personagem.dialogosGuarda++;
+            jogo.personagem.infracoes++;
         }
         // personagem.infracoes++;
-        DebugMode.mostrarLog("Controller", "Sofreu infração: " + personagem.tipoInfracao);
+        DebugMode.mostrarLog("Controller", "Sofreu infração: " + jogo.personagem.tipoInfracao);
         DebugMode.mostrarLog("Controller", "Atualizando diálogo do guarda... Atual: " + guarda.DIALOGO_ATUAL);
-        DebugMode.mostrarLog("Controller", "Infracoes: " + personagem.infracoes);
+        DebugMode.mostrarLog("Controller", "Infracoes: " + jogo.personagem.infracoes);
     }
 
     /**
@@ -487,28 +453,21 @@ public class Controller {
      */
     private void interacaoComNpc(Npc npc) {
         if (jogo.telas.get("game") != null) {
-            // GameScreen gameScreen = (GameScreen) jogo.telas.get("game");
-            if (personagem.estaDentroDaDistancia(15, npc)) {
+            if (jogo.personagem.estaDentroDaDistancia(15, npc)) {
                 // Verifica se o diálogo do NPC por ser exibido, pois é necessário assistir o
                 // módulo referente a missão
                 if (verificarExibicaoDialogoMissaoComCurso()) {
                     // No inicio do jogo, o guarda não tem diálogo
                     if (npc.nome.equals("guarda")) {
-                        gameScreen.caixaDialogo.npc = npc;
-                        gameScreen.caixaDialogo.setTextoDialogo(Npc.DIALOGO_GUARDA_GENERICO);
-                        gameScreen.caixaDialogo.defineTexturaNpc();
+                        atualizarDialogo(npc, Npc.DIALOGO_GUARDA_GENERICO);
                         mostrarDialogo = true;
                     } else {
                         // Carrega os diálogos do NPC
-                        gameScreen.caixaDialogo.npc = npc;
-                        gameScreen.caixaDialogo.setTextoDialogo(carregaDialogos(npc));
-                        gameScreen.caixaDialogo.defineTexturaNpc();
+                        atualizarDialogo(npc, carregaDialogos(npc));
                         mostrarDialogo = true;
                     }
                 } else {
-                    gameScreen.caixaDialogo.npc = betania;
-                    gameScreen.caixaDialogo.setTextoDialogo(Npc.DIALOGO_BETANIA_MISSAO_BLOQUEADA);
-                    gameScreen.caixaDialogo.defineTexturaNpc();
+                    atualizarDialogo(betania, Npc.DIALOGO_BETANIA_MISSAO_BLOQUEADA);
                     mostrarDialogo = true;
                 }
             }
@@ -553,8 +512,8 @@ public class Controller {
              * Verifica se está dentro da distancia e se o npc faz parte da missão
              * Se sim, atualiza o status de alerta da missão
              */
-            if (personagem.estaDentroDaDistancia(15, npc) &&
-                    controleMissao.npcEstaNaMisao(npc.nome) != null &&
+            if (jogo.personagem.estaDentroDaDistancia(15, npc) &&
+                    jogo.controleMissao.npcEstaNaMisao(npc.nome) != null &&
                     npc.statusAlertaMissao == 1 &&
                     verificarExibicaoDialogoMissaoComCurso()) {
                 npc.statusAlertaMissao = 2;
@@ -612,7 +571,7 @@ public class Controller {
         // Adiciona os retângulos de colisão do mapa ao personagem
         DebugMode.mostrarLog("Controller",
                 "Verificando cada retângulo da colisao, objetos: " + jogo.retangulosColisao.size);
-        personagem.setRetangulosColisao(jogo.retangulosColisao);
+        jogo.personagem.setRetangulosColisao(jogo.retangulosColisao);
     }
 
     /**
@@ -626,11 +585,11 @@ public class Controller {
         if (removePista) {
             DebugMode.mostrarLog("Controller", "Removendo a camada de objetos da pista...");
             jogo.retangulosPista = new Array<Rectangle>();
-            personagem.setRetangulosPista(jogo.retangulosPista);
+            jogo.personagem.setRetangulosPista(jogo.retangulosPista);
         } else {
             DebugMode.mostrarLog("Controller", "Crianado a camada de objetos da pista...");
             // Carrega os objetos de pista
-            jogo.objetosPista = mapas.mapa.getLayers().get("pista").getObjects();
+            jogo.objetosPista = jogo.mapas.mapa.getLayers().get("pista").getObjects();
             DebugMode.mostrarLog("Controller", "Objetos carregados: " + jogo.objetosPista.getCount());
             jogo.retangulosPista = new Array<Rectangle>();
             DebugMode.mostrarLog("Controller",
@@ -647,7 +606,7 @@ public class Controller {
             // Adiciona os retângulos de pista do mapa ao personagem
             DebugMode.mostrarLog("Controller",
                     "Verificando cada retângulo da pista, objetos: " + jogo.retangulosPista.size);
-            personagem.setRetangulosPista(jogo.retangulosPista);
+            jogo.personagem.setRetangulosPista(jogo.retangulosPista);
         }
     }
 

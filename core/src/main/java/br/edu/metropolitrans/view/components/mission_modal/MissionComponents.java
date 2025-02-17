@@ -143,18 +143,18 @@ public class MissionComponents {
 
                         // Lógica para resposta correta
                         jogo.controller.resultadoRespostaMissao = 1;
-                        jogo.personagem.moedas += jogo.controller.controleMissao.getRecompensaMoedasMissao();
+                        jogo.personagem.moedas += jogo.controleMissao.getRecompensaMoedasMissao();
 
                         if (geraXp)
                             jogo.personagem.xp += 10;
 
-                        jogo.controller.objetoMissao.setVisible(false);
+                            jogo.objetosInterativos.get("objetoMissao").setVisible(false);
                     } else {
                         jogo.efeitoErro.play();
 
                         // Lógica para resposta incorreta
                         jogo.controller.resultadoRespostaMissao = 2;
-                        jogo.personagem.moedas -= jogo.controller.controleMissao.getValorErroMissao();
+                        jogo.personagem.moedas -= jogo.controleMissao.getValorErroMissao();
                     }
                 }
                 return true;

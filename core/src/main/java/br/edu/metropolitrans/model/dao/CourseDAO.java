@@ -7,6 +7,8 @@ import br.edu.metropolitrans.model.utils.DebugMode;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.badlogic.gdx.Gdx;
+
 import br.edu.metropolitrans.model.Course;
 import br.edu.metropolitrans.model.Status;
 
@@ -44,7 +46,7 @@ public class CourseDAO {
 
     public static Course buscaCursoPorId(int id) {
         CourseData courseData = carregarDadosCursos();
-        if (courseData == null) {
+        if (courseData == null || courseData.getCursos() == null) {
             DebugMode.mostrarLog("CourseDAO", "CourseData está nulo.");
             return null;
         }
@@ -53,6 +55,7 @@ public class CourseDAO {
                 DebugMode.mostrarLog("CourseDAO", "Curso encontrado: " + course.getNome());
                 return course;
             }
+            
         }
         DebugMode.mostrarLog("CourseDAO", "Curso não encontrado para o id: " + id);
         return null;
@@ -65,8 +68,9 @@ public class CourseDAO {
      * @return Lista de cursos
      */
     public static List<Course> listarCursosPorMissaoId(int id) {
+        DebugMode.mostrarLog("CourseDAO", "ID da missão: " + id);
         CourseData courseData = carregarDadosCursos();
-        if (courseData == null) {
+        if (courseData == null || courseData.getCursos() == null) {
             DebugMode.mostrarLog("CourseDAO", "CourseData está nulo.");
             return List.of();
         }
@@ -77,7 +81,7 @@ public class CourseDAO {
                 cursos.add(course);
             }
         }
-        
+
         return cursos;
     }
 
@@ -140,5 +144,17 @@ public class CourseDAO {
         DataSource ds = DataSource.getInstancia();
         String arquivoAtual = "save" + saveId + "-courses.json";
         ds.setArquivoAtualCursos(arquivoAtual);
+    }
+
+    /**
+     * Volta os estados dos arquivos de save para os estados iniciais
+     * 
+     * @param saveId ID do save
+     */
+    public static void voltarSaveParaEstadosIniciais(int saveId) {
+        DataSource ds = DataSource.getInstancia();
+        String novoArquivo = "save" + saveId + "-courses.json";
+        ds.criarCopia(novoArquivo, "courses.json");
+        ds.setArquivoAtualCursos(novoArquivo);
     }
 }
