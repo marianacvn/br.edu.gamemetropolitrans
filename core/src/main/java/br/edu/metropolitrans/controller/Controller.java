@@ -16,7 +16,6 @@ import com.badlogic.gdx.utils.Timer;
 import br.edu.metropolitrans.MetropoliTrans;
 import br.edu.metropolitrans.model.Course;
 import br.edu.metropolitrans.model.Dialog;
-import br.edu.metropolitrans.model.PersonagemDirecao;
 import br.edu.metropolitrans.model.Status;
 import br.edu.metropolitrans.model.actors.Npc;
 import br.edu.metropolitrans.model.actors.ObjetoInterativo;

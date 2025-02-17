@@ -3,7 +3,6 @@ package br.edu.metropolitrans.controller;
 import java.util.List;
 
 import br.edu.metropolitrans.MetropoliTrans;
-import br.edu.metropolitrans.model.GameData;
 import br.edu.metropolitrans.model.GameDataNpc;
 import br.edu.metropolitrans.model.Mission;
 import br.edu.metropolitrans.model.actors.Npc;
@@ -462,7 +461,7 @@ public class MissionController {
                 maria.setRoteiro(List.of("D-6*32", "C-3*32", "D-3*32"));
                 maria.repeteAnimacao = false;
                 maria.animacaoAtivada = true;
-                maria.statusAlertaMissao = 0; // TODO: verificar se é necessário
+                maria.statusAlertaMissao = 0;
 
                 // Conclui a missão
                 concluirMissao(missao);

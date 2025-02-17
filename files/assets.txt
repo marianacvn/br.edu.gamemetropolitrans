@@ -132,9 +132,6 @@ datasource/dialogs/maria.json
 datasource/dialogs/paulo.json
 datasource/game-data.json
 datasource/missions.json
-datasource/save1-courses.json
-datasource/save1-game-data.json
-datasource/save1-missions.json
 fonts/AlchemistPixels.ttf
 fonts/Monocraft.ttc
 fonts/Silver.ttf
