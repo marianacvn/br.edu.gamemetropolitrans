@@ -10,24 +10,28 @@ import br.edu.metropolitrans.model.utils.DebugMode;
 
 public class Npc extends ActorAnimation {
 
-    public static String DIALOGO_INICIAL = "Olá, senhor(a) estágiario(a) da secretária de trânsito, seja bem-vindo a cidade de Metropolitrans. O(a) senhor(a) precisa falar com o prefeito da cidade para ele lhe repassar os detalhes sobre o seu novo trabalho.";
-    public static String DIALOGO_GUARDA_MISSAO_BLOQUEADA = "Para iniciar a missão, é necessário assistir o módulo referente a ela, dirija-se a prefeitura e veja o módulo liberado no computador.";
-    public static String DIALOGO_GUARDA_TECLA_T = "Ah, agora você pode acessar os módulos do curso a partir do seu celular, basta pressionar a tecla \"T\".";
-    public static String DIALOGO_GUARDA_TECLA_ESPACO = "Para acessar a prefeitura, você deve pressionar a tecla \"Espaço\" próximo a entrada, da mesma forma para sair da sala (próximo a entrada) e interagir com o computador.";
+    public static final String DIALOGO_INICIAL = "Olá, senhor(a) estágiario(a) da Secretária de Trânsito, seja bem-vindo a cidade de Metropolitrans. O(a) senhor(a) precisa falar com o Prefeito da cidade na Prefeitura para ele lhe repassar os detalhes sobre o seu novo trabalho.";
+    public static final String DIALOGO_BETANIA_MISSAO_BLOQUEADA = "Para iniciar a missão, é necessário assistir o módulo referente a ela, dirija-se a Prefeitura e veja o módulo liberado no computador.";
+    public static final String DIALOGO_BETANIA_APLICAR_PRATICA = "Olá, estágiario(a), agora que você já assistiu os módulos referentes a essa missão, volte para a cidade e coloque em prática o conteúdo que aprendeu.";
+    public static final String DIALOGO_BETANIA_PARABENEZANDO = "Parabéns, estágiario(a), você concluiu as missões com sucesso! Agora pode ir até a Prefeitura e conversar com o Prefeito para receber sua recompensa.";
+    public static final String DIALOGO_GUARDA_TECLA_T = "Ah, agora você pode acessar os módulos do curso a partir do seu celular, basta pressionar a tecla \"T\". Ah, você pode se orientar pelo minimapa. O personagem com quem você deve falar aparecerá nele.";
+    public static final String DIALOGO_GUARDA_TECLA_ESPACO = "Para acessar a Prefeitura, você deve pressionar a tecla \"Espaço\" próximo a entrada, da mesma forma para sair da sala (próximo a entrada) e interagir com o computador.";
+    public static final String DIALOGO_GUARDA_INDICA_CAMINHO = "Olá, estágiario(a), para iniciar a primeira missão vá até Maria e converse com ela, pela calçada acima da prefeitura. Boa sorte.";
+    public static final String DIALOGO_GUARDA_GENERICO = "Olá, estágiario(a), como está indo o novo trabalho?";
 
     public String nomeArquivo;
     public int statusAlertaMissao;
     public Texture minimapaPonto;
 
-    public Npc(String nome, Stage stage) {
-        super(nome, 0, 0, stage, 100, "sprite-animation.png", "files/characters/" + nome + "/", List.of(), false, 4, 11,
-                false);
-    }
-
     /**
      * Diálogo atual
      */
     public int DIALOGO_ATUAL = 0;
+
+    public Npc(String nome, Stage stage) {
+        super(nome, 0, 0, stage, 100, "sprite-animation.png", "files/characters/" + nome + "/", List.of(), false, 4, 11,
+                false);
+    }
 
     public Npc(String nome, float x, float y, String nomeArquivo, Stage stage, boolean temAnimacao) {
         super(nome, x, y, stage, 100, "sprite-animation.png", "files/characters/" + nome + "/", List.of(), temAnimacao,
@@ -50,6 +54,18 @@ public class Npc extends ActorAnimation {
             boolean temAnimacao) {
         this(nome, x, y, nomeArquivo, stage, temAnimacao);
         this.statusAlertaMissao = statusAlertaMissao;
+    }
+
+    /**
+     * Define os valores padrão do NPC
+     * 
+     * @param dialogoAtual
+     */
+    public void setValoresDafault(float x, float y, int statusAlertaMissao) {
+        DIALOGO_ATUAL = 0;
+        setRoteiro(List.of());
+        this.statusAlertaMissao = statusAlertaMissao;
+        setPosition(x, y);
     }
 
     @Override

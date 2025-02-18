@@ -72,7 +72,7 @@ public class DataSource {
         } else if (tipo.equals("jogo")) {
             return arquivoAtualDadosJogo;
         } else {
-            // Se não for nenhum dos dois, o tipo é o caminho do arquivo
+            // Se não for nenhum dos três, o tipo é o caminho do arquivo
             return tipo;
         }
     }

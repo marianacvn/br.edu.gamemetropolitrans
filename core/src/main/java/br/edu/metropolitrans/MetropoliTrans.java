@@ -18,6 +18,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Array;
 import br.edu.metropolitrans.controller.Controller;
+import br.edu.metropolitrans.controller.MissionController;
 import br.edu.metropolitrans.model.ConfigData;
 import br.edu.metropolitrans.model.GameData;
 import br.edu.metropolitrans.model.GameDataNpc;
@@ -27,12 +28,15 @@ import br.edu.metropolitrans.model.actors.Npc;
 import br.edu.metropolitrans.model.actors.ObjetoInterativo;
 import br.edu.metropolitrans.model.actors.Personagem;
 import br.edu.metropolitrans.model.actors.Vehicle;
+import br.edu.metropolitrans.model.connection.SaveManager;
 import br.edu.metropolitrans.model.dao.ConfigDAO;
 import br.edu.metropolitrans.model.dao.GameDataDAO;
 import br.edu.metropolitrans.model.maps.Mapas;
 import br.edu.metropolitrans.model.utils.DebugMode;
+import br.edu.metropolitrans.view.components.MissionInit;
 import br.edu.metropolitrans.view.components.mission_modal.MissionComponents;
 import br.edu.metropolitrans.view.font.FontBase;
+import br.edu.metropolitrans.view.screens.CoursesScreen;
 import br.edu.metropolitrans.view.screens.LoadingScreen;
 
 public class MetropoliTrans extends Game {
@@ -68,6 +72,11 @@ public class MetropoliTrans extends Game {
     public Music efeitoBuzina;
 
     /**
+     * Efeitos sonoros de status
+     */
+    public Music efeitoAcerto, efeitoErro, efeitoNotificacao, efeitoCancelar, efeitoConfirmar, efeitoMoeda;
+
+    /**
      * Map de telas do jogo
      */
     public HashMap<String, Screen> telas = new HashMap<>();
@@ -90,10 +99,6 @@ public class MetropoliTrans extends Game {
     /**
      * Objetos interativos
      */
-    // public ObjetoInterativo objeto, objetoChao, objetoSairSala, objetoMissao,
-    // objetoMissaoHorizontal, objetoPlaca1,
-    // objetoHorizontal2, objetoPlaca3, objetoPlaca5, objetoPlaca6, objetoPlaca7,
-    // objetoPc;
     public HashMap<String, ObjetoInterativo> objetosInterativos = new HashMap<>();
 
     /**
@@ -125,6 +130,11 @@ public class MetropoliTrans extends Game {
      */
     public Controller controller;
 
+    /**
+     * Controle de missão
+     */
+    public MissionController controleMissao;
+
     public HashMap<String, MissionComponents> missionComponents = new HashMap<>();
 
     public BasicAnimation explosao, bike;
@@ -132,6 +142,9 @@ public class MetropoliTrans extends Game {
     public void inicializarJogo() {
         estagioPrincipal = new Stage();
         batch = new SpriteBatch();
+
+        // Carrega os NPCs
+        npcs = new HashMap<>();
 
         fonte = FontBase.getInstancia().getFonte(30, FontBase.Fontes.PADRAO);
 
@@ -149,9 +162,135 @@ public class MetropoliTrans extends Game {
         efeitoBuzina.setLooping(true);
         efeitoBuzina.setVolume((float) config.getVolume());
 
+        // Carrega os efeitos sonoros
+        efeitoAcerto = Gdx.audio.newMusic(Gdx.files.internal("files/songs/acerto.mp3"));
+        efeitoAcerto.setLooping(false);
+        efeitoAcerto.setVolume((float) config.getVolume());
+
+        efeitoErro = Gdx.audio.newMusic(Gdx.files.internal("files/songs/perder.mp3"));
+        efeitoErro.setLooping(false);
+        efeitoErro.setVolume((float) config.getVolume());
+
+        efeitoNotificacao = Gdx.audio.newMusic(Gdx.files.internal("files/songs/notificar.mp3"));
+        efeitoNotificacao.setLooping(false);
+        efeitoNotificacao.setVolume((float) config.getVolume());
+
+        efeitoCancelar = Gdx.audio.newMusic(Gdx.files.internal("files/songs/cancelar.mp3"));
+        efeitoCancelar.setLooping(false);
+        efeitoCancelar.setVolume((float) config.getVolume());
+
+        efeitoConfirmar = Gdx.audio.newMusic(Gdx.files.internal("files/songs/confirmar.mp3"));
+        efeitoConfirmar.setLooping(false);
+        efeitoConfirmar.setVolume((float) config.getVolume());
+
+        efeitoMoeda = Gdx.audio.newMusic(Gdx.files.internal("files/songs/moeda.mp3"));
+        efeitoMoeda.setLooping(false);
+        efeitoMoeda.setVolume((float) config.getVolume());
+
         // Carrega o mapa
         mapas = new Mapas();// Carrega o mapa
         mapaRenderizador = new OrthogonalTiledMapRenderer(mapas.mapa, 1, batch);
+
+        // Inicia a reprodução da música do menu
+        musicaMenu.play();
+
+        // Carrega os valores padrões do jogo
+        setValoresDafault();
+
+        // Carrega os dados do jogo
+        atualizarJogoPorSaveGameData("game-data.json");
+
+        // Cria o controle do jogo
+        controller = new Controller(this);
+
+        // Inicia o controle de missão
+        controleMissao = new MissionController(this);
+    }
+
+    /**
+     * Realiza a reinicialização do jogo
+     */
+    public void reiniciarJogo() {
+        SaveManager.voltarSaveParaEstadosIniciais(1);
+
+        missionComponents.clear();
+
+        MissionInit.inicializarComponentesMissao(missionComponents, this);
+
+        DebugMode.mostrarLog("MetropoliTrans", "Reposicionando componentes do jogo e carregando dados padrões...");
+        setValoresDafault();
+
+        // Reposiciona o personagem para a posição inicial
+        GameData gameData = GameDataDAO.carregarDadosJogo("jogo");
+
+        // Remove os NPCs do estágio
+        npcs.forEach((nome, npc) -> {
+            if (npc != null)
+                npc.remove();
+        });
+
+        // Atualiza os NPCs
+        for (GameDataNpc npc : gameData.getNpcs()) {
+            npcs.put(npc.getKey(), new Npc(npc.getKey(), npc.getX(), npc.getY(), npc.getKey() + "/sprite.png",
+                    estagioPrincipal, npc.getStatusAlertaMissao(), npc.isTemAnimacao()));
+        }
+
+        // Remove o personagem do estágio
+        if (personagem != null) {
+            personagem.remove();
+        }
+
+        // Atualiza o personagem
+        personagem.setPosition(gameData.getPersonagem().getX(), gameData.getPersonagem().getY());
+        personagem.moedas = gameData.getPersonagem().getMoedas();
+        personagem.xp = gameData.getPersonagem().getXp();
+        personagem.tipoInfracao = null;
+        personagem.infracoes = gameData.getPersonagem().getInfracoes();
+        personagem.npcs = npcs;
+        personagem.setValoresDafault();
+        estagioPrincipal.addActor(personagem);
+
+        // Remove a camada da faixa de pedestres
+        // A camada 1 é um sobrepiso da missão 4, por padrão ela é ouculta,
+        // mas quando a missão é finalizada, ela é exibida
+        if (controller.MISSAO >= 4 && controleMissao.ativaCamadaMissao4) {
+            mapaRenderizador.getMap().getLayers().get(1).setVisible(false);
+        }
+
+        // Atualiza o controller
+        if (controller != null) {
+            controller.MISSAO = gameData.getMissaoAtual();
+            controller.inicializar();
+        }
+
+        // Atualiza o MissionController
+        controleMissao.setValoresDafault();
+
+        // Atualiza a tela de cursos
+        ((CoursesScreen) telas.get("courses")).atualizarBotoesStatus();
+    }
+
+    private void setValoresDafault() {
+        // Remove todos os objetos interativos do estágio
+        if (objetosInterativos != null && !objetosInterativos.isEmpty()) {
+            objetosInterativos.forEach((nome, objeto) -> {
+                if (objeto != null)
+                    objeto.remove();
+            });
+        }
+
+        // Remove todos os veículos do estágio
+        if (vehicles != null && !vehicles.isEmpty()) {
+            vehicles.forEach((nome, vehicle) -> {
+                if (vehicle != null)
+                    vehicle.remove();
+            });
+        }
+
+        // Remove a explosão do estágio
+        if (explosao != null) {
+            explosao.remove();
+        }
 
         // Carrega o objeto interativo das missões
         objetosInterativos.put("objetoMissao", new ObjetoInterativo("alertaMissao", 1290, 1245, "mission-alert.png",
@@ -193,34 +332,6 @@ public class MetropoliTrans extends Game {
         // Carrega o personagem
         // personagem = new Personagem(250, 860, estagioPrincipal);
         Personagem.setLimitacaoMundo(Mapas.MAPA_LARGURA, Mapas.MAPA_ALTURA);
-
-        // Carrega os NPCs
-        // Adiciona os npcs em um array
-        npcs = new HashMap<>();
-
-        // Carrega os Npcs
-        // npcs.put("maria", new Npc("maria", 280, 1220, "maria/sprite.png",
-        // estagioPrincipal, true));
-        // npcs.put("betania", new Npc("betania", 264, 200, "betania/sprite.png",
-        // estagioPrincipal, 1, false));
-        // npcs.put("bruna", new Npc("bruna", 1185, 1850, "bruna/sprite.png",
-        // estagioPrincipal, false));
-        // npcs.put("antonio", new Npc("antonio", 1485, 1130, "antonio/sprite.png",
-        // estagioPrincipal, false));
-        // npcs.put("heberto", new Npc("heberto", 25, 650, "heberto/sprite.png",
-        // estagioPrincipal, 1, false));
-        // npcs.put("jose", new Npc("jose", 90, 1450, "jose/sprite.png",
-        // estagioPrincipal, false));
-        // npcs.put("josinaldo", new Npc("josinaldo", 2090, 150, "josinaldo/sprite.png",
-        // estagioPrincipal, false));
-        // npcs.put("paulo", new Npc("paulo", 1500, 100, "paulo/sprite.png",
-        // estagioPrincipal, false));
-        // npcs.put("juliana", new Npc("juliana", 1185, 1130, "juliana/sprite.png",
-        // estagioPrincipal, false));
-
-        // Adiciona os npcs no array de colisão
-        // personagem.npcs = npcs;
-        atualizarJogoPorSaveGameData("game-data.json");
 
         // Carrega os veículos
         vehicles.put(
@@ -274,37 +385,6 @@ public class MetropoliTrans extends Game {
         // Carrega os objetos interativos
         objetosInterativos.put("objeto",
                 new ObjetoInterativo("entradaPrefeitura", 100, 760, "background-transparent.png", estagioPrincipal));
-
-        // Inicia a reprodução da música do menu
-        musicaMenu.play();
-
-        // Cria o controle do jogo
-        controller = new Controller(this);
-    }
-
-    public void reiniciarJogo() {
-
-        setPausado(true);
-        DebugMode.mostrarLog("MetropoliTrans", "Parando o jogo e voltando para o Menu...");
-
-        // Troca a tela voltando para a tela de início
-        trocarTela("menu");
-
-        // Reinicia os valores Padrões
-        DebugMode.mostrarLog("MetropoliTrans", "Reiniciando os valores padrões.");
-        controller.MISSAO = 0;
-
-        // Limpa todas as telas
-        DebugMode.mostrarLog("MetropoliTrans", "Excluindo todas as telas...");
-        telas.clear();
-
-        // Retoma o jogo
-        setPausado(false);
-        DebugMode.mostrarLog("MetropoliTrans", "Retomando o jogo...");
-
-        // Inicializa o jogo novamente
-        DebugMode.mostrarLog("MetropoliTrans", "Inicializando o jogo novamente...");
-        inicializarJogo();
     }
 
     public void atualizarJogoPorSaveGameData(String tipo) {
@@ -447,6 +527,27 @@ public class MetropoliTrans extends Game {
         }
         if (musicaMenu != null) {
             musicaMenu.dispose();
+        }
+        if (efeitoBuzina != null) {
+            efeitoBuzina.dispose();
+        }
+        if (efeitoAcerto != null) {
+            efeitoAcerto.dispose();
+        }
+        if (efeitoErro != null) {
+            efeitoErro.dispose();
+        }
+        if (efeitoNotificacao != null) {
+            efeitoNotificacao.dispose();
+        }
+        if (efeitoCancelar != null) {
+            efeitoCancelar.dispose();
+        }
+        if (efeitoConfirmar != null) {
+            efeitoConfirmar.dispose();
+        }
+        if (efeitoMoeda != null) {
+            efeitoMoeda.dispose();
         }
         if (estagioPrincipal != null) {
             estagioPrincipal.dispose();

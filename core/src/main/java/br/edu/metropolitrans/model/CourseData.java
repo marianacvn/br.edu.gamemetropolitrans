@@ -15,4 +15,9 @@ public class CourseData {
     public void setCursos(List<Course> cursos) {
         this.cursos = cursos;
     }
+
+    @Override
+    public String toString() {
+        return "CourseData [cursos=" + cursos + "]";
+    }
 }

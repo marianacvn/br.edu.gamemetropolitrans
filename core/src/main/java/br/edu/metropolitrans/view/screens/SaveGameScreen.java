@@ -111,6 +111,7 @@ public class SaveGameScreen implements Screen {
         botao1.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                jogo.efeitoConfirmar.play();
                 if (quantidadeSaves > 0) {
                     //jogo.atualizarJogoPorSaveGameData("jogo");
                     jogo.setScreen(new LoadScreen(jogo, config.getSaveInfo().getSaves().get(0)));
@@ -123,6 +124,7 @@ public class SaveGameScreen implements Screen {
         botao2.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                jogo.efeitoConfirmar.play();
                 if (quantidadeSaves > 1) {
                     //jogo.atualizarJogoPorSaveGameData("jogo");
                     jogo.setScreen(new LoadScreen(jogo, config.getSaveInfo().getSaves().get(1)));
@@ -135,6 +137,7 @@ public class SaveGameScreen implements Screen {
         botao3.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                jogo.efeitoConfirmar.play();
                 if (quantidadeSaves > 2) {
                     //jogo.atualizarJogoPorSaveGameData("jogo");
                     jogo.setScreen(new LoadScreen(jogo, config.getSaveInfo().getSaves().get(2)));
@@ -147,6 +150,7 @@ public class SaveGameScreen implements Screen {
         botao4.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                jogo.efeitoConfirmar.play();
                 if (quantidadeSaves > 3) {
                     //jogo.atualizarJogoPorSaveGameData("jogo");
                     jogo.setScreen(new LoadScreen(jogo, config.getSaveInfo().getSaves().get(3)));
@@ -159,6 +163,7 @@ public class SaveGameScreen implements Screen {
         botao5.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                jogo.efeitoConfirmar.play();
                 if (quantidadeSaves > 4) {
                     //jogo.atualizarJogoPorSaveGameData("jogo");
                     jogo.setScreen(new LoadScreen(jogo, config.getSaveInfo().getSaves().get(4)));
@@ -172,6 +177,7 @@ public class SaveGameScreen implements Screen {
         lixeira1.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                jogo.efeitoConfirmar.play();
                 if (quantidadeSaves > 0) {
                     config.getSaveInfo().getSaves().remove(0);
                     ConfigDAO.salvarConfig(config);
@@ -184,6 +190,7 @@ public class SaveGameScreen implements Screen {
         lixeira2.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                jogo.efeitoConfirmar.play();
                 if (quantidadeSaves > 1) {
                     config.getSaveInfo().getSaves().remove(1);
                     ConfigDAO.salvarConfig(config);
@@ -196,6 +203,7 @@ public class SaveGameScreen implements Screen {
         lixeira3.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                jogo.efeitoConfirmar.play();
                 if (quantidadeSaves > 2) {
                     config.getSaveInfo().getSaves().remove(2);
                     ConfigDAO.salvarConfig(config);
@@ -208,6 +216,7 @@ public class SaveGameScreen implements Screen {
         lixeira4.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                jogo.efeitoConfirmar.play();
                 if (quantidadeSaves > 3) {
                     config.getSaveInfo().getSaves().remove(3);
                     ConfigDAO.salvarConfig(config);
@@ -220,6 +229,7 @@ public class SaveGameScreen implements Screen {
         lixeira5.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                jogo.efeitoConfirmar.play();
                 if (quantidadeSaves > 4) {
                     config.getSaveInfo().getSaves().remove(4);
                     ConfigDAO.salvarConfig(config);

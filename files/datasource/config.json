@@ -1,8 +1,8 @@
 {
-  "volume": 0.5,
-  "mute": false,
+  "volume": 1.0,
+  "mute": true,
   "typeDebugMode": "NENHUM",
-  "trafficViolations": false,
+  "trafficViolations": true,
   "saveInfo": {
     "saves": [
     ]

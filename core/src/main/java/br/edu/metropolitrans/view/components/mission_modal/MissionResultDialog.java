@@ -15,6 +15,7 @@ import br.edu.metropolitrans.MetropoliTrans;
 import br.edu.metropolitrans.model.utils.DebugMode;
 import br.edu.metropolitrans.view.components.buttons.TextButtonBase;
 import br.edu.metropolitrans.view.font.FontBase;
+import br.edu.metropolitrans.view.font.FontBase.Fontes;
 import br.edu.metropolitrans.view.screens.GameScreen;
 
 public class MissionResultDialog {
@@ -25,8 +26,8 @@ public class MissionResultDialog {
     private Texture backgroundTexture;
     public Stage stage;
     public Label titulo;
-    public TextButtonBase botaoConfirmar;
-    private boolean exibeDialogo;
+    public TextButtonBase botaoConfirmar, botaoSair, botaoJogarNovamente;
+    public boolean exibeDialogo;
     public String textoTitulo;
 
     public MissionResultDialog(float x, float y, float largura, float altura, MetropoliTrans jogo) {
@@ -44,6 +45,7 @@ public class MissionResultDialog {
 
         Skin skin = new Skin();
         skin.add("default", jogo.fonte);
+        skin.add("default_small", FontBase.getInstancia().getFonte(16, Fontes.PADRAO));
 
         // Cria o título
         Label.LabelStyle labelStyle = new Label.LabelStyle();
@@ -59,10 +61,22 @@ public class MissionResultDialog {
         botaoConfirmar.setSize(100, 30);
         botaoConfirmar.setPosition(x + largura - 50, y + 120);
 
+        // Cria o botão de cancelamento
+        botaoJogarNovamente = new TextButtonBase("Jogar Novamente", "files/buttons/botao-dark2.png", skin, true);
+        botaoJogarNovamente.setSize(100, 30);
+        botaoJogarNovamente.setPosition(x + largura - 110, botaoConfirmar.getY());
+
+        // Cria o botão de cancelamento
+        botaoSair = new TextButtonBase("Sair", "files/buttons/botao-dark2.png", skin, true);
+        botaoSair.setSize(100, 30);
+        botaoSair.setPosition(botaoJogarNovamente.getX() + botaoSair.getWidth() + 20, botaoConfirmar.getY());
+
         // Adiciona uma ação ao botão Configurações
         botaoConfirmar.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                jogo.efeitoConfirmar.play();
+
                 if (jogo.personagem.moedas == 0) {
                     jogo.controller.perdeuJogo = true;
                 }
@@ -70,7 +84,7 @@ public class MissionResultDialog {
                 if (jogo.controller.resultadoRespostaMissao == 1) {
                     jogo.controller.resultadoRespostaMissao = 0;
                     jogo.controller.mostrarCaixaMissao = false;
-                    jogo.controller.controleMissao.missaoConcluida = true;
+                    jogo.controleMissao.missaoConcluida = true;
                     DebugMode.mostrarLog("DialogoMissao", "Resposta correta!");
                 } else {
                     jogo.controller.resultadoRespostaMissao = 0;
@@ -79,12 +93,47 @@ public class MissionResultDialog {
             }
         });
 
+        // Adiciona uma ação ao botão Configurações
+        botaoSair.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                jogo.efeitoCancelar.play();
+                // Fecha o jogo
+                Gdx.app.exit();
+            }
+        });
+
+        botaoJogarNovamente.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                jogo.efeitoConfirmar.play();
+                jogo.reiniciarJogo();
+                jogo.controller.perdeuJogo = false;
+                jogo.controller.ganhouJogo = false;
+                exibeDialogo = false;
+            }
+        });
+
         // Adiciona os atores ao palco
         stage.addActor(botaoConfirmar);
+        stage.addActor(botaoSair);
+        stage.addActor(botaoJogarNovamente);
         stage.addActor(titulo);
     }
 
-    public void ativarAcao(String textoTitulo) {
+    public void ativarAcao(boolean exibeConfirmar, String textoTitulo) {
+        // Verifica se o botão de confirmação deve ser exibido, do contrário exibe o
+        // botão de sair e jogar novamente
+        if (exibeConfirmar) {
+            botaoConfirmar.setVisible(true);
+            botaoSair.setVisible(false);
+            botaoJogarNovamente.setVisible(false);
+        } else {
+            botaoConfirmar.setVisible(false);
+            botaoJogarNovamente.setVisible(true);
+            botaoSair.setVisible(true);
+        }
+
         this.textoTitulo = textoTitulo;
         titulo.setText(textoTitulo);
         exibeDialogo = true;

@@ -26,6 +26,11 @@
 		{
 			"missao": 0,
 			"mensagem": "Infelizmente, você perdeu todas as estrelas por não ter cuidado ao atravessar a rua. Desculpe, você perdeu o JOGO!"
+		},
+		{
+			"missao": 8,
+			"mensagem": "Parabéns, você conseguiu resolver os problemas da cidade, agora está mais segura e organizada, o Prefeito Heberto ficará muito feliz com o seu trabalho."
 		}
+
 	]
 }

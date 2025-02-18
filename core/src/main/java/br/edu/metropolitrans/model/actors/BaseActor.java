@@ -90,6 +90,16 @@ public abstract class BaseActor extends Actor {
     private float desaceleracao;
 
     /**
+     * Flag para controlar se a desaceleração deve ser aplicada.
+     */
+    private boolean usaDesaceleracao;
+
+    /**
+     * Flag para controlar se a velocidade deve ser zerada instantaneamente
+     */
+    private boolean zeraVelocidadeInstantaneamente;
+
+    /**
      * Define a posição inicial do ator e adiciona ao palco
      */
     public BaseActor(float x, float y, Stage s) {
@@ -112,6 +122,10 @@ public abstract class BaseActor extends Actor {
         desaceleracao = 0;
 
         limitePoligono = null;
+
+        // Inicializa a flag de desaceleração
+        usaDesaceleracao = true;
+        zeraVelocidadeInstantaneamente = false;
     }
 
     /**
@@ -367,6 +381,28 @@ public abstract class BaseActor extends Actor {
     }
 
     /**
+     * Define se a desaceleração deve ser usada.
+     *
+     * @param usaDesaceleracao verdadeiro para usar desaceleração, falso para não
+     *                         usar
+     */
+    public void setUsaDesaceleracao(boolean usaDesaceleracao) {
+        this.usaDesaceleracao = usaDesaceleracao;
+    }
+
+    /**
+     * Define se a velocidade deve ser zerada instantaneamente.
+     *
+     * @param zeraVelocidadeInstantaneamente verdadeiro para zerar a velocidade
+     *                                       instantaneamente, falso para
+     *                                       desacelerar
+     *                                       até zero
+     */
+    public void setZeraVelocidadeInstantaneamente(boolean zeraVelocidadeInstantaneamente) {
+        this.zeraVelocidadeInstantaneamente = zeraVelocidadeInstantaneamente;
+    }
+
+    /**
      * Define a velocidade máxima deste objeto.
      *
      * @param velocidadeMaxima Velocidade máxima deste objeto em (pixels/segundo).
@@ -423,6 +459,7 @@ public abstract class BaseActor extends Actor {
      *
      * @param angulo do movimento (em graus)
      */
+    @SuppressWarnings("deprecation")
     public void setAnguloMovimento(float angulo) {
         velocidadeVetor.setAngle(angulo);
     }
@@ -436,6 +473,7 @@ public abstract class BaseActor extends Actor {
      *
      * @return ângulo do movimento (em graus)
      */
+    @SuppressWarnings("deprecation")
     public float getAnguloMovimento() {
         return velocidadeVetor.angle();
     }
@@ -449,6 +487,7 @@ public abstract class BaseActor extends Actor {
      * @see #aceleracao
      * @see #aplicarFisica
      */
+    @SuppressWarnings("deprecation")
     public void acelerarEmAngulo(float angulo) {
         aceleracaoVetor.add(new Vector2(aceleracao, 0).setAngle(angulo));
     }
@@ -484,9 +523,15 @@ public abstract class BaseActor extends Actor {
 
         float velocidade = getVelocidade();
 
-        // desacelerar quando não estiver acelerando
-        if (aceleracaoVetor.len() == 0)
-            velocidade -= desaceleracao * dt;
+        // Se não estiver acelerando, aplique a desaceleração
+        // Se zeraVelocidadeInstantaneamente for verdadeiro, a velocidade é zerada
+        if (aceleracaoVetor.len() == 0 && usaDesaceleracao) {
+            if (zeraVelocidadeInstantaneamente) {
+                velocidade = 0;
+            } else {
+                velocidade -= desaceleracao * dt;
+            }
+        }
 
         // manter a velocidade dentro dos limites definidos
         velocidade = MathUtils.clamp(velocidade, 0, velocidadeMaxima);
@@ -817,6 +862,7 @@ public abstract class BaseActor extends Actor {
     public static ArrayList<BaseActor> getList(Stage estagio, String nomeClasse) {
         ArrayList<BaseActor> lista = new ArrayList<BaseActor>();
 
+        @SuppressWarnings("rawtypes")
         Class classe = null;
         try {
             classe = Class.forName(nomeClasse);

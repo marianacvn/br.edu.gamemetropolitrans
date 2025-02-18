@@ -10,6 +10,10 @@
 		{
 			"missao": 7,
 			"mensagem": "Olá, senhor(a). Até que fim alguém me ouviu, já solicitei diversas vezes para que me ouvissem, todo dia ocorre acidente aqui no centro da cidade, é incrível como isto nunca foi ouvido. Eu vou solicitar pela última vez, precisamos de uma forma de ensinar aos condutores, poderia ser uma palestra, pode perguntar a qualquer um aqui do bairro que a opinião vai ser a mesma, isto deveria ser prioridade pois poderia ajudar a evitar estes acidentes. "
+		},
+		{
+			"missao": 8,
+			"mensagem": "Olá, meus parabéns! A cidade está mais segura, nós ficamos orgulhosos do seu desempenho."
 		}
 	]
 }

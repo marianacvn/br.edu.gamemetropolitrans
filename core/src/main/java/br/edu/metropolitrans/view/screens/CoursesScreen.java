@@ -46,7 +46,7 @@ public class CoursesScreen implements Screen {
         Label.LabelStyle labelStyle = new Label.LabelStyle();
         labelStyle.font = fonteTitulo;
         labelStyle.fontColor = Color.valueOf("4c4869");
-        titulo = new Label("Sistema de cursos", labelStyle);
+        titulo = new Label("Sistema de Cursos", labelStyle);
 
         // Centraliza o título na tela
         float tituloWidth = titulo.getWidth();
@@ -72,7 +72,6 @@ public class CoursesScreen implements Screen {
                 CourseDAO.carregarDadosModulo(7).getStatus());
         botao8 = criarBotaoModulo(8, botao1.getX() + botao1.getWidth() + 20, botao4.getY() - 150,
                 CourseDAO.carregarDadosModulo(8).getStatus());
-        
 
         // Cria um botão para fechar a tela e voltar para a anterior
         TextButtonBase botaoFechar = new TextButtonBase("X", "files/buttons/botao-dark2.png", skin);
@@ -85,6 +84,7 @@ public class CoursesScreen implements Screen {
         botaoFechar.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                jogo.efeitoConfirmar.play();
                 jogo.setScreen(telaAnterior);
             }
         });
@@ -104,8 +104,11 @@ public class CoursesScreen implements Screen {
     private TextButtonSecond criarBotaoModulo(int modulo, float x, float y, Status status) {
         String imagemBotao = "files/buttons/quadrado-block.png";
         String textoModulo = "";
-        if (status == Status.LIBERADO || status == Status.CONCLUIDO) {
+        if (status == Status.LIBERADO) {
             imagemBotao = "files/buttons/quadrado.png";
+            textoModulo = "Módulo " + modulo;
+        } else if (status == Status.CONCLUIDO) {
+            imagemBotao = "files/buttons/quadrado-concluido.png";
             textoModulo = "Módulo " + modulo;
         }
 
@@ -114,11 +117,14 @@ public class CoursesScreen implements Screen {
         botao.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                jogo.efeitoConfirmar.play();
+
                 Course course = CourseDAO.carregarDadosModulo(modulo);
                 DebugMode.mostrarLog("CoursesScreen", "Botão " + modulo + " clicado, curso:" + course);
 
                 // Atualiza o status do curso para concluido e desconta 50 moedas
                 if (course.getStatus() == Status.LIBERADO) {
+                    jogo.efeitoMoeda.play();
                     jogo.personagem.moedas -= 50;
                     CourseDAO.atualizaStatusCurso(course.getId(), Status.CONCLUIDO);
                 }
@@ -147,12 +153,16 @@ public class CoursesScreen implements Screen {
     private void atualizarBotaoStatus(TextButtonSecond botao, int modulo) {
         Course course = CourseDAO.buscaCursoPorId(modulo);
         if (course != null) {
-            String imagemBotao = validaCursoLiberado(course)
-                    ? "files/buttons/quadrado.png"
-                    : "files/buttons/quadrado-block.png";
-            String textoModulo = validaCursoLiberado(course)
-                    ? "Módulo " + modulo
-                    : "";
+            String imagemBotao = "files/buttons/quadrado-block.png";
+            String textoModulo = "";
+            if (course.getStatus() == Status.LIBERADO) {
+                imagemBotao = "files/buttons/quadrado.png";
+                textoModulo = "Módulo " + modulo;
+            } else if (course.getStatus() == Status.CONCLUIDO) {
+                imagemBotao = "files/buttons/quadrado-concluido.png";
+                textoModulo = "Módulo " + modulo;
+            }
+            
             botao.setText(textoModulo);
             botao.setNewImageButton(imagemBotao);
         }

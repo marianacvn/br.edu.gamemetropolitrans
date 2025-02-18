@@ -3,6 +3,7 @@ package br.edu.metropolitrans.model;
 public class Course {
     private int id;
     private String nome;
+    private String descricaoPagInicial;
     private String descricao;
     private Status status;
     private int missaoId;
@@ -12,10 +13,11 @@ public class Course {
     public Course() {
     }
 
-    public Course(int id, String nome, String descricao, Status status, int missaoId, String imagemPath,
+    public Course(int id, String nome, String descricaoPagInicial, String descricao, Status status, int missaoId, String imagemPath,
             String videoUrl) {
         this.id = id;
         this.nome = nome;
+        this.descricaoPagInicial = descricaoPagInicial;
         this.descricao = descricao;
         this.status = status;
         this.missaoId = missaoId;
@@ -37,6 +39,14 @@ public class Course {
 
     public void setNome(String nome) {
         this.nome = nome;
+    }
+
+    public String getDescricaoPagInicial() {
+        return descricaoPagInicial;
+    }
+
+    public void setDescricaoPagInicial(String descricaoPagInicial) {
+        this.descricaoPagInicial = descricaoPagInicial;
     }
 
     public String getDescricao() {
