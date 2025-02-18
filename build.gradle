@@ -1,4 +1,3 @@
-// Removed non-existent initialization script reference
 buildscript {
   repositories {
     mavenCentral()
@@ -35,9 +34,9 @@ configure(subprojects - project(':android')) {
   // From https://lyze.dev/2021/04/29/libGDX-Internal-Assets-List/
   // The article can be helpful when using assets.txt in your project.
   tasks.register('generateAssetList') {
-    inputs.dir("${project.rootDir}/assets/")
+    inputs.dir("${project.rootDir}/files/")
     // projectFolder/assets
-    File assetsFolder = new File("${project.rootDir}/assets/")
+    File assetsFolder = new File("${project.rootDir}/files/")
     // projectFolder/assets/assets.txt
     File assetsFile = new File(assetsFolder, "assets.txt")
     // delete that file in case we've already created it

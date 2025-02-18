@@ -19,6 +19,8 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 import br.edu.metropolitrans.MetropoliTrans;
+import br.edu.metropolitrans.model.ConfigData;
+import br.edu.metropolitrans.model.dao.ConfigDAO;
 import br.edu.metropolitrans.view.components.buttons.ImageButtonBase;
 import br.edu.metropolitrans.view.components.buttons.TextButtonBase;
 import br.edu.metropolitrans.view.font.FontBase;
@@ -33,12 +35,12 @@ public class MenuScreen implements Screen {
     /** Define o estilo do botão */
     public Skin skin;
     public Label titulo;
-    public TextButtonBase botaoJogar, botaoNovoJogo, botaoConfig, botaoCreditos, botaoSair;
+    public TextButtonBase botaoNovoJogo, botaoConfig, botaoCreditos, botaoSair;
     public ImageButtonBase botaoMute;
     /**
      * Define se o som está mutado ou não
      */
-    public boolean isMuted = false;
+    public boolean isMuted;
     /**
      * Viewport da tela
      */
@@ -48,6 +50,8 @@ public class MenuScreen implements Screen {
         this.jogo = jogo;
         // Carrega a textura de fundo
         background = new Texture(Gdx.files.internal("files/backgrounds/background-principal-2.png"));
+
+        isMuted = ConfigDAO.carregarConfig().isMute();
 
         // Cria o Viewport e o Stage
         viewport = new ScreenViewport(); // Usa ScreenViewport para ajustar automaticamente ao tamanho da janela
@@ -78,9 +82,17 @@ public class MenuScreen implements Screen {
         botaoMute.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                jogo.efeitoConfirmar.play();
+
                 isMuted = !isMuted;
+
+                ConfigData config = ConfigDAO.carregarConfig();
+                config.setMute(isMuted);
+                ConfigDAO.salvarConfig(config);
+
                 if (isMuted) {
                     jogo.musicaMenu.pause();
+
                 } else {
                     jogo.musicaMenu.play();
                 }
@@ -99,31 +111,29 @@ public class MenuScreen implements Screen {
         titulo.setPosition(Gdx.graphics.getWidth() / 2 - titulo.getWidth() / 2, Gdx.graphics.getHeight() - 190);
 
         // Cria o botão
-        botaoJogar = new TextButtonBase("Jogar", "files/buttons/botao-dark2.png", skin);
-        botaoJogar.setSize(160, 60);
-        botaoJogar.setPosition(Gdx.graphics.getWidth() / 2 - botaoJogar.getWidth() / 2,
-                Gdx.graphics.getHeight() / 2 - botaoJogar.getHeight() / 2);
-
         botaoNovoJogo = new TextButtonBase("Novo Jogo", "files/buttons/botao-dark2.png", skin);
         botaoNovoJogo.setSize(160, 60);
-        botaoNovoJogo.setPosition(botaoJogar.getX(), botaoJogar.getY() - botaoJogar.getHeight() - 20);
+        botaoNovoJogo.setPosition(Gdx.graphics.getWidth() / 2 - botaoNovoJogo.getWidth() / 2,
+                Gdx.graphics.getHeight() / 2 - botaoNovoJogo.getHeight() / 2);
 
         botaoConfig = new TextButtonBase("Configurações", "files/buttons/botao-dark2.png", skin);
         botaoConfig.setSize(160, 60);
-        botaoConfig.setPosition(botaoJogar.getX(), botaoNovoJogo.getY() - botaoNovoJogo.getHeight() - 20);
+        botaoConfig.setPosition(botaoNovoJogo.getX(), botaoNovoJogo.getY() - botaoNovoJogo.getHeight() - 20);
 
         botaoCreditos = new TextButtonBase("Créditos", "files/buttons/botao-dark2.png", skin);
         botaoCreditos.setSize(160, 60);
-        botaoCreditos.setPosition(botaoJogar.getX(), botaoConfig.getY() - botaoConfig.getHeight() - 20);
+        botaoCreditos.setPosition(botaoNovoJogo.getX(), botaoConfig.getY() - botaoConfig.getHeight() - 20);
 
         botaoSair = new TextButtonBase("Sair", "files/buttons/botao-dark2.png", skin);
         botaoSair.setSize(160, 60);
-        botaoSair.setPosition(botaoJogar.getX(), botaoCreditos.getY() - botaoCreditos.getHeight() - 20);
+        botaoSair.setPosition(botaoNovoJogo.getX(), botaoCreditos.getY() - botaoCreditos.getHeight() - 20);
 
         // Adiciona uma ação ao botão Configurações
         botaoConfig.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                jogo.efeitoConfirmar.play();
+
                 if (jogo.telas.get("config") == null)
                     jogo.telas.put("config", new ConfigScreen(jogo, MenuScreen.this));
                 jogo.setScreen(jogo.telas.get("config"));
@@ -134,6 +144,8 @@ public class MenuScreen implements Screen {
         botaoCreditos.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                jogo.efeitoConfirmar.play();
+
                 if (jogo.telas.get("credit") == null)
                     jogo.telas.put("credit", new CreditScreen(jogo, MenuScreen.this));
                 jogo.setScreen(jogo.telas.get("credit"));
@@ -144,6 +156,7 @@ public class MenuScreen implements Screen {
         botaoNovoJogo.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                jogo.efeitoConfirmar.play();
                 jogo.setScreen(new CharacterSelectionScreen(jogo));
             }
         });
@@ -152,21 +165,13 @@ public class MenuScreen implements Screen {
         botaoSair.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                jogo.efeitoConfirmar.play();
                 Gdx.app.exit();
-            }
-        });
-
-        // Adiciona uma ação ao botão Jogar
-        botaoJogar.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                jogo.setScreen(new SaveGameScreen(jogo));
             }
         });
 
         // Adiciona o botão ao Stage
         stage.addActor(titulo);
-        stage.addActor(botaoJogar);
         stage.addActor(botaoNovoJogo);
         stage.addActor(botaoConfig);
         stage.addActor(botaoCreditos);
@@ -178,7 +183,6 @@ public class MenuScreen implements Screen {
     @Override
     public void show() {
         Gdx.input.setInputProcessor(stage);
-
     }
 
     @Override
@@ -205,15 +209,13 @@ public class MenuScreen implements Screen {
         viewport.update(width, height, true);
 
         // Reposiciona os elementos da interface do usuário
-        botaoMute.setPosition(viewport.getWorldWidth() - botaoMute.getWidth() - 10,
-                viewport.getWorldHeight() - botaoMute.getHeight() - 10);
-        botaoJogar.setPosition(viewport.getWorldWidth() / 2 - botaoJogar.getWidth() / 2,
-                viewport.getWorldHeight() / 2 - botaoJogar.getHeight() / 2);
-        botaoNovoJogo.setPosition(botaoJogar.getX(), botaoJogar.getY() - botaoJogar.getHeight());
-        botaoConfig.setPosition(botaoJogar.getX(), botaoNovoJogo.getY() - botaoNovoJogo.getHeight());
-        botaoCreditos.setPosition(botaoJogar.getX(), botaoConfig.getY() - botaoConfig.getHeight());
-        botaoSair.setPosition(botaoJogar.getX(), botaoCreditos.getY() - botaoCreditos.getHeight());
-        titulo.setPosition(viewport.getWorldWidth() / 2 - titulo.getWidth() / 2, viewport.getWorldHeight() - 190);
+        // botaoMute.setPosition(viewport.getWorldWidth() - botaoMute.getWidth() - 10,
+        //         viewport.getWorldHeight() - botaoMute.getHeight() - 10);
+        // botaoNovoJogo.setPosition(botaoNovoJogo.getX(), botaoNovoJogo.getY() - botaoNovoJogo.getHeight());
+        // botaoConfig.setPosition(botaoNovoJogo.getX(), botaoNovoJogo.getY() - botaoNovoJogo.getHeight());
+        // botaoCreditos.setPosition(botaoNovoJogo.getX(), botaoConfig.getY() - botaoConfig.getHeight());
+        // botaoSair.setPosition(botaoNovoJogo.getX(), botaoCreditos.getY() - botaoCreditos.getHeight());
+        // titulo.setPosition(viewport.getWorldWidth() / 2 - titulo.getWidth() / 2, viewport.getWorldHeight() - 190);
     }
 
     @Override

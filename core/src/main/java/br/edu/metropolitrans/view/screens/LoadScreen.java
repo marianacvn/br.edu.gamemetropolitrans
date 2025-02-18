@@ -11,18 +11,22 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.ScreenUtils;
 
 import br.edu.metropolitrans.MetropoliTrans;
+import br.edu.metropolitrans.model.ConfigSave;
 import br.edu.metropolitrans.model.connection.SaveManager;
+import br.edu.metropolitrans.model.utils.DebugMode;
 import br.edu.metropolitrans.view.font.FontBase;
 
 public class LoadScreen implements Screen {
     public final MetropoliTrans jogo;
+    public final ConfigSave save;
     public Stage stage;
     public Skin skin;
     public Label titulo;
     public Texture background;
 
-    public LoadScreen(final MetropoliTrans jogo) {
+    public LoadScreen(MetropoliTrans jogo, ConfigSave save) {
         this.jogo = jogo;
+        this.save = save;
 
         // Carrega a textura de fundo
         background = new Texture(Gdx.files.internal("files/backgrounds/background-principal-2.png"));
@@ -52,6 +56,17 @@ public class LoadScreen implements Screen {
 
         stage.addActor(titulo);
 
+        // Verifica se existe um save
+        // DESATIVADO - Não é mais necessário
+        // if (save == null) {
+        // SaveManager.criarNovoSave(SaveManager.verificaQualProximoSaveDis());
+        // } else if (save != null && save.getName() != null) {
+        // SaveManager.definirSaveAtual(save.getId());
+        // } else {
+        // SaveManager.criarNovoSave(save.getId());
+        // }
+
+        SaveManager.criarNovoSave(1);
     }
 
     @Override
@@ -71,10 +86,13 @@ public class LoadScreen implements Screen {
                 Gdx.app.postRunnable(new Runnable() {
                     @Override
                     public void run() {
-                        if (jogo.telas.get("game") == null)
+                        if (jogo.telas.get("game") == null) {
                             jogo.telas.put("game", new GameScreen(jogo));
-                        SaveManager.criarNovoSave();
-                        jogo.controller.inicializiar();
+                            DebugMode.mostrarLog("LoadScreen", "GameScreen criada");
+                        }
+
+                        jogo.controller.inicializar();
+
                         jogo.setScreen(jogo.telas.get("game"));
                     }
                 });

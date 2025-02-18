@@ -13,7 +13,10 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 
 import br.edu.metropolitrans.MetropoliTrans;
-
+import br.edu.metropolitrans.model.ConfigData;
+import br.edu.metropolitrans.model.ConfigSave;
+import br.edu.metropolitrans.model.connection.SaveManager;
+import br.edu.metropolitrans.model.dao.ConfigDAO;
 import br.edu.metropolitrans.view.components.buttons.TextButtonSecond;
 import br.edu.metropolitrans.view.font.FontBase;
 
@@ -27,6 +30,9 @@ public class SaveGameScreen implements Screen {
 
     public SaveGameScreen(MetropoliTrans jogo) {
         this.jogo = jogo;
+
+        // Define a configuração do jogo
+        ConfigData config = ConfigDAO.carregarConfig();
 
         // Cria o Stage e o Skin
         stage = new Stage();
@@ -55,18 +61,39 @@ public class SaveGameScreen implements Screen {
         // Cria uma tabela para organizar os botões
         Table table = new Table();
         table.setFillParent(true);
-       
+
+        int quantidadeSaves = config.getSaveInfo().getSaves().size();
+        String textoSave1 = quantidadeSaves > 0
+                ? config.getSaveInfo().getSaves().get(0).getName() + " - "
+                        + config.getSaveInfo().getSaves().get(0).getDate()
+                : "Save Vazio";
+        String textoSave2 = quantidadeSaves > 1
+                ? config.getSaveInfo().getSaves().get(1).getName() + " - "
+                        + config.getSaveInfo().getSaves().get(1).getDate()
+                : "Save Vazio";
+        String textoSave3 = quantidadeSaves > 2
+                ? config.getSaveInfo().getSaves().get(2).getName() + " - "
+                        + config.getSaveInfo().getSaves().get(2).getDate()
+                : "Save Vazio";
+        String textoSave4 = quantidadeSaves > 3
+                ? config.getSaveInfo().getSaves().get(3).getName() + " - "
+                        + config.getSaveInfo().getSaves().get(3).getDate()
+                : "Save Vazio";
+        String textoSave5 = quantidadeSaves > 4
+                ? config.getSaveInfo().getSaves().get(4).getName() + " - "
+                        + config.getSaveInfo().getSaves().get(4).getDate()
+                : "Save Vazio";
 
         // Cria os botões de save e lixeira
-        botao1 = new TextButtonSecond("Save 1", "files/buttons/quadrado3.png", skin);
+        botao1 = new TextButtonSecond(textoSave1, "files/buttons/quadrado3.png", skin);
         lixeira1 = new TextButtonSecond("", "files/itens/lixeira3.png", skin);
-        botao2 = new TextButtonSecond("Save 2", "files/buttons/quadrado3.png", skin);
+        botao2 = new TextButtonSecond(textoSave2, "files/buttons/quadrado3.png", skin);
         lixeira2 = new TextButtonSecond("", "files/itens/lixeira3.png", skin);
-        botao3 = new TextButtonSecond("Save 3", "files/buttons/quadrado3.png", skin);
+        botao3 = new TextButtonSecond(textoSave3, "files/buttons/quadrado3.png", skin);
         lixeira3 = new TextButtonSecond("", "files/itens/lixeira3.png", skin);
-        botao4 = new TextButtonSecond("Save 4", "files/buttons/quadrado3.png", skin);
+        botao4 = new TextButtonSecond(textoSave4, "files/buttons/quadrado3.png", skin);
         lixeira4 = new TextButtonSecond("", "files/itens/lixeira3.png", skin);
-        botao5 = new TextButtonSecond("Save 5", "files/buttons/quadrado3.png", skin);
+        botao5 = new TextButtonSecond(textoSave5, "files/buttons/quadrado3.png", skin);
         lixeira5 = new TextButtonSecond("", "files/itens/lixeira3.png", skin);
 
         // Adiciona os botões à tabela
@@ -84,35 +111,65 @@ public class SaveGameScreen implements Screen {
         botao1.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                jogo.setScreen(new LoadScreen(jogo));
+                jogo.efeitoConfirmar.play();
+                if (quantidadeSaves > 0) {
+                    //jogo.atualizarJogoPorSaveGameData("jogo");
+                    jogo.setScreen(new LoadScreen(jogo, config.getSaveInfo().getSaves().get(0)));
+                } else {
+                    jogo.setScreen(new LoadScreen(jogo, new ConfigSave(1)));
+                }
             }
         });
 
         botao2.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                jogo.setScreen(new LoadScreen(jogo));
+                jogo.efeitoConfirmar.play();
+                if (quantidadeSaves > 1) {
+                    //jogo.atualizarJogoPorSaveGameData("jogo");
+                    jogo.setScreen(new LoadScreen(jogo, config.getSaveInfo().getSaves().get(1)));
+                } else {
+                    jogo.setScreen(new LoadScreen(jogo, new ConfigSave(2)));
+                }
             }
         });
 
         botao3.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                jogo.setScreen(new LoadScreen(jogo));
+                jogo.efeitoConfirmar.play();
+                if (quantidadeSaves > 2) {
+                    //jogo.atualizarJogoPorSaveGameData("jogo");
+                    jogo.setScreen(new LoadScreen(jogo, config.getSaveInfo().getSaves().get(2)));
+                } else {
+                    jogo.setScreen(new LoadScreen(jogo, new ConfigSave(3)));
+                }
             }
         });
 
         botao4.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                jogo.setScreen(new LoadScreen(jogo));
+                jogo.efeitoConfirmar.play();
+                if (quantidadeSaves > 3) {
+                    //jogo.atualizarJogoPorSaveGameData("jogo");
+                    jogo.setScreen(new LoadScreen(jogo, config.getSaveInfo().getSaves().get(3)));
+                } else {
+                    jogo.setScreen(new LoadScreen(jogo, new ConfigSave(4)));
+                }
             }
         });
 
         botao5.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                jogo.setScreen(new LoadScreen(jogo));
+                jogo.efeitoConfirmar.play();
+                if (quantidadeSaves > 4) {
+                    //jogo.atualizarJogoPorSaveGameData("jogo");
+                    jogo.setScreen(new LoadScreen(jogo, config.getSaveInfo().getSaves().get(4)));
+                } else {
+                    jogo.setScreen(new LoadScreen(jogo, new ConfigSave(5)));
+                }
             }
         });
 
@@ -120,35 +177,65 @@ public class SaveGameScreen implements Screen {
         lixeira1.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                // Lógica para deletar o save 1
+                jogo.efeitoConfirmar.play();
+                if (quantidadeSaves > 0) {
+                    config.getSaveInfo().getSaves().remove(0);
+                    ConfigDAO.salvarConfig(config);
+                    SaveManager.removeArquivoSave(1);
+                    jogo.setScreen(new SaveGameScreen(jogo));
+                }
             }
         });
 
         lixeira2.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                // Lógica para deletar o save 2
+                jogo.efeitoConfirmar.play();
+                if (quantidadeSaves > 1) {
+                    config.getSaveInfo().getSaves().remove(1);
+                    ConfigDAO.salvarConfig(config);
+                    SaveManager.removeArquivoSave(2);
+                    jogo.setScreen(new SaveGameScreen(jogo));
+                }
             }
         });
 
         lixeira3.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                // Lógica para deletar o save 3
+                jogo.efeitoConfirmar.play();
+                if (quantidadeSaves > 2) {
+                    config.getSaveInfo().getSaves().remove(2);
+                    ConfigDAO.salvarConfig(config);
+                    SaveManager.removeArquivoSave(3);
+                    jogo.setScreen(new SaveGameScreen(jogo));
+                }
             }
         });
 
         lixeira4.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                // Lógica para deletar o save 4
+                jogo.efeitoConfirmar.play();
+                if (quantidadeSaves > 3) {
+                    config.getSaveInfo().getSaves().remove(3);
+                    ConfigDAO.salvarConfig(config);
+                    SaveManager.removeArquivoSave(4);
+                    jogo.setScreen(new SaveGameScreen(jogo));
+                }
             }
         });
 
         lixeira5.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                // Lógica para deletar o save 5
+                jogo.efeitoConfirmar.play();
+                if (quantidadeSaves > 4) {
+                    config.getSaveInfo().getSaves().remove(4);
+                    ConfigDAO.salvarConfig(config);
+                    SaveManager.removeArquivoSave(5);
+                    jogo.setScreen(new SaveGameScreen(jogo));
+                }
             }
         });
 

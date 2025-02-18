@@ -22,7 +22,7 @@ public class LoadingScreen implements Screen {
     public String gameName = "MetropoliTrans";
     public String displayedText = "";
     public float timeElapsed = 0f;
-    public float typingSpeed = 0.1f; // Velocidade de digitação
+    public float typingSpeed = 0.2f; // Velocidade de digitação
     public float displayTime = 0.5f; // Tempo para exibir o título após a digitaçã
 
     public LoadingScreen(final MetropoliTrans jogo) {

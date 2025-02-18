@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 import br.edu.metropolitrans.MetropoliTrans;
+import br.edu.metropolitrans.model.actors.BasicAnimation;
 import br.edu.metropolitrans.model.actors.Personagem;
 import br.edu.metropolitrans.view.font.FontBase;
 
@@ -21,6 +22,7 @@ public class Hud {
     private Texture moedasIcon;
     private Texture estrelaIcon, estrelaVaziaIcon;
     private ShapeRenderer shapeRenderer;
+    private BasicAnimation notificacao;
 
     public Hud(MetropoliTrans jogo) {
         this.jogo = jogo;
@@ -34,9 +36,42 @@ public class Hud {
         moedasIcon = new Texture(Gdx.files.internal("files/itens/moeda.png"));
         estrelaIcon = new Texture(Gdx.files.internal("files/itens/estrela-pintada.png"));
         estrelaVaziaIcon = new Texture(Gdx.files.internal("files/itens/estrela-vazia.png"));
+
+        // Inicia a animação de notificação
+        // Intancia animação da notificação
+        notificacao = new BasicAnimation(0, 0, jogo.estagioPrincipal);
+        String[] nomeArquivosNotificacao = {
+                "files/animation/book-animation/frame_00.png",
+                "files/animation/book-animation/frame_01.png",
+                "files/animation/book-animation/frame_02.png",
+                "files/animation/book-animation/frame_03.png",
+                "files/animation/book-animation/frame_04.png",
+                "files/animation/book-animation/frame_05.png",
+                "files/animation/book-animation/frame_06.png",
+                "files/animation/book-animation/frame_07.png"
+        };
+        notificacao.carregaAnimacaoDeArquivos(
+                nomeArquivosNotificacao, 0.1f, true);
+        notificacao.setVisible(false);
     }
 
     public void render() {
+        if (jogo.controller.notificarLiberacaoModulo) {
+            jogo.efeitoNotificacao.play();
+            notificacao.setPosition(x + 1170, y + 550);
+            notificacao.setVisible(true);
+
+            new Thread(() -> {
+                try {
+                    Thread.sleep(3000);
+                    notificacao.setVisible(false);
+                    jogo.controller.notificarLiberacaoModulo = false;
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }).start();
+        }
+
         jogo.batch.begin();
         // Desenhar o ícone e o valor de XP
         jogo.batch.draw(xpIcon, x + 1170, y + 650, 80, 20);

@@ -6,7 +6,11 @@
 	"dialogosMissao": [
 		{
 			"missao":4,
-			"mensagem": "Olá, senhor(a). Preciso muito de sua ajuda, não estamos conseguindo trafegar com nossas bicicletas na avenida principal, isto é uma irresponsabilidade! Consegui a assinatura de mil cicilistas para que possamos ser ouvidos. Por lei nós temos o direito de solicitar uma melhoria, só saio daqui com a solução do problema."
+			"mensagem": "Olá, senhor(a). Preciso de sua ajuda, não estamos conseguindo trafegar com nossas bicicletas na avenida principal, isto é uma irresponsabilidade! Consegui a assinatura de mil cicilistas para que possamos ser ouvidos. Por lei nós temos o direito de solicitar uma melhoria, só saio daqui com a solução do problema."
+		},
+		{
+			"missao": 8,
+			"mensagem": "Parabéns, nós estamos muito gratos por todo o seu esforço com a segurança da cidade."
 		}
 	]
 }

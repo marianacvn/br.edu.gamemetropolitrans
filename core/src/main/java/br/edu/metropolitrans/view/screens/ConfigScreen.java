@@ -13,6 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Slider;
 import com.badlogic.gdx.scenes.scene2d.ui.Slider.SliderStyle;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
@@ -20,6 +21,8 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.ScreenUtils;
 
 import br.edu.metropolitrans.MetropoliTrans;
+import br.edu.metropolitrans.model.ConfigData;
+import br.edu.metropolitrans.model.dao.ConfigDAO;
 import br.edu.metropolitrans.view.components.buttons.ButtonBase;
 import br.edu.metropolitrans.view.components.buttons.TextButtonBase;
 import br.edu.metropolitrans.view.font.FontBase;
@@ -29,12 +32,11 @@ public class ConfigScreen implements Screen {
     public final MetropoliTrans jogo;
     public Stage stage;
     public Skin skin;
-
-    public Label titulo, volumeLabel, botaoAlabel, botaoDlabel, botaoWlabel, botaoSlabel, botaoUpLabel, botaoDownLabel,
-            botaoLeftLabel, botaoRightLabel, botaoSpaceLabel, botaoEscLabel;
+    public Label titulo, titulo2, volumeLabel, botaoAlabel, botaoDlabel, botaoWlabel, botaoSlabel, botaoSpaceLabel,
+            botaoEscLabel, botaoEnterLabel, botaoTLabel;
     public Slider sliderVolume;
     public Screen telaAnterior;
-    public ButtonBase botaoA, botaoD, botaoW, botaoS, botaoUp, botaoDown, botaoLeft, botaoRight, botaoSpace, botaoEsc;
+    public ButtonBase botaoA, botaoD, botaoW, botaoS, botaoSpace, botaoEsc, botaoEnter, botaoT;
 
     public ConfigScreen(final MetropoliTrans jogo, Screen telaAnterior) {
         this.jogo = jogo;
@@ -44,10 +46,8 @@ public class ConfigScreen implements Screen {
         botaoD = new ButtonBase("files/buttons/botao-d.png", botaoDlabel);
         botaoS = new ButtonBase("files/buttons/botao-s.png", botaoSlabel);
         botaoW = new ButtonBase("files/buttons/botao-w.png", botaoWlabel);
-        botaoUp = new ButtonBase("files/buttons/botao-up.png", botaoUpLabel);
-        botaoDown = new ButtonBase("files/buttons/botao-down.png", botaoDownLabel);
-        botaoLeft = new ButtonBase("files/buttons/botao-left.png", botaoLeftLabel);
-        botaoRight = new ButtonBase("files/buttons/botao-right.png", botaoRightLabel);
+        botaoEnter = new ButtonBase("files/buttons/botao-enter.png", botaoEnterLabel);
+        botaoT = new ButtonBase("files/buttons/botao-t.png", botaoTLabel);
         botaoSpace = new ButtonBase("files/buttons/botao-space.png", botaoSpaceLabel);
         botaoEsc = new ButtonBase("files/buttons/botao-esc.png", botaoEscLabel);
 
@@ -69,6 +69,9 @@ public class ConfigScreen implements Screen {
         titulo = new Label("Configurações", labelStyle);
         titulo.setPosition(Gdx.graphics.getWidth() / 2 - titulo.getWidth() / 2, Gdx.graphics.getHeight() - 100);
 
+        titulo2 = new Label("Controles", labelStyle);
+        titulo2.setPosition(Gdx.graphics.getWidth() / 2 - titulo2.getWidth() / 2, titulo.getY() - 200);
+
         // Adiciona um Drawable para o Slider
         Texture sliderBackgroundTexture = new Texture(Gdx.files.internal("files/backgrounds/background-slider.png"));
         Texture sliderKnobTexture = new Texture(Gdx.files.internal("files/backgrounds/background-slider-knob.png"));
@@ -85,6 +88,7 @@ public class ConfigScreen implements Screen {
         botaoVoltar.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                jogo.efeitoConfirmar.play();
                 jogo.setScreen(telaAnterior);
             }
         });
@@ -107,70 +111,68 @@ public class ConfigScreen implements Screen {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 jogo.musicaMenu.setVolume(sliderVolume.getValue());
+
+                ConfigData config = ConfigDAO.carregarConfig();
+                config.setVolume(sliderVolume.getValue());
+                ConfigDAO.salvarConfig(config);
+
                 volumeLabel.setText("Volume: " + (int) (sliderVolume.getValue() * 100) + "%");
             }
         });
 
-        // Posiciona os botões de controle
-        botaoA.setPosition(sliderVolume.getX(), sliderVolume.getY() - 50);
-        botaoD.setPosition(sliderVolume.getX(), botaoA.getY() - botaoA.getHeight() - 10);
-        botaoW.setPosition(sliderVolume.getX(), botaoD.getY() - botaoD.getHeight() - 10);
-        botaoS.setPosition(sliderVolume.getX(), botaoW.getY() - botaoW.getHeight() - 10);
-        botaoUp.setPosition(sliderVolume.getX(), botaoS.getY() - botaoS.getHeight() - 10);
-        botaoDown.setPosition(sliderVolume.getX(), botaoUp.getY() - botaoUp.getHeight() - 10);
-        botaoLeft.setPosition(sliderVolume.getX(), botaoDown.getY() - botaoDown.getHeight() - 10);
-        botaoRight.setPosition(sliderVolume.getX(), botaoLeft.getY() - botaoLeft.getHeight() - 10);
-        botaoSpace.setPosition(sliderVolume.getX(), botaoRight.getY() - botaoRight.getHeight() - 10);
-        botaoEsc.setPosition(sliderVolume.getX(), botaoSpace.getY() - botaoSpace.getHeight() - 10);
-
         // Cria os labels para os botões de controle
         botaoAlabel = new Label("Andar para a esquerda", labelStyle2);
-        botaoAlabel.setPosition(sliderVolume.getX() + 70, sliderVolume.getY() - 60);
+        // botaoAlabel.setPosition(sliderVolume.getX() + 70, sliderVolume.getY() - 60);
         botaoDlabel = new Label("Andar para a direita", labelStyle2);
-        botaoDlabel.setPosition(sliderVolume.getX() + 70, botaoAlabel.getY() - 29);
+        // botaoDlabel.setPosition(sliderVolume.getX() + 70, botaoAlabel.getY() - 29);
         botaoWlabel = new Label("Andar para cima", labelStyle2);
-        botaoWlabel.setPosition(sliderVolume.getX() + 70, botaoDlabel.getY() - 28);
+        // botaoWlabel.setPosition(sliderVolume.getX() + 70, botaoDlabel.getY() - 28);
         botaoSlabel = new Label("Andar para baixo", labelStyle2);
-        botaoSlabel.setPosition(sliderVolume.getX() + 70, botaoWlabel.getY() - 27);
-        botaoUpLabel = new Label("Andar para cima", labelStyle2);
-        botaoUpLabel.setPosition(sliderVolume.getX() + 70, botaoSlabel.getY() - 26);
-        botaoDownLabel = new Label("Andar para baixo", labelStyle2);
-        botaoDownLabel.setPosition(sliderVolume.getX() + 70, botaoUpLabel.getY() - 25);
-        botaoLeftLabel = new Label("Andar para a esquerda", labelStyle2);
-        botaoLeftLabel.setPosition(sliderVolume.getX() + 70, botaoDownLabel.getY() - 24);
-        botaoRightLabel = new Label("Andar para a direita", labelStyle2);
-        botaoRightLabel.setPosition(sliderVolume.getX() + 70, botaoLeftLabel.getY() - 23);
+        // botaoSlabel.setPosition(sliderVolume.getX() + 70, botaoWlabel.getY() - 27);
+        botaoEnterLabel = new Label("Pular Diálogos", labelStyle2);
+        // botaoEnterLabel.setPosition(sliderVolume.getX() + 70, botaoSlabel.getY() -
+        // 24);
+        botaoTLabel = new Label("Acessa o telefone", labelStyle2);
+        // botaoTLabel.setPosition(sliderVolume.getX() + 70, botaoEnterLabel.getY() -
+        // 25);
         botaoSpaceLabel = new Label("Interagir", labelStyle2);
-        botaoSpaceLabel.setPosition(sliderVolume.getX() + 70, botaoRightLabel.getY() - 30);
+        // botaoSpaceLabel.setPosition(sliderVolume.getX() + 70, botaoTLabel.getY() -
+        // 30);
         botaoEscLabel = new Label("Configurações", labelStyle2);
-        botaoEscLabel.setPosition(sliderVolume.getX() + 70, botaoSpaceLabel.getY() - 28);
+        // botaoEscLabel.setPosition(sliderVolume.getX() + 70, botaoSpaceLabel.getY() -
+        // 28);
+
+        // Cria uma tabela para organizar os botões e labels
+        Table table = new Table();
+        table.setFillParent(true);
+        table.top().padTop(titulo2.getY() - 130);
+
+        // Adiciona os botões e labels à tabela
+        table.add(botaoA).padBottom(5).left();
+        table.add(botaoAlabel).padBottom(5).left().row();
+        table.add(botaoD).padBottom(5).left();
+        table.add(botaoDlabel).padBottom(5).left().row();
+        table.add(botaoW).padBottom(5).left();
+        table.add(botaoWlabel).padBottom(5).left().row();
+        table.add(botaoS).padBottom(5).left();
+        table.add(botaoSlabel).padBottom(5).left().row();
+        table.add(botaoT).padBottom(5).left();
+        table.add(botaoTLabel).padBottom(5).left().row();
+        table.add(botaoEnter).padBottom(5).left();
+        table.add(botaoEnterLabel).padBottom(5).left().row();
+        table.add(botaoSpace).padBottom(5).left();
+        table.add(botaoSpaceLabel).padLeft(10).padBottom(10).left().row(); // Adiciona padding à esquerda para espaçar o
+                                                                           // label do botão
+        table.add(botaoEsc).padBottom(5).left();
+        table.add(botaoEscLabel).padBottom(5).left().row();
 
         // Adiciona o título ao Stage
-
         stage.addActor(botaoVoltar);
         stage.addActor(titulo);
         stage.addActor(volumeLabel);
         stage.addActor(sliderVolume);
-        stage.addActor(botaoA);
-        stage.addActor(botaoD);
-        stage.addActor(botaoW);
-        stage.addActor(botaoS);
-        stage.addActor(botaoUp);
-        stage.addActor(botaoDown);
-        stage.addActor(botaoLeft);
-        stage.addActor(botaoRight);
-        stage.addActor(botaoSpace);
-        stage.addActor(botaoEsc);
-        stage.addActor(botaoAlabel);
-        stage.addActor(botaoDlabel);
-        stage.addActor(botaoWlabel);
-        stage.addActor(botaoSlabel);
-        stage.addActor(botaoUpLabel);
-        stage.addActor(botaoDownLabel);
-        stage.addActor(botaoLeftLabel);
-        stage.addActor(botaoRightLabel);
-        stage.addActor(botaoSpaceLabel);
-        stage.addActor(botaoEscLabel);
+        stage.addActor(titulo2);
+        stage.addActor(table);
 
     }
 

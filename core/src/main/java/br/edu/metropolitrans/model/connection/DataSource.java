@@ -1,6 +1,8 @@
 package br.edu.metropolitrans.model.connection;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
 import br.edu.metropolitrans.model.utils.DebugMode;
 
 import java.io.FileInputStream;
@@ -20,11 +22,13 @@ public class DataSource {
     private Gson gson;
     private String arquivoAtualCursos;
     private String arquivoAtualMissoes;
+    private String arquivoAtualDadosJogo;
 
     private DataSource() {
-        gson = new Gson();
+        gson = new GsonBuilder().setPrettyPrinting().create();
         arquivoAtualCursos = "courses.json"; // Arquivo padrão para cursos
         arquivoAtualMissoes = "missions.json"; // Arquivo padrão para missões
+        arquivoAtualDadosJogo = "game-data.json"; // Arquivo padrão para dados do jogo
     }
 
     /**
@@ -53,13 +57,22 @@ public class DataSource {
         this.arquivoAtualMissoes = nomeArquivo;
     }
 
+    /**
+     * Define o arquivo de save atual para dados do jogo
+     */
+    public void setArquivoAtualDadosJogo(String nomeArquivo) {
+        this.arquivoAtualDadosJogo = nomeArquivo;
+    }
+
     private String selecionarArquivos(String tipo) {
         if (tipo.equals("cursos")) {
             return arquivoAtualCursos;
         } else if (tipo.equals("missoes")) {
             return arquivoAtualMissoes;
+        } else if (tipo.equals("jogo")) {
+            return arquivoAtualDadosJogo;
         } else {
-            // Se não for nenhum dos dois, o tipo é o caminho do arquivo
+            // Se não for nenhum dos três, o tipo é o caminho do arquivo
             return tipo;
         }
     }

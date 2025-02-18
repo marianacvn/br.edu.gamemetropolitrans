@@ -5,7 +5,7 @@
 	"dialogosMissao": [
 		{
 			"missao": 1,
-			"mensagem": "Olá, sou betânia, você deve ser o novo(a) secretário(a)! Tenho que lhe desejar muita sorte haha! Bem, estou aqui para te receber na nossa escola municipal. Desculpe a confusão que o prefeito Heberto causou, não temos uma escola específica para trânsito haha, quem dera. Mas temos aqui na nossa escola municipal, uma sala de informática, ele solicitou a instalação de um curso que explica diversos assuntos sobre trânsito, é lá que você irá aprender o que precisar."
+			"mensagem": "Olá, sou betânia, você deve ser o novo(a) secretário(a)! Tenho que lhe desejar muita sorte haha! Bem, estou aqui para te receber na nossa escola municipal. Desculpe a confusão que o Prefeito Heberto causou, não temos uma escola específica para trânsito haha, quem dera. Mas temos aqui na nossa escola municipal, uma sala de informática, ele solicitou a instalação de um curso que explica diversos assuntos sobre trânsito, é lá que você irá aprender o que precisar."
 		},
 		{
 			"missao": 1,
@@ -41,7 +41,7 @@
 		},
 		{
 			"missao": 7,
-			"mensagem": "Parabéns! Você já possui um novo módulo liberado, acredito que vamos ser uma das cidades com menos acidentes de trânsito, graças a você e o prefeito Heberto!"
+			"mensagem": "Parabéns! Você já possui um novo módulo liberado, acredito que vamos ser uma das cidades com menos acidentes de trânsito, graças a você e o Prefeito Heberto!"
 		},
 		{
 			"missao": 8,

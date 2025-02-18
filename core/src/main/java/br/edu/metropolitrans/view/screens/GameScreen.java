@@ -74,7 +74,6 @@ public class GameScreen implements Screen {
 
     public GameScreen(final MetropoliTrans jogo) {
         this.jogo = jogo;
-        // MissionController.iniciarControleMissao(jogo);
 
         // Inicializa o renderizador de formas
         renderizadorForma = new ShapeRenderer();
@@ -143,7 +142,7 @@ public class GameScreen implements Screen {
         jogo.controller.controleInfracao();
 
         // Controle de missões
-        jogo.controller.controleMissao.controle(jogo.controller.MISSAO);
+        jogo.controleMissao.controle(jogo.controller.MISSAO);
 
         // // Controle de cursos
         jogo.controller.controleCursos();
@@ -151,9 +150,9 @@ public class GameScreen implements Screen {
         // Verifica se a caixa de diálogo deve ser exibida
         // Se sim, exibe a caixa de diálogo, caso contrário permite
         // o controle do personagem continuando o jogo
-        if (!jogo.controller.mostrarDialogo && !jogo.controller.mostrarCaixaMissao) {
-            // Controle do personagem Setas ou WASD
-            jogo.controller.controlePersonagemSetas();
+        if (!jogo.controller.mostrarDialogo && !jogo.controller.mostrarCaixaMissao && !validaAnimacaoNpcAtiva()
+                && !missaoDialogoResultado.exibeDialogo) {
+            // Controle do personagem WASD
             jogo.controller.controlePersonagemWASD();
             jogo.controller.controleTelefone();
         }
@@ -179,7 +178,7 @@ public class GameScreen implements Screen {
         // quantidade de camadas
         // Obs.: Caso as camadas mudem no tiled, deve-se alterar aqui também
         int[] camadas = null;
-        if (jogo.controller.objeto != null) {
+        if (jogo.objetosInterativos.get("objeto") != null) {
             camadas = new int[] { 0, 1, 2, 3, 4, 5 };
         } else {
             camadas = new int[] { 0, 1, 2 };
@@ -188,7 +187,7 @@ public class GameScreen implements Screen {
 
         // A camada 1 é um sobrepiso da missão 4, por padrão ela é ouculta,
         // mas quando a missão é finalizada, ela é exibida
-        if (jogo.controller.MISSAO >= 4 && jogo.controller.controleMissao.ativaCamadaMissao4) {
+        if (jogo.controller.MISSAO >= 4 && jogo.controleMissao.ativaCamadaMissao4) {
             jogo.mapaRenderizador.getMap().getLayers().get(1).setVisible(true);
         }
 
@@ -208,7 +207,7 @@ public class GameScreen implements Screen {
         jogo.batch.end();
 
         // Renderiza a camada de Topo
-        if (jogo.controller.objeto != null) {
+        if (jogo.objetosInterativos.get("objeto") != null) {
             jogo.mapaRenderizador.render(new int[] { 6 }); // Topo
         } else {
             jogo.mapaRenderizador.render(new int[] { 3 }); // Topo
@@ -266,14 +265,15 @@ public class GameScreen implements Screen {
                 CAMERA.position.y - CAMERA.viewportHeight / 2);
 
         // Desenha o diálogo de resultado de missão caso a flag esteja ativada
-        if (jogo.controller.resultadoRespostaMissao == 1) {
-            missaoDialogoResultado.ativarAcao("Parabéns, você\r\nconcluiu a missão!");
+        if (jogo.controller.ganhouJogo) {
+            missaoDialogoResultado.ativarAcao(false,
+                    "Parabéns, você\r\nganhou o jogo!\r\nDeseja jogar novamente?");
+        } else if (jogo.controller.perdeuJogo) {
+            missaoDialogoResultado.ativarAcao(false, "Desculpe, você\r\nperdeu o jogo!");
+        } else if (jogo.controller.resultadoRespostaMissao == 1) {
+            missaoDialogoResultado.ativarAcao(true, "Parabéns, você\r\nconcluiu a missão!");
         } else if (jogo.controller.resultadoRespostaMissao == 2) {
-            if (jogo.personagem.moedas == 0) {
-                missaoDialogoResultado.ativarAcao("Desculpe, você\r\nperdeu o jogo!");
-            } else {
-                missaoDialogoResultado.ativarAcao("Desculpe, você\r\nnão acertou, tente\r\nnovamente!");
-            }
+            missaoDialogoResultado.ativarAcao(true, "Desculpe, você\r\nnão acertou, tente\r\nnovamente!");
         } else {
             missaoDialogoResultado.desativarAcao();
         }
@@ -303,6 +303,13 @@ public class GameScreen implements Screen {
 
         // Atualiza a câmera
         CAMERA.update();
+    }
+
+    public boolean validaAnimacaoNpcAtiva() {
+        if (caixaDialogo.npc != null && caixaDialogo.npc.animacaoAtivada) {
+            return true;
+        }
+        return false;
     }
 
     @Override

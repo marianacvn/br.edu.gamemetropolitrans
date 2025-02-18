@@ -29,12 +29,12 @@ public class Personagem extends BaseActor {
      */
     Animation<TextureRegion> norte, sul, leste, oeste;
 
-    private PersonagemDirecao ultimaDirecao;
+    public PersonagemDirecao ultimaDirecao;
 
     /**
      * Ângulo de rotação do personagem
      */
-    private float angulo;
+    public float angulo;
 
     private Array<Rectangle> retangulosColisao, retangulosPista;
 
@@ -70,8 +70,14 @@ public class Personagem extends BaseActor {
 
     private float margemInfracao = -30.0f;
 
+    public String selectedCharacter;
+
+    static int contadorChamadas = 0;
+
     public Personagem(float x, float y, Stage s) {
         super(x, y, s);
+
+        selectedCharacter = "male";
 
         // Ajusta as margens para centralizar o personagem na colisão
         margemAltura = -10;
@@ -83,18 +89,21 @@ public class Personagem extends BaseActor {
 
         angulo = 270;
 
-        // Configuracao do personagem
-        moedas = 200;
-        xp = 0;
-        tipoInfracao = null;
-        infracoes = 0;
         setAceleracao(800);
         setVelocidadeMaxima(200);
         setDesaceleracao(800);
+        setZeraVelocidadeInstantaneamente(true);
     }
 
     public boolean interagiu(ObjetoInterativo objetoInterativo) {
         return this.sobrepoe(objetoInterativo);
+    }
+
+    public void setValoresDafault() {
+        angulo = 270;
+
+        // Inicia a animação com a direção SUL
+        setAnimacao(sul);
     }
 
     @Override
@@ -118,6 +127,8 @@ public class Personagem extends BaseActor {
     }
 
     public void atualizarSpritePersonagem(String selectedCharacter) {
+        this.selectedCharacter = selectedCharacter;
+        
         String nomeArquivo = "files/characters/mainCharacter/character-" + selectedCharacter + "_spritesheet.png";
         int linhas = 4;
         int colunas = 11;
@@ -182,46 +193,73 @@ public class Personagem extends BaseActor {
             if (angle >= 45 && angle <= 135) {
                 angulo = 90;
                 setAnimacao(norte);
+                ultimaDirecao = PersonagemDirecao.NORTE;
+                DebugMode.mostrarLog("Personagem", "Direção calculada na animação: " + ultimaDirecao);
             } else if (angle > 135 && angle < 225) {
                 angulo = 180;
                 setAnimacao(oeste);
+                ultimaDirecao = PersonagemDirecao.OESTE;
+                DebugMode.mostrarLog("Personagem", "Direção calculada na animação: " + ultimaDirecao);
             } else if (angle >= 225 && angle <= 315) {
                 angulo = 270;
                 setAnimacao(sul);
+                ultimaDirecao = PersonagemDirecao.SUL;
+                DebugMode.mostrarLog("Personagem", "Direção calculada na animação: " + ultimaDirecao);
             } else {
                 angulo = 0;
                 setAnimacao(leste);
+                ultimaDirecao = PersonagemDirecao.LESTE;
+                DebugMode.mostrarLog("Personagem", "Direção calculada na animação: " + ultimaDirecao);
             }
         }
     }
 
-    /**
-     * Atualiza a posição do personagem relacionado a infração
-     */
     private void atualizaPosicaoInfracao() {
+
+        contadorChamadas++;
+        DebugMode.mostrarLog("Personagem", "Chamadas de infração: " + contadorChamadas);
+        
+        float novaPosX = getX();
+        float novaPosY = getY();
+    
+        DebugMode.mostrarLog("Personagem", String.format(
+                "Antes da infração -> Direção: %s | Posição atual: X=%.2f, Y=%.2f | Margem: %.2f",
+                ultimaDirecao, getX(), getY(), margemInfracao));
+    
+        if (margemInfracao > 100) { // Ajuste esse valor conforme necessário
+            DebugMode.mostrarLog("Personagem", "ATENÇÃO: Margem de infração muito alta!");
+        }
+    
         switch (ultimaDirecao) {
             case NORTE:
-                setPosition(getX(), getY() + margemInfracao);
+                novaPosY += margemInfracao;
                 break;
             case SUL:
-                setPosition(getX(), getY() - margemInfracao);
+                novaPosY -= margemInfracao;
                 break;
             case LESTE:
-                setPosition(getX() + margemInfracao, getY());
+                novaPosX += margemInfracao;
                 break;
             case OESTE:
-                setPosition(getX() - margemInfracao, getY());
+                novaPosX -= margemInfracao;
                 break;
             default:
                 DebugMode.mostrarLog("Personagem", "Direção inválida durante o ajuste de infração!");
-                break;
+                return;
         }
-
-        // Adiciona log para depuração
+    
+        // Verifique se a posição final está dentro dos limites aceitáveis
+        if (Math.abs(novaPosX - getX()) > 100 || Math.abs(novaPosY - getY()) > 100) {
+            DebugMode.mostrarLog("Personagem", "ATENÇÃO: Ajuste de posição muito grande! Verifique a margemInfracao.");
+        }
+    
+        setPosition(novaPosX, novaPosY);
+    
         DebugMode.mostrarLog("Personagem", String.format(
-                "Infracao! Direção: %s | Posição final: X=%.2f, Y=%.2f",
+                "Após infração -> Direção: %s | Nova posição: X=%.2f, Y=%.2f",
                 ultimaDirecao, getX(), getY()));
     }
+    
 
     /**
      * Verifica se o personagem colidiu com algum objeto
@@ -263,7 +301,7 @@ public class Personagem extends BaseActor {
                         tipoInfracao = Personagem.TipoInfracao.ALERTA;
                     }
                     atualizaPosicaoInfracao();
-                    break;
+                    return;
                 }
             }
         }
@@ -279,12 +317,6 @@ public class Personagem extends BaseActor {
 
     public void setRetangulosPista(Array<Rectangle> retangulosPista) {
         this.retangulosPista = retangulosPista;
-    }
-
-    public void setUltimaDirecao(PersonagemDirecao direcao) {
-        this.ultimaDirecao = direcao;
-        // DebugMode.mostrarLog("Personagem", "Última direção atualizada para: " +
-        // direcao);
     }
 
     @Override
