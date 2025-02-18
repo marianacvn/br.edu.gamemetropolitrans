@@ -10,6 +10,10 @@
 		{
 			"missao": 2,
 			"mensagem": "Muito obrigado! Agora acredito que os casos de acidentes serão reduzidos!"
+		},
+		{
+			"missao": 8,
+			"mensagem": "Parabéns, o seu trabalho foi fundamental nesta cidade."
 		}
 	]
 }
