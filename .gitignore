@@ -165,3 +165,16 @@ Thumbs.db
 **/resource-config.json
 
 *.log
+
+## Remove arquivos do Build
+/metropolitrans-build/out-linux/*
+/metropolitrans-build/out-win/*
+/metropolitrans-build/out-macos/*
+
+game-windows.zip
+game-linux.zip
+game-macos.zip
+
+/metropolitrans-build/linux.tar.gz
+/metropolitrans-build/windows.zip
+/metropolitrans-build/macos.tar.gz
