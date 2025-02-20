@@ -3,7 +3,7 @@
         {
             "id": 1,
             "nome": "Faixas de Pedestre [Art. 70]",
-            "descricaoPagInicial": "O Código de Trânsito Brasileiro (CTB) é responsável por\r\nregulamentar o trânsito de veículos, pedestres e animais nas\r\nvias terrestres do território nacional.\r\nEle possui artigos para garantir a segurança, fluidez e\r\ndisciplina no trânsito. Alguns artigos específicos serão\r\nutilizados no jogo para ilustrar situações e regras importantes\r\nque todos devem seguir para um trânsito mais seguro e organizado.",
+            "descricaoPagInicial": "O Código de Trânsito Brasileiro (CTB) é responsável por\r\nregulamentar o trânsito de veículos, pedestres e animais nas\r\nvias terrestres do território nacional.\r\nEle possui artigos para garantir a segurança, fluidez e\r\ndisciplina no trânsito. Alguns artigos específicos serão\r\nutilizados no jogo para ilustrar situações e regras importantes\r\nque todos devem seguir para um trânsito mais seguro e organizado.\r\n[Brasil 1997]",
             "descricao": "Os pedestres que estiverem atravessando a via sobre as faixas\r\ndelimitadas para esse fim terão prioridade de passagem, exceto\r\n nos locais com sinalização semafórica.",
             "status": "LIBERADO",
             "missaoId": 1,
@@ -57,7 +57,7 @@
         },
         {
             "id": 7,
-            "nome": "Proibido Acionar Buzina Ou Sinal Sonoro [Art. 227]",
+            "nome": "Proibido Acionar Buzina ou Sinal Sonoro [Art. 227]",
             "descricao": "Adverte ao motorista a proibição de acionar a buzina ou qualquer outro efeito sonoro na região.",
             "status": "BLOQUEADO",
             "missaoId": 6,

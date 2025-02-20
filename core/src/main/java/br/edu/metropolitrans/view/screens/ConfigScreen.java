@@ -92,7 +92,7 @@ public class ConfigScreen implements Screen {
                 jogo.setScreen(telaAnterior);
             }
         });
-
+ 
         // Cria o Slider de Volume
         SliderStyle sliderStyle = new SliderStyle();
         sliderStyle.background = sliderBackgroundDrawable; // Use diretamente o Drawable
@@ -129,7 +129,7 @@ public class ConfigScreen implements Screen {
         // botaoWlabel.setPosition(sliderVolume.getX() + 70, botaoDlabel.getY() - 28);
         botaoSlabel = new Label("Andar para baixo", labelStyle2);
         // botaoSlabel.setPosition(sliderVolume.getX() + 70, botaoWlabel.getY() - 27);
-        botaoEnterLabel = new Label("Pular Diálogos", labelStyle2);
+        botaoEnterLabel = new Label("Avançar Diálogos", labelStyle2);
         // botaoEnterLabel.setPosition(sliderVolume.getX() + 70, botaoSlabel.getY() -
         // 24);
         botaoTLabel = new Label("Acessa o telefone", labelStyle2);

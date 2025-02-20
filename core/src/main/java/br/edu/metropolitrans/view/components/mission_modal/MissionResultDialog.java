@@ -85,6 +85,7 @@ public class MissionResultDialog {
                     jogo.controller.resultadoRespostaMissao = 0;
                     jogo.controller.mostrarCaixaMissao = false;
                     jogo.controleMissao.missaoConcluida = true;
+                    Gdx.app.log("MissionResultDialog", "Missão Concluída! " + jogo.controleMissao.missaoConcluida);
                     DebugMode.mostrarLog("DialogoMissao", "Resposta correta!");
                 } else {
                     jogo.controller.resultadoRespostaMissao = 0;
