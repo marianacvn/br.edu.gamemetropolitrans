@@ -23,7 +23,7 @@
       "id": 3,
       "nome": "Sinalização Horizontal com Setas Direcionais [Art. 88]",
       "descricao": "As setas direcionais são utilizadas para ordenar os fluxos de tráfego na via, orientando\r\n o condutor quanto ao correto posicionamento dos veículos nas faixas de trânsito, de \r\nacordo com os movimentos possíveis e recomendáveis para aquela faixa.",
-      "status": "CONCLUIDO",
+      "status": "BLOQUEADO",
       "missaoId": 2,
       "imagemPath": "files/itens/setasdirecionais1.png",
       "videoUrl": "https://www.youtube.com/watch?v\u003dJV-njSI8Xb8"
@@ -32,7 +32,7 @@
       "id": 4,
       "nome": "Placas de Estacionamento [Art. 181]",
       "descricao": "As placas de proibido estacionar, geralmente de cor vermelha e branca,\r\n indicam explicitamente onde não é permitido ou não deixar o veículo.",
-      "status": "CONCLUIDO",
+      "status": "BLOQUEADO",
       "missaoId": 3,
       "imagemPath": "files/itens/placasdeestacionamento.png"
     },
@@ -40,7 +40,7 @@
       "id": 5,
       "nome": "Ciclovia, Ciclofaixa e Ciclorrota [Art. 58]",
       "descricao": "Ciclovia: Pista exclusiva para bicicletas.\r\nCiclofaixa: Faixa exclusiva sinalizada para bicicletas.\r\nCiclorrota: Via compartilhada com sinalização.",
-      "status": "CONCLUIDO",
+      "status": "BLOQUEADO",
       "missaoId": 4,
       "imagemPath": "files/itens/ciclofaixa.png"
     },
@@ -48,7 +48,7 @@
       "id": 6,
       "nome": "Placa Sinalização de Velocidade Máxima [Art. 71]",
       "descricao": "Permite sinalizar a velocidade máxima adequada para o trânsito de veículos em determinado local.",
-      "status": "CONCLUIDO",
+      "status": "BLOQUEADO",
       "missaoId": 5,
       "imagemPath": "files/itens/vialocal.jpg"
     },
@@ -56,7 +56,7 @@
       "id": 7,
       "nome": "Proibido Acionar Buzina ou Sinal Sonoro [Art. 227]",
       "descricao": "Adverte ao motorista a proibição de acionar a buzina ou qualquer outro efeito sonoro na região.",
-      "status": "CONCLUIDO",
+      "status": "BLOQUEADO",
       "missaoId": 6,
       "imagemPath": "files/itens/proibidoacionar.png"
     },
@@ -64,7 +64,7 @@
       "id": 8,
       "nome": "Placas de  Passagem Sinalizada\r\n[Resolução Contran nº 243/2007]",
       "descricao": "São usadas para identificar locais onde há passagem sinalizada de pedestres (ou faixa de pedestres).",
-      "status": "CONCLUIDO",
+      "status": "BLOQUEADO",
       "missaoId": 7,
       "imagemPath": "files/itens/escolar.png"
     },

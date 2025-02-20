@@ -1,18 +1,18 @@
 {
-  "missaoAtual": 8,
+  "missaoAtual": 1,
   "personagem": {
-    "x": 463,
-    "y": 184,
-    "moedas": 580,
-    "xp": 70,
-    "infracoes": 4,
+    "x": 265,
+    "y": 249,
+    "moedas": 200,
+    "xp": 0,
+    "infracoes": 0,
     "sprite": "male"
   },
   "npcs": [
     {
       "key": "bruna",
-      "x": 217,
-      "y": 650,
+      "x": 1485,
+      "y": 1850,
       "statusAlertaMissao": 0,
       "dialogoAtual": 0,
       "temAnimacao": false
@@ -21,14 +21,14 @@
       "key": "juliana",
       "x": 1185,
       "y": 1130,
-      "statusAlertaMissao": 0,
+      "statusAlertaMissao": 1,
       "dialogoAtual": 0,
       "temAnimacao": false
     },
     {
       "key": "antonio",
-      "x": 217,
-      "y": 482,
+      "x": 1485,
+      "y": 1130,
       "statusAlertaMissao": 0,
       "dialogoAtual": 0,
       "temAnimacao": false
@@ -43,48 +43,48 @@
     },
     {
       "key": "jose",
-      "x": 25,
-      "y": 398,
+      "x": 90,
+      "y": 1450,
       "statusAlertaMissao": 0,
       "dialogoAtual": 0,
       "temAnimacao": false
     },
     {
       "key": "betania",
-      "x": 25,
-      "y": 566,
+      "x": 274,
+      "y": 200,
       "statusAlertaMissao": 0,
       "dialogoAtual": 0,
       "temAnimacao": false
     },
     {
       "key": "maria",
-      "x": 25,
-      "y": 482,
-      "statusAlertaMissao": 0,
+      "x": 280,
+      "y": 1220,
+      "statusAlertaMissao": 1,
       "dialogoAtual": 0,
       "temAnimacao": true
     },
     {
       "key": "heberto",
-      "x": 25,
-      "y": 650,
-      "statusAlertaMissao": 1,
+      "x": 89,
+      "y": 800,
+      "statusAlertaMissao": 0,
       "dialogoAtual": 0,
       "temAnimacao": false
     },
     {
       "key": "guarda",
-      "x": 217,
-      "y": 650,
+      "x": 274,
+      "y": 944,
       "statusAlertaMissao": 0,
       "dialogoAtual": 0,
       "temAnimacao": false
     },
     {
       "key": "paulo",
-      "x": 217,
-      "y": 398,
+      "x": 1500,
+      "y": 100,
       "statusAlertaMissao": 0,
       "dialogoAtual": 0,
       "temAnimacao": false

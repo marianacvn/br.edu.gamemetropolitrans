@@ -13,7 +13,7 @@ Write-Host "====================================================================
     --jdk "metropolitrans-build\windows.zip" `
     --useZgcIfSupportedOs `
     --executable "GameMetropoliTrans" `
-    --classpath "lwjgl3\build\libs\MetropoliTrans-1.0.0.jar" `
+    --classpath "lwjgl3\build\libs\MetropoliTrans-1.0.1.jar" `
     --mainclass "br.edu.metropolitrans.lwjgl3.Lwjgl3Launcher" `
     --vmargs "Xmx1G" "XstartOnFirstThread" `
     --resources "files\*" `
@@ -44,7 +44,7 @@ foreach ($dir in $filesDirs) {
 Write-Host "================================================================================"
 Write-Host "Copiando JAR..."
 Write-Host "================================================================================"
-Copy-Item "lwjgl3\build\libs\MetropoliTrans-1.0.0.jar" -Destination "metropolitrans-build\out-win"
+Copy-Item "lwjgl3\build\libs\MetropoliTrans-1.0.1.jar" -Destination "metropolitrans-build\out-win"
 
 # Compress output directory into a ZIP file using 7zip
 Write-Host "================================================================================"
