@@ -202,6 +202,10 @@ public class MissionController {
                         npc.repeteAnimacao = false;
                         npc.animacaoAtivada = true;
                         npc.statusAlertaMissao = 0;
+
+                        // Exibe o diálogo do guarda com instruções para as próximas missões
+                        jogo.controller.atualizarDialogo(jogo.controller.guarda, Npc.DIALOGO_GUARDA_MINIMAPA);
+                        jogo.controller.mostrarDialogo = true;
                     }
                 }
             }
@@ -397,6 +401,7 @@ public class MissionController {
                         DebugMode.mostrarLog("Missão", "Missão 4: Exibindo desafio de Bruna, exibindo ciclofaixa");
                         // Exibe a ciclofaixa no mapa prinxipal
                         ativaCamadaMissao4 = true;
+                        jogo.controller.montarCamadaPista(false);
 
                         // Conclui a missão
                         concluirMissao(missao);

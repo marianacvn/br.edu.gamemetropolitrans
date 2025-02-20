@@ -118,6 +118,8 @@ public class MetropoliTrans extends Game {
 
     public MapObjects objetosPista;
 
+    public MapObjects objetosCiclofaixa;
+
     /**
      * Retângulos de colisão
      */

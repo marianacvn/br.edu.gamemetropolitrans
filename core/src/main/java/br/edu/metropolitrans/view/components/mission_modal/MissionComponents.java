@@ -145,9 +145,12 @@ public class MissionComponents {
                         if (geraXp)
                             jogo.personagem.xp += 10;
 
-                            jogo.objetosInterativos.get("objetoMissao").setVisible(false);
+                        jogo.objetosInterativos.get("objetoMissao").setVisible(false);
                     } else {
                         jogo.efeitoErro.play();
+
+                        // Desmarcar todos os botões no grupo
+                        grupoBotoes.uncheckAll();
 
                         // Lógica para resposta incorreta
                         jogo.controller.resultadoRespostaMissao = 2;

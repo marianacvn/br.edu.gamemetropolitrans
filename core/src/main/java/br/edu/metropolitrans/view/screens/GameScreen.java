@@ -179,7 +179,7 @@ public class GameScreen implements Screen {
         // Obs.: Caso as camadas mudem no tiled, deve-se alterar aqui também
         int[] camadas = null;
         if (jogo.objetosInterativos.get("objeto") != null) {
-            camadas = new int[] { 0, 1, 2, 3, 4, 5 };
+            camadas = new int[] { 0, 1, 2, 3, 4, 5, 6 };
         } else {
             camadas = new int[] { 0, 1, 2 };
         }
@@ -208,7 +208,7 @@ public class GameScreen implements Screen {
 
         // Renderiza a camada de Topo
         if (jogo.objetosInterativos.get("objeto") != null) {
-            jogo.mapaRenderizador.render(new int[] { 6 }); // Topo
+            jogo.mapaRenderizador.render(new int[] { 7 }); // Topo
         } else {
             jogo.mapaRenderizador.render(new int[] { 3 }); // Topo
         }

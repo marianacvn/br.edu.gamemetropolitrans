@@ -18,6 +18,8 @@ import br.edu.metropolitrans.model.dao.CourseDAO;
 import br.edu.metropolitrans.model.utils.DebugMode;
 import br.edu.metropolitrans.view.components.buttons.TextButtonBase;
 import br.edu.metropolitrans.view.components.buttons.TextButtonSecond;
+import br.edu.metropolitrans.view.components.dialog.CourseResultDialog;
+import br.edu.metropolitrans.view.components.mission_modal.MissionResultDialog;
 import br.edu.metropolitrans.view.font.FontBase;
 
 public class CoursesScreen implements Screen {
@@ -27,6 +29,11 @@ public class CoursesScreen implements Screen {
     public Label titulo;
     public Screen telaAnterior;
     public TextButtonSecond botao1, botao2, botao3, botao4, botao5, botao6, botao7, botao8;
+
+    /**
+     * Diálogo de resultado da compra do curso
+     */
+    public CourseResultDialog dialogoResultado;
 
     public CoursesScreen(final MetropoliTrans jogo, Screen telaAnterior) {
         this.jogo = jogo;
@@ -89,6 +96,11 @@ public class CoursesScreen implements Screen {
             }
         });
 
+        // Inicializa o diálogo de resultado de missão
+        dialogoResultado = new CourseResultDialog(GameScreen.TELA_LARGURA / 2 - 300, GameScreen.TELA_ALTURA / 2 - 300,
+        300,
+        300, jogo);
+
         stage.addActor(botaoFechar);
         stage.addActor(titulo);
         stage.addActor(botao1);
@@ -134,10 +146,11 @@ public class CoursesScreen implements Screen {
                 DebugMode.mostrarLog("CoursesScreen", "Modulo " + modulo + " recarregado, curso:" + course);
 
                 if (validaCursoLiberado(course)) {
-                    DebugMode.mostrarLog("CoursesScreen", "Curso liberado, carregando CoursePageScreen");
-                    DebugMode.mostrarLog("CoursesScreen",
-                            "Dados do Módulo " + modulo + " carregados: " + course.getNome());
-                    jogo.setScreen(new CoursePageScreen(jogo, CoursesScreen.this, course));
+                    // Antes de exibr a tela, exibe um modal de resultado informando a compra do
+                    // módulo
+                    dialogoResultado.ativarAcao(CoursesScreen.this, course,
+                            "Módulo " + course.getId() + " comprado com sucesso!\r\nMoedas: -50.\r\nVocê tem "
+                                    + jogo.personagem.moedas + " moedas restantes.");
                 }
             }
         });
@@ -162,7 +175,7 @@ public class CoursesScreen implements Screen {
                 imagemBotao = "files/buttons/quadrado-concluido.png";
                 textoModulo = "Módulo " + modulo;
             }
-            
+
             botao.setText(textoModulo);
             botao.setNewImageButton(imagemBotao);
         }
@@ -225,6 +238,8 @@ public class CoursesScreen implements Screen {
         // Atualiza e desenha o Stage
         stage.act(delta);
         stage.draw();
+
+        dialogoResultado.render(delta);
     }
 
     @Override

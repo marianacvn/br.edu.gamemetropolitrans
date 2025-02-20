@@ -566,7 +566,7 @@ public class Controller {
      * @param mapa        TiledMap
      * @param removePista boolean - Remove a pista
      */
-    private void montarCamadaPista(boolean removePista) {
+    public void montarCamadaPista(boolean removePista) {
         DebugMode.mostrarLog("Controller", "Iniciando chamada montagem da camada de objetos da pista...");
         if (removePista) {
             DebugMode.mostrarLog("Controller", "Removendo a camada de objetos da pista...");
@@ -576,6 +576,7 @@ public class Controller {
             DebugMode.mostrarLog("Controller", "Crianado a camada de objetos da pista...");
             // Carrega os objetos de pista
             jogo.objetosPista = jogo.mapas.mapa.getLayers().get("pista").getObjects();
+            jogo.objetosCiclofaixa = jogo.mapas.mapa.getLayers().get("ciclofaixa").getObjects();
             DebugMode.mostrarLog("Controller", "Objetos carregados: " + jogo.objetosPista.getCount());
             jogo.retangulosPista = new Array<Rectangle>();
             DebugMode.mostrarLog("Controller",
@@ -586,6 +587,15 @@ public class Controller {
                 if (objeto instanceof RectangleMapObject) {
                     Rectangle retangulo = ((RectangleMapObject) objeto).getRectangle();
                     jogo.retangulosPista.add(retangulo);
+                }
+            }
+
+            if (MISSAO >= 4 && jogo.controleMissao.ativaCamadaMissao4) {
+                for (MapObject objeto : jogo.objetosCiclofaixa) {
+                    if (objeto instanceof RectangleMapObject) {
+                        Rectangle retangulo = ((RectangleMapObject) objeto).getRectangle();
+                        jogo.retangulosPista.add(retangulo);
+                    }
                 }
             }
 
