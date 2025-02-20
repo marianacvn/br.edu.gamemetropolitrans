@@ -132,6 +132,9 @@ datasource/dialogs/maria.json
 datasource/dialogs/paulo.json
 datasource/game-data.json
 datasource/missions.json
+datasource/save1-courses.json
+datasource/save1-game-data.json
+datasource/save1-missions.json
 fonts/AlchemistPixels.ttf
 fonts/Monocraft.ttc
 fonts/Silver.ttf
@@ -153,6 +156,7 @@ fonts/monogram/monogram/ttf/monogram-extended-italic.ttf
 fonts/monogram/monogram/ttf/monogram-extended.ttf
 fonts/monogram/monogram/ttf/monogram.ttf
 icons/icon-base.png
+icons/icon-house.ico
 icons/icon-house.png
 icons/iconCheckNpc.png
 icons/iconDialogoAtivoNpc.png
